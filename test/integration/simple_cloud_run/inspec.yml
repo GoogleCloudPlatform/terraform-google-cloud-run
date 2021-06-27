@@ -1,0 +1,14 @@
+name: simple_cloud_run
+attributes:
+  - name: project_id
+    required: true
+    type: string
+  - name: service_status
+    required: true
+    type: string
+  - name: service_name
+    required: true
+    type: string
+  - name: service_location
+    required: true
+    type: string
