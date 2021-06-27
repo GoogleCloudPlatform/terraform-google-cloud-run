@@ -24,7 +24,7 @@ Basic usage of this module is as follows:
 ```hcl
 module "cloud_run" {
   source  = "terraform-google-modules/terraform-google-cloud-run/google"
-  version = "~> 0.1.1"
+  version = "~> 0.0.1"
 
   service_name           = "<SERVICE NAME>"
   project_id             = "<PROJECT ID>"
