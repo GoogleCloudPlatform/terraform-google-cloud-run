@@ -10,12 +10,12 @@ The resources/services/activations/deletions that this module will create/trigge
 
 ## Assumptions and Prerequisites
 
-This module assumes that below mentioend prerequisites are in place before consuming the module.
+This module assumes that below mentioned prerequisites are in place before consuming the module.
 
 * All required APIs are enabled in the GCP Project
-* Cloud SQL
-* VPC Connector
-* Environment Variables in Secret Manager
+* Cloud SQL (optional)
+* VPC Connector (optional)
+* Environment Variables in Secret Manager (optional)
 
 ## Usage
 

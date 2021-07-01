@@ -14,12 +14,25 @@
  * limitations under the License.
  */
 
-module "cloud_run" {
-  source = "../../"
+terraform {
+  required_version = ">= 0.13"
 
-  service_name           = "ci-cloud-run"
-  project_id             = var.project_id
-  location               = "us-central1"
-  generate_revision_name = true
-  image                  = "us-docker.pkg.dev/cloudrun/container/hello"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 3.53"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "~> 3.53"
+    }
+  }
+
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-cloud-run:cloud_run_vpc_connector/v0.0.1"
+  }
+
+  provider_meta "google-beta" {
+    module_name = "blueprints/terraform/terraform-google-cloud-run:cloud_run_vpc_connector/v0.0.1"
+  }
 }

@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-module "cloud_run" {
-  source = "../../"
-
-  service_name           = "ci-cloud-run"
-  project_id             = var.project_id
-  location               = "us-central1"
-  generate_revision_name = true
-  image                  = "us-docker.pkg.dev/cloudrun/container/hello"
+// service
+variable "project_id" {
+  description = "The project ID to deploy to"
+  type        = string
 }

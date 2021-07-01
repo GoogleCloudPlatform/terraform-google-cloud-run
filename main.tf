@@ -30,8 +30,8 @@ resource "google_cloud_run_service" "main" {
     spec {
       containers {
         image   = var.image
-        command = [var.container_command]
-        args    = [var.argument]
+        command = var.container_command
+        args    = var.argument
 
         ports {
           name           = var.ports["name"]
@@ -77,7 +77,7 @@ resource "google_cloud_run_service" "main" {
       }                                                 // container
       container_concurrency = var.container_concurrency # maximum allowed concurrent requests 0,1,2-N
       timeout_seconds       = var.timeout_seconds       # max time instance is allowed to respond to a request
-      service_account_name  = var.service_account_name != null ? var.service_account_name : null
+      service_account_name  = var.service_account_email
 
       dynamic "volumes" {
         for_each = var.volumes
@@ -118,8 +118,6 @@ resource "google_cloud_run_service" "main" {
 
   # Terraform lifecycle block
   lifecycle {
-    prevent_destroy       = false
-    create_before_destroy = false
     ignore_changes = [
       template.0.metadata.0.annotations["generated-by"],
       metadata.0.labels["cloud.googleapis.com/location"],
@@ -151,20 +149,16 @@ resource "google_cloud_run_domain_mapping" "domain_map" {
   }
 }
 
-resource "google_cloud_run_service_iam_binding" "binding" {
-  count    = var.role != null ? 1 : 0
+resource "google_cloud_run_service_iam_member" "authorize" {
+  for_each = {
+    for each in setproduct(var.roles, var.members) : "${each[0]}:${each[1]}" => {
+      role   = each[0]
+      member = each[1]
+    }
+  }
   location = google_cloud_run_service.main.location
   project  = google_cloud_run_service.main.project
   service  = google_cloud_run_service.main.name
-  role     = var.role
-  members  = var.members
-}
-
-resource "google_cloud_run_service_iam_member" "authenticated_access" {
-  count    = var.authenticated_access ? 1 : 0
-  location = google_cloud_run_service.main.location
-  project  = google_cloud_run_service.main.project
-  service  = google_cloud_run_service.main.name
-  role     = "roles/run.invoker"
-  member   = "allUsers"
+  role     = each.value.role
+  member   = each.value.member
 }

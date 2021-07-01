@@ -57,10 +57,8 @@ variable "traffic_split" {
 
 variable "service_labels" {
   type        = map(string)
-  description = "Labels to the service"
-  default = {
-    "business_unit" = "app_name"
-  }
+  description = "A set of key/value label pairs to assign to the service"
+  default     = {}
 }
 
 variable "service_annotations" {
@@ -74,10 +72,8 @@ variable "service_annotations" {
 // Metadata
 variable "template_labels" {
   type        = map(string)
-  description = "Labels to the container metadata"
-  default = {
-    "app" = "helloworld"
-  }
+  description = "A set of key/value label pairs to assign to the container metadata"
+  default     = {}
 }
 
 variable "template_annotations" {
@@ -107,9 +103,9 @@ variable "timeout_seconds" {
   default     = 120
 }
 
-variable "service_account_name" {
+variable "service_account_email" {
   type        = string
-  description = "Service Account needed for the service"
+  description = "Service Account email needed for the service"
   default     = null
 }
 
@@ -148,22 +144,22 @@ variable "ports" {
   description = "Port which the container listens to"
   default = {
     name = "http1" #http1 or h2c
-    port = 2000
+    port = 8080
   }
 }
 
 # include these only if image entrypoint needs arguments
 variable "argument" {
-  type        = string
-  description = "Arguments passed to the entry point command"
-  default     = ""
+  type        = list(string)
+  description = "Arguments passed to the ENTRYPOINT command"
+  default     = []
 }
 
 # include these only if image entrypoint should be overwritten
 variable "container_command" {
-  type        = string
-  description = "Leave blank to use the entry point command defined in the container image"
-  default     = ""
+  type        = list(string)
+  description = "Leave blank to use the ENTRYPOINT command defined in the container image"
+  default     = []
 }
 
 # envs
@@ -196,13 +192,6 @@ variable "volume_mounts" {
   default     = []
 }
 
-## Add allUsers with roles/run.invoker role for unauthenticated access
-variable "authenticated_access" {
-  type        = bool
-  description = "Option to enable or disable service authentication"
-  default     = false
-}
-
 ##### Domain Mapping
 variable "verified_domain_name" {
   type        = string
@@ -224,10 +213,8 @@ variable "certificate_mode" { # NONE, AUTOMATIC
 
 variable "domain_map_labels" {
   type        = map(string)
-  description = "Labels to the domain map"
-  default = {
-    "business_unit" = "app_name"
-  }
+  description = "A set of key/value label pairs to assign to the Domain mapping"
+  default     = {}
 }
 
 variable "domain_map_annotations" {
@@ -236,19 +223,23 @@ variable "domain_map_annotations" {
   default     = {}
 }
 
-
 #### IAM
-variable "role" {
-  type        = string
-  description = "Roles to be provisioned to the service"
-  default     = null
+variable "roles" {
+  type        = list(string)
+  description = "Roles to be provisioned for the members"
+  default = [
+    "roles/run.invoker",
+    "roles/run.viewer"
+  ]
 }
 
 variable "members" {
   type        = list(string)
-  description = "Users/SAs to be givem permission to the service"
+  description = "Users/SAs to be given access to the service"
   default = [
-    "user:abc@xyz.com",
-    "serviceAccount:abc@xyz.com",
+    "allusers", # not recommended but ensure before using it
+    # use below format for Users and SAs
+    #"user:abc@xyz.com",
+    #"serviceAccount:abc@xyz.com",
   ]
 }
