@@ -227,19 +227,19 @@ variable "domain_map_annotations" {
 variable "roles" {
   type        = list(string)
   description = "Roles to be provisioned for the members"
-  default = [
-    "roles/run.invoker",
-    "roles/run.viewer"
-  ]
+  default     = []
+  # Usage: [ "roles/run.invoker", "roles/run.viewer" ]
 }
 
 variable "members" {
   type        = list(string)
   description = "Users/SAs to be given access to the service"
-  default = [
-    "allusers", # not recommended but ensure before using it
-    # use below format for Users and SAs
-    #"user:abc@xyz.com",
-    #"serviceAccount:abc@xyz.com",
-  ]
+  default     = []
+  # Usage:
+  # [
+  #   "allUsers", # ensure before using allUsers
+  #    #use below format for Users and SAs
+  #   "user:abc@xyz.com",
+  #   "serviceAccount:abc@xyz.com",
+  # ]
 }

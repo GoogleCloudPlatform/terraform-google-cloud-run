@@ -1,29 +1,25 @@
 # Terraform Cloud Run Module
 
-This module handles the basic deployment of containerized applications on Cloud Run, along with domain mapping and IAM policy for the service.
+This exmaple module handles the basic deployment of containerized applications on Cloud Run, along with domain mapping and IAM policy for the service.
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
-* Creates a Cloud Run service with provided name and container
-* Creates Domain mapping for the deployed service
-* Applies IAM policies
+* Creates a Cloud Run service with provided name and container with Serverless VPC Connector
 
 ## Assumptions and Prerequisites
 
 This module assumes that below mentioend prerequisites are in place before consuming the module.
 
 * All required APIs are enabled in the GCP Project
-* Cloud SQL
 * VPC Connector
-* Environment Variables in Secret Manager
 
 ## Usage
 
 Basic usage of this module is as follows:
 
 ```hcl
-module "cloud_run" {
-  source = "./simple_cloud_run"
+module "cloud_run_vpc_connector" {
+  source = "./cloud_run_vpc_connector"
 
   service_name           = var.service_name
   project_id             = var.project_id
@@ -38,22 +34,21 @@ module "cloud_run" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| generate\_revision\_name | Option to enable revision name generation | `bool` | `true` | no |
-| image | GCR hosted image URL to deploy | `string` | n/a | yes |
-| location | Cloud Run service deployment location | `string` | n/a | yes |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
-| service\_name | The name of the Cloud Run service to create | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| connector\_id | n/a |
 | revision | Deployed revision for the service |
 | service\_id | Unique Identifier for the created service |
 | service\_location | Location in which the Cloud Run service was created |
 | service\_name | Name of the created service |
 | service\_status | Status of the created service |
 | service\_url | The URL on which the deployed service is available |
+| subnets | n/a |
+| vpc\_name | VPC created for serverless |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
@@ -83,6 +78,7 @@ A project with the following APIs enabled must be used to host the
 resources of this module:
 
 - Google Cloud Run: `run.googleapis.com`
+- Serverless VPC Access: `vpcaccess.googleapis.com`
 
 The [Project Factory module][project-factory-module] and the
 [IAM module][iam-module] may be used in combination to provision a

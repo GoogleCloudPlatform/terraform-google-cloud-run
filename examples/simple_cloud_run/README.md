@@ -1,28 +1,23 @@
 # Terraform Cloud Run Module
 
-This module handles the basic deployment of containerized applications on Cloud Run, along with domain mapping and IAM policy for the service.
+This example module handles the basic deployment of containerized applications on Cloud Run, along with domain mapping and IAM policy for the service.
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
 * Creates a Cloud Run service with provided name and container
-* Creates Domain mapping for the deployed service
-* Applies IAM policies
 
 ## Assumptions and Prerequisites
 
 This module assumes that below mentioend prerequisites are in place before consuming the module.
 
 * All required APIs are enabled in the GCP Project
-* Cloud SQL
-* VPC Connector
-* Environment Variables in Secret Manager
 
 ## Usage
 
 Basic usage of this module is as follows:
 
 ```hcl
-module "cloud_run" {
+module "simple_cloud_run" {
   source = "./simple_cloud_run"
 
   service_name           = var.service_name

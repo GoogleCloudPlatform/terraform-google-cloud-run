@@ -6,7 +6,7 @@ The resources/services/activations/deletions that this module will create/trigge
 
 * Creates a Cloud Run service with provided name and container
 * Creates Domain mapping for the deployed service
-* Applies IAM policies
+* Applies IAM roles
 
 ## Assumptions and Prerequisites
 
@@ -38,8 +38,7 @@ module "cloud_run" {
     }
   ]
   service_labels = {
-    "usage"         = "<ENV>" ,
-    "owner"         = "<ADMIN>"
+    "key"         = "value"
   }
   service_annotations = {
     # possible values: all, internal, internal-and-cloud-load-balancing
@@ -48,7 +47,7 @@ module "cloud_run" {
 
   // Metadata
   template_labels = {
-    "app" = "helloworld"
+    "key" = "value"
   }
   template_annotations = {
     "run.googleapis.com/cloudsql-instances" = "<CLOUD_SQL_CONNECTION_STRING>"
@@ -61,7 +60,7 @@ module "cloud_run" {
   // template spec
   container_concurrency = 0
   timeout_seconds       = "120"
-  service_account_name  = "<USER_MANAGED_SERVICE_ACCOUNT_NAME>"
+  service_account_name  = "<USER_MANAGED_SERVICE_ACCOUNT_EMAIL>"
   volumes = [
     {
       name = "<SECRET_VOLUME_NAME>"
@@ -93,8 +92,8 @@ module "cloud_run" {
     name     = "http1"
     port     = 3000
   }
-  argument          = ""
-  container_command = ""
+  argument          = []
+  container_command = []
 
   # envs
   env_vars = [
@@ -130,19 +129,22 @@ module "cloud_run" {
   force_override       = false
   certificate_mode     = "AUTOMATIC" # NONE, AUTOMATIC
   domain_map_labels = {
-    "business_unit" = "app_name"
+    "key"           = "value"
   }
   domain_map_annotations = {
     "run.googleapis.com/launch-stage" = "BETA"
   }
 
   #### IAM
-  role = "roles/viewer"
+  role = [
+    "roles/run.invoker",
+    "roles/viewer"
+  ]
   members = [
+    "allUsers", # ensure before using allUsers
     "user:<USER_EMAIL>",
     "serviceAccount:<SA_EMAIL>"
   ]
-  authenticated_access = false
 }
 ```
 
@@ -151,13 +153,12 @@ module "cloud_run" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| argument | Arguments passed to the entry point command | `string` | `""` | no |
-| authenticated\_access | Option to enable or disable service authentication | `bool` | `false` | no |
+| argument | Arguments passed to the ENTRYPOINT command | `list(string)` | `[]` | no |
 | certificate\_mode | The mode of the certificate | `string` | `"NONE"` | no |
-| container\_command | Leave blank to use the entry point command defined in the container image | `string` | `""` | no |
+| container\_command | Leave blank to use the ENTRYPOINT command defined in the container image | `list(string)` | `[]` | no |
 | container\_concurrency | Concurrent request limits to the service | `number` | `0` | no |
 | domain\_map\_annotations | Annotations to the domain map | `map(string)` | `{}` | no |
-| domain\_map\_labels | Labels to the domain map | `map(string)` | <pre>{<br>  "business_unit": "app_name"<br>}</pre> | no |
+| domain\_map\_labels | A set of key/value label pairs to assign to the Domain mapping | `map(string)` | `{}` | no |
 | env\_secret\_vars | [Beta] Environment variables (Secret Manager) | <pre>list(object({<br>    name = string<br>    value_from = set(object({<br>      secret_key_ref = map(string)<br>    }))<br>  }))</pre> | `[]` | no |
 | env\_vars | Environment variables (cleartext) | <pre>list(object({<br>    value = string<br>    name  = string<br>  }))</pre> | `[]` | no |
 | force\_override | Option to force override existing mapping | `bool` | `false` | no |
@@ -165,17 +166,17 @@ module "cloud_run" {
 | image | GCR hosted image URL to deploy | `string` | n/a | yes |
 | limits | Resource limits to the container | `map(string)` | `{}` | no |
 | location | Cloud Run service deployment location | `string` | n/a | yes |
-| members | Users/SAs to be givem permission to the service | `list(string)` | <pre>[<br>  "user:abc@xyz.com",<br>  "serviceAccount:abc@xyz.com"<br>]</pre> | no |
-| ports | Port which the container listens to | <pre>object({<br>    name = string<br>    port = number<br>  })</pre> | <pre>{<br>  "name": "http1",<br>  "port": 2000<br>}</pre> | no |
+| members | Users/SAs to be given access to the service | `list(string)` | `[]` | no |
+| ports | Port which the container listens to | <pre>object({<br>    name = string<br>    port = number<br>  })</pre> | <pre>{<br>  "name": "http1",<br>  "port": 8080<br>}</pre> | no |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
 | requests | Resource requests to the container | `map(string)` | `{}` | no |
-| role | Roles to be provisioned to the service | `string` | `null` | no |
-| service\_account\_name | Service Account needed for the service | `string` | `null` | no |
+| roles | Roles to be provisioned for the members | `list(string)` | `[]` | no |
+| service\_account\_email | Service Account email needed for the service | `string` | `null` | no |
 | service\_annotations | Annotations to the service | `map(string)` | <pre>{<br>  "run.googleapis.com/ingress": "all"<br>}</pre> | no |
-| service\_labels | Labels to the service | `map(string)` | <pre>{<br>  "business_unit": "app_name"<br>}</pre> | no |
+| service\_labels | A set of key/value label pairs to assign to the service | `map(string)` | `{}` | no |
 | service\_name | The name of the Cloud Run service to create | `string` | n/a | yes |
 | template\_annotations | Annotations to the container metadata | `map(string)` | <pre>{<br>  "autoscaling.knative.dev/maxScale": 2,<br>  "autoscaling.knative.dev/minScale": 1,<br>  "generated-by": "terraform",<br>  "run.googleapis.com/client-name": "terraform"<br>}</pre> | no |
-| template\_labels | Labels to the container metadata | `map(string)` | <pre>{<br>  "app": "helloworld"<br>}</pre> | no |
+| template\_labels | A set of key/value label pairs to assign to the container metadata | `map(string)` | `{}` | no |
 | timeout\_seconds | Timeout for each request | `number` | `120` | no |
 | traffic\_split | Managing traffic routing to the service | <pre>list(object({<br>    latest_revision = bool<br>    percent         = number<br>    revision_name   = string<br>  }))</pre> | <pre>[<br>  {<br>    "latest_revision": true,<br>    "percent": 100,<br>    "revision_name": "v1-0-0"<br>  }<br>]</pre> | no |
 | verified\_domain\_name | Custom Domain Name | `string` | `null` | no |
@@ -220,10 +221,13 @@ Note: In order to deploy a service with a user-managed service account, the user
 
 ### APIs
 
-A project with the following APIs enabled must be used to host the
-resources of this module:
+A project with the following APIs enabled must be used to host the main
+resource of this module:
 
 - Google Cloud Run: `run.googleapis.com`
+- Serverless VPC Access (optional): `vpcaccess.googleapis.com`
+- Cloud SQL (optional): `sqladmin.googleapis.com`
+
 
 The [Project Factory module][project-factory-module] and the
 [IAM module][iam-module] may be used in combination to provision a
