@@ -42,9 +42,9 @@ module "cloud_run" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| argument | Arguments passed to the ENTRYPOINT command | `list(string)` | `[]` | no |
-| certificate\_mode | The mode of the certificate | `string` | `"NONE"` | no |
-| container\_command | Leave blank to use the ENTRYPOINT command defined in the container image | `list(string)` | `[]` | no |
+| argument | Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments | `list(string)` | `[]` | no |
+| certificate\_mode | The mode of the certificate (NONE or AUTOMATIC) | `string` | `"NONE"` | no |
+| container\_command | Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten | `list(string)` | `[]` | no |
 | container\_concurrency | Concurrent request limits to the service | `number` | `0` | no |
 | domain\_map\_annotations | Annotations to the domain map | `map(string)` | `{}` | no |
 | domain\_map\_labels | A set of key/value label pairs to assign to the Domain mapping | `map(string)` | `{}` | no |
@@ -56,7 +56,7 @@ module "cloud_run" {
 | limits | Resource limits to the container | `map(string)` | `{}` | no |
 | location | Cloud Run service deployment location | `string` | n/a | yes |
 | members | Users/SAs to be given access to the service | `list(string)` | `[]` | no |
-| ports | Port which the container listens to | <pre>object({<br>    name = string<br>    port = number<br>  })</pre> | <pre>{<br>  "name": "http1",<br>  "port": 8080<br>}</pre> | no |
+| ports | Port which the container listens to (http1 or h2c) | <pre>object({<br>    name = string<br>    port = number<br>  })</pre> | <pre>{<br>  "name": "http1",<br>  "port": 8080<br>}</pre> | no |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
 | requests | Resource requests to the container | `map(string)` | `{}` | no |
 | roles | Roles to be provisioned for the members | `list(string)` | `[]` | no |

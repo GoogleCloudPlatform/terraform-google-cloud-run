@@ -17,11 +17,7 @@ This module assumes that below mentioend prerequisites are in place before consu
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| generate\_revision\_name | Option to enable revision name generation | `bool` | `true` | no |
-| image | GCR hosted image URL to deploy | `string` | n/a | yes |
-| location | Cloud Run service deployment location | `string` | n/a | yes |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
-| service\_name | The name of the Cloud Run service to create | `string` | n/a | yes |
 
 ## Outputs
 

@@ -17,9 +17,5 @@
 module "cloud_run" {
   source = "../../../examples/simple_cloud_run"
 
-  service_name           = var.service_name
-  project_id             = var.project_id
-  location               = var.location
-  generate_revision_name = true
-  image                  = var.image
+  project_id = var.project_id
 }

@@ -17,8 +17,8 @@
 module "cloud_run" {
   source = "../../"
 
-  service_name           = "ci-cloud-run"
-  project_id             = var.project_id
-  location               = "us-central1"
-  image                  = "us-docker.pkg.dev/cloudrun/container/hello"
+  service_name = "ci-cloud-run"
+  project_id   = var.project_id
+  location     = "us-central1"
+  image        = "us-docker.pkg.dev/cloudrun/container/hello"
 }
