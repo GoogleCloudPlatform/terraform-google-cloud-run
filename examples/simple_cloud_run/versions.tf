@@ -27,12 +27,4 @@ terraform {
       version = "~> 3.53"
     }
   }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:simple_cloud_run/v0.0.1"
-  }
-
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:simple_cloud_run/v0.0.1"
-  }
 }

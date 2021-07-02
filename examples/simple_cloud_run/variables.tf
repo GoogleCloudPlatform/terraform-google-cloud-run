@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-// service
 variable "project_id" {
   description = "The project ID to deploy to"
   type        = string
@@ -33,10 +32,4 @@ variable "location" {
 variable "image" {
   description = "GCR hosted image URL to deploy"
   type        = string
-}
-
-variable "generate_revision_name" {
-  type        = bool
-  description = "Option to enable revision name generation"
-  default     = true
 }

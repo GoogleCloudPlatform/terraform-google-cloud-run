@@ -20,6 +20,5 @@ module "cloud_run" {
   service_name           = "ci-cloud-run"
   project_id             = var.project_id
   location               = "us-central1"
-  generate_revision_name = true
   image                  = "us-docker.pkg.dev/cloudrun/container/hello"
 }

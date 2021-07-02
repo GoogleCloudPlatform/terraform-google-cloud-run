@@ -1,6 +1,6 @@
-# Terraform Cloud Run Module
+# Simple Cloud Run Example
 
-This example module handles the basic deployment of containerized applications on Cloud Run, along with domain mapping and IAM policy for the service.
+This example showcases the basic deployment of containerized applications on Cloud Run, along with domain mapping and IAM policy for the service.
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
@@ -11,22 +11,6 @@ The resources/services/activations/deletions that this module will create/trigge
 This module assumes that below mentioend prerequisites are in place before consuming the module.
 
 * All required APIs are enabled in the GCP Project
-
-## Usage
-
-Basic usage of this module is as follows:
-
-```hcl
-module "simple_cloud_run" {
-  source = "./simple_cloud_run"
-
-  service_name           = var.service_name
-  project_id             = var.project_id
-  location               = var.location
-  generate_revision_name = true
-  image                  = var.image
-}
-```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

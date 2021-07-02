@@ -50,7 +50,7 @@ output "vpc_name" {
 }
 
 output "subnets" {
-  value = module.subnet.subnets
+  value = module.vpc.subnets
 }
 
 output "connector_id" {

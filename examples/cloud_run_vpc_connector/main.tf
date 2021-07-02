@@ -14,58 +14,12 @@
  * limitations under the License.
  */
 
-module "vpc" {
-  source  = "terraform-google-modules/network/google//modules/vpc"
-  version = "~> 3.0.0"
-
-  project_id              = var.project_id
-  network_name            = "cloud-run-vpc"
-  auto_create_subnetworks = false
-
-  shared_vpc_host = false
-}
-
-module "subnet" {
-  source  = "terraform-google-modules/network/google//modules/subnets"
-  version = "~> 3.0.0"
-
-  project_id   = var.project_id
-  network_name = module.vpc.network_name
-
-  subnets = [
-    {
-      subnet_name           = "cloud-run-subnet"
-      subnet_ip             = "10.10.0.0/28"
-      subnet_region         = "us-central1"
-      subnet_private_access = "true"
-      subnet_flow_logs      = "false"
-      description           = "Cloud Run VPC Connector Subnet"
-    }
-  ]
-}
-
-module "serverless_connector" {
-  source = "terraform-google-modules/network/google//modules/vpc-serverless-connector-beta"
-
-  project_id = var.project_id
-  vpc_connectors = [{
-    name            = "central-serverless"
-    region          = "us-central1"
-    subnet_name     = "${module.subnet.subnets["us-central1/cloud-run-subnet"]["name"]}"
-    host_project_id = var.project_id
-    machine_type    = "e2-micro"
-    min_instances   = 2
-    max_instances   = 3
-  }]
-}
-
 module "cloud_run" {
   source = "../../"
 
   service_name           = "ci-cloud-run-sc"
   project_id             = var.project_id
   location               = "us-central1"
-  generate_revision_name = true
   image                  = "us-docker.pkg.dev/cloudrun/container/hello"
 
   template_annotations = {

@@ -1,6 +1,6 @@
-# Terraform Cloud Run Module
+# Cloud Run with VPC Connector Example
 
-This exmaple module handles the basic deployment of containerized applications on Cloud Run, along with domain mapping and IAM policy for the service.
+This example showcases the basic deployment of containerized applications on Cloud Run, along with domain mapping and IAM policy for the service.
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
@@ -12,22 +12,6 @@ This module assumes that below mentioend prerequisites are in place before consu
 
 * All required APIs are enabled in the GCP Project
 * VPC Connector
-
-## Usage
-
-Basic usage of this module is as follows:
-
-```hcl
-module "cloud_run_vpc_connector" {
-  source = "./cloud_run_vpc_connector"
-
-  service_name           = var.service_name
-  project_id             = var.project_id
-  location               = var.location
-  generate_revision_name = true
-  image                  = var.image
-}
-```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

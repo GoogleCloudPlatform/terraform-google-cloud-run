@@ -115,14 +115,6 @@ resource "google_cloud_run_service" "main" {
       revision_name   = lookup(traffic.value, "latest_revision") ? null : lookup(traffic.value, "revision_name")
     }
   }
-
-  # Terraform lifecycle block
-  lifecycle {
-    ignore_changes = [
-      template.0.metadata.0.annotations["generated-by"],
-      metadata.0.labels["cloud.googleapis.com/location"],
-    ]
-  }
 }
 
 resource "google_cloud_run_domain_mapping" "domain_map" {
@@ -142,10 +134,6 @@ resource "google_cloud_run_domain_mapping" "domain_map" {
     route_name       = google_cloud_run_service.main.name
     force_override   = var.force_override
     certificate_mode = var.certificate_mode
-  }
-
-  lifecycle {
-    ignore_changes = [metadata[0]]
   }
 }
 
