@@ -138,15 +138,10 @@ resource "google_cloud_run_domain_mapping" "domain_map" {
 }
 
 resource "google_cloud_run_service_iam_member" "authorize" {
-  for_each = {
-    for each in setproduct(var.roles, var.members) : "${each[0]}:${each[1]}" => {
-      role   = each[0]
-      member = each[1]
-    }
-  }
+  count    = length(var.members)
   location = google_cloud_run_service.main.location
   project  = google_cloud_run_service.main.project
   service  = google_cloud_run_service.main.name
-  role     = each.value.role
-  member   = each.value.member
+  role     = "roles/run.invoker"
+  member   = var.members[count.index]
 }

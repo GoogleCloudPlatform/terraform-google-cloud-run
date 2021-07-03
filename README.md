@@ -6,7 +6,7 @@ The resources/services/activations/deletions that this module will create/trigge
 
 * Creates a Cloud Run service with provided name and container
 * Creates Domain mapping for the deployed service
-* Applies IAM roles
+* Applies Cloud Run Invoker role to members
 
 ## Assumptions and Prerequisites
 
@@ -55,16 +55,15 @@ module "cloud_run" {
 | image | GCR hosted image URL to deploy | `string` | n/a | yes |
 | limits | Resource limits to the container | `map(string)` | `{}` | no |
 | location | Cloud Run service deployment location | `string` | n/a | yes |
-| members | Users/SAs to be given access to the service | `list(string)` | `[]` | no |
+| members | Users/SAs to be given invoker access to the service | `list(string)` | `[]` | no |
 | ports | Port which the container listens to (http1 or h2c) | <pre>object({<br>    name = string<br>    port = number<br>  })</pre> | <pre>{<br>  "name": "http1",<br>  "port": 8080<br>}</pre> | no |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
 | requests | Resource requests to the container | `map(string)` | `{}` | no |
-| roles | Roles to be provisioned for the members | `list(string)` | `[]` | no |
 | service\_account\_email | Service Account email needed for the service | `string` | `null` | no |
-| service\_annotations | Annotations to the service | `map(string)` | <pre>{<br>  "run.googleapis.com/ingress": "all"<br>}</pre> | no |
+| service\_annotations | Annotations to the service. Acceptable values all, internal, internal-and-cloud-load-balancing | `map(string)` | <pre>{<br>  "run.googleapis.com/ingress": "all"<br>}</pre> | no |
 | service\_labels | A set of key/value label pairs to assign to the service | `map(string)` | `{}` | no |
 | service\_name | The name of the Cloud Run service to create | `string` | n/a | yes |
-| template\_annotations | Annotations to the container metadata | `map(string)` | <pre>{<br>  "autoscaling.knative.dev/maxScale": 2,<br>  "autoscaling.knative.dev/minScale": 1,<br>  "generated-by": "terraform",<br>  "run.googleapis.com/client-name": "terraform"<br>}</pre> | no |
+| template\_annotations | Annotations to the container metadata including VPC Connector and SQL. See [more details](https://cloud.google.com/run/docs/reference/rpc/google.cloud.run.v1#revisiontemplate) | `map(string)` | <pre>{<br>  "autoscaling.knative.dev/maxScale": 2,<br>  "autoscaling.knative.dev/minScale": 1,<br>  "generated-by": "terraform",<br>  "run.googleapis.com/client-name": "terraform"<br>}</pre> | no |
 | template\_labels | A set of key/value label pairs to assign to the container metadata | `map(string)` | `{}` | no |
 | timeout\_seconds | Timeout for each request | `number` | `120` | no |
 | traffic\_split | Managing traffic routing to the service | <pre>list(object({<br>    latest_revision = bool<br>    percent         = number<br>    revision_name   = string<br>  }))</pre> | <pre>[<br>  {<br>    "latest_revision": true,<br>    "percent": 100,<br>    "revision_name": "v1-0-0"<br>  }<br>]</pre> | no |
@@ -93,34 +92,29 @@ module "cloud_run" {
 These sections describe requirements for using this module.
 
 ### Software
-
-The following dependencies must be available:
-
-- [Terraform][terraform] v0.13+
-- [Terraform Provider for GCP][terraform-provider-gcp] plugin v3.53+
+- [Terraform](https://www.terraform.io/downloads.html) ~> v0.13+
+- [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) ~> v3.53+
+- [Terraform Provider for GCP Beta](https://github.com/terraform-providers/terraform-provider-google-beta) ~>
+  v3.53+
 
 ### Service Account
 
-A user managed service account can be used with required roles to deploy and access other resources from Cloud Run service:
+A service account can be used with required roles to execute this module:
 
-- GKE Admin: `roles/container.admin`
-- Storage Admin: `roles/storage.admin`
+- Cloud Run Admin: `roles/run.admin`
 
-Note: In order to deploy a service with a user-managed service account, the user deploying the service must have the `iam.serviceAccounts.actAs` permission on that service account.
+Know more about [Cloud Run Deployment Permissions](https://cloud.google.com/run/docs/reference/iam/roles#additional-configuration).
+
+The [Project Factory module](https://registry.terraform.io/modules/terraform-google-modules/project-factory/google/latest) and the
+[IAM module](https://registry.terraform.io/modules/terraform-google-modules/iam/google/latest) may be used in combination to provision a service account with the necessary roles applied.
 
 ### APIs
 
-A project with the following APIs enabled must be used to host the main
-resource of this module:
+A project with the following APIs enabled must be used to host the main resource of this module:
 
 - Google Cloud Run: `run.googleapis.com`
 - Serverless VPC Access (optional): `vpcaccess.googleapis.com`
 - Cloud SQL (optional): `sqladmin.googleapis.com`
-
-
-The [Project Factory module][project-factory-module] and the
-[IAM module][iam-module] may be used in combination to provision a
-service account with the necessary roles applied.
 
 ## Contributing
 

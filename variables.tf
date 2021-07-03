@@ -63,9 +63,9 @@ variable "service_labels" {
 
 variable "service_annotations" {
   type        = map(string)
-  description = "Annotations to the service"
+  description = "Annotations to the service. Acceptable values all, internal, internal-and-cloud-load-balancing"
   default = {
-    "run.googleapis.com/ingress" = "all" # all, internal, internal-and-cloud-load-balancing
+    "run.googleapis.com/ingress" = "all"
   }
 }
 
@@ -78,15 +78,12 @@ variable "template_labels" {
 
 variable "template_annotations" {
   type        = map(string)
-  description = "Annotations to the container metadata"
+  description = "Annotations to the container metadata including VPC Connector and SQL. See [more details](https://cloud.google.com/run/docs/reference/rpc/google.cloud.run.v1#revisiontemplate)"
   default = {
     "run.googleapis.com/client-name"   = "terraform"
     "generated-by"                     = "terraform"
     "autoscaling.knative.dev/maxScale" = 2
     "autoscaling.knative.dev/minScale" = 1
-    #"run.googleapis.com/cloudsql-instances"   = "connection_string_1"
-    #"run.googleapis.com/vpc-access-connector" = "projects/PROJECT_ID/locations/LOCATION/connectors/CONNECTOR_NAME"
-    #"run.googleapis.com/vpc-access-egress"    = "all-traffic" # all-traffic or private-ranges-only
   }
 }
 
@@ -221,14 +218,8 @@ variable "domain_map_annotations" {
 }
 
 // IAM
-variable "roles" {
-  type        = list(string)
-  description = "Roles to be provisioned for the members"
-  default     = []
-}
-
 variable "members" {
   type        = list(string)
-  description = "Users/SAs to be given access to the service"
+  description = "Users/SAs to be given invoker access to the service"
   default     = []
 }

@@ -2,13 +2,13 @@
 
 This example showcases the basic deployment of containerized applications on Cloud Run, along with domain mapping and IAM policy for the service.
 
-The resources/services/activations/deletions that this module will create/trigger are:
+The resources/services/activations/deletions that this example will create/trigger are:
 
 * Creates a Cloud Run service with provided name and container
 
 ## Assumptions and Prerequisites
 
-This module assumes that below mentioend prerequisites are in place before consuming the module.
+This example assumes that below mentioend prerequisites are in place before consuming the example.
 
 * All required APIs are enabled in the GCP Project
 
@@ -34,36 +34,27 @@ This module assumes that below mentioend prerequisites are in place before consu
 
 ## Requirements
 
-These sections describe requirements for using this module.
+These sections describe requirements for using this example.
 
 ### Software
-
-The following dependencies must be available:
-
-- [Terraform][terraform] v0.13+
-- [Terraform Provider for GCP][terraform-provider-gcp] plugin v3.53+
+- [Terraform](https://www.terraform.io/downloads.html) ~> v0.13+
+- [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) ~> v3.53+
+- [Terraform Provider for GCP Beta](https://github.com/terraform-providers/terraform-provider-google-beta) ~>
+  v3.53+
 
 ### Service Account
 
-A user managed service account can be used with required roles to deploy and access other resources from Cloud Run service:
+A service account can be used with required roles to execute this example:
 
-- GKE Admin: `roles/container.admin`
-- Storage Admin: `roles/storage.admin`
+- Cloud Run Admin: `roles/run.admin`
 
-Note: In order to deploy a service with a user-managed service account, the user deploying the service must have the `iam.serviceAccounts.actAs` permission on that service account.
+Know more about [Cloud Run Deployment Permissions](https://cloud.google.com/run/docs/reference/iam/roles#additional-configuration).
+
+The [Project Factory module](https://registry.terraform.io/modules/terraform-google-modules/project-factory/google/latest) and the
+[IAM module](https://registry.terraform.io/modules/terraform-google-modules/iam/google/latest) may be used in combination to provision a service account with the necessary roles applied.
 
 ### APIs
 
-A project with the following APIs enabled must be used to host the
-resources of this module:
+A project with the following APIs enabled must be used to host the main resource of this example:
 
 - Google Cloud Run: `run.googleapis.com`
-
-The [Project Factory module][project-factory-module] and the
-[IAM module][iam-module] may be used in combination to provision a
-service account with the necessary roles applied.
-
-## Contributing
-
-Refer to the [contribution guidelines](./CONTRIBUTING.md) for
-information on contributing to this module.
