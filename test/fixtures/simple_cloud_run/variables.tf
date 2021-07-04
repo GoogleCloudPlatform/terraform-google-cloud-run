@@ -14,32 +14,7 @@
  * limitations under the License.
  */
 
-// service
 variable "project_id" {
   description = "The project ID to deploy to"
   type        = string
-}
-
-variable "service_name" {
-  description = "The name of the Cloud Run service to create"
-  default     = "ci-cloud-run"
-  type        = string
-}
-
-variable "location" {
-  description = "Cloud Run service deployment location"
-  default     = "us-central1"
-  type        = string
-}
-
-variable "image" {
-  description = "GCR hosted image URL to deploy"
-  default     = "us-docker.pkg.dev/cloudrun/container/hello"
-  type        = string
-}
-
-variable "generate_revision_name" {
-  type        = bool
-  description = "Option to enable revision name generation"
-  default     = true
 }

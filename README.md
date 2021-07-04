@@ -6,16 +6,16 @@ The resources/services/activations/deletions that this module will create/trigge
 
 * Creates a Cloud Run service with provided name and container
 * Creates Domain mapping for the deployed service
-* Applies IAM policies
+* Applies Cloud Run Invoker role to members
 
 ## Assumptions and Prerequisites
 
-This module assumes that below mentioend prerequisites are in place before consuming the module.
+This module assumes that below mentioned prerequisites are in place before consuming the module.
 
 * All required APIs are enabled in the GCP Project
-* Cloud SQL
-* VPC Connector
-* Environment Variables in Secret Manager
+* Cloud SQL (optional)
+* VPC Connector (optional)
+* Environment Variables in Secret Manager (optional)
 
 ## Usage
 
@@ -29,120 +29,11 @@ module "cloud_run" {
   service_name           = "<SERVICE NAME>"
   project_id             = "<PROJECT ID>"
   location               = "<LOCATION>"
-  generate_revision_name = true
-  traffic_split = [
-    {
-      latest_revision = true
-      percent         = 100
-      revision_name   = ""
-    }
-  ]
-  service_labels = {
-    "usage"         = "<ENV>" ,
-    "owner"         = "<ADMIN>"
-  }
-  service_annotations = {
-    # possible values: all, internal, internal-and-cloud-load-balancing
-    "run.googleapis.com/ingress" = "all"
-  }
 
-  // Metadata
-  template_labels = {
-    "app" = "helloworld"
-  }
-  template_annotations = {
-    "run.googleapis.com/cloudsql-instances" = "<CLOUD_SQL_CONNECTION_STRING>"
-    "autoscaling.knative.dev/maxScale"      = 4
-    "autoscaling.knative.dev/minScale"      = 2
-    "run.googleapis.com/vpc-access-connector" = "<VPC_CONNECTOR_NAME>" # format 'projects/PROJECT_ID/locations/LOCATION/connectors/CONNECTOR_NAME'
-    "run.googleapis.com/vpc-access-egress" = "all-traffic"
-  }
-
-  // template spec
-  container_concurrency = 0
-  timeout_seconds       = "120"
-  service_account_name  = "<USER_MANAGED_SERVICE_ACCOUNT_NAME>"
-  volumes = [
-    {
-      name = "<SECRET_VOLUME_NAME>"
-      secret = [{
-        secret_name = "<SECRET_NAME>"
-        items = {
-          path = "<SECRET_PATH>"
-          key  = "<SECRET_VERSION>"
-        }
-      }]
-    },
-  ]
-
-  # template spec container
-  # resources
-  # cpu = (core count * 1000)m
-  # memory = (size) in Mi/Gi/M/G
-  limits = {
-    cpu    = "1000m"
-    memory = "256Mi"
-  }
   requests = {
     cpu    = "500m"
     memory = "128Mi"
   }
-
-  // ports
-  ports = {
-    name     = "http1"
-    port     = 3000
-  }
-  argument          = ""
-  container_command = ""
-
-  # envs
-  env_vars = [
-    {
-      name  = "<ENV_VARIABLE_1>"
-      value = "<ENV_VARIABLE_VALUE_1"
-    },
-    {
-      name  = "<ENV_VARIABLE_2>"
-      value = "<ENV_VARIABLE_VALUE_2>"
-    }
-  ]
-  env_vars = [
-    {
-      name  = "<ENV_SECRET_VARIABLE_1>"
-      value_from = [{
-        secret_key_ref = {
-          name = "<SECRET_NAME>"
-          key  = "<SECRET_VERSION>"
-        }
-      }]
-    },
-  ]
-  volume_mounts = [
-    {
-      mount_path = "<SECRET_MOUNT_PATH>"
-      name       = "<SECRET_VOLUME_NAME>"
-    },
-  ]
-
-  #### DOMAIN MAP
-  verified_domain_name = "<DOMAIN_NAME>"
-  force_override       = false
-  certificate_mode     = "AUTOMATIC" # NONE, AUTOMATIC
-  domain_map_labels = {
-    "business_unit" = "app_name"
-  }
-  domain_map_annotations = {
-    "run.googleapis.com/launch-stage" = "BETA"
-  }
-
-  #### IAM
-  role = "roles/viewer"
-  members = [
-    "user:<USER_EMAIL>",
-    "serviceAccount:<SA_EMAIL>"
-  ]
-  authenticated_access = false
 }
 ```
 
@@ -151,13 +42,12 @@ module "cloud_run" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| argument | Arguments passed to the entry point command | `string` | `""` | no |
-| authenticated\_access | Option to enable or disable service authentication | `bool` | `false` | no |
-| certificate\_mode | The mode of the certificate | `string` | `"NONE"` | no |
-| container\_command | Leave blank to use the entry point command defined in the container image | `string` | `""` | no |
+| argument | Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments | `list(string)` | `[]` | no |
+| certificate\_mode | The mode of the certificate (NONE or AUTOMATIC) | `string` | `"NONE"` | no |
+| container\_command | Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten | `list(string)` | `[]` | no |
 | container\_concurrency | Concurrent request limits to the service | `number` | `0` | no |
 | domain\_map\_annotations | Annotations to the domain map | `map(string)` | `{}` | no |
-| domain\_map\_labels | Labels to the domain map | `map(string)` | <pre>{<br>  "business_unit": "app_name"<br>}</pre> | no |
+| domain\_map\_labels | A set of key/value label pairs to assign to the Domain mapping | `map(string)` | `{}` | no |
 | env\_secret\_vars | [Beta] Environment variables (Secret Manager) | <pre>list(object({<br>    name = string<br>    value_from = set(object({<br>      secret_key_ref = map(string)<br>    }))<br>  }))</pre> | `[]` | no |
 | env\_vars | Environment variables (cleartext) | <pre>list(object({<br>    value = string<br>    name  = string<br>  }))</pre> | `[]` | no |
 | force\_override | Option to force override existing mapping | `bool` | `false` | no |
@@ -165,17 +55,16 @@ module "cloud_run" {
 | image | GCR hosted image URL to deploy | `string` | n/a | yes |
 | limits | Resource limits to the container | `map(string)` | `{}` | no |
 | location | Cloud Run service deployment location | `string` | n/a | yes |
-| members | Users/SAs to be givem permission to the service | `list(string)` | <pre>[<br>  "user:abc@xyz.com",<br>  "serviceAccount:abc@xyz.com"<br>]</pre> | no |
-| ports | Port which the container listens to | <pre>object({<br>    name = string<br>    port = number<br>  })</pre> | <pre>{<br>  "name": "http1",<br>  "port": 2000<br>}</pre> | no |
+| members | Users/SAs to be given invoker access to the service | `list(string)` | `[]` | no |
+| ports | Port which the container listens to (http1 or h2c) | <pre>object({<br>    name = string<br>    port = number<br>  })</pre> | <pre>{<br>  "name": "http1",<br>  "port": 8080<br>}</pre> | no |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
 | requests | Resource requests to the container | `map(string)` | `{}` | no |
-| role | Roles to be provisioned to the service | `string` | `null` | no |
-| service\_account\_name | Service Account needed for the service | `string` | `null` | no |
-| service\_annotations | Annotations to the service | `map(string)` | <pre>{<br>  "run.googleapis.com/ingress": "all"<br>}</pre> | no |
-| service\_labels | Labels to the service | `map(string)` | <pre>{<br>  "business_unit": "app_name"<br>}</pre> | no |
+| service\_account\_email | Service Account email needed for the service | `string` | `null` | no |
+| service\_annotations | Annotations to the service. Acceptable values all, internal, internal-and-cloud-load-balancing | `map(string)` | <pre>{<br>  "run.googleapis.com/ingress": "all"<br>}</pre> | no |
+| service\_labels | A set of key/value label pairs to assign to the service | `map(string)` | `{}` | no |
 | service\_name | The name of the Cloud Run service to create | `string` | n/a | yes |
-| template\_annotations | Annotations to the container metadata | `map(string)` | <pre>{<br>  "autoscaling.knative.dev/maxScale": 2,<br>  "autoscaling.knative.dev/minScale": 1,<br>  "generated-by": "terraform",<br>  "run.googleapis.com/client-name": "terraform"<br>}</pre> | no |
-| template\_labels | Labels to the container metadata | `map(string)` | <pre>{<br>  "app": "helloworld"<br>}</pre> | no |
+| template\_annotations | Annotations to the container metadata including VPC Connector and SQL. See [more details](https://cloud.google.com/run/docs/reference/rpc/google.cloud.run.v1#revisiontemplate) | `map(string)` | <pre>{<br>  "autoscaling.knative.dev/maxScale": 2,<br>  "autoscaling.knative.dev/minScale": 1,<br>  "generated-by": "terraform",<br>  "run.googleapis.com/client-name": "terraform"<br>}</pre> | no |
+| template\_labels | A set of key/value label pairs to assign to the container metadata | `map(string)` | `{}` | no |
 | timeout\_seconds | Timeout for each request | `number` | `120` | no |
 | traffic\_split | Managing traffic routing to the service | <pre>list(object({<br>    latest_revision = bool<br>    percent         = number<br>    revision_name   = string<br>  }))</pre> | <pre>[<br>  {<br>    "latest_revision": true,<br>    "percent": 100,<br>    "revision_name": "v1-0-0"<br>  }<br>]</pre> | no |
 | verified\_domain\_name | Custom Domain Name | `string` | `null` | no |
@@ -203,31 +92,29 @@ module "cloud_run" {
 These sections describe requirements for using this module.
 
 ### Software
-
-The following dependencies must be available:
-
-- [Terraform][terraform] v0.13+
-- [Terraform Provider for GCP][terraform-provider-gcp] plugin v3.53+
+- [Terraform](https://www.terraform.io/downloads.html) ~> v0.13+
+- [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) ~> v3.53+
+- [Terraform Provider for GCP Beta](https://github.com/terraform-providers/terraform-provider-google-beta) ~>
+  v3.53+
 
 ### Service Account
 
-A user managed service account can be used with required roles to deploy and access other resources from Cloud Run service:
+A service account can be used with required roles to execute this module:
 
-- GKE Admin: `roles/container.admin`
-- Storage Admin: `roles/storage.admin`
+- Cloud Run Admin: `roles/run.admin`
 
-Note: In order to deploy a service with a user-managed service account, the user deploying the service must have the `iam.serviceAccounts.actAs` permission on that service account.
+Know more about [Cloud Run Deployment Permissions](https://cloud.google.com/run/docs/reference/iam/roles#additional-configuration).
+
+The [Project Factory module](https://registry.terraform.io/modules/terraform-google-modules/project-factory/google/latest) and the
+[IAM module](https://registry.terraform.io/modules/terraform-google-modules/iam/google/latest) may be used in combination to provision a service account with the necessary roles applied.
 
 ### APIs
 
-A project with the following APIs enabled must be used to host the
-resources of this module:
+A project with the following APIs enabled must be used to host the main resource of this module:
 
 - Google Cloud Run: `run.googleapis.com`
-
-The [Project Factory module][project-factory-module] and the
-[IAM module][iam-module] may be used in combination to provision a
-service account with the necessary roles applied.
+- Serverless VPC Access (optional): `vpcaccess.googleapis.com`
+- Cloud SQL (optional): `sqladmin.googleapis.com`
 
 ## Contributing
 

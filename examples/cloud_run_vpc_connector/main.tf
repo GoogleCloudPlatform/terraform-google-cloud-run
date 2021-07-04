@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 0.13"
+module "cloud_run" {
+  source = "../../"
 
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 3.53"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = "~> 3.53"
-    }
+  service_name = "ci-cloud-run-sc"
+  project_id   = var.project_id
+  location     = "us-central1"
+  image        = "us-docker.pkg.dev/cloudrun/container/hello"
+
+  template_annotations = {
+    "autoscaling.knative.dev/maxScale"        = 4
+    "autoscaling.knative.dev/minScale"        = 2
+    "run.googleapis.com/vpc-access-connector" = element(tolist(module.serverless_connector.connector_ids), 1)
+    "run.googleapis.com/vpc-access-egress"    = "all-traffic"
   }
 }

@@ -1,16 +1,17 @@
-# Simple Cloud Run Example
+# Cloud Run with VPC Connector Example
 
 This example showcases the basic deployment of containerized applications on Cloud Run, along with domain mapping and IAM policy for the service.
 
 The resources/services/activations/deletions that this example will create/trigger are:
 
-* Creates a Cloud Run service with provided name and container
+* Creates a Cloud Run service with provided name and container with Serverless VPC Connector
 
 ## Assumptions and Prerequisites
 
 This example assumes that below mentioend prerequisites are in place before consuming the example.
 
 * All required APIs are enabled in the GCP Project
+* VPC Connector
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -23,12 +24,15 @@ This example assumes that below mentioend prerequisites are in place before cons
 
 | Name | Description |
 |------|-------------|
+| connector\_id | n/a |
 | revision | Deployed revision for the service |
 | service\_id | Unique Identifier for the created service |
 | service\_location | Location in which the Cloud Run service was created |
 | service\_name | Name of the created service |
 | service\_status | Status of the created service |
 | service\_url | The URL on which the deployed service is available |
+| subnets | n/a |
+| vpc\_name | VPC created for serverless |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
@@ -58,3 +62,4 @@ The [Project Factory module](https://registry.terraform.io/modules/terraform-goo
 A project with the following APIs enabled must be used to host the main resource of this example:
 
 - Google Cloud Run: `run.googleapis.com`
+- Serverless VPC Access:`vpcaccess.googleapis.com`

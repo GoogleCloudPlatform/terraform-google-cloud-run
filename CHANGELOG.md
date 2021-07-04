@@ -12,6 +12,6 @@ and this project adheres to
 ### Features
 
 * Initial commit of this module - includes basic `google_cloud_run_service` resource creation
-* Includes additional resources `google_cloud_run_domain_mapping`, `google_cloud_run_service_iam_binding`, `google_cloud_run_service_iam_member`
+* Includes additional resources `google_cloud_run_domain_mapping`, `google_cloud_run_service_iam_member`
 * Added examples and test for simple application deployment
 * Updated README

@@ -57,40 +57,33 @@ variable "traffic_split" {
 
 variable "service_labels" {
   type        = map(string)
-  description = "Labels to the service"
-  default = {
-    "business_unit" = "app_name"
-  }
+  description = "A set of key/value label pairs to assign to the service"
+  default     = {}
 }
 
 variable "service_annotations" {
   type        = map(string)
-  description = "Annotations to the service"
+  description = "Annotations to the service. Acceptable values all, internal, internal-and-cloud-load-balancing"
   default = {
-    "run.googleapis.com/ingress" = "all" # all, internal, internal-and-cloud-load-balancing
+    "run.googleapis.com/ingress" = "all"
   }
 }
 
 // Metadata
 variable "template_labels" {
   type        = map(string)
-  description = "Labels to the container metadata"
-  default = {
-    "app" = "helloworld"
-  }
+  description = "A set of key/value label pairs to assign to the container metadata"
+  default     = {}
 }
 
 variable "template_annotations" {
   type        = map(string)
-  description = "Annotations to the container metadata"
+  description = "Annotations to the container metadata including VPC Connector and SQL. See [more details](https://cloud.google.com/run/docs/reference/rpc/google.cloud.run.v1#revisiontemplate)"
   default = {
-    #"run.googleapis.com/cloudsql-instances"   = "connection_string_1"
     "run.googleapis.com/client-name"   = "terraform"
     "generated-by"                     = "terraform"
     "autoscaling.knative.dev/maxScale" = 2
     "autoscaling.knative.dev/minScale" = 1
-    #"run.googleapis.com/vpc-access-connector" = "projects/PROJECT_ID/locations/LOCATION/connectors/CONNECTOR_NAME"
-    #"run.googleapis.com/vpc-access-egress"    = "all-traffic" # all-traffic or private-ranges-only
   }
 }
 
@@ -107,9 +100,9 @@ variable "timeout_seconds" {
   default     = 120
 }
 
-variable "service_account_name" {
+variable "service_account_email" {
   type        = string
-  description = "Service Account needed for the service"
+  description = "Service Account email needed for the service"
   default     = null
 }
 
@@ -139,34 +132,31 @@ variable "requests" {
   description = "Resource requests to the container"
   default     = {}
 }
-# ports
+
 variable "ports" {
   type = object({
     name = string
     port = number
   })
-  description = "Port which the container listens to"
+  description = "Port which the container listens to (http1 or h2c)"
   default = {
-    name = "http1" #http1 or h2c
-    port = 2000
+    name = "http1"
+    port = 8080
   }
 }
 
-# include these only if image entrypoint needs arguments
 variable "argument" {
-  type        = string
-  description = "Arguments passed to the entry point command"
-  default     = ""
+  type        = list(string)
+  description = "Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments"
+  default     = []
 }
 
-# include these only if image entrypoint should be overwritten
 variable "container_command" {
-  type        = string
-  description = "Leave blank to use the entry point command defined in the container image"
-  default     = ""
+  type        = list(string)
+  description = "Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten"
+  default     = []
 }
 
-# envs
 variable "env_vars" {
   type = list(object({
     value = string
@@ -175,7 +165,7 @@ variable "env_vars" {
   description = "Environment variables (cleartext)"
   default     = []
 }
-# envs from secret
+
 variable "env_secret_vars" {
   type = list(object({
     name = string
@@ -186,7 +176,7 @@ variable "env_secret_vars" {
   description = "[Beta] Environment variables (Secret Manager)"
   default     = []
 }
-# volume mounts from secrets
+
 variable "volume_mounts" {
   type = list(object({
     mount_path = string
@@ -196,14 +186,7 @@ variable "volume_mounts" {
   default     = []
 }
 
-## Add allUsers with roles/run.invoker role for unauthenticated access
-variable "authenticated_access" {
-  type        = bool
-  description = "Option to enable or disable service authentication"
-  default     = false
-}
-
-##### Domain Mapping
+// Domain Mapping
 variable "verified_domain_name" {
   type        = string
   description = "Custom Domain Name"
@@ -216,18 +199,16 @@ variable "force_override" {
   default     = false
 }
 
-variable "certificate_mode" { # NONE, AUTOMATIC
+variable "certificate_mode" {
   type        = string
-  description = "The mode of the certificate"
+  description = "The mode of the certificate (NONE or AUTOMATIC)"
   default     = "NONE"
 }
 
 variable "domain_map_labels" {
   type        = map(string)
-  description = "Labels to the domain map"
-  default = {
-    "business_unit" = "app_name"
-  }
+  description = "A set of key/value label pairs to assign to the Domain mapping"
+  default     = {}
 }
 
 variable "domain_map_annotations" {
@@ -236,19 +217,9 @@ variable "domain_map_annotations" {
   default     = {}
 }
 
-
-#### IAM
-variable "role" {
-  type        = string
-  description = "Roles to be provisioned to the service"
-  default     = null
-}
-
+// IAM
 variable "members" {
   type        = list(string)
-  description = "Users/SAs to be givem permission to the service"
-  default = [
-    "user:abc@xyz.com",
-    "serviceAccount:abc@xyz.com",
-  ]
+  description = "Users/SAs to be given invoker access to the service"
+  default     = []
 }
