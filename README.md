@@ -1,6 +1,6 @@
 # Terraform Cloud Run Module
 
-This module handles the basic deployment of containerized applications on Cloud Run, along with domain mapping and IAM policy for the service.
+CI This module handles the basic deployment of containerized applications on Cloud Run, along with domain mapping and IAM policy for the service.
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
