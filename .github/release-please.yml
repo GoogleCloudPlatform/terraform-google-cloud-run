@@ -1,2 +1,4 @@
 releaseType: terraform-module
 handleGHRelease: true
+primaryBranch: main
+bumpMinorPreMajor: true
