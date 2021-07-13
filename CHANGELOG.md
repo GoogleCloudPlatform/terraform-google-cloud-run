@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.0 (2021-07-12)
+
+
+### Miscellaneous Chores
+
+* release 0.1.0 ([ca3c954](https://www.github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/ca3c95477e4ab97c94ac4495a913bfe3f1df70d2))
+
 ## [0.0.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/tree/v0.0.1) (2021-06-27)
 
 ### Features
