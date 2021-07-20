@@ -103,7 +103,7 @@ variable "timeout_seconds" {
 variable "service_account_email" {
   type        = string
   description = "Service Account email needed for the service"
-  default     = null
+  default     = ""
 }
 
 variable "volumes" {
@@ -190,7 +190,7 @@ variable "volume_mounts" {
 variable "verified_domain_name" {
   type        = string
   description = "Custom Domain Name"
-  default     = null
+  default     = ""
 }
 
 variable "force_override" {

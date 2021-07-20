@@ -24,15 +24,15 @@ This example assumes that below mentioend prerequisites are in place before cons
 
 | Name | Description |
 |------|-------------|
-| connector\_id | n/a |
+| connector\_id | VPC Connector ID |
 | revision | Deployed revision for the service |
 | service\_id | Unique Identifier for the created service |
 | service\_location | Location in which the Cloud Run service was created |
 | service\_name | Name of the created service |
 | service\_status | Status of the created service |
 | service\_url | The URL on which the deployed service is available |
-| subnets | n/a |
-| vpc\_name | VPC created for serverless |
+| subnets | VPC Subnets |
+| vpc\_name | VPC created for serverless connector |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
