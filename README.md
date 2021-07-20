@@ -30,7 +30,7 @@ module "cloud_run" {
   service_name           = "<SERVICE NAME>"
   project_id             = "<PROJECT ID>"
   location               = "<LOCATION>"
-  image                  = "<GCE_HOSTED_IMAGE_URL>"
+  image                  = "gcr.io/cloudrun/hello"
 }
 ```
 
