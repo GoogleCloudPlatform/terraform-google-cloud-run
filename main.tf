@@ -118,7 +118,7 @@ resource "google_cloud_run_service" "main" {
 }
 
 resource "google_cloud_run_domain_mapping" "domain_map" {
-  count    = var.verified_domain_name != null ? 1 : 0
+  count    = var.verified_domain_name != "" ? 1 : 0
   provider = google-beta
   location = google_cloud_run_service.main.location
   name     = var.verified_domain_name
