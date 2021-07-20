@@ -46,13 +46,15 @@ output "service_location" {
 
 output "vpc_name" {
   value       = module.vpc.network_name
-  description = "VPC created for serverless"
+  description = "VPC created for serverless connector"
 }
 
 output "subnets" {
-  value = module.vpc.subnets
+  value       = module.vpc.subnets
+  description = "VPC Subnets"
 }
 
 output "connector_id" {
-  value = module.serverless_connector.connector_ids
+  value       = module.serverless_connector.connector_ids
+  description = "VPC Connector ID"
 }

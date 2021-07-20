@@ -23,17 +23,14 @@ Basic usage of this module is as follows:
 
 ```hcl
 module "cloud_run" {
-  source  = "terraform-google-modules/terraform-google-cloud-run/google"
-  version = "~> 0.1.0"
+  source  = "GoogleCloudPlatform/cloud-run/google"
+  version = "~> 0.1.1"
 
+  # Required variables
   service_name           = "<SERVICE NAME>"
   project_id             = "<PROJECT ID>"
   location               = "<LOCATION>"
-
-  requests = {
-    cpu    = "500m"
-    memory = "128Mi"
-  }
+  image                  = "<GCE_HOSTED_IMAGE_URL>"
 }
 ```
 
@@ -59,7 +56,7 @@ module "cloud_run" {
 | ports | Port which the container listens to (http1 or h2c) | <pre>object({<br>    name = string<br>    port = number<br>  })</pre> | <pre>{<br>  "name": "http1",<br>  "port": 8080<br>}</pre> | no |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
 | requests | Resource requests to the container | `map(string)` | `{}` | no |
-| service\_account\_email | Service Account email needed for the service | `string` | `null` | no |
+| service\_account\_email | Service Account email needed for the service | `string` | `""` | no |
 | service\_annotations | Annotations to the service. Acceptable values all, internal, internal-and-cloud-load-balancing | `map(string)` | <pre>{<br>  "run.googleapis.com/ingress": "all"<br>}</pre> | no |
 | service\_labels | A set of key/value label pairs to assign to the service | `map(string)` | `{}` | no |
 | service\_name | The name of the Cloud Run service to create | `string` | n/a | yes |
@@ -67,7 +64,7 @@ module "cloud_run" {
 | template\_labels | A set of key/value label pairs to assign to the container metadata | `map(string)` | `{}` | no |
 | timeout\_seconds | Timeout for each request | `number` | `120` | no |
 | traffic\_split | Managing traffic routing to the service | <pre>list(object({<br>    latest_revision = bool<br>    percent         = number<br>    revision_name   = string<br>  }))</pre> | <pre>[<br>  {<br>    "latest_revision": true,<br>    "percent": 100,<br>    "revision_name": "v1-0-0"<br>  }<br>]</pre> | no |
-| verified\_domain\_name | Custom Domain Name | `string` | `null` | no |
+| verified\_domain\_name | Custom Domain Name | `string` | `""` | no |
 | volume\_mounts | [Beta] Volume Mounts to be attached to the container (when using secret) | <pre>list(object({<br>    mount_path = string<br>    name       = string<br>  }))</pre> | `[]` | no |
 | volumes | [Beta] Volumes needed for environment variables (when using secret) | <pre>list(object({<br>    name = string<br>    secret = set(object({<br>      secret_name = string<br>      items       = map(string)<br>    }))<br>  }))</pre> | `[]` | no |
 
