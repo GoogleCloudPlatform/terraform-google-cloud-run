@@ -58,3 +58,8 @@ output "domain_map_status" {
   value       = google_cloud_run_domain_mapping.domain_map.*.status
   description = "Status of Domain mapping"
 }
+
+output "domain_map_dns_record" {
+  value       = google_cloud_run_domain_mapping.domain_map.resource_records
+  description = "DNS resource records of Domain mapping"
+}
