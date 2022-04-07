@@ -126,7 +126,7 @@ variable "limits" {
   type        = map(string)
   description = "Resource limits to the container"
   default     = {
-    "cpu" = "1000m"
+    "cpu"    = "1000m"
     "memory" = "512Mi"
   }
 }
