@@ -128,6 +128,7 @@ variable "limits" {
   default     = {
     "cpu" = "1000m"
     "memory" = "512Mi"
+  }
 }
 variable "requests" {
   type        = map(string)
