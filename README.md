@@ -42,7 +42,7 @@ module "cloud_run" {
 | argument | Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments | `list(string)` | `[]` | no |
 | certificate\_mode | The mode of the certificate (NONE or AUTOMATIC) | `string` | `"NONE"` | no |
 | container\_command | Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten | `list(string)` | `[]` | no |
-| container\_concurrency | Concurrent request limits to the service | `number` | `0` | no |
+| container\_concurrency | Concurrent request limits to the service | `number` | `80` | no |
 | domain\_map\_annotations | Annotations to the domain map | `map(string)` | `{}` | no |
 | domain\_map\_labels | A set of key/value label pairs to assign to the Domain mapping | `map(string)` | `{}` | no |
 | env\_secret\_vars | [Beta] Environment variables (Secret Manager) | <pre>list(object({<br>    name = string<br>    value_from = set(object({<br>      secret_key_ref = map(string)<br>    }))<br>  }))</pre> | `[]` | no |
@@ -55,7 +55,7 @@ module "cloud_run" {
 | members | Users/SAs to be given invoker access to the service | `list(string)` | `[]` | no |
 | ports | Port which the container listens to (http1 or h2c) | <pre>object({<br>    name = string<br>    port = number<br>  })</pre> | <pre>{<br>  "name": "http1",<br>  "port": 8080<br>}</pre> | no |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
-| requests | Resource requests to the container | `map(string)` | `{}` | no |
+| requests | Resource requests to the container | `map(string)` | <pre>{<br>  "cpu" = "1000m", <br>  "memory" = "512Mi"<br>} </pre> | no |
 | service\_account\_email | Service Account email needed for the service | `string` | `""` | no |
 | service\_annotations | Annotations to the service. Acceptable values all, internal, internal-and-cloud-load-balancing | `map(string)` | <pre>{<br>  "run.googleapis.com/ingress": "all"<br>}</pre> | no |
 | service\_labels | A set of key/value label pairs to assign to the service | `map(string)` | `{}` | no |
