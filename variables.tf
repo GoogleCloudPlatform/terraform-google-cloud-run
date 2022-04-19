@@ -125,7 +125,7 @@ variable "volumes" {
 variable "limits" {
   type        = map(string)
   description = "Resource limits to the container"
-  default     = {
+  default = {
     "cpu"    = "1000m"
     "memory" = "512Mi"
   }
