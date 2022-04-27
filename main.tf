@@ -15,7 +15,8 @@
  */
 
 locals {
-  template_annotation_cmek = var.encryption_key != null ? { "run.googleapis.com/encryption-key" = var.encryption_key } : {}
+  cmek_template_annotation = var.encryption_key != null ? { "run.googleapis.com/encryption-key" = var.encryption_key } : {}
+  template_annotations     = merge(var.template_annotations, local.cmek_template_annotation)
 }
 
 resource "google_cloud_run_service" "main" {
@@ -103,7 +104,7 @@ resource "google_cloud_run_service" "main" {
     } // spec
     metadata {
       labels      = var.template_labels
-      annotations = merge(var.template_annotations, local.template_annotation_cmek)
+      annotations = local.template_annotations
       name        = var.generate_revision_name ? null : "${var.service_name}-${var.traffic_split.0.revision_name}"
     } // metadata
   }   // template
