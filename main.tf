@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+locals {
+  template_annotation_cmek = var.encryption_key != null ? { "run.googleapis.com/encryption-key" = var.encryption_key } : {}
+}
+
 resource "google_cloud_run_service" "main" {
   provider                   = google-beta
   name                       = var.service_name
@@ -99,7 +103,7 @@ resource "google_cloud_run_service" "main" {
     } // spec
     metadata {
       labels      = var.template_labels
-      annotations = var.template_annotations
+      annotations = merge(var.template_annotations, local.template_annotation_cmek)
       name        = var.generate_revision_name ? null : "${var.service_name}-${var.traffic_split.0.revision_name}"
     } // metadata
   }   // template

@@ -87,6 +87,12 @@ variable "template_annotations" {
   }
 }
 
+variable "encryption_key" {
+  description = "CMEK encryption key self-ling"
+  type        = string
+  default     = null
+}
+
 // template spec
 variable "container_concurrency" {
   type        = number
