@@ -88,7 +88,7 @@ variable "template_annotations" {
 }
 
 variable "encryption_key" {
-  description = "CMEK encryption key self-ling"
+  description = "CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY."
   type        = string
   default     = null
 }
