@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,5 +46,5 @@ output "service_location" {
 
 output "encryption_key" {
   value = google_kms_crypto_key.example_key.id
-  description = "Encryption Key Ring used in Cloud Run Service"
+  description = "Encryption Key used in Cloud Run Service"
 }

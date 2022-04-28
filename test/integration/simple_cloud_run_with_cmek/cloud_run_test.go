@@ -15,7 +15,6 @@
 package simple_cloud_run_with_cmek
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
@@ -23,19 +22,23 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCloudRun(t *testing.T) {
+func TestCloudRunWithCMEK(t *testing.T) {
 
 	cloud_run := tft.NewTFBlueprintTest(t)
 
 	cloud_run.DefineVerify(
 		func(assert *assert.Assertions) {
-			// perform default verification ensuring Terraform reports no additional changes on an applied blueprint
-			cloud_run.DefaultVerify(assert)
+			projectID := cloud_run.GetStringOutput("project_id")
+			location := cloud_run.GetStringOutput("service_location")
+			serviceStatus := cloud_run.GetStringOutput("service_status")
+			encryption_key := cloud_run.GetStringOutput("encryption_key")
+			gcOps := gcloud.WithCommonArgs([]string{"--project", projectID, "--region", location, "--format", "json"})
 
-			op := gcloud.Run(t, fmt.Sprintf("--project=%s run services list --region=%s", cloud_run.GetStringOutput("project_id"), cloud_run.GetStringOutput("service_location")))
-			assert.Equal(cloud_run.GetStringOutput("service_status"), op.Get("status.conditions.type"), "should have the right service status")
-			// assert.True(op.Get("spec.template.metadadata.annotations.run.googleapis.com/encryption-key").Exists(), "does not have encryption key")
-			// assert.Equal(cloud_run.GetStringOutput("encryption_key"), op.Get("spec.template.metadadata.annotations.run.googleapis.com/encryption-key"), "should have the right encryption key")
+			op := gcloud.Run(t, "run services list", gcOps).Array()[0]
+			annotations := op.Get("spec").Get("template").Get("metadata").Get("annotations").Value().(map[string]interface{})
+
+			assert.Equal(serviceStatus, op.Get("status").Get("conditions").Array()[0].Get("type").String(), "should have the right service status")
+			assert.Equal(encryption_key, annotations["run.googleapis.com/encryption-key"], "should have the right encryption key")
 
 		})
 	cloud_run.Test()

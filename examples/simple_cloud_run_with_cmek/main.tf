@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
  */
 
 resource "google_kms_key_ring" "keyring" {
-  name     = "ci-key-ring-example"
+  name     = "key-ring-example"
   location = "us-central1"
   project  = var.project_id
 }
 
 resource "google_kms_crypto_key" "example_key" {
-  name            = "ci-crypto-key-example"
+  name            = "crypto-key-example"
   key_ring        = google_kms_key_ring.keyring.id
-  rotation_period = "100000s"
+  rotation_period = "2592000s"
 
   lifecycle {
     prevent_destroy = false
@@ -35,7 +35,6 @@ resource "google_kms_crypto_key_iam_member" "crypto_key" {
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member        = "serviceAccount:service-${data.google_project.project.number}@serverless-robot-prod.iam.gserviceaccount.com"
 }
-//serverless-robot-prod.iam.gserviceaccount.com
 
 data "google_project" "project" {
   project_id = var.project_id
