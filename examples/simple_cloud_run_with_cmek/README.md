@@ -23,7 +23,7 @@ This example assumes that below mentioned prerequisites are in place before cons
 
 | Name | Description |
 |------|-------------|
-| encryption\_key | Encryption Key Ring used in Cloud Run Service |
+| encryption\_key | Encryption Key used in Cloud Run Service |
 | revision | Deployed revision for the service |
 | service\_id | Unique Identifier for the created service |
 | service\_location | Location in which the Cloud Run service was created |

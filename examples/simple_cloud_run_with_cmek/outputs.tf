@@ -45,6 +45,6 @@ output "service_location" {
 }
 
 output "encryption_key" {
-  value = google_kms_crypto_key.example_key.id
+  value       = google_kms_crypto_key.example_key.id
   description = "Encryption Key used in Cloud Run Service"
 }

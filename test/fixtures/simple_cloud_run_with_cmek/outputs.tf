@@ -50,6 +50,6 @@ output "project_id" {
 }
 
 output "encryption_key" {
-  value = module.cloud_run.encryption_key
+  value       = module.cloud_run.encryption_key
   description = "Encryption Key used in Cloud Run Service"
 }
