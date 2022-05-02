@@ -35,10 +35,10 @@ func TestCloudRunWithCMEK(t *testing.T) {
 			gcOps := gcloud.WithCommonArgs([]string{"--project", projectID, "--region", location, "--format", "json"})
 
 			op := gcloud.Run(t, "run services list", gcOps).Array()[0]
-			annotations := op.Get("spec").Get("template").Get("metadata").Get("annotations").Value().(map[string]interface{})
+			annotations := op.Get("spec").Get("template").Get("metadata").Get("annotations").Map()
 
 			assert.Equal(serviceStatus, op.Get("status").Get("conditions").Array()[0].Get("type").String(), "should have the right service status")
-			assert.Equal(encryptionKey, annotations["run.googleapis.com/encryption-key"], "should have the right encryption key")
+			assert.Equal(encryptionKey, annotations["run.googleapis.com/encryption-key"].String(), "should have the right encryption key")
 
 		})
 	cloudRun.Test()
