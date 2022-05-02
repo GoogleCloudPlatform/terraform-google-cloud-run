@@ -14,31 +14,59 @@
  * limitations under the License.
  */
 
-resource "google_kms_key_ring" "keyring" {
-  name     = "key-ring-example"
-  location = "us-central1"
+locals {
+  key_name = "crypto-key-example"
+}
+
+module "kms" {
+  source  = "terraform-google-modules/kms/google"
+  version = "~> 2.1"
+
+  project_id         = var.project_id
+  location           = "us-central1"
+  keyring            = "key-ring-example"
+  keys               = [local.key_name]
+  set_decrypters_for = [local.key_name]
+  set_encrypters_for = [local.key_name]
+  decrypters = [
+    "serviceAccount:${google_project_service_identity.serverless_sa.email}",
+  ]
+  encrypters = [
+    "serviceAccount:${google_project_service_identity.serverless_sa.email}",
+  ]
+  prevent_destroy = false
+}
+# resource "google_kms_key_ring" "keyring" {
+#   name     = "key-ring-example"
+#   location = "us-central1"
+#   project  = var.project_id
+# }
+
+# resource "google_kms_crypto_key" "example_key" {
+#   name            = "crypto-key-example"
+#   key_ring        = google_kms_key_ring.keyring.id
+#   rotation_period = "2592000s"
+
+#   lifecycle {
+#     prevent_destroy = false
+#   }
+# }
+
+resource "google_project_service_identity" "serverless_sa" {
+  provider = google-beta
   project  = var.project_id
+  service  = "run.googleapis.com"
 }
 
-resource "google_kms_crypto_key" "example_key" {
-  name            = "crypto-key-example"
-  key_ring        = google_kms_key_ring.keyring.id
-  rotation_period = "2592000s"
+# resource "google_kms_crypto_key_iam_member" "crypto_key" {
+#   crypto_key_id = google_kms_crypto_key.example_key.id
+#   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+#   member        = "serviceAccount:service-${data.google_project.project.number}@serverless-robot-prod.iam.gserviceaccount.com"
+# }
 
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
-resource "google_kms_crypto_key_iam_member" "crypto_key" {
-  crypto_key_id = google_kms_crypto_key.example_key.id
-  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member        = "serviceAccount:service-${data.google_project.project.number}@serverless-robot-prod.iam.gserviceaccount.com"
-}
-
-data "google_project" "project" {
-  project_id = var.project_id
-}
+# data "google_project" "project" {
+#   project_id = var.project_id
+# }
 
 module "cloud_run" {
   source = "../../"
@@ -48,9 +76,5 @@ module "cloud_run" {
   location     = "us-central1"
   image        = "us-docker.pkg.dev/cloudrun/container/hello"
 
-  encryption_key = google_kms_crypto_key.example_key.id
-
-  depends_on = [
-    google_kms_crypto_key_iam_member.crypto_key
-  ]
+  encryption_key = module.kms.keys[local.key_name]
 }

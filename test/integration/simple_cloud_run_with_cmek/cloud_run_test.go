@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package simple_cloud_run_with_cmek
+package simple_cloudRun_with_cmek
 
 import (
 	"testing"
@@ -24,22 +24,22 @@ import (
 
 func TestCloudRunWithCMEK(t *testing.T) {
 
-	cloud_run := tft.NewTFBlueprintTest(t)
+	cloudRun := tft.NewTFBlueprintTest(t)
 
-	cloud_run.DefineVerify(
+	cloudRun.DefineVerify(
 		func(assert *assert.Assertions) {
-			projectID := cloud_run.GetStringOutput("project_id")
-			location := cloud_run.GetStringOutput("service_location")
-			serviceStatus := cloud_run.GetStringOutput("service_status")
-			encryption_key := cloud_run.GetStringOutput("encryption_key")
+			projectID := cloudRun.GetStringOutput("project_id")
+			location := cloudRun.GetStringOutput("service_location")
+			serviceStatus := cloudRun.GetStringOutput("service_status")
+			encryptionKey := cloudRun.GetStringOutput("encryption_key")
 			gcOps := gcloud.WithCommonArgs([]string{"--project", projectID, "--region", location, "--format", "json"})
 
 			op := gcloud.Run(t, "run services list", gcOps).Array()[0]
 			annotations := op.Get("spec").Get("template").Get("metadata").Get("annotations").Value().(map[string]interface{})
 
 			assert.Equal(serviceStatus, op.Get("status").Get("conditions").Array()[0].Get("type").String(), "should have the right service status")
-			assert.Equal(encryption_key, annotations["run.googleapis.com/encryption-key"], "should have the right encryption key")
+			assert.Equal(encryptionKey, annotations["run.googleapis.com/encryption-key"], "should have the right encryption key")
 
 		})
-	cloud_run.Test()
+	cloudRun.Test()
 }

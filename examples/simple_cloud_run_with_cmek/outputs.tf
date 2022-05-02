@@ -45,6 +45,11 @@ output "service_location" {
 }
 
 output "encryption_key" {
-  value       = google_kms_crypto_key.example_key.id
+  value       = module.kms.keys[local.key_name]
   description = "Encryption Key used in Cloud Run Service"
+}
+
+output "project_id" {
+  description = "Google Cloud project in which the service was created"
+  value       = var.project_id
 }
