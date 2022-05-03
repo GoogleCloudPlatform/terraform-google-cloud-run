@@ -1,4 +1,4 @@
-# Simple Cloud Run Example
+# Simple Cloud Run With CMEK
 
 This example showcases the basic deployment of containerized applications on Cloud Run, along with domain mapping, CMEK and IAM policy for the service.
 

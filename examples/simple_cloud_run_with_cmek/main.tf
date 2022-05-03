@@ -36,37 +36,12 @@ module "kms" {
   ]
   prevent_destroy = false
 }
-# resource "google_kms_key_ring" "keyring" {
-#   name     = "key-ring-example"
-#   location = "us-central1"
-#   project  = var.project_id
-# }
-
-# resource "google_kms_crypto_key" "example_key" {
-#   name            = "crypto-key-example"
-#   key_ring        = google_kms_key_ring.keyring.id
-#   rotation_period = "2592000s"
-
-#   lifecycle {
-#     prevent_destroy = false
-#   }
-# }
 
 resource "google_project_service_identity" "serverless_sa" {
   provider = google-beta
   project  = var.project_id
   service  = "run.googleapis.com"
 }
-
-# resource "google_kms_crypto_key_iam_member" "crypto_key" {
-#   crypto_key_id = google_kms_crypto_key.example_key.id
-#   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-#   member        = "serviceAccount:service-${data.google_project.project.number}@serverless-robot-prod.iam.gserviceaccount.com"
-# }
-
-# data "google_project" "project" {
-#   project_id = var.project_id
-# }
 
 module "cloud_run" {
   source = "../../"
