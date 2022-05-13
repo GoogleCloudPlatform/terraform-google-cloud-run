@@ -91,7 +91,7 @@ variable "template_annotations" {
 variable "container_concurrency" {
   type        = number
   description = "Concurrent request limits to the service"
-  default     = 80
+  default     = null
 }
 
 variable "timeout_seconds" {
@@ -125,10 +125,7 @@ variable "volumes" {
 variable "limits" {
   type        = map(string)
   description = "Resource limits to the container"
-  default = {
-    "cpu"    = "1000m"
-    "memory" = "512Mi"
-  }
+  default     = null
 }
 variable "requests" {
   type        = map(string)
