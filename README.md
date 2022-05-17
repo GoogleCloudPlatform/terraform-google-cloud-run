@@ -42,7 +42,7 @@ module "cloud_run" {
 | argument | Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments | `list(string)` | `[]` | no |
 | certificate\_mode | The mode of the certificate (NONE or AUTOMATIC) | `string` | `"NONE"` | no |
 | container\_command | Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten | `list(string)` | `[]` | no |
-| container\_concurrency | Concurrent request limits to the service | `number` | `0` | no |
+| container\_concurrency | Concurrent request limits to the service | `number` | `null` | no |
 | domain\_map\_annotations | Annotations to the domain map | `map(string)` | `{}` | no |
 | domain\_map\_labels | A set of key/value label pairs to assign to the Domain mapping | `map(string)` | `{}` | no |
 | encryption\_key | CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY. | `string` | `null` | no |
@@ -51,7 +51,7 @@ module "cloud_run" {
 | force\_override | Option to force override existing mapping | `bool` | `false` | no |
 | generate\_revision\_name | Option to enable revision name generation | `bool` | `true` | no |
 | image | GCR hosted image URL to deploy | `string` | n/a | yes |
-| limits | Resource limits to the container | `map(string)` | `{}` | no |
+| limits | Resource limits to the container | `map(string)` | `null` | no |
 | location | Cloud Run service deployment location | `string` | n/a | yes |
 | members | Users/SAs to be given invoker access to the service | `list(string)` | `[]` | no |
 | ports | Port which the container listens to (http1 or h2c) | <pre>object({<br>    name = string<br>    port = number<br>  })</pre> | <pre>{<br>  "name": "http1",<br>  "port": 8080<br>}</pre> | no |
