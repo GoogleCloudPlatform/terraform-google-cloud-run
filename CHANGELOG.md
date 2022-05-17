@@ -7,6 +7,18 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.2.0...v0.3.0) (2022-05-17)
+
+
+### Features
+
+* add cmek support ([#33](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/33)) ([9d0a6fa](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/9d0a6faec9c3cbfd66e977514a9295abe9ea51a2))
+
+
+### Bug Fixes
+
+* Set default container limits and concurrency value ([#31](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/31)) ([3311307](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/3311307f2f77f2dc7a69d838f7e27f595a32d57c))
+
 ## [0.2.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.1.1...v0.2.0) (2022-02-04)
 
 
