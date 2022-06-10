@@ -23,7 +23,6 @@ module "project" {
   org_id                  = var.org_id
   folder_id               = var.folder_id
   billing_account         = var.billing_account
-  default_service_account = "keep"
 
   activate_apis = [
     "cloudresourcemanager.googleapis.com",
