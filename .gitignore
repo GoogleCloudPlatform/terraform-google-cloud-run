@@ -44,4 +44,6 @@ crash.log
 
 credentials.json
 
-.terraform.lock.hcl
+.terraform*
+
+**/*.vscode

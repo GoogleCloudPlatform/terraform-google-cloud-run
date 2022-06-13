@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-output "key" {
+output "key_self_link" {
   description = "Key self link."
   value       = module.cloud_run_kms.keys[var.key_name]
 }
 
-output "keyring" {
+output "keyring_self_link" {
   description = "Self link of the keyring."
   value       = module.cloud_run_kms.keyring
-}
-
-output "keyring_name" {
-  description = "Name of the keyring."
-  value       = module.cloud_run_kms.keyring_name
 }
 
 output "keyring_resource" {
