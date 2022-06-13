@@ -4,11 +4,12 @@ This example showcases the basic deployment of containerized applications on Clo
 
 The resources/services/activations/deletions that this example will create/trigger are:
 
-* Creates a Cloud Run service with provided name and container with Serverless VPC Connector
+* Creates a Cloud Run service with provided name and container with Serverless VPC Connector.
+* Creates a Service Account to be used by Cloud Run Service.
 
 ## Assumptions and Prerequisites
 
-This example assumes that below mentioend prerequisites are in place before consuming the example.
+This example assumes that below mentioned prerequisites are in place before consuming the example.
 
 * All required APIs are enabled in the GCP Project
 * VPC Connector
@@ -41,16 +42,17 @@ This example assumes that below mentioend prerequisites are in place before cons
 These sections describe requirements for using this example.
 
 ### Software
-- [Terraform](https://www.terraform.io/downloads.html) ~> v0.13+
-- [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) ~> v3.53+
-- [Terraform Provider for GCP Beta](https://github.com/terraform-providers/terraform-provider-google-beta) ~>
+
+* [Terraform](https://www.terraform.io/downloads.html) ~> v0.13+
+* [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) ~> v3.53+
+* [Terraform Provider for GCP Beta](https://github.com/terraform-providers/terraform-provider-google-beta) ~>
   v3.53+
 
 ### Service Account
 
 A service account can be used with required roles to execute this example:
 
-- Cloud Run Admin: `roles/run.admin`
+* Cloud Run Admin: `roles/run.admin`
 
 Know more about [Cloud Run Deployment Permissions](https://cloud.google.com/run/docs/reference/iam/roles#additional-configuration).
 
@@ -61,5 +63,5 @@ The [Project Factory module](https://registry.terraform.io/modules/terraform-goo
 
 A project with the following APIs enabled must be used to host the main resource of this example:
 
-- Google Cloud Run: `run.googleapis.com`
-- Serverless VPC Access:`vpcaccess.googleapis.com`
+* Google Cloud Run: `run.googleapis.com`
+* Serverless VPC Access:`vpcaccess.googleapis.com`
