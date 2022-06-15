@@ -67,7 +67,7 @@ module "cloud_run_network" {
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
 | serverless\_project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be used to create Serverless Connector. | `string` | n/a | yes |
-| subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | `null` | no |
+| subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | n/a | yes |
 | vpc\_project\_id | The project where shared vpc is. | `string` | n/a | yes |
 
 ## Outputs
