@@ -40,42 +40,42 @@ variable "owasp_rules" {
     rule_sqli = {
       action     = "deny(403)"
       priority   = "1000"
-      expression = "evaluatePreconfiguredExpr('sqli-stable')"
+      expression = "evaluatePreconfiguredExpr('sqli-v33-stable')"
     }
     rule_xss = {
       action     = "deny(403)"
       priority   = "1001"
-      expression = "evaluatePreconfiguredExpr('xss-stable')"
+      expression = "evaluatePreconfiguredExpr('xss-v33-stable')"
     }
     rule_lfi = {
       action     = "deny(403)"
       priority   = "1002"
-      expression = "evaluatePreconfiguredExpr('lfi-stable')"
+      expression = "evaluatePreconfiguredExpr('lfi-v33-stable')"
     }
     rule_canary = {
       action     = "deny(403)"
       priority   = "1003"
-      expression = "evaluatePreconfiguredExpr('rce-stable')"
+      expression = "evaluatePreconfiguredExpr('rce-v33-stable')"
     }
     rule_rfi = {
       action     = "deny(403)"
       priority   = "1004"
-      expression = "evaluatePreconfiguredExpr('rfi-stable')"
+      expression = "evaluatePreconfiguredExpr('rfi-v33-stable')"
     }
     rule_scannerdetection = {
       action     = "deny(403)"
       priority   = "1005"
-      expression = "evaluatePreconfiguredExpr('scannerdetection-stable')"
+      expression = "evaluatePreconfiguredExpr('scannerdetection-v33-stable')"
     }
     rule_protocolattack = {
       action     = "deny(403)"
       priority   = "1006"
-      expression = "evaluatePreconfiguredExpr('protocolattack-stable')"
+      expression = "evaluatePreconfiguredExpr('protocolattack-v33-stable')"
     }
     rule_sessionfixation = {
       action     = "deny(403)"
       priority   = "1007"
-      expression = "evaluatePreconfiguredExpr('sessionfixation-stable')"
+      expression = "evaluatePreconfiguredExpr('sessionfixation-v33-stable')"
     }
   }
   type = map(object({
