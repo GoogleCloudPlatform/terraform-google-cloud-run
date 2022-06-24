@@ -38,7 +38,7 @@ the resources of this module:
 
 ```hcl
 module "cloud_run_core" {
-  source = "../secure-cloud-run-core"
+  source = "GoogleCloudPlatform/cloud-run/google"
 
   service_name          = <SERVICE NAME>
   location              = <SERVICE LOCATION>
