@@ -19,11 +19,6 @@ output "load-balancer-ip" {
   description = "IP Address used by Load Balancer."
 }
 
-output "service_name" {
-  value       = module.cloud_run.service_name
-  description = "Name of the created service."
-}
-
 output "revision" {
   value       = module.cloud_run.revision
   description = "Deployed revision for the service."
@@ -32,16 +27,6 @@ output "revision" {
 output "service_url" {
   value       = module.cloud_run.service_url
   description = "The URL on which the deployed service is available."
-}
-
-output "project_id" {
-  value       = module.cloud_run.project_id
-  description = "Google Cloud project in which the service was created."
-}
-
-output "location" {
-  value       = module.cloud_run.location
-  description = "Location in which the Cloud Run service was created."
 }
 
 output "service_id" {
