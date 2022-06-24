@@ -19,7 +19,7 @@ module "cloud_run" {
   version = "~> 0.3.0"
 
   service_name          = var.service_name
-  project_id            = var.serverless_project_id
+  project_id            = var.project_id
   location              = var.location
   image                 = var.image
   service_account_email = var.cloud_run_sa
