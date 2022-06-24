@@ -15,7 +15,7 @@
  */
 
 module "cloud_run" {
-  source  = "GoogleCloudPlatform/cloud-run/google"
+  source  = "../secure-cloud-run/"
   version = "~> 0.3.0"
 
   service_name          = var.service_name
