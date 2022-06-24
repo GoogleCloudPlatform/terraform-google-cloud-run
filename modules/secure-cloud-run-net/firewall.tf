@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 locals {
   tags = ["vpc-connector"]
 }
@@ -27,91 +27,121 @@ module "firewall_rules" {
 
   rules = [{
     name                    = "serverless-to-vpc-connector"
+    description             = null
+    priority                = null
     direction               = "INGRESS"
     ranges                  = ["107.178.230.64/26", "35.199.224.0/19"]
+    source_tags             = null
+    source_service_accounts = null
     target_tags             = local.tags
+    target_service_accounts = null
     allow = [{
       protocol = "icmp"
-    },
-    {
-      protocol = "tcp"
-      ports    = ["667"]
-    },
-    {
-      protocol = "udp"
-      ports    = ["665", "666"]
+      ports    = []
+      },
+      {
+        protocol = "tcp"
+        ports    = ["667"]
+      },
+      {
+        protocol = "udp"
+        ports    = ["665", "666"]
     }]
     deny = []
     log_config = {
       metadata = "INCLUDE_ALL_METADATA"
     }
-  },
-  {
-    name                    = "vpc-connector-to-serverless"
-    direction               = "EGRESS"
-    ranges                  = ["107.178.230.64/26", "35.199.224.0/19"]
-    target_tags             = local.tags
-    allow = [{
-      protocol = "icmp"
     },
     {
-      protocol = "tcp"
-      ports    = ["667"]
+      name                    = "vpc-connector-to-serverless"
+      description             = null
+      priority                = null
+      direction               = "EGRESS"
+      ranges                  = ["107.178.230.64/26", "35.199.224.0/19"]
+      source_tags             = null
+      source_service_accounts = null
+      target_tags             = local.tags
+      target_service_accounts = null
+      allow = [{
+        protocol = "icmp"
+        ports    = []
+        },
+        {
+          protocol = "tcp"
+          ports    = ["667"]
+        },
+        {
+          protocol = "udp"
+          ports    = ["665", "666"]
+      }]
+      deny = []
+      log_config = {
+        metadata = "INCLUDE_ALL_METADATA"
+      }
     },
     {
-      protocol = "udp"
-      ports    = ["665", "666"]
-    }]
-    deny = []
-    log_config = {
-      metadata = "INCLUDE_ALL_METADATA"
-    }
-  },
-  {
-    name                    = "vpc-connector-to-lb"
-    direction               = "EGRESS"
-    ranges                  = []
-    target_tags             = local.tags
-    allow = [{
-      protocol = "tcp"
-      ports    = ["80"]
-    }]
-    deny = []
-    log_config = {
-      metadata = "INCLUDE_ALL_METADATA"
-    }
-  },
-  {
-    name                    = "vpc-connector-health-checks"
-    direction               = "INGRESS"
-    ranges                  = ["130.211.0.0/22", "35.191.0.0/16", "108.170.220.0/23"]
-    target_tags             = local.tags
-    allow = [{
-      protocol = "tcp"
-      ports    = ["667"]
-    }]
-    deny = []
-    log_config = {
-      metadata = "INCLUDE_ALL_METADATA"
-    }
-  },
-  {
-    name                    = "vpc-connector-requests"
-    direction               = "INGRESS"
-    ranges                  = []
-    source_tags             = local.tags
-    allow = [{
-      protocol = "icmp"
+      name                    = "vpc-connector-to-lb"
+      description             = null
+      priority                = null
+      direction               = "EGRESS"
+      ranges                  = []
+      source_tags             = null
+      source_service_accounts = null
+      target_tags             = local.tags
+      target_service_accounts = null
+      allow = [{
+        protocol = "tcp"
+        ports    = ["80"]
+      }]
+      deny = []
+      log_config = {
+        metadata = "INCLUDE_ALL_METADATA"
+      }
     },
     {
-      protocol = "tcp"
+      name                    = "vpc-connector-health-checks"
+      description             = null
+      priority                = null
+      direction               = "INGRESS"
+      ranges                  = ["130.211.0.0/22", "35.191.0.0/16", "108.170.220.0/23"]
+      source_tags             = null
+      source_service_accounts = null
+      target_tags             = local.tags
+      target_service_accounts = null
+      allow = [{
+        protocol = "tcp"
+        ports    = ["667"]
+      }]
+      deny = []
+      log_config = {
+        metadata = "INCLUDE_ALL_METADATA"
+      }
     },
     {
-      protocol = "udp"
-    }]
-    deny = []
-    log_config = {
-      metadata = "INCLUDE_ALL_METADATA"
-    }
+      name                    = "vpc-connector-requests"
+      description             = null
+      priority                = null
+      direction               = "INGRESS"
+      ranges                  = []
+      source_tags             = local.tags
+      source_service_accounts = null
+      target_tags             = null
+      target_service_accounts = null
+      allow = [{
+        protocol = "icmp"
+        ports    = []
+        },
+        {
+          protocol = "tcp"
+          ports    = []
+        },
+        {
+          protocol = "udp"
+          ports    = []
+      }]
+      deny = []
+      log_config = {
+        metadata = "INCLUDE_ALL_METADATA"
+      }
   }]
 }
