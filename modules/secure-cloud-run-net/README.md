@@ -6,7 +6,9 @@ The resources/services/activations/deletions that this module will create/trigge
 
 * Creates Firewall rules on your **VPC Project**.
 * Creates a sub network to VPC Connector usage purpose.
-* Creates Serverless Connector on your **VPC Project** or **Serverless Project**.
+* Creates Serverless Connector on your **VPC Project** or **Serverless Project**. Refer the comparison below:
+  * Advantages of creating connectors in the [VPC Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#host-project)
+  * Advantages of creating connectors in the [Serverless Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#service-projects)
 * Grant the necessary roles for Cloud Run are able to use VPC Connector on your VPC.
 
 ## Requirements
