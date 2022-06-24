@@ -123,7 +123,7 @@ variable "service_name" {
 }
 
 variable "image" {
-  description = "GCR hosted image URL to deploy."
+  description = "GAR hosted image URL to deploy."
   type        = string
 }
 
@@ -133,7 +133,7 @@ variable "cloud_run_sa" {
 }
 
 variable "vpc_connector_id" {
-  description = "VPC Connector id in the forma projects/PROJECT/locations/LOCATION/connectors/NAME."
+  description = "VPC Connector id in the format projects/PROJECT/locations/LOCATION/connectors/NAME."
   type        = string
 }
 
@@ -147,7 +147,7 @@ variable "env_vars" {
     value = string
     name  = string
   }))
-  description = "Environment variables (cleartext)."
+  description = "Environment variables."
   default     = []
 }
 
