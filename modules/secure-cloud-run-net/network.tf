@@ -15,6 +15,8 @@
  */
 
 resource "google_compute_subnetwork" "vpc_subnetwork" {
+  count = var.create_subnet ? 1 : 0
+
   name                       = var.subnet_name
   project                    = var.vpc_project_id
   network                    = var.shared_vpc_name
