@@ -35,7 +35,7 @@ variable "default_rules" {
 }
 
 variable "owasp_rules" {
-  description = "Preconfigured rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation."
+  description = "These are additional Cloud Armor rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation (requires Cloud Armor default_rule)."
   default = {
     rule_sqli = {
       action     = "deny(403)"
