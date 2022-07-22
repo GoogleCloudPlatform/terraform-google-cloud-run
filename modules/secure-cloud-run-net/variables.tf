@@ -60,3 +60,9 @@ variable "create_subnet" {
   type = bool
   default = true
 }
+
+variable "flow_sampling" {
+  description = "Sampling rate of VPC flow logs. The value must be in [0,1]. Where 1.0 means all logs, 0.5 mean half of the logs and 0.0 means no logs are reported."
+  type = number
+  default = 1.0
+}
