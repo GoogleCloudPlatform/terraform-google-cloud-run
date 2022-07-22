@@ -57,12 +57,12 @@ variable "ip_cidr_range" {
 
 variable "create_subnet" {
   description = "The subnet will be created with the subnet_name variable if true. When false, it will use the subnet_name for the subnet."
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "flow_sampling" {
   description = "Sampling rate of VPC flow logs. The value must be in [0,1]. Where 1.0 means all logs, 0.5 mean half of the logs and 0.0 means no logs are reported."
-  type = number
-  default = 1.0
+  type        = number
+  default     = 1.0
 }
