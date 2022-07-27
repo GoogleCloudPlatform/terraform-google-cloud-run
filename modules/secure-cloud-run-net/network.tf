@@ -23,8 +23,7 @@ resource "google_compute_subnetwork" "vpc_subnetwork" {
   ip_cidr_range              = var.ip_cidr_range
   region                     = var.location
   private_ip_google_access   = true
-  private_ipv6_google_access = true
-
+  
   log_config {
     aggregation_interval = "INTERVAL_10_MIN"
     flow_sampling        = var.flow_sampling
@@ -45,6 +44,7 @@ module "serverless_connector" {
     machine_type    = "e2-micro"
     min_instances   = 2
     max_instances   = 7
+    max_throughput  = 700
     }
   ]
   depends_on = [
