@@ -70,7 +70,6 @@ resource "google_project_service_identity" "serverless_sa" {
 }
 
 resource "google_artifact_registry_repository_iam_member" "artifact_registry_iam" {
-  provider = google-beta
   count    = var.use_artifact_registry_image ? 0 : 1
 
   project    = var.artifact_registry_repository_project_id
