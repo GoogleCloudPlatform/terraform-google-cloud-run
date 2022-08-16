@@ -38,7 +38,7 @@ variable "vpc_project_id" {
 variable "key_name" {
   description = "The name of KMS Key to be created and used in Cloud Run."
   type        = string
-  default =   = "cloud-run-kms-key"
+  default     = "cloud-run-kms-key"
 }
 
 variable "kms_project_id" {
