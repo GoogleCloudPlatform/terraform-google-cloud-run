@@ -14,36 +14,34 @@
  * limitations under the License.
  */
 
-locals {
-  serverless_apis = [
+module "serverless_project_apis" {
+  source  = "terraform-google-modules/project-factory/google//modules/project_services"
+  version = "~> 13.0"
+
+  project_id                  = var.serverless_project_id
+  disable_services_on_destroy = false
+
+  activate_apis = [
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
     "container.googleapis.com",
     "run.googleapis.com",
     "cloudkms.googleapis.com"
   ]
-  vpc_apis = [
+}
+
+module "vpc_project_apis" {
+  source  = "terraform-google-modules/project-factory/google//modules/project_services"
+  version = "~> 13.0"
+
+  project_id                  = var.vpc_project_id
+  disable_services_on_destroy = false
+
+  activate_apis = [
     "vpcaccess.googleapis.com",
     "compute.googleapis.com"
   ]
 }
-
-resource "google_project_service" "serverless_project_apis" {
-  for_each = toset(local.serverless_apis)
-
-  project            = var.serverless_project_id
-  service            = each.value
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "vpc_project_apis" {
-  for_each = toset(local.vpc_apis)
-
-  project            = var.vpc_project_id
-  service            = each.value
-  disable_on_destroy = false
-}
-
 
 module "cloud_run_network" {
   source = "../secure-cloud-run-net"
@@ -58,7 +56,7 @@ module "cloud_run_network" {
   ip_cidr_range             = var.ip_cidr_range
 
   depends_on = [
-    google_project_service.vpc_project_apis
+    module.vpc_project_apis
   ]
 }
 
@@ -70,7 +68,7 @@ resource "google_project_service_identity" "serverless_sa" {
 }
 
 resource "google_artifact_registry_repository_iam_member" "artifact_registry_iam" {
-  count    = var.use_artifact_registry_image ? 0 : 1
+  count = var.use_artifact_registry_image ? 0 : 1
 
   project    = var.artifact_registry_repository_project_id
   location   = var.artifact_registry_repository_location
@@ -117,7 +115,7 @@ module "cloud_run_core" {
   region           = var.region
 
   depends_on = [
-    google_project_service.serverless_project_apis,
+    module.serverless_project_apis,
     google_artifact_registry_repository_iam_member.artifact_registry_iam
   ]
 }
