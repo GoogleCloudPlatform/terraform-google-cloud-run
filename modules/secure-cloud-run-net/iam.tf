@@ -24,12 +24,14 @@ resource "google_project_service_identity" "vpcaccess_identity_sa" {
   project = var.serverless_project_id
   service = "vpcaccess.googleapis.com"
 }
+
 resource "google_project_service_identity" "run_identity_sa" {
   provider = google-beta
 
   project = var.serverless_project_id
   service = "run.googleapis.com"
 }
+
 resource "google_project_iam_member" "gca_sa_vpcaccess" {
   count = var.connector_on_host_project ? 0 : 1
 

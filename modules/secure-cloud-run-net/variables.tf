@@ -47,7 +47,7 @@ variable "shared_vpc_name" {
 variable "connector_on_host_project" {
   description = "Connector is going to be created on the host project if true. When false, connector is going to be created on service project. For more information, access [documentation](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc)."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "ip_cidr_range" {
