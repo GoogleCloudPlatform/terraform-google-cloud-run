@@ -142,3 +142,9 @@ variable "use_artifact_registry_image" {
   type        = bool
   default     = false
 }
+
+variable "create_subnet" {
+  description = "The subnet will be created with the subnet_name variable if true. When false, it will use the subnet_name for the subnet."
+  type        = bool
+  default     = true
+}

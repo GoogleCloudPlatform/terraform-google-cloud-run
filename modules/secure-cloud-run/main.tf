@@ -54,6 +54,7 @@ module "cloud_run_network" {
   shared_vpc_name           = var.shared_vpc_name
   connector_on_host_project = true
   ip_cidr_range             = var.ip_cidr_range
+  create_subnet             = var.create_subnet
 
   depends_on = [
     module.vpc_project_apis
