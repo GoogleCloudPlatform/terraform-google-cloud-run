@@ -36,7 +36,7 @@ resource "google_project_iam_member" "gca_sa_vpcaccess" {
   count = var.connector_on_host_project ? 0 : 1
 
   project = var.vpc_project_id
-  role    = "roles/compute.networkAdmin"
+  role    = "roles/compute.networkUser"
   member  = "serviceAccount:${google_project_service_identity.vpcaccess_identity_sa.email}"
 }
 
