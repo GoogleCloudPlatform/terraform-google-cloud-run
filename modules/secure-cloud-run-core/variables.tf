@@ -99,7 +99,6 @@ variable "ssl" {
 variable "domain" {
   description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
   type        = string
-  default     = "my-domain.com"
 }
 
 variable "lb_name" {
