@@ -39,6 +39,7 @@ This example assumes that below mentioned prerequisites are in place before cons
 | keyring\_name | Keyring name. |
 | kms\_project\_id | The project where KMS will be created. |
 | load\_balancer\_ip | IP Address used by Load Balancer. |
+| policy\_for | Policy Root: set one of the following values to determine where the policy is applied. Possible values: ["project", "folder", "organization"]. |
 | project\_id | The project where Cloud Run will be created. |
 | revision | Deployed revision for the service. |
 | run\_identity\_services\_sa | Service Identity to run services. |
