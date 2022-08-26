@@ -35,10 +35,18 @@
 
 | Name | Description |
 |------|-------------|
+| cloud\_services\_sa | Service Account for Cloud Run Service. |
 | connector\_id | VPC serverless connector ID. |
+| domain\_map\_id | Unique Identifier for the created domain map. |
+| domain\_map\_status | Status of Domain mapping. |
+| gca\_vpcaccess\_sa | Service Account for VPC Access. |
 | key\_self\_link | Name of the Cloud KMS crypto key. |
 | keyring\_self\_link | Name of the Cloud KMS keyring. |
+| load\_balancer\_ip | IP Address used by Load Balancer. |
+| revision | Deployed revision for the service. |
+| run\_identity\_services\_sa | Service Identity to run services. |
 | service\_id | ID of the created service. |
+| service\_status | Status of the created service. |
 | service\_url | Url of the created service. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

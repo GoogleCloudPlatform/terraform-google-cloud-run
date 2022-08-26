@@ -15,18 +15,18 @@
  */
 
 output "connector_id" {
-  description = "VPC serverless connector ID."
   value       = module.cloud_run_network.connector_id
+  description = "VPC serverless connector ID."
 }
 
 output "keyring_self_link" {
-  description = "Name of the Cloud KMS keyring."
   value       = module.cloud_run_security.keyring_self_link
+  description = "Name of the Cloud KMS keyring."
 }
 
 output "key_self_link" {
-  description = "Name of the Cloud KMS crypto key."
   value       = module.cloud_run_security.key_self_link
+  description = "Name of the Cloud KMS crypto key."
 }
 
 output "service_id" {
@@ -37,4 +37,44 @@ output "service_id" {
 output "service_url" {
   value       = module.cloud_run_core.service_url
   description = "Url of the created service."
+}
+
+output "load_balancer_ip" {
+  value       = module.cloud_run_core.load_balancer_ip
+  description = "IP Address used by Load Balancer."
+}
+
+output "revision" {
+  value       = module.cloud_run_core.revision
+  description = "Deployed revision for the service."
+}
+
+output "service_status" {
+  value       = module.cloud_run_core.service_status
+  description = "Status of the created service."
+}
+
+output "domain_map_id" {
+  value       = module.cloud_run_core.domain_map_id
+  description = "Unique Identifier for the created domain map."
+}
+
+output "domain_map_status" {
+  value       = module.cloud_run_core.domain_map_status
+  description = "Status of Domain mapping."
+}
+
+output "gca_vpcaccess_sa" {
+  value       = module.cloud_run_network.gca_vpcaccess_sa
+  description = "Service Account for VPC Access."
+}
+
+output "cloud_services_sa" {
+  value       = module.cloud_run_network.cloud_services_sa
+  description = "Service Account for Cloud Run Service."
+}
+
+output "run_identity_services_sa" {
+  value       = module.cloud_run_network.run_identity_services_sa
+  description = "Service Identity to run services."
 }

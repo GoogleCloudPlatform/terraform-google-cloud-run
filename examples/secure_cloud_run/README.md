@@ -18,6 +18,9 @@ This example assumes that below mentioned prerequisites are in place before cons
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| artifact\_registry\_repository\_location | Artifact Registry Repository location to grant serverless identity viewer role. | `string` | n/a | yes |
+| artifact\_registry\_repository\_name | Artifact Registry Repository name to grant serverless identity viewer role | `string` | n/a | yes |
+| artifact\_registry\_repository\_project\_id | Artifact Registry Repository Project ID to grant serverless identity viewer role. | `string` | n/a | yes |
 | cloud\_run\_sa | Service account to be used on Cloud Run. | `string` | n/a | yes |
 | domain | Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name | `string` | n/a | yes |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
@@ -39,7 +42,6 @@ This example assumes that below mentioned prerequisites are in place before cons
 | keyring\_name | Keyring name. |
 | kms\_project\_id | The project where KMS will be created. |
 | load\_balancer\_ip | IP Address used by Load Balancer. |
-| policy\_for | Policy Root: set one of the following values to determine where the policy is applied. Possible values: ["project", "folder", "organization"]. |
 | project\_id | The project where Cloud Run will be created. |
 | revision | Deployed revision for the service. |
 | run\_identity\_services\_sa | Service Identity to run services. |
