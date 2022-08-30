@@ -70,13 +70,16 @@ module "cloud_run_security" {
 |------|-------------|------|---------|:--------:|
 | decrypters | List of comma-separated owners for each key declared in set\_decrypters\_for. | `list(string)` | `[]` | no |
 | encrypters | List of comma-separated owners for each key declared in set\_encrypters\_for. | `list(string)` | `[]` | no |
+| folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
 | key\_name | Key name. | `string` | n/a | yes |
 | key\_protection\_level | The protection level to use when creating a version based on this template. Possible values: ["SOFTWARE", "HSM"] | `string` | `"HSM"` | no |
 | key\_rotation\_period | Period of key rotation in seconds. | `string` | `"2592000s"` | no |
 | keyring\_name | Keyring name. | `string` | n/a | yes |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
+| organization\_id | The organization ID to apply the policy to. | `string` | `""` | no |
 | owners | List of comma-separated owners for each key declared in set\_owners\_for. | `list(string)` | `[]` | no |
+| policy\_for | Policy Root: set one of the following values to determine where the policy is applied. Possible values: ["project", "folder", "organization"]. | `string` | `"project"` | no |
 | prevent\_destroy | Set the prevent\_destroy lifecycle attribute on keys.. | `bool` | `true` | no |
 | serverless\_project\_id | The project where Cloud Run is going to be deployed. | `string` | n/a | yes |
 
