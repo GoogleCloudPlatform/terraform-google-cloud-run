@@ -202,12 +202,6 @@ variable "timeout_seconds" {
   default     = 120
 }
 
-variable "service_account_email" {
-  description = "Service Account email needed for the service."
-  type        = string
-  default     = ""
-}
-
 variable "volumes" {
   description = "[Beta] Volumes needed for environment variables (when using secret)."
   type = list(object({
