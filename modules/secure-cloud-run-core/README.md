@@ -25,6 +25,8 @@ resources of this module:
 * Serverless Project
   * Google Cloud Run Service: `run.googleapis.com`
 
+**Note:** `Secret Manager API` needs to be enabled in case of using secrets.
+
 ### Service Account
 
 A service account with the following roles must be used to provision
@@ -33,6 +35,8 @@ the resources of this module:
 * Cloud Run Developer: `roles/run.developer`
 * Compute Network User: `roles/compute.networkUser`
 * Artifact Registry Reader: `roles/artifactregistry.reader`
+
+**Note:** [Secret Manager Secret Accessor](https://cloud.google.com/run/docs/configuring/secrets#access-secret) role must be granted to the Cloud Run service account to allow read access on the secret.
 
 ## Usage
 
@@ -84,11 +88,9 @@ module "cloud_run_core" {
 | region | Location for load balancer and Cloud Run resources. | `string` | n/a | yes |
 | requests | Resource requests to the container. | `map(string)` | `{}` | no |
 | service\_account\_email | Service Account email needed for the service. | `string` | `""` | no |
-| service\_annotations | Annotations to the service. Acceptable values all, internal, internal-and-cloud-load-balancing. | `map(string)` | <pre>{<br>  "run.googleapis.com/ingress": "all"<br>}</pre> | no |
 | service\_labels | A set of key/value label pairs to assign to the service. | `map(string)` | `{}` | no |
 | service\_name | The name of the Cloud Run service to create. | `string` | n/a | yes |
 | ssl | Run load balancer on HTTPS and provision managed certificate with provided `domain`. | `bool` | `true` | no |
-| template\_annotations | Annotations to the container metadata including VPC Connector and SQL. See [more details](https://cloud.google.com/run/docs/reference/rpc/google.cloud.run.v1#revisiontemplate). | `map(string)` | <pre>{<br>  "autoscaling.knative.dev/maxScale": 2,<br>  "autoscaling.knative.dev/minScale": 1,<br>  "generated-by": "terraform",<br>  "run.googleapis.com/client-name": "terraform"<br>}</pre> | no |
 | template\_labels | A set of key/value label pairs to assign to the container metadata. | `map(string)` | `{}` | no |
 | timeout\_seconds | Timeout for each request. | `number` | `120` | no |
 | traffic\_split | Managing traffic routing to the service. | <pre>list(object({<br>    latest_revision = bool<br>    percent         = number<br>    revision_name   = string<br>  }))</pre> | <pre>[<br>  {<br>    "latest_revision": true,<br>    "percent": 100,<br>    "revision_name": "v1-0-0"<br>  }<br>]</pre> | no |

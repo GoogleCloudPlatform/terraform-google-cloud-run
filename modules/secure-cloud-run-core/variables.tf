@@ -182,30 +182,11 @@ variable "service_labels" {
   default     = {}
 }
 
-variable "service_annotations" {
-  description = "Annotations to the service. Acceptable values all, internal, internal-and-cloud-load-balancing."
-  type        = map(string)
-  default = {
-    "run.googleapis.com/ingress" = "all"
-  }
-}
-
 // Metadata
 variable "template_labels" {
   description = "A set of key/value label pairs to assign to the container metadata."
   type        = map(string)
   default     = {}
-}
-
-variable "template_annotations" {
-  description = "Annotations to the container metadata including VPC Connector and SQL. See [more details](https://cloud.google.com/run/docs/reference/rpc/google.cloud.run.v1#revisiontemplate)."
-  type        = map(string)
-  default = {
-    "run.googleapis.com/client-name"   = "terraform"
-    "generated-by"                     = "terraform"
-    "autoscaling.knative.dev/maxScale" = 2
-    "autoscaling.knative.dev/minScale" = 1
-  }
 }
 
 // template spec
