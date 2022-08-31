@@ -259,17 +259,6 @@ variable "container_command" {
   default     = []
 }
 
-variable "env_secret_vars" {
-  type = list(object({
-    name = string
-    value_from = set(object({
-      secret_key_ref = map(string)
-    }))
-  }))
-  description = "[Beta] Environment variables (Secret Manager)."
-  default     = []
-}
-
 variable "volume_mounts" {
   type = list(object({
     mount_path = string

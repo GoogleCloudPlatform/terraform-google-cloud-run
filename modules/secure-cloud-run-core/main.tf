@@ -37,7 +37,6 @@ module "cloud_run" {
   ports                  = var.ports
   argument               = var.argument
   container_command      = var.container_command
-  env_secret_vars        = var.env_secret_vars
   volume_mounts          = var.volume_mounts
   verified_domain_name   = var.verified_domain_name
   force_override         = var.force_override
