@@ -45,4 +45,7 @@ module "secure_cloud_run" {
   artifact_registry_repository_location   = var.artifact_registry_repository_location
   artifact_registry_repository_name       = var.artifact_registry_repository_name
   artifact_registry_repository_project_id = var.artifact_registry_repository_project_id
+  policy_for                              = var.policy_for
+  folder_id                               = var.folder_id
+  organization_id                         = var.organization_id
 }

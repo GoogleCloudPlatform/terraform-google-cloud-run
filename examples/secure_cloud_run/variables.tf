@@ -64,3 +64,21 @@ variable "artifact_registry_repository_name" {
   description = "Artifact Registry Repository name to grant serverless identity viewer role"
   type        = string
 }
+
+variable "policy_for" {
+  description = "Policy Root: set one of the following values to determine where the policy is applied. Possible values: [\"project\", \"folder\", \"organization\"]."
+  type        = string
+  default     = "project"
+}
+
+variable "folder_id" {
+  description = "The folder ID to apply the policy to."
+  type        = string
+  default     = ""
+}
+
+variable "organization_id" {
+  description = "The organization ID to apply the policy to."
+  type        = string
+  default     = ""
+}

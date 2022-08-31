@@ -93,3 +93,18 @@ output "run_identity_services_sa" {
   value       = module.secure_cloud_run.run_identity_services_sa
   description = "Service Identity to run services."
 }
+
+output "policy_for" {
+  description = "Policy Root: set one of the following values to determine where the policy is applied. Possible values: [\"project\", \"folder\", \"organization\"]."
+  value       = var.policy_for
+}
+
+output "folder_id" {
+  description = "The folder ID to apply the policy to."
+  value       = var.folder_id
+}
+
+output "organization_id" {
+  description = "The organization ID to apply the policy to."
+  value       = var.organization_id
+}

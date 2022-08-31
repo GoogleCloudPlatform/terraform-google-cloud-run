@@ -105,9 +105,22 @@ func TestSecureCloudRun(t *testing.T) {
 				allowedValues: "is:internal-and-cloud-load-balancing",
 			},
 		} {
+			policyFor := secure_cloud_run.GetStringOutput("policy_for")
+			folderId := secure_cloud_run.GetStringOutput("folder_id")
+			orgId := secure_cloud_run.GetStringOutput("organization_id")
 			orgArgs := gcloud.WithCommonArgs([]string{"--flatten", "listPolicy.allowedValues[]", "--format", "json"})
-			opOrgPolicies := gcloud.Run(t, fmt.Sprintf("resource-manager org-policies describe %s --project=%s", orgPolicy.constraint, projectId), orgArgs).Array()
-			assert.Equal(orgPolicy.allowedValues, opOrgPolicies[0].Get("listPolicy.allowedValues").String(), fmt.Sprintf("Constraint %s should have policy %s", orgPolicy.constraint, orgPolicy.allowedValues))
+			if policyFor == "project" {
+				opOrgPoliciesPrj := gcloud.Run(t, fmt.Sprintf("resource-manager org-policies describe %s --project=%s", orgPolicy.constraint, projectId), orgArgs).Array()
+				assert.Equal(orgPolicy.allowedValues, opOrgPoliciesPrj[0].Get("listPolicy.allowedValues").String(), fmt.Sprintf("Constraint %s should have policy %s", orgPolicy.constraint, orgPolicy.allowedValues))
+			}
+			if policyFor == "folder" {
+				opOrgPoliciesFld := gcloud.Run(t, fmt.Sprintf("resource-manager org-policies describe %s --folder=%s", orgPolicy.constraint, folderId), orgArgs).Array()
+				assert.Equal(orgPolicy.allowedValues, opOrgPoliciesFld[0].Get("listPolicy.allowedValues").String(), fmt.Sprintf("Constraint %s should have policy %s", orgPolicy.constraint, orgPolicy.allowedValues))
+			}
+			if policyFor == "organization" {
+				opOrgPolicies := gcloud.Run(t, fmt.Sprintf("resource-manager org-policies describe %s --organization=%s", orgPolicy.constraint, orgId), orgArgs).Array()
+				assert.Equal(orgPolicy.allowedValues, opOrgPolicies[0].Get("listPolicy.allowedValues").String(), fmt.Sprintf("Constraint %s should have policy %s", orgPolicy.constraint, orgPolicy.allowedValues))
+			}
 		}
 	})
 	secure_cloud_run.Test()
