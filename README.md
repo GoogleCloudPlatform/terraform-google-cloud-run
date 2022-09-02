@@ -46,7 +46,7 @@ module "cloud_run" {
 | domain\_map\_annotations | Annotations to the domain map | `map(string)` | `{}` | no |
 | domain\_map\_labels | A set of key/value label pairs to assign to the Domain mapping | `map(string)` | `{}` | no |
 | encryption\_key | CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY. | `string` | `null` | no |
-| env\_secret\_vars |  Environment variables (Secret Manager) | <pre>list(object({<br>    name = string<br>    value_from = set(object({<br>      secret_key_ref = map(string)<br>    }))<br>  }))</pre> | `[]` | no |
+| env\_secret\_vars | Environment variables (Secret Manager) | <pre>list(object({<br>    name = string<br>    value_from = set(object({<br>      secret_key_ref = map(string)<br>    }))<br>  }))</pre> | `[]` | no |
 | env\_vars | Environment variables (cleartext) | <pre>list(object({<br>    value = string<br>    name  = string<br>  }))</pre> | `[]` | no |
 | force\_override | Option to force override existing mapping | `bool` | `false` | no |
 | generate\_revision\_name | Option to enable revision name generation | `bool` | `true` | no |

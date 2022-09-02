@@ -179,7 +179,7 @@ variable "env_secret_vars" {
       secret_key_ref = map(string)
     }))
   }))
-  description = "[Beta] Environment variables (Secret Manager)"
+  description = "Environment variables (Secret Manager)"
   default     = []
 }
 
