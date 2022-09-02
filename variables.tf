@@ -120,7 +120,7 @@ variable "volumes" {
       items       = map(string)
     }))
   }))
-  description = "[Beta] Volumes needed for environment variables (when using secret)"
+  description = "Volumes needed for environment variables (when using secret)"
   default     = []
 }
 
@@ -188,7 +188,7 @@ variable "volume_mounts" {
     mount_path = string
     name       = string
   }))
-  description = "[Beta] Volume Mounts to be attached to the container (when using secret)"
+  description = "Volume Mounts to be attached to the container (when using secret)"
   default     = []
 }
 
