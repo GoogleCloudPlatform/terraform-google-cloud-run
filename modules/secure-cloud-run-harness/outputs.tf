@@ -49,8 +49,9 @@ output "service_vpc" {
   description = "The network created for Cloud Run."
 }
 
-output "service_subnets" {
-  value = module.network.subnets_names
+output "service_subnet" {
+  value       = module.network.subnets_names[0]
+  description = "The sub-network name created in harness."
 }
 
 output "artifact_registry_repository_id" {
@@ -66,4 +67,14 @@ output "artifact_registry_repository_name" {
 output "cloud_run_service_identity_email" {
   value       = google_project_service_identity.serverless_sa.email
   description = "The Cloud Run Service Identity email."
+}
+
+output "restricted_service_perimeter_name" {
+  value       = module.regular_service_perimeter.perimeter_name
+  description = "Service Perimeter name."
+}
+
+output "restricted_access_level_name" {
+  value       = module.access_level_members.name
+  description = "Access level name."
 }
