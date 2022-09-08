@@ -22,11 +22,13 @@ locals {
     "artifactregistry.googleapis.com",
     "run.googleapis.com",
     "cloudkms.googleapis.com",
-    "dns.googleapis.com"
+    "dns.googleapis.com",
+    "accesscontextmanager.googleapis.com"
   ]
   kms_apis = [
     "cloudkms.googleapis.com",
-    "artifactregistry.googleapis.com"
+    "artifactregistry.googleapis.com",
+    "accesscontextmanager.googleapis.com"
   ]
 
   decrypters = join(",", concat(["serviceAccount:${google_project_service_identity.artifact_sa.email}"], var.decrypters))
