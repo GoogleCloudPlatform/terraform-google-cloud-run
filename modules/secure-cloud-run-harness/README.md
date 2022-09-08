@@ -66,13 +66,15 @@ This module deploys:
 | artifact\_registry\_repository\_id | The Artifact Registry Repository full identifier where the images should be stored. |
 | artifact\_registry\_repository\_name | The Artifact Registry Repository last part of the repository name where the images should be stored. |
 | cloud\_run\_service\_identity\_email | The Cloud Run Service Identity email. |
+| restricted\_access\_level\_name | Access level name. |
+| restricted\_service\_perimeter\_name | Service Perimeter name. |
 | security\_project\_id | Project ID of the project created for KMS and Artifact Register. |
 | security\_project\_number | Project number of the project created for KMS and Artifact Register. |
 | serverless\_folder\_id | The folder created to alocate Serverless infra. |
 | serverless\_project\_id | Project ID of the project created to deploy Cloud Run. |
 | serverless\_project\_number | Project number of the project created to deploy Cloud Run. |
 | service\_account\_email | The email of the Service Account created to be used by Cloud Run. |
-| service\_subnets | n/a |
+| service\_subnet | The sub-network name created in harness. |
 | service\_vpc | The network created for Cloud Run. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
