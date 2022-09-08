@@ -30,6 +30,7 @@ module "project" {
     "serviceusage.googleapis.com",
     "run.googleapis.com",
     "cloudkms.googleapis.com",
-    "iam.googleapis.com"
+    "iam.googleapis.com",
+    "accesscontextmanager.googleapis.com"
   ]
 }
