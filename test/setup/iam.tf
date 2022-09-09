@@ -18,12 +18,24 @@ locals {
   int_required_roles = [
     "roles/owner"
   ]
+
+  org_required_roles = [
+    "roles/accesscontextmanager.policyAdmin"
+  ]
 }
 
 resource "google_service_account" "int_test" {
   project      = module.project.project_id
   account_id   = "ci-account"
   display_name = "ci-account"
+}
+
+resource "google_organization_iam_member" "org_member" {
+  count = length(local.org_required_roles)
+
+  project = module.project.project_id
+  role    = local.org_required_roles[count.index]
+  member  = "serviceAccount:${google_service_account.int_test.email}"
 }
 
 resource "google_project_iam_member" "int_test" {
