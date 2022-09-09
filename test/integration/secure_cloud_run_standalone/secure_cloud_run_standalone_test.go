@@ -41,10 +41,14 @@ func getResultFieldStrSlice(rs []gjson.Result, field string) []string {
 }
 
 func TestSecureCloudRunStandalone(t *testing.T) {
-
-	cloudRun := tft.NewTFBlueprintTest(t)
 	orgID := utils.ValFromEnv(t, "TF_VAR_org_id")
 	policyID := getPolicyID(t, orgID)
+	vars := map[string]string{
+		"access_context_manager_policy_id": policyID,
+	}
+
+	cloudRun := tft.NewTFBlueprintTest(t, tft.WithEnvVars(vars))
+
 	restrictedServices := []string{
 		"cloudkms.googleapis.com",
 		"run.googleapis.com",
