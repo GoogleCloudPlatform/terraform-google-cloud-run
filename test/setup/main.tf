@@ -31,6 +31,7 @@ module "project" {
     "run.googleapis.com",
     "cloudkms.googleapis.com",
     "iam.googleapis.com",
-    "accesscontextmanager.googleapis.com"
+    "accesscontextmanager.googleapis.com",
+    "cloudbilling.googleapis.com"
   ]
 }
