@@ -28,7 +28,6 @@ steps:
   - 'TF_VAR_org_id=$_ORG_ID'
   - 'TF_VAR_parent_folder_id=$_FOLDER_ID'
   - 'TF_VAR_billing_account=$_BILLING_ACCOUNT'
-  - 'TF_VAR_access_context_manager_policy_id=$_ACCESS_CONTEXT_MANAGER_POLICY_ID'
   - 'TF_VAR_domain=test.infra.cft.tips'
   - 'TF_VAR_serverless_folder_suffix=$SHORT_SHA'
   - 'TF_VAR_perimeter_members=["serviceAccount:$PROJECT_NUMBER@cloudbuild.gserviceaccount.com"]'
