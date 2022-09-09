@@ -33,9 +33,9 @@ resource "google_service_account" "int_test" {
 resource "google_organization_iam_member" "org_member" {
   count = length(local.org_required_roles)
 
-  project = module.project.project_id
-  role    = local.org_required_roles[count.index]
-  member  = "serviceAccount:${google_service_account.int_test.email}"
+  org_id = var.org_id
+  role   = local.org_required_roles[count.index]
+  member = "serviceAccount:${google_service_account.int_test.email}"
 }
 
 resource "google_project_iam_member" "int_test" {
