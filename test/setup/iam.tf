@@ -19,6 +19,10 @@ locals {
     "roles/owner"
   ]
 
+  folder_required_roles = [
+    "roles/resourcemanager.folderAdmin"
+  ]
+
   org_required_roles = [
     "roles/accesscontextmanager.policyAdmin"
   ]
@@ -35,6 +39,14 @@ resource "google_organization_iam_member" "org_member" {
 
   org_id = var.org_id
   role   = local.org_required_roles[count.index]
+  member = "serviceAccount:${google_service_account.int_test.email}"
+}
+
+resource "google_folder_iam_member" "folder_member" {
+  count = length(local.folder_required_roles)
+
+  folder = "folders/${var.folder_id}"
+  role   = local.folder_required_roles[count.index]
   member = "serviceAccount:${google_service_account.int_test.email}"
 }
 
