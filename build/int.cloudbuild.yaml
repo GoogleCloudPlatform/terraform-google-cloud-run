@@ -23,7 +23,7 @@ steps:
   - 'TF_VAR_billing_account=$_BILLING_ACCOUNT'
 - id: create standalone
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials && cft test run TestSecureCloudRunStandalone --test-dir /workspace/test/integration --verbose']
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && cft test run TestSecureCloudRunStandalone --test-dir /workspace/test/integration --verbose']
   env:
   - 'TF_VAR_org_id=$_ORG_ID'
   - 'TF_VAR_parent_folder_id=$_FOLDER_ID'

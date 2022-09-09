@@ -18,36 +18,12 @@ locals {
   int_required_roles = [
     "roles/owner"
   ]
-
-  folder_required_roles = [
-    "roles/resourcemanager.folderAdmin"
-  ]
-
-  org_required_roles = [
-    "roles/accesscontextmanager.policyAdmin"
-  ]
 }
 
 resource "google_service_account" "int_test" {
   project      = module.project.project_id
   account_id   = "ci-account"
   display_name = "ci-account"
-}
-
-resource "google_organization_iam_member" "org_member" {
-  count = length(local.org_required_roles)
-
-  org_id = var.org_id
-  role   = local.org_required_roles[count.index]
-  member = "serviceAccount:${google_service_account.int_test.email}"
-}
-
-resource "google_folder_iam_member" "folder_member" {
-  count = length(local.folder_required_roles)
-
-  folder = "folders/${var.folder_id}"
-  role   = local.folder_required_roles[count.index]
-  member = "serviceAccount:${google_service_account.int_test.email}"
 }
 
 resource "google_project_iam_member" "int_test" {
