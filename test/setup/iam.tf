@@ -26,7 +26,8 @@ locals {
   ]
 
   org_required_roles = [
-    "roles/accesscontextmanager.policyAdmin"
+    "roles/accesscontextmanager.policyAdmin",
+    "roles/orgpolicy.policyAdmin"
   ]
 }
 
