@@ -20,7 +20,9 @@ locals {
   ]
 
   folder_required_roles = [
-    "roles/resourcemanager.folderAdmin"
+    "roles/resourcemanager.folderAdmin",
+    "roles/resourcemanager.projectCreator",
+    "roles/resourcemanager.projectDeleter"
   ]
 
   org_required_roles = [
