@@ -45,6 +45,7 @@ func TestSecureCloudRunStandalone(t *testing.T) {
 	policyID := getPolicyID(t, orgID)
 	vars := map[string]string{
 		"access_context_manager_policy_id": policyID,
+		"perimeter_members":                []string{fmt.Sprintf("serviceAccount:%s", utils.ValFromEnv(t, "TF_VAR_sa_email"))},
 	}
 
 	cloudRun := tft.NewTFBlueprintTest(t, tft.WithEnvVars(vars))
