@@ -153,3 +153,21 @@ variable "domain" {
   description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
   type        = string
 }
+
+variable "policy_for" {
+  description = "Policy Root: set one of the following values to determine where the policy is applied. Possible values: [\"project\", \"folder\", \"organization\"]."
+  type        = string
+  default     = "project"
+}
+
+variable "folder_id" {
+  description = "The folder ID to apply the policy to."
+  type        = string
+  default     = ""
+}
+
+variable "organization_id" {
+  description = "The organization ID to apply the policy to."
+  type        = string
+  default     = ""
+}

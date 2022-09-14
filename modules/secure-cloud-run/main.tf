@@ -89,6 +89,9 @@ module "cloud_run_security" {
   keyring_name          = var.keyring_name
   key_rotation_period   = var.key_rotation_period
   key_protection_level  = var.key_protection_level
+  policy_for            = var.policy_for
+  folder_id             = var.folder_id
+  organization_id       = var.organization_id
 
   encrypters = [
     "serviceAccount:${google_project_service_identity.serverless_sa.email}",

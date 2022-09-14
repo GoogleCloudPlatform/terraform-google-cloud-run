@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-output "load-balancer-ip" {
+output "load_balancer_ip" {
   value       = module.lb-http.external_ip
   description = "IP Address used by Load Balancer."
 }
