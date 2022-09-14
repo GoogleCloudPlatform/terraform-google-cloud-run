@@ -78,6 +78,9 @@ module "cloud_run_network" {
 
 | Name | Description |
 |------|-------------|
+| cloud\_services\_sa | Service Account for Cloud Run Service. |
 | connector\_id | VPC serverless connector ID. |
+| gca\_vpcaccess\_sa | Service Account for VPC Access. |
+| run\_identity\_services\_sa | Service Identity to run services. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

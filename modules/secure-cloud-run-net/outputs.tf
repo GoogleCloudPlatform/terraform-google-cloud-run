@@ -18,3 +18,18 @@ output "connector_id" {
   value       = tolist(module.serverless_connector.connector_ids)[0]
   description = "VPC serverless connector ID."
 }
+
+output "gca_vpcaccess_sa" {
+  value       = google_project_service_identity.vpcaccess_identity_sa.email
+  description = "Service Account for VPC Access."
+}
+
+output "cloud_services_sa" {
+  value       = "${data.google_project.serverless_project_id.number}@cloudservices.gserviceaccount.com"
+  description = "Service Account for Cloud Run Service."
+}
+
+output "run_identity_services_sa" {
+  value       = google_project_service_identity.run_identity_sa.email
+  description = "Service Identity to run services."
+}
