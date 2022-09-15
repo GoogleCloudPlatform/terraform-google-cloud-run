@@ -34,15 +34,15 @@ func getResultFieldStrSlice(rs []gjson.Result, field string) []string {
 }
 
 func getPolicyID(t *testing.T, orgID string) string {
+
+	terraformSa := utils.ValFromEnv(t, "TF_VAR_terraform_sa")
+	utils.SetEnv(t, "GOOGLE_IMPERSONATE_SERVICE_ACCOUNT", terraformSa)
 	gcOpts := gcloud.WithCommonArgs([]string{"--format", "value(name)"})
 	op := gcloud.Run(t, fmt.Sprintf("access-context-manager policies list --organization=%s ", orgID), gcOpts)
 	return op.String()
 }
 
 func TestSecureCloudRun(t *testing.T) {
-
-	terraformSa := utils.ValFromEnv(t, "TF_VAR_terraform_sa")
-	utils.SetEnv(t, "GOOGLE_IMPERSONATE_SERVICE_ACCOUNT", terraformSa)
 
 	orgID := utils.ValFromEnv(t, "TF_VAR_org_id")
 	policyID := getPolicyID(t, orgID)
