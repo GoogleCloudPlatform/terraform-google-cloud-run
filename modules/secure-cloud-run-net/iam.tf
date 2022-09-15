@@ -49,7 +49,7 @@ resource "google_project_iam_member" "cloud_services" {
 }
 
 resource "google_project_iam_member" "run_identity_services" {
-  count = var.connector_on_host_project ? 1 : 0
+  count = var.connector_on_host_project ? 0 : 1
 
   project = var.vpc_project_id
   role    = "roles/vpcaccess.user"

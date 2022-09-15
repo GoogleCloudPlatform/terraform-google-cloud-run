@@ -54,4 +54,3 @@ module "serverless_connector" {
     google_compute_subnetwork.vpc_subnetwork
   ]
 }
-

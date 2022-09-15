@@ -46,22 +46,7 @@ variable "kms_project_id" {
 }
 
 variable "domain" {
-  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name"
-  type        = string
-}
-
-variable "artifact_registry_repository_project_id" {
-  description = "Artifact Registry Repository Project ID to grant serverless identity viewer role."
-  type        = string
-}
-
-variable "artifact_registry_repository_location" {
-  description = "Artifact Registry Repository location to grant serverless identity viewer role."
-  type        = string
-}
-
-variable "artifact_registry_repository_name" {
-  description = "Artifact Registry Repository name to grant serverless identity viewer role"
+  description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
   type        = string
 }
 

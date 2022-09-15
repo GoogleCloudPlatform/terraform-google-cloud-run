@@ -52,7 +52,7 @@ module "cloud_run_network" {
   vpc_project_id            = var.vpc_project_id
   serverless_project_id     = var.serverless_project_id
   shared_vpc_name           = var.shared_vpc_name
-  connector_on_host_project = true
+  connector_on_host_project = false
   ip_cidr_range             = var.ip_cidr_range
   create_subnet             = var.create_subnet
 
@@ -69,7 +69,7 @@ resource "google_project_service_identity" "serverless_sa" {
 }
 
 resource "google_artifact_registry_repository_iam_member" "artifact_registry_iam" {
-  count = var.use_artifact_registry_image ? 1 : 0
+  count = var.grant_artifact_register_reader ? 1 : 0
 
   project    = var.artifact_registry_repository_project_id
   location   = var.artifact_registry_repository_location

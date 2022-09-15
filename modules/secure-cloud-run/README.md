@@ -5,15 +5,16 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| artifact\_registry\_repository\_location | Artifact Registry Repository location to grant serverless identity viewer role. | `string` | n/a | yes |
-| artifact\_registry\_repository\_name | Artifact Registry Repository name to grant serverless identity viewer role | `string` | n/a | yes |
-| artifact\_registry\_repository\_project\_id | Artifact Registry Repository Project ID to grant serverless identity viewer role. | `string` | n/a | yes |
+| artifact\_registry\_repository\_location | Artifact Registry Repository location to grant serverless identity viewer role. | `string` | `null` | no |
+| artifact\_registry\_repository\_name | Artifact Registry Repository name to grant serverless identity viewer role | `string` | `null` | no |
+| artifact\_registry\_repository\_project\_id | Artifact Registry Repository Project ID to grant serverless identity viewer role. | `string` | `null` | no |
 | cloud\_run\_sa | Service account to be used on Cloud Run. | `string` | n/a | yes |
 | connector\_name | The name for the connector to be created. | `string` | `"serverless-vpc-connector"` | no |
 | create\_subnet | The subnet will be created with the subnet\_name variable if true. When false, it will use the subnet\_name for the subnet. | `bool` | `true` | no |
-| domain | Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name. | `string` | n/a | yes |
+| domain | Domain name to run the load balancer on. | `string` | n/a | yes |
 | env\_vars | Environment variables (cleartext) | <pre>list(object({<br>    value = string<br>    name  = string<br>  }))</pre> | `[]` | no |
 | folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
+| grant\_artifact\_register\_reader | When true it will grant permission to read an image from your artifact registry. When true, you must provide `artifact_registry_repository_project_id`, `artifact_registry_repository_location` and `artifact_registry_repository_name`. | `bool` | `false` | no |
 | image | Image url to be deployed on Cloud Run. | `string` | n/a | yes |
 | ip\_cidr\_range | The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported | `string` | n/a | yes |
 | key\_name | The name of KMS Key to be created and used in Cloud Run. | `string` | `"cloud-run-kms-key"` | no |
@@ -31,7 +32,6 @@
 | service\_name | Shared VPC name. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |
 | subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | `null` | no |
-| use\_artifact\_registry\_image | When true it will give permission to read an image from your artifact registry. | `bool` | `false` | no |
 | vpc\_project\_id | The host project for the shared vpc. | `string` | n/a | yes |
 
 ## Outputs

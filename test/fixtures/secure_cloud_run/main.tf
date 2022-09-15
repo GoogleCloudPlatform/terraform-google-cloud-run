@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  value = module.project.project_id
-}
-
-output "sa_email" {
-  value = google_service_account.int_test.email
-}
-
-output "sa_key" {
-  value     = google_service_account_key.int_test.private_key
-  sensitive = true
+module "secure_cloud_run" {
+  source                = "../../../examples/secure_cloud_run"
+  shared_vpc_name       = data.terraform_remote_state.sfb-network-prod.outputs.restricted_network_name
+  vpc_project_id        = data.terraform_remote_state.sfb-network-prod.outputs.restricted_host_project_id
+  cloud_run_sa          = module.serverless_project.service_account_email
+  kms_project_id        = module.kms_project.project_id
+  serverless_project_id = module.serverless_project.project_id
+  domain                = var.domain
 }

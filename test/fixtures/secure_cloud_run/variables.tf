@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  value = module.project.project_id
+variable "domain" {
+  description = "Domain name to run the load balancer on."
+  type        = string
 }
 
-output "sa_email" {
-  value = google_service_account.int_test.email
+variable "org_id" {
+  description = "The numeric organization id.accessPolicies"
 }
 
-output "sa_key" {
-  value     = google_service_account_key.int_test.private_key
-  sensitive = true
+variable "billing_account" {
+  description = "The billing account id associated with the project, e.g. XXXXXX-YYYYYY-ZZZZZZ."
+}
+
+variable "terraform_sa" {
+  description = "Foundation terraform service account name."
+}
+
+variable "access_context_manager_policy_id" {
+  description = "Access context manager policy id."
 }

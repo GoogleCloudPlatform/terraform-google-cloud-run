@@ -18,11 +18,8 @@ This example assumes that below mentioned prerequisites are in place before cons
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| artifact\_registry\_repository\_location | Artifact Registry Repository location to grant serverless identity viewer role. | `string` | n/a | yes |
-| artifact\_registry\_repository\_name | Artifact Registry Repository name to grant serverless identity viewer role | `string` | n/a | yes |
-| artifact\_registry\_repository\_project\_id | Artifact Registry Repository Project ID to grant serverless identity viewer role. | `string` | n/a | yes |
 | cloud\_run\_sa | Service account to be used on Cloud Run. | `string` | n/a | yes |
-| domain | Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name | `string` | n/a | yes |
+| domain | Domain name to run the load balancer on. Used if `ssl` is `true`. | `string` | n/a | yes |
 | folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | organization\_id | The organization ID to apply the policy to. | `string` | `""` | no |
@@ -38,6 +35,7 @@ This example assumes that below mentioned prerequisites are in place before cons
 |------|-------------|
 | cloud\_services\_sa | Service Account for Cloud Run Service. |
 | connector\_id | VPC serverless connector ID. |
+| domain | n/a |
 | domain\_map\_id | Unique Identifier for the created domain map. |
 | domain\_map\_status | Status of Domain mapping. |
 | folder\_id | The folder ID to apply the policy to. |
@@ -54,6 +52,7 @@ This example assumes that below mentioned prerequisites are in place before cons
 | service\_id | Unique Identifier for the created service. |
 | service\_status | Status of the created service. |
 | service\_url | The URL on which the deployed service is available. |
+| shared\_vpc\_name | n/a |
 | vpc\_project\_id | The project where VPC Connector is going to be deployed. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
