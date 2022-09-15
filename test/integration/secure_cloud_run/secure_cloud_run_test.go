@@ -41,6 +41,9 @@ func getPolicyID(t *testing.T, orgID string) string {
 
 func TestSecureCloudRun(t *testing.T) {
 
+	terraformSa := utils.ValFromEnv(t, "TF_VAR_terraform_sa")
+	utils.SetEnv(t, "GOOGLE_IMPERSONATE_SERVICE_ACCOUNT", terraformSa)
+
 	orgID := utils.ValFromEnv(t, "TF_VAR_org_id")
 	policyID := getPolicyID(t, orgID)
 	vars := map[string]string{
@@ -49,9 +52,6 @@ func TestSecureCloudRun(t *testing.T) {
 	secure_cloud_run := tft.NewTFBlueprintTest(t, tft.WithEnvVars(vars))
 
 	secure_cloud_run.DefineVerify(func(assert *assert.Assertions) {
-
-		terraformSa := secure_cloud_run.GetStringOutput("terraform_sa_email")
-		utils.SetEnv(t, "GOOGLE_IMPERSONATE_SERVICE_ACCOUNT", terraformSa)
 
 		vpcProjectId := secure_cloud_run.GetStringOutput("vpc_project_id")
 		serverlessProjectId := secure_cloud_run.GetStringOutput("serverless_project_id")
