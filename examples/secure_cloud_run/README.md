@@ -35,7 +35,7 @@ This example assumes that below mentioned prerequisites are in place before cons
 |------|-------------|
 | cloud\_services\_sa | Service Account for Cloud Run Service. |
 | connector\_id | VPC serverless connector ID. |
-| domain | n/a |
+| domain | Domain name to run the load balancer on. Used if `ssl` is `true`. |
 | domain\_map\_id | Unique Identifier for the created domain map. |
 | domain\_map\_status | Status of Domain mapping. |
 | folder\_id | The folder ID to apply the policy to. |
@@ -52,7 +52,7 @@ This example assumes that below mentioned prerequisites are in place before cons
 | service\_id | Unique Identifier for the created service. |
 | service\_status | Status of the created service. |
 | service\_url | The URL on which the deployed service is available. |
-| shared\_vpc\_name | n/a |
+| shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. |
 | vpc\_project\_id | The project where VPC Connector is going to be deployed. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
