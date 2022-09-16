@@ -16,7 +16,8 @@ timeout: 3600s
 steps:
 - id: secure cloud run on foundation
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSecureCloudRun --test-dir /workspace/test/integration --verbose']
+  #args: ['/bin/bash', '-c', 'cft test run TestSecureCloudRun --test-dir /workspace/test/integration --verbose']
+  args: ['/bin/bash', '-c', 'export TF_VAR_access_context_manager_policy_id=$(gcloud access-context-manager policies list --organization="${TF_VAR_org_id:?}" --format="value(name)") && cft test run TestSecureCloudRun --test-dir /workspace/test/integration' --verbose']
   env:
   - 'TF_VAR_org_id=$_SFB_ORG_ID'
   - 'TF_VAR_billing_account=$_BILLING_ACCOUNT'
