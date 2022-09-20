@@ -51,7 +51,8 @@ module "secure_harness" {
 resource "time_sleep" "wait_90_seconds" {
   depends_on = [module.secure_harness]
 
-  create_duration = "90s"
+  create_duration  = "90s"
+  destroy_duration = "90s"
 }
 
 resource "null_resource" "copy_image" {
