@@ -48,20 +48,10 @@ module "secure_harness" {
   artifact_registry_repository_name           = local.repository_name
 }
 
-resource "time_sleep" "wait_90_seconds" {
-  depends_on = [module.secure_harness]
-
-  create_duration  = "90s"
-  destroy_duration = "90s"
-}
-
 resource "null_resource" "copy_image" {
   provisioner "local-exec" {
     command = "gcloud container images add-tag ${local.hello_image} ${local.location}-docker.pkg.dev/${module.secure_harness.security_project_id}/${local.repository_name}/hello:latest -q"
   }
-  depends_on = [
-    time_sleep.wait_90_seconds
-  ]
 }
 
 module "secure_cloud_run" {
