@@ -15,11 +15,11 @@
 package test
 
 import (
-        "testing"
+	"testing"
 
-        "github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
 )
 
 func TestAll(t *testing.T) {
-        tft.AutoDiscoverAndTest(t)
+	tft.AutoDiscoverAndTest(t)
 }
