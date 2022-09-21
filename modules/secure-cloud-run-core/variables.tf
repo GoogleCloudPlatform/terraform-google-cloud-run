@@ -52,7 +52,7 @@ variable "owasp_rules" {
       priority   = "1002"
       expression = "evaluatePreconfiguredExpr('lfi-v33-stable')"
     }
-    rule_canary = {
+    rule_rce = {
       action     = "deny(403)"
       priority   = "1003"
       expression = "evaluatePreconfiguredExpr('rce-v33-stable')"
