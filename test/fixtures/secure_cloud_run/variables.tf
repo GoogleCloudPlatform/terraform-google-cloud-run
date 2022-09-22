@@ -34,3 +34,8 @@ variable "terraform_sa" {
 variable "access_context_manager_policy_id" {
   description = "Access context manager policy id."
 }
+
+variable "resource_names_suffix" {
+  description = "A suffix to concat in the end of the network resources names."
+  type        = string
+}

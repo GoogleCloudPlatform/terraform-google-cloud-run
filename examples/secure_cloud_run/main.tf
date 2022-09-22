@@ -15,24 +15,21 @@
  */
 
 locals {
-  cloudrun_key_name     = "cloud-run-${random_id.suffix.hex}"
-  cloudrun_keyring_name = "cloud-run-keyring-${random_id.suffix.hex}"
-}
-resource "random_id" "suffix" {
-  byte_length = 4
+  cloudrun_key_name     = "cloud-run-${var.resource_names_suffix}"
+  cloudrun_keyring_name = "cloud-run-keyring-${var.resource_names_suffix}"
 }
 
 module "secure_cloud_run" {
   source = "../../modules/secure-cloud-run"
 
-  connector_name        = "serverless-connector"
+  connector_name        = "con-run"
   subnet_name           = "vpc-subnet"
   vpc_project_id        = var.vpc_project_id
   serverless_project_id = var.serverless_project_id
   domain                = var.domain
   kms_project_id        = var.kms_project_id
   shared_vpc_name       = var.shared_vpc_name
-  ip_cidr_range         = "10.35.0.0/28"
+  ip_cidr_range         = var.ip_cidr_range
   key_name              = local.cloudrun_key_name
   keyring_name          = local.cloudrun_keyring_name
   prevent_destroy       = false
@@ -45,4 +42,6 @@ module "secure_cloud_run" {
   policy_for            = var.policy_for
   folder_id             = var.folder_id
   organization_id       = var.organization_id
+  resource_names_suffix = var.resource_names_suffix
+  create_subnet         = true
 }

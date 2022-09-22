@@ -69,6 +69,7 @@ module "cloud_run_network" {
 | flow\_sampling | Sampling rate of VPC flow logs. The value must be in [0,1]. Where 1.0 means all logs, 0.5 mean half of the logs and 0.0 means no logs are reported. | `number` | `1` | no |
 | ip\_cidr\_range | The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
+| resource\_names\_suffix | A suffix to concat in the end of the resources names. | `string` | `null` | no |
 | serverless\_project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be used to create Serverless Connector. | `string` | n/a | yes |
 | subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | n/a | yes |
@@ -82,5 +83,6 @@ module "cloud_run_network" {
 | connector\_id | VPC serverless connector ID. |
 | gca\_vpcaccess\_sa | Service Account for VPC Access. |
 | run\_identity\_services\_sa | Service Identity to run services. |
+| subnet\_name | The name of the sub-network used to create VPC Connector. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

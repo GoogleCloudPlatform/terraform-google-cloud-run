@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
+locals {
+  ip_range = "10.35.${random_integer.ip_random_1.result}.0/28"
+}
+
+resource "random_integer" "ip_random_1" {
+  min = 0
+  max = 9
+}
+
+
 module "secure_cloud_run" {
   source                = "../../../examples/secure_cloud_run"
   shared_vpc_name       = data.terraform_remote_state.sfb-network-prod.outputs.restricted_network_name
@@ -22,4 +32,11 @@ module "secure_cloud_run" {
   kms_project_id        = module.kms_project.project_id
   serverless_project_id = module.serverless_project.project_id
   domain                = var.domain
+  resource_names_suffix = var.resource_names_suffix
+  ip_cidr_range         = local.ip_range
+
+  depends_on = [
+    module.kms_project,
+    module.serverless_project
+  ]
 }

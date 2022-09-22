@@ -28,6 +28,7 @@
 | policy\_for | Policy Root: set one of the following values to determine where the policy is applied. Possible values: ["project", "folder", "organization"]. | `string` | `"project"` | no |
 | prevent\_destroy | Set the `prevent_destroy` lifecycle attribute on the Cloud KMS key. | `bool` | `true` | no |
 | region | Location for load balancer and Cloud Run resources. | `string` | n/a | yes |
+| resource\_names\_suffix | A suffix to concat in the end of the network resources names being created. | `string` | `null` | no |
 | serverless\_project\_id | The project to deploy the cloud run service. | `string` | n/a | yes |
 | service\_name | Shared VPC name. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |

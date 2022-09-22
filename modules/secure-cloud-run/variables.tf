@@ -173,3 +173,9 @@ variable "organization_id" {
   type        = string
   default     = ""
 }
+
+variable "resource_names_suffix" {
+  description = "A suffix to concat in the end of the network resources names being created."
+  type        = string
+  default     = null
+}

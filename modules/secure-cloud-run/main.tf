@@ -55,6 +55,7 @@ module "cloud_run_network" {
   connector_on_host_project = false
   ip_cidr_range             = var.ip_cidr_range
   create_subnet             = var.create_subnet
+  resource_names_suffix     = var.resource_names_suffix
 
   depends_on = [
     module.vpc_project_apis
