@@ -14,6 +14,53 @@
  * limitations under the License.
  */
 
+
+
+variable "location" {
+  description = "The location where resources are going to be deployed."
+  type        = string
+}
+
+variable "project_id" {
+  description = "The project where cloud run is going to be deployed."
+  type        = string
+}
+
+variable "service_name" {
+  description = "The name of the Cloud Run service to create."
+  type        = string
+}
+
+variable "image" {
+  description = "GAR hosted image URL to deploy."
+  type        = string
+}
+
+variable "cloud_run_sa" {
+  description = "Service account to be used on Cloud Run."
+  type        = string
+}
+
+variable "vpc_connector_id" {
+  description = "VPC Connector id in the format projects/PROJECT/locations/LOCATION/connectors/NAME."
+  type        = string
+}
+
+variable "encryption_key" {
+  description = "CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY."
+  type        = string
+}
+
+variable "region" {
+  description = "Location for load balancer and Cloud Run resources."
+  type        = string
+}
+
+variable "domain" {
+  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
+  type        = string
+}
+
 variable "default_rules" {
   description = "Default rule for Cloud Armor."
   default = {
@@ -52,7 +99,7 @@ variable "owasp_rules" {
       priority   = "1002"
       expression = "evaluatePreconfiguredExpr('lfi-v33-stable')"
     }
-    rule_rce = {
+    rule_canary = {
       action     = "deny(403)"
       priority   = "1003"
       expression = "evaluatePreconfiguredExpr('rce-v33-stable')"
@@ -85,60 +132,15 @@ variable "owasp_rules" {
   }))
 }
 
-variable "region" {
-  description = "Location for load balancer and Cloud Run resources."
-  type        = string
-}
-
 variable "ssl" {
   description = "Run load balancer on HTTPS and provision managed certificate with provided `domain`."
   type        = bool
   default     = true
 }
 
-variable "domain" {
-  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
-  type        = string
-}
-
 variable "lb_name" {
   description = "Name for load balancer and associated resources."
   default     = "tf-cr-lb"
-}
-
-variable "location" {
-  description = "The location where resources are going to be deployed."
-  type        = string
-}
-
-variable "project_id" {
-  description = "The project where cloud run is going to be deployed."
-  type        = string
-}
-
-variable "service_name" {
-  description = "The name of the Cloud Run service to create."
-  type        = string
-}
-
-variable "image" {
-  description = "GAR hosted image URL to deploy."
-  type        = string
-}
-
-variable "cloud_run_sa" {
-  description = "Service account to be used on Cloud Run."
-  type        = string
-}
-
-variable "vpc_connector_id" {
-  description = "VPC Connector id in the format projects/PROJECT/locations/LOCATION/connectors/NAME."
-  type        = string
-}
-
-variable "encryption_key" {
-  description = "CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY."
-  type        = string
 }
 
 variable "env_vars" {
@@ -151,144 +153,7 @@ variable "env_vars" {
 }
 
 variable "members" {
+  type        = list(string)
   description = "Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users."
-  type        = list(string)
   default     = []
-}
-
-variable "generate_revision_name" {
-  description = "Option to enable revision name generation."
-  type        = bool
-  default     = true
-}
-
-variable "traffic_split" {
-  description = "Managing traffic routing to the service."
-  type = list(object({
-    latest_revision = bool
-    percent         = number
-    revision_name   = string
-  }))
-  default = [{
-    latest_revision = true
-    percent         = 100
-    revision_name   = "v1-0-0"
-  }]
-}
-
-variable "service_labels" {
-  description = "A set of key/value label pairs to assign to the service."
-  type        = map(string)
-  default     = {}
-}
-
-// Metadata
-variable "template_labels" {
-  description = "A set of key/value label pairs to assign to the container metadata."
-  type        = map(string)
-  default     = {}
-}
-
-// template spec
-variable "container_concurrency" {
-  description = "Concurrent request limits to the service."
-  type        = number
-  default     = null
-}
-
-variable "timeout_seconds" {
-  description = "Timeout for each request."
-  type        = number
-  default     = 120
-}
-
-variable "volumes" {
-  description = "[Beta] Volumes needed for environment variables (when using secret)."
-  type = list(object({
-    name = string
-    secret = set(object({
-      secret_name = string
-      items       = map(string)
-    }))
-  }))
-  default = []
-}
-
-# template spec container
-# resources
-# cpu = (core count * 1000)m
-# memory = (size) in Mi/Gi
-variable "limits" {
-  description = "Resource limits to the container."
-  type        = map(string)
-  default     = null
-}
-variable "requests" {
-  description = "Resource requests to the container."
-  type        = map(string)
-  default     = {}
-}
-
-variable "ports" {
-  description = "Port which the container listens to (http1 or h2c)."
-  type = object({
-    name = string
-    port = number
-  })
-  default = {
-    name = "http1"
-    port = 8080
-  }
-}
-
-variable "argument" {
-  description = "Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments."
-  type        = list(string)
-  default     = []
-}
-
-variable "container_command" {
-  description = "Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten."
-  type        = list(string)
-  default     = []
-}
-
-variable "volume_mounts" {
-  type = list(object({
-    mount_path = string
-    name       = string
-  }))
-  description = "[Beta] Volume Mounts to be attached to the container (when using secret)."
-  default     = []
-}
-
-// Domain Mapping
-variable "verified_domain_name" {
-  description = "Custom Domain Name."
-  type        = string
-  default     = ""
-}
-
-variable "force_override" {
-  description = "Option to force override existing mapping."
-  type        = bool
-  default     = false
-}
-
-variable "certificate_mode" {
-  description = "The mode of the certificate (NONE or AUTOMATIC)."
-  type        = string
-  default     = "NONE"
-}
-
-variable "domain_map_labels" {
-  description = "A set of key/value label pairs to assign to the Domain mapping."
-  type        = map(string)
-  default     = {}
-}
-
-variable "domain_map_annotations" {
-  description = "Annotations to the domain map."
-  type        = map(string)
-  default     = {}
 }
