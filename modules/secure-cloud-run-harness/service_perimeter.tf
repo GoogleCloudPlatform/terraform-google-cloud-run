@@ -92,6 +92,6 @@ resource "time_sleep" "wait_90_seconds" {
     google_access_context_manager_service_perimeter_resource.service_perimeter_serverless_resource
   ]
 
-  create_duration  = "180s"
-  destroy_duration = "180s"
+  create_duration  = "90s"
+  destroy_duration = "90s"
 }
