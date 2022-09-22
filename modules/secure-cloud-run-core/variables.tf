@@ -157,3 +157,140 @@ variable "members" {
   description = "Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users."
   default     = []
 }
+
+variable "generate_revision_name" {
+  description = "Option to enable revision name generation."
+  type        = bool
+  default     = true
+}
+
+variable "traffic_split" {
+  description = "Managing traffic routing to the service."
+  type = list(object({
+    latest_revision = bool
+    percent         = number
+    revision_name   = string
+  }))
+  default = [{
+    latest_revision = true
+    percent         = 100
+    revision_name   = "v1-0-0"
+  }]
+}
+
+variable "service_labels" {
+  description = "A set of key/value label pairs to assign to the service."
+  type        = map(string)
+  default     = {}
+}
+
+// Metadata
+variable "template_labels" {
+  description = "A set of key/value label pairs to assign to the container metadata."
+  type        = map(string)
+  default     = {}
+}
+
+// template spec
+variable "container_concurrency" {
+  description = "Concurrent request limits to the service."
+  type        = number
+  default     = null
+}
+
+variable "timeout_seconds" {
+  description = "Timeout for each request."
+  type        = number
+  default     = 120
+}
+
+variable "volumes" {
+  description = "[Beta] Volumes needed for environment variables (when using secret)."
+  type = list(object({
+    name = string
+    secret = set(object({
+      secret_name = string
+      items       = map(string)
+    }))
+  }))
+  default = []
+}
+
+# template spec container
+# resources
+# cpu = (core count * 1000)m
+# memory = (size) in Mi/Gi
+variable "limits" {
+  description = "Resource limits to the container."
+  type        = map(string)
+  default     = null
+}
+variable "requests" {
+  description = "Resource requests to the container."
+  type        = map(string)
+  default     = {}
+}
+
+variable "ports" {
+  description = "Port which the container listens to (http1 or h2c)."
+  type = object({
+    name = string
+    port = number
+  })
+  default = {
+    name = "http1"
+    port = 8080
+  }
+}
+
+variable "argument" {
+  description = "Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments."
+  type        = list(string)
+  default     = []
+}
+
+variable "container_command" {
+  description = "Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten."
+  type        = list(string)
+  default     = []
+}
+
+variable "volume_mounts" {
+  type = list(object({
+    mount_path = string
+    name       = string
+  }))
+  description = "[Beta] Volume Mounts to be attached to the container (when using secret)."
+  default     = []
+}
+
+// Domain Mapping
+variable "verified_domain_name" {
+  description = "Custom Domain Name."
+  type        = string
+  default     = ""
+}
+
+variable "force_override" {
+  description = "Option to force override existing mapping."
+  type        = bool
+  default     = false
+}
+
+variable "certificate_mode" {
+  description = "The mode of the certificate (NONE or AUTOMATIC)."
+  type        = string
+  default     = "NONE"
+}
+
+variable "domain_map_labels" {
+  description = "A set of key/value label pairs to assign to the Domain mapping."
+  type        = map(string)
+  default     = {}
+}
+
+variable "domain_map_annotations" {
+  description = "Annotations to the domain map."
+  type        = map(string)
+  default     = {}
+}
