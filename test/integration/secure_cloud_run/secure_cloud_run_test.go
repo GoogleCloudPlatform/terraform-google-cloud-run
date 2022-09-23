@@ -68,7 +68,7 @@ func TestSecureCloudRun(t *testing.T) {
 		kmsProjectName := secure_cloud_run.GetStringOutput("kms_project_id")
 		kmsKeyRingName := secure_cloud_run.GetStringOutput("keyring_name")
 		kmsKey := secure_cloud_run.GetStringOutput("key_name")
-		opKMS := gcloud.Runf(t, "kms keys describe %s --keyring=%s --project=%s --location us-central1", kmsKey, kmsKeyRingName, kmsProjectName)
+		opKMS := gcloud.Runf(t, "kms keys describe %s --keyring=%s --project=%s --location us-central1 --impersonate-service-account=%s", kmsKey, kmsKeyRingName, kmsProjectName, serviceaccount)
 		keyFullName := fmt.Sprintf("projects/%s/locations/us-central1/keyRings/%s/cryptoKeys/%s", kmsProjectName, kmsKeyRingName, kmsKey)
 		assert.Equal(keyFullName, opKMS.Get("name").String(), fmt.Sprintf("should have key %s", keyFullName))
 
