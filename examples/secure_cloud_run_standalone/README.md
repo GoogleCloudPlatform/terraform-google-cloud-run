@@ -1,35 +1,37 @@
 # Secure Cloud Run Standalone Example
 
-This example showcases the full deployment Secure Cloud Run with harness infrastructure.
+This example showcases the full deployment Secure Cloud Run with harness infrastructure included.
 
 The resources/services/activations/deletions that this example will create/trigger are:
 
 * A folder to store Serverless infrastructure.
-* A project to deploy Cloud run.
-* A project to store KMS and Artifact Register.
-  * Keyring and Key created for Artifact Register.
-  * Artifact Register created with Encryption Key.
-  * Hello World example image copied to Artifact Register.
+* The service project where Cloud Run is going to be deployed.
+* The security project where KMS and Artifact Registry are going to be created.
+  * Keyring and Key created for Artifact Registry.
+  * Artifact Registry created with Encryption Key.
+  * Hello World example image copied to Artifact Registry.
 * A network and one subnetwork.
 * Firewall rules:
   * Deny all egress traffic.
   * Allow Restricted and Private Google APIs.
 * Configure a Private Service Connect.
-* Creates an Access Level and a Service Perimeter with both projects and with the services restricted:
+* Creates an Access Level and a Service Perimeter with both projects and restricting the services bellow:
   * Cloud KMS.
   * Cloud Run.
-  * Artifact Register.
-  * Container Register.
+  * Artifact Registry.
+  * Container Registry.
   * Container Analysis.
   * Binary Authorization.
 * A Service Account to be used by Cloud Run.
-* Creates Load Balancer
-* Creates Cloud Armor
-* Creates Organization Policies in Serverless Project level.
-* Creates Serverless VPC Connector.
+* Creates Load Balancer at service project.
+* Creates Google Cloud Armor with pre-configured WAF rules at service project.
+* Creates Organization Policies at service project level.
+  * Allowed Ingress: Internal and Cloud Load Balancing Only.
+  * Allowed VPC Egress: Private Range Only.
+* Creates Serverless VPC Connector at service project.
 * Creates Firewall rules for Serverless VPC Access.
-* Creates KMS Keyring and Key for Cloud Run usage.
-* Creates a Cloud Run service.
+* Creates KMS Keyring and Key for Cloud Run usage at security project.
+* Creates a Cloud Run service at service project.
 
 ## Assumptions and Prerequisites
 

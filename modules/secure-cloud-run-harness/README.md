@@ -4,25 +4,48 @@ This module creates the infrastructure required by Secure Cloud Run module.
 
 This module deploys:
 
-- A folder to store Serverless infrastructure.
-- A project to deploy Cloud run.
-- A project to store KMS and Artifact Register.
-  - Keyring and Key created for Artifact Register.
-  - Artifact Register created with Encryption Key.
-  - Hello World example image copied to Artifact Register.
-- A network and one subnetwork.
-- Firewall rules:
-  - Deny all egress traffic.
-  - Allow Restricted and Private Google APIs.
-- Configure a Private Service Connect.
-- Creates an Access Level and a Service Perimeter with both projects and with the services restricted:
-  - Cloud KMS.
-  - Cloud Run.
-  - Artifact Register.
-  - Container Register.
-  - Container Analysis.
-  - Binary Authorization.
-- A Service Account to be used by Cloud Run.
+* A folder to store Serverless infrastructure.
+* The service project where Cloud Run is going to be deployed.
+* The security project where KMS and Artifact Registry are going to be created.
+  * Keyring and Key created for Artifact Registry.
+  * Artifact Registry created with Encryption Key.
+  * Hello World example image copied to Artifact Registry.
+* A network and one subnetwork.
+* Firewall rules:
+  * Deny all egress traffic.
+  * Allow Restricted and Private Google APIs.
+* Configure a Private Service Connect.
+* Creates an Access Level and a Service Perimeter with both projects and restricting the services bellow:
+  * Cloud KMS.
+  * Cloud Run.
+  * Artifact Registry.
+  * Container Registry.
+  * Container Analysis.
+  * Binary Authorization.
+
+## Usage
+
+Basic usage of this module is as follows:
+
+```hcl
+module "secure_cloud_run_harness" {
+  source  = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-run-harness"
+  version = "~> 0.3.0"
+
+  # Required variables
+  billing_account                   = "<BILLING ACCOUNT>"
+  security_project_name             = "<SECURITY PROJECT NAME>"
+  serverless_project_name           = "<SERVERLESS PROJECT NAME>"
+  org_id                            = "<ORGANIZATION ID>"
+  region                            = "<REGION>"
+  location                          = "<LOCATION>"
+  vpc_name                          = "<VPC NAME>"
+  subnet_ip                         = "<SUBNET IP RANGE>"
+  artifact_registry_repository_name = "<ARTIFACT REGISTRY NAME>"
+  keyring_name                      = "<KEYRING NAME>"
+  key_name                          = "<KEY NAME>"
+}
+```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -85,22 +108,22 @@ These sections describe requirements for using this module.
 
 ### Software
 
-- [Terraform](https://www.terraform.io/downloads.html) ~> v0.13+
-- [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) >= 3.53, < 5.0
-- [Terraform Provider for GCP Beta](https://github.com/terraform-providers/terraform-provider-google-beta) >= 3.53, < 5.0
+* [Terraform](https://www.terraform.io/downloads.html) ~> v0.13+
+* [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) < 5.0
+* [Terraform Provider for GCP Beta](https://github.com/terraform-providers/terraform-provider-google-beta) >= 3.53, < 5.0
 
 ### Service Account
 
 A service account can be used with required roles to execute this module:
 
-- Organization Level:
-  - Access Context Manager Editor: `roles/accesscontextmanager.policyEditor`
-- Parent level - Organization or Folder level:
-  - Folder Admin - `roles/resourcemanager.folderAdmin`
-  - Project Creator - `roles/resourcemanager.projectCreator`
-  - Project Deleter - `roles/resourcemanager.projectDeleter`
-- Billing
-  - Billing User - `roles/billing.user`
+* Organization Level:
+  * Access Context Manager Editor: `roles/accesscontextmanager.policyEditor`
+* Parent level - Organization or Folder level:
+  * Folder Admin - `roles/resourcemanager.folderAdmin`
+  * Project Creator - `roles/resourcemanager.projectCreator`
+  * Project Deleter - `roles/resourcemanager.projectDeleter`
+* Billing
+  * Billing User - `roles/billing.user`
 
 Know more about [Cloud Run Deployment Permissions](https://cloud.google.com/run/docs/reference/iam/roles#additional-configuration).
 
