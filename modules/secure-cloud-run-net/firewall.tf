@@ -15,7 +15,8 @@
  */
 
 locals {
-  tags = ["vpc-connector"]
+  tags   = ["vpc-connector"]
+  suffix = var.resource_names_suffix == null ? "" : "-${var.resource_names_suffix}"
 }
 
 module "firewall_rules" {
@@ -26,7 +27,7 @@ module "firewall_rules" {
   network_name = var.shared_vpc_name
 
   rules = [{
-    name                    = "serverless-to-vpc-connector"
+    name                    = "serverless-to-vpc-connector${local.suffix}"
     description             = null
     priority                = null
     direction               = "INGRESS"
@@ -53,7 +54,7 @@ module "firewall_rules" {
     }
     },
     {
-      name                    = "vpc-connector-to-serverless"
+      name                    = "vpc-connector-to-serverless${local.suffix}"
       description             = null
       priority                = null
       direction               = "EGRESS"
@@ -80,7 +81,7 @@ module "firewall_rules" {
       }
     },
     {
-      name                    = "vpc-connector-to-lb"
+      name                    = "vpc-connector-to-lb${local.suffix}"
       description             = null
       priority                = null
       direction               = "EGRESS"
@@ -99,7 +100,7 @@ module "firewall_rules" {
       }
     },
     {
-      name                    = "vpc-connector-health-checks"
+      name                    = "vpc-connector-health-checks${local.suffix}"
       description             = null
       priority                = null
       direction               = "INGRESS"
@@ -118,7 +119,7 @@ module "firewall_rules" {
       }
     },
     {
-      name                    = "vpc-connector-requests"
+      name                    = "vpc-connector-requests${local.suffix}"
       description             = null
       priority                = null
       direction               = "INGRESS"

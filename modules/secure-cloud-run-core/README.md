@@ -25,8 +25,6 @@ resources of this module:
 * Serverless Project
   * Google Cloud Run Service: `run.googleapis.com`
 
-**Note:** `Secret Manager API` needs to be enabled in case of using secrets.
-
 ### Service Account
 
 A service account with the following roles must be used to provision
@@ -35,8 +33,6 @@ the resources of this module:
 * Cloud Run Developer: `roles/run.developer`
 * Compute Network User: `roles/compute.networkUser`
 * Artifact Registry Reader: `roles/artifactregistry.reader`
-
-**Note:** [Secret Manager Secret Accessor](https://cloud.google.com/run/docs/configuring/secrets#access-secret) role must be granted to the Cloud Run service account to allow read access on the secret.
 
 ## Usage
 

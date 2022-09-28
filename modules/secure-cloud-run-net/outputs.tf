@@ -33,3 +33,8 @@ output "run_identity_services_sa" {
   value       = google_project_service_identity.run_identity_sa.email
   description = "Service Identity to run services."
 }
+
+output "subnet_name" {
+  value       = local.subnet_name
+  description = "The name of the sub-network used to create VPC Connector."
+}

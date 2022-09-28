@@ -46,22 +46,7 @@ variable "kms_project_id" {
 }
 
 variable "domain" {
-  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name"
-  type        = string
-}
-
-variable "artifact_registry_repository_project_id" {
-  description = "Artifact Registry Repository Project ID to grant serverless identity viewer role."
-  type        = string
-}
-
-variable "artifact_registry_repository_location" {
-  description = "Artifact Registry Repository location to grant serverless identity viewer role."
-  type        = string
-}
-
-variable "artifact_registry_repository_name" {
-  description = "Artifact Registry Repository name to grant serverless identity viewer role"
+  description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
   type        = string
 }
 
@@ -81,4 +66,15 @@ variable "organization_id" {
   description = "The organization ID to apply the policy to."
   type        = string
   default     = ""
+}
+
+variable "resource_names_suffix" {
+  description = "A suffix to concat in the end of the network resources names."
+  type        = string
+  default     = null
+}
+
+variable "ip_cidr_range" {
+  description = "The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported"
+  type        = string
 }

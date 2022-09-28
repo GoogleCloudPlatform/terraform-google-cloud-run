@@ -18,15 +18,14 @@ This example assumes that below mentioned prerequisites are in place before cons
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| artifact\_registry\_repository\_location | Artifact Registry Repository location to grant serverless identity viewer role. | `string` | n/a | yes |
-| artifact\_registry\_repository\_name | Artifact Registry Repository name to grant serverless identity viewer role | `string` | n/a | yes |
-| artifact\_registry\_repository\_project\_id | Artifact Registry Repository Project ID to grant serverless identity viewer role. | `string` | n/a | yes |
 | cloud\_run\_sa | Service account to be used on Cloud Run. | `string` | n/a | yes |
-| domain | Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name | `string` | n/a | yes |
+| domain | Domain name to run the load balancer on. Used if `ssl` is `true`. | `string` | n/a | yes |
 | folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
+| ip\_cidr\_range | The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported | `string` | n/a | yes |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | organization\_id | The organization ID to apply the policy to. | `string` | `""` | no |
 | policy\_for | Policy Root: set one of the following values to determine where the policy is applied. Possible values: ["project", "folder", "organization"]. | `string` | `"project"` | no |
+| resource\_names\_suffix | A suffix to concat in the end of the network resources names. | `string` | `null` | no |
 | serverless\_project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |
 | ssl | Run load balancer on HTTPS and provision managed certificate with provided `domain`. | `bool` | `true` | no |
@@ -38,6 +37,7 @@ This example assumes that below mentioned prerequisites are in place before cons
 |------|-------------|
 | cloud\_services\_sa | Service Account for Cloud Run Service. |
 | connector\_id | VPC serverless connector ID. |
+| domain | Domain name to run the load balancer on. Used if `ssl` is `true`. |
 | domain\_map\_id | Unique Identifier for the created domain map. |
 | domain\_map\_status | Status of Domain mapping. |
 | folder\_id | The folder ID to apply the policy to. |
@@ -54,6 +54,7 @@ This example assumes that below mentioned prerequisites are in place before cons
 | service\_id | Unique Identifier for the created service. |
 | service\_status | Status of the created service. |
 | service\_url | The URL on which the deployed service is available. |
+| shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. |
 | vpc\_project\_id | The project where VPC Connector is going to be deployed. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
