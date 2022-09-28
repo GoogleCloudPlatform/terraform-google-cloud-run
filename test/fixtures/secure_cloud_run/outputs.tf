@@ -14,6 +14,26 @@
  * limitations under the License.
  */
 
+output "kms_project_id" {
+  value       = module.kms_project.project_id
+  description = "The project where KMS will be created."
+}
+
+output "serverless_project_id" {
+  value       = module.serverless_project.project_id
+  description = "The project where cloud run is going to be deployed."
+}
+
+output "vpc_project_id" {
+  value       = data.terraform_remote_state.sfb-network-prod.outputs.restricted_host_project_id
+  description = "The project where Shared VPC is hosted."
+}
+
+output "cloud_run_sa" {
+  value       = module.serverless_project.service_account_email
+  description = "Service account created in the Secure Cloud Run project."
+}
+
 output "connector_id" {
   value       = module.secure_cloud_run.connector_id
   description = "VPC serverless connector ID."
@@ -54,28 +74,13 @@ output "domain_map_status" {
   description = "Status of Domain mapping."
 }
 
-output "vpc_project_id" {
-  value       = var.vpc_project_id
-  description = "The project where VPC Connector is going to be deployed."
-}
-
-output "project_id" {
-  value       = var.serverless_project_id
-  description = "The project where Cloud Run will be created."
-}
-
-output "kms_project_id" {
-  value       = var.kms_project_id
-  description = "The project where KMS will be created."
-}
-
 output "keyring_name" {
-  value       = local.cloudrun_keyring_name
+  value       = module.secure_cloud_run.keyring_name
   description = "Keyring name."
 }
 
 output "key_name" {
-  value       = local.cloudrun_key_name
+  value       = module.secure_cloud_run.key_name
   description = "Key name."
 }
 
@@ -94,27 +99,29 @@ output "run_identity_services_sa" {
   description = "Service Identity to run services."
 }
 
-output "policy_for" {
-  description = "Policy Root: set one of the following values to determine where the policy is applied. Possible values: [\"project\", \"folder\", \"organization\"]."
-  value       = var.policy_for
-}
-
 output "folder_id" {
   description = "The folder ID to apply the policy to."
-  value       = var.folder_id
+  value       = module.secure_cloud_run.folder_id
 }
 
 output "organization_id" {
   description = "The organization ID to apply the policy to."
-  value       = var.organization_id
+  value       = module.secure_cloud_run.organization_id
 }
 
 output "domain" {
-  description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
-  value       = var.domain
+  value = module.secure_cloud_run.domain
 }
 
 output "shared_vpc_name" {
-  description = "Shared VPC name which is going to be re-used to create Serverless Connector."
-  value       = var.shared_vpc_name
+  value = module.secure_cloud_run.shared_vpc_name
+}
+
+output "terraform_sa_email" {
+  value = local.terraform_sa_email
+}
+
+output "policy_for" {
+  description = "Policy Root: set one of the following values to determine where the policy is applied. Possible values: [\"project\", \"folder\", \"organization\"]."
+  value       = module.secure_cloud_run.policy_for
 }
