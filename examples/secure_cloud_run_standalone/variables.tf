@@ -48,10 +48,9 @@ variable "create_access_context_manager_access_policy" {
   default     = false
 }
 
-variable "perimeter_members" {
+variable "access_level_members" {
   description = "The list of members who will be in the access level."
   type        = list(string)
-  default     = []
 }
 
 variable "domain" {

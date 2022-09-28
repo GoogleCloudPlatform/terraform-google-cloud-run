@@ -41,7 +41,7 @@ module "secure_harness" {
   private_service_connect_ip                  = "10.3.0.5"
   create_access_context_manager_access_policy = false
   access_context_manager_policy_id            = var.access_context_manager_policy_id
-  access_level_additional_members             = var.perimeter_members
+  access_level_members                        = var.access_level_members
   key_name                                    = "key-secure-artifact-registry"
   keyring_name                                = "krg-secure-artifact-registry"
   prevent_destroy                             = false
