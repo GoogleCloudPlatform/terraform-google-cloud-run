@@ -61,7 +61,7 @@ This example assumes that below mentioned pre-requisites are in place before con
 | cloud\_run\_sa | Service account to be used on Cloud Run. | `string` | n/a | yes |
 | domain | Domain name to run the load balancer on. Used if `ssl` is `true`. | `string` | n/a | yes |
 | folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
-| ip\_cidr\_range | The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported | `string` | n/a | yes |
+| ip\_cidr\_range | The range of internal addresses that are owned by the subnetwork and which is going to be used by VPC Connector. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported. | `string` | n/a | yes |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | organization\_id | The organization ID to apply the policy to. | `string` | `""` | no |
 | policy\_for | Policy Root: set one of the following values to determine where the policy is applied. Possible values: ["project", "folder", "organization"]. | `string` | `"project"` | no |
