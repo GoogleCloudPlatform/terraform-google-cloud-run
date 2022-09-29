@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 variable "location" {
   description = "The location where resources are going to be deployed."
   type        = string
@@ -125,20 +124,23 @@ variable "ip_cidr_range" {
 variable "artifact_registry_repository_project_id" {
   description = "Artifact Registry Repository Project ID to grant serverless identity viewer role."
   type        = string
+  default     = null
 }
 
 variable "artifact_registry_repository_location" {
   description = "Artifact Registry Repository location to grant serverless identity viewer role."
   type        = string
+  default     = null
 }
 
 variable "artifact_registry_repository_name" {
   description = "Artifact Registry Repository name to grant serverless identity viewer role"
   type        = string
+  default     = null
 }
 
-variable "use_artifact_registry_image" {
-  description = "When true it will give permission to read an image from your artifact registry."
+variable "grant_artifact_register_reader" {
+  description = "When true it will grant permission to read an image from your artifact registry. When true, you must provide `artifact_registry_repository_project_id`, `artifact_registry_repository_location` and `artifact_registry_repository_name`."
   type        = bool
   default     = false
 }
@@ -150,7 +152,7 @@ variable "create_subnet" {
 }
 
 variable "domain" {
-  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
+  description = "Domain name to run the load balancer on."
   type        = string
 }
 
@@ -170,4 +172,10 @@ variable "organization_id" {
   description = "The organization ID to apply the policy to."
   type        = string
   default     = ""
+}
+
+variable "resource_names_suffix" {
+  description = "A suffix to concat in the end of the network resources names being created."
+  type        = string
+  default     = null
 }

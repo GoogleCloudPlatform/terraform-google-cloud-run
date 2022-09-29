@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
+locals {
+  subnet_name = var.create_subnet ? "${var.subnet_name}${local.suffix}" : var.subnet_name
+}
 resource "google_compute_subnetwork" "vpc_subnetwork" {
   count = var.create_subnet ? 1 : 0
 
-  name                     = var.subnet_name
+  name                     = local.subnet_name
   project                  = var.vpc_project_id
   network                  = var.shared_vpc_name
   ip_cidr_range            = var.ip_cidr_range
@@ -37,9 +40,9 @@ module "serverless_connector" {
 
   project_id = var.connector_on_host_project ? var.vpc_project_id : var.serverless_project_id
   vpc_connectors = [{
-    name            = var.connector_name
+    name            = "${var.connector_name}${local.suffix}"
     region          = var.location
-    subnet_name     = var.subnet_name
+    subnet_name     = local.subnet_name
     host_project_id = var.vpc_project_id
     machine_type    = "e2-micro"
     min_instances   = 2
@@ -54,4 +57,3 @@ module "serverless_connector" {
     google_compute_subnetwork.vpc_subnetwork
   ]
 }
-
