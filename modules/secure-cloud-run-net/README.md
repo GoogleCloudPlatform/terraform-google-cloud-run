@@ -79,10 +79,10 @@ module "cloud_run_network" {
 
 | Name | Description |
 |------|-------------|
-| cloud\_services\_sa | Service Account for Cloud Run Service. |
+| cloud\_services\_sa | Google APIs service agent. |
 | connector\_id | VPC serverless connector ID. |
-| gca\_vpcaccess\_sa | Service Account for VPC Access. |
-| run\_identity\_services\_sa | Service Identity to run services. |
+| gca\_vpcaccess\_sa | Google APIs Service Agent for VPC Access. |
+| run\_identity\_services\_sa | Google APIs Service Agent to Cloud Run Service. |
 | subnet\_name | The name of the sub-network used to create VPC Connector. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
