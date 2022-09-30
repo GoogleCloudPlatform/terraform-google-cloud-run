@@ -71,7 +71,7 @@ variable "organization_id" {
 variable "resource_names_suffix" {
   description = "A suffix to concat in the end of the network resources names."
   type        = string
-  default     = null
+  default     = ""
 }
 
 variable "ip_cidr_range" {

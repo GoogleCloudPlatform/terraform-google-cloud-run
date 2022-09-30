@@ -123,18 +123,20 @@ The following dependencies must be available:
 
 ### APIs
 
-The Secure-cloud-run project will enable the following APIs to the Serverlesss Project:
+The Secure-cloud-run module will enable the following APIs to the Serverlesss Project:
 
 * Google VPC Access API: `vpcaccess.googleapis.com`
 * Compute API: `compute.googleapis.com`
 * Container Registry API: `container.googleapis.com`
 * Cloud Run API: `run.googleapis.com`
-* Cloud KMS API: `cloudkms.googleapis.com`
 
-The Secure-cloud-run project will enable the following APIs to the VPC Project:
+The Secure-cloud-run module will enable the following APIs to the VPC Project:
 
 * Google VPC Access API: `vpcaccess.googleapis.com`
 * Compute API: `compute.googleapis.com`
+
+The Secure-cloud-run module will enable the following APIs to the KMS Project:
+* Cloud KMS API: `cloudkms.googleapis.com`
 
 ### Service Account
 
