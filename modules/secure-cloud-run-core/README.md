@@ -6,43 +6,19 @@ The resources/services/activations/deletions that this module will create/trigge
 
 * Creates a Cloud Run Service.
 * Creates a Load Balancer Service using Google-managed SSL certificates.
-* Creates Cloud Armor Service only including the preconfigured rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation.
-
-## Requirements
-
-### Software
-
-The following dependencies must be available:
-
-* [Terraform](https://www.terraform.io/downloads.html) >= 0.13.0
-* [Terraform Provider for GCP][terraform-provider-gcp] plugin v3.53
-
-### APIs
-
-A project with the following APIs enabled must be used to host the
-resources of this module:
-
-* Serverless Project
-  * Google Cloud Run Service: `run.googleapis.com`
-
-### Service Account
-
-A service account with the following roles must be used to provision
-the resources of this module:
-
-* Cloud Run Developer: `roles/run.developer`
-* Compute Network User: `roles/compute.networkUser`
-* Artifact Registry Reader: `roles/artifactregistry.reader`
+* Creates Cloud Armor Service only including the pre-configured rules for SQLi, XSS, LFI, RCE, RFI, Scanner Detection, Protocol Attack and Session Fixation.
 
 ## Usage
 
 ```hcl
 module "cloud_run_core" {
-  source = "GoogleCloudPlatform/cloud-run/google//modules/cloud_run"
-  version = "~> 0.2.0"
+  source = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-run-core"
+  version = "~> 0.3.0"
 
   service_name          = <SERVICE NAME>
   location              = <SERVICE LOCATION>
+  region                = <REGION>
+  domain                = <YOUR-DOMAIN>
   serverless_project_id = <SERVICE PROJECT ID>
   image                 = <IMAGE URL>
   cloud_run_sa          = <CLOUD RUN SERVICE ACCOUNT EMAIL>
@@ -77,7 +53,7 @@ module "cloud_run_core" {
 | limits | Resource limits to the container. | `map(string)` | `null` | no |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
 | members | Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users.` | `list(string)` | `[]` | no |
-| owasp\_rules | These are additional Cloud Armor rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation (requires Cloud Armor default\_rule). | <pre>map(object({<br>    action     = string<br>    priority   = string<br>    expression = string<br>  }))</pre> | <pre>{<br>  "rule_lfi": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('lfi-v33-stable')",<br>    "priority": "1002"<br>  },<br>  "rule_protocolattack": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('protocolattack-v33-stable')",<br>    "priority": "1006"<br>  },<br>  "rule_rce": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('rce-v33-stable')",<br>    "priority": "1003"<br>  },<br>  "rule_rfi": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('rfi-v33-stable')",<br>    "priority": "1004"<br>  },<br>  "rule_scannerdetection": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('scannerdetection-v33-stable')",<br>    "priority": "1005"<br>  },<br>  "rule_sessionfixation": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('sessionfixation-v33-stable')",<br>    "priority": "1007"<br>  },<br>  "rule_sqli": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('sqli-v33-stable')",<br>    "priority": "1000"<br>  },<br>  "rule_xss": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('xss-v33-stable')",<br>    "priority": "1001"<br>  }<br>}</pre> | no |
+| owasp\_rules | These are additional Cloud Armor rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation (requires Cloud Armor default\_rule). | <pre>map(object({<br>    action     = string<br>    priority   = string<br>    expression = string<br>  }))</pre> | <pre>{<br>  "rule_canary": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('rce-v33-stable')",<br>    "priority": "1003"<br>  },<br>  "rule_lfi": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('lfi-v33-stable')",<br>    "priority": "1002"<br>  },<br>  "rule_protocolattack": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('protocolattack-v33-stable')",<br>    "priority": "1006"<br>  },<br>  "rule_rfi": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('rfi-v33-stable')",<br>    "priority": "1004"<br>  },<br>  "rule_scannerdetection": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('scannerdetection-v33-stable')",<br>    "priority": "1005"<br>  },<br>  "rule_sessionfixation": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('sessionfixation-v33-stable')",<br>    "priority": "1007"<br>  },<br>  "rule_sqli": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('sqli-v33-stable')",<br>    "priority": "1000"<br>  },<br>  "rule_xss": {<br>    "action": "deny(403)",<br>    "expression": "evaluatePreconfiguredExpr('xss-v33-stable')",<br>    "priority": "1001"<br>  }<br>}</pre> | no |
 | ports | Port which the container listens to (http1 or h2c). | <pre>object({<br>    name = string<br>    port = number<br>  })</pre> | <pre>{<br>  "name": "http1",<br>  "port": 8080<br>}</pre> | no |
 | project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
 | region | Location for load balancer and Cloud Run resources. | `string` | n/a | yes |
@@ -106,3 +82,30 @@ module "cloud_run_core" {
 | service\_url | The URL on which the deployed service is available. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Requirements
+
+### Software
+
+The following dependencies must be available:
+
+* [Terraform](https://www.terraform.io/downloads.html) >= 0.13.0
+* [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) plugin < 5.0
+
+### APIs
+
+A project with the following APIs enabled must be used to host the
+resources of this module:
+
+* Serverless Project
+  * Google Cloud Run Service: `run.googleapis.com`
+  * Google Compute Service: `compute.googleapis.com`
+
+### Service Account
+
+A service account with the following roles must be used to provision
+the resources of this module:
+
+* Cloud Run Developer: `roles/run.developer`
+* Compute Network User: `roles/compute.networkUser`
+* Artifact Registry Reader: `roles/artifactregistry.reader`
