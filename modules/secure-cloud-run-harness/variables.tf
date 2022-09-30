@@ -58,10 +58,9 @@ variable "create_access_context_manager_access_policy" {
   default     = false
 }
 
-variable "access_level_additional_members" {
+variable "access_level_members" {
   description = "The list of additional members who will be in the access level."
   type        = list(string)
-  default     = []
 }
 
 variable "additional_restricted_services" {
