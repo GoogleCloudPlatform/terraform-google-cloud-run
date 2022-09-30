@@ -65,7 +65,7 @@ This example assumes that below mentioned pre-requisites are in place before con
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | organization\_id | The organization ID to apply the policy to. | `string` | `""` | no |
 | policy\_for | Policy Root: set one of the following values to determine where the policy is applied. Possible values: ["project", "folder", "organization"]. | `string` | `"project"` | no |
-| resource\_names\_suffix | A suffix to concat in the end of the network resources names. | `string` | `null` | no |
+| resource\_names\_suffix | A suffix to concat in the end of the network resources names. | `string` | `""` | no |
 | serverless\_project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |
 | ssl | Run load balancer on HTTPS and provision managed certificate with provided `domain`. | `bool` | `true` | no |
