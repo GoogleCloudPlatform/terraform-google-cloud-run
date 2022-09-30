@@ -10,33 +10,6 @@ to be used by Cloud Run.
   * Allow Ingress only from internal and Cloud Load Balancing.
   * Allow VPC Egress to Private Ranges Only.
 
-## Requirements
-
-### Software
-
-The following dependencies must be available:
-
-* [Terraform](https://www.terraform.io/downloads.html) >= 0.13.0
-* [Terraform Provider for GCP][terraform-provider-gcp] plugin v3.53
-
-### APIs
-
-A project with the following APIs enabled must be used to host the
-resources of this module:
-
-* KMS Project
-  * Google Cloud Key Management Service: `cloudkms.googleapis.com`
-
-### Service Account
-
-A service account with the following roles must be used to provision
-the resources of this module:
-
-* KMS Project
-  * Cloud KMS Admin: `roles/cloudkms.admin`
-* Serverless Project
-  * Organization Policy Administrator: `roles/orgpolicy.policyAdmin`
-
 ## Usage
 
 ```hcl
@@ -92,3 +65,30 @@ module "cloud_run_security" {
 | keyring\_self\_link | Self link of the keyring. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Requirements
+
+### Software
+
+The following dependencies must be available:
+
+* [Terraform](https://www.terraform.io/downloads.html) >= 0.13.0
+* [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) < 5.0
+
+### APIs
+
+A project with the following APIs enabled must be used to host the
+resources of this module:
+
+* KMS Project
+  * Google Cloud Key Management Service: `cloudkms.googleapis.com`
+
+### Service Account
+
+A service account with the following roles must be used to provision
+the resources of this module:
+
+* KMS Project
+  * Cloud KMS Admin: `roles/cloudkms.admin`
+* Serverless Project
+  * Organization Policy Administrator: `roles/orgpolicy.policyAdmin`

@@ -42,7 +42,7 @@ module "access_level_members" {
   description = "${local.prefix} Access Level"
   policy      = local.access_context_manager_policy_id
   name        = local.access_level_name
-  members     = var.access_level_additional_members
+  members     = var.access_level_members
 }
 
 module "regular_service_perimeter" {

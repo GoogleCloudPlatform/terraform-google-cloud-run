@@ -53,7 +53,7 @@ module "secure_cloud_run_harness" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | access\_context\_manager\_policy\_id | The ID of the default Access Context Manager policy. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR_ORGANIZATION_ID --format="value(name)"`. | `number` | `null` | no |
-| access\_level\_additional\_members | The list of additional members who will be in the access level. | `list(string)` | `[]` | no |
+| access\_level\_members | The list of additional members who will be in the access level. | `list(string)` | n/a | yes |
 | additional\_restricted\_services | The list of additional services which will be in the perimeter. | `list(string)` | `[]` | no |
 | artifact\_registry\_repository\_description | The description of the Artifact Registry Repository to be created. | `string` | `"Secure Cloud Run Artifact Registry Repository"` | no |
 | artifact\_registry\_repository\_format | The format of the Artifact Registry Repository to be created. | `string` | `"DOCKER"` | no |
