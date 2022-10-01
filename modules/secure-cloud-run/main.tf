@@ -25,8 +25,7 @@ module "serverless_project_apis" {
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
     "container.googleapis.com",
-    "run.googleapis.com",
-    "cloudkms.googleapis.com"
+    "run.googleapis.com"
   ]
 }
 
@@ -40,6 +39,18 @@ module "vpc_project_apis" {
   activate_apis = [
     "vpcaccess.googleapis.com",
     "compute.googleapis.com"
+  ]
+}
+
+module "kms_project_apis" {
+  source  = "terraform-google-modules/project-factory/google//modules/project_services"
+  version = "~> 13.0"
+
+  project_id                  = var.kms_project_id
+  disable_services_on_destroy = false
+
+  activate_apis = [
+    "cloudkms.googleapis.com"
   ]
 }
 

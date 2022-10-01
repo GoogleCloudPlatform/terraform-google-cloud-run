@@ -1,17 +1,57 @@
-# Simple Cloud Run Example
+# Secure Cloud Run Example
 
-This example showcases the basic deployment of containerized applications on Cloud Run, along with domain mapping and IAM policy for the service.
+This example showcases the deployment of Secure Cloud Run, along with domain mapping and IAM policy for the service.
 
 The resources/services/activations/deletions that this example will create/trigger are:
 
-* Creates a Cloud Run service with provided name and container
-* Creates a Service Account to be used by Cloud Run Service.
+* Creates Firewall rules on your **VPC Project**.
+  * Serverless to VPC Connector
+  * VPC Connector to Serverless
+  * VPC Connector to LB
+  * VPC Connector Health Checks
+* Creates a sub network to VPC Connector usage purpose.
+* Creates Serverless Connector on your **VPC Project** or **Serverless Project**. Refer the comparison below:
+  * Advantages of creating connectors in the [VPC Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#host-project)
+  * Advantages of creating connectors in the [Serverless Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#service-projects)
+* Grant the necessary roles for Cloud Run are able to use VPC Connector on your Shared VPC when creating VPC Connector in host project.
+  * Grant Network User role to Cloud Services service account.
+  * Grant VPC Access User to Cloud Run Service Identity when deploying VPC Access.
+  * Creates KMS Keyring and Key for [customer managed encryption keys](https://cloud.google.com/run/docs/securing/using-cmek) in the **KMS Project** to be used by Cloud Run.
+  * Enables Organization Policies related to Cloud Run in the **Serverless Project**.
+  * Allow Ingress only from internal and Cloud Load Balancing.
+  * Allow VPC Egress to Private Ranges Only.
+  * Creates a Cloud Run Service.
+  * Creates a Load Balancer Service using Google-managed SSL certificates.
+  * Creates Cloud Armor Service only including the preconfigured rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation.
+
+## Organization Policies
+
+By default, this example will apply 2 organization policies at the project level for the **Serverless Project**.
+  * Allow Ingress only from internal and Cloud Load Balancing.
+  * Allow VPC Egress to Private Ranges Only.
+
+To the organization policies to be applied at folder or organization level, the `policy_for` variable needs to be changed. Possible values: [\"project\", \"folder\", \"organization\"] and the variables `folder_id` or `organization_id` need to be be filled up, respectively.
+
+## Usage
+
+To provision this example, run the following from within this directory:
+
+- Rename `terraform.example.tfvars` to `terraform.tfvars` by running `mv terraform.example.tfvars terraform.tfvars` and update the file with values from your environment.
+- `terraform init` to get the plugins
+- `terraform plan` to see the infrastructure plan
+- `terraform apply` to apply the infrastructure build
+
+### Clean up
+
+- Run `terraform destroy` to clean up your environment.
 
 ## Assumptions and Prerequisites
 
-This example assumes that below mentioned prerequisites are in place before consuming the example.
+This example assumes that below mentioned pre-requisites are in place before consuming the example.
 
-* All required APIs are enabled in the GCP Project
+* All required APIs are enabled in the GCP Project.
+* An Organization.
+* A Billing Account.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -21,11 +61,11 @@ This example assumes that below mentioned prerequisites are in place before cons
 | cloud\_run\_sa | Service account to be used on Cloud Run. | `string` | n/a | yes |
 | domain | Domain name to run the load balancer on. Used if `ssl` is `true`. | `string` | n/a | yes |
 | folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
-| ip\_cidr\_range | The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported | `string` | n/a | yes |
+| ip\_cidr\_range | The range of internal addresses that are owned by the subnetwork and which is going to be used by VPC Connector. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported. | `string` | n/a | yes |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | organization\_id | The organization ID to apply the policy to. | `string` | `""` | no |
 | policy\_for | Policy Root: set one of the following values to determine where the policy is applied. Possible values: ["project", "folder", "organization"]. | `string` | `"project"` | no |
-| resource\_names\_suffix | A suffix to concat in the end of the network resources names. | `string` | `null` | no |
+| resource\_names\_suffix | A suffix to concat in the end of the network resources names. | `string` | `""` | no |
 | serverless\_project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |
 | ssl | Run load balancer on HTTPS and provision managed certificate with provided `domain`. | `bool` | `true` | no |
@@ -66,23 +106,20 @@ These sections describe requirements for using this example.
 ### Software
 
 * [Terraform](https://www.terraform.io/downloads.html) ~> v0.13+
-* [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) ~> v3.53+
-* [Terraform Provider for GCP Beta](https://github.com/terraform-providers/terraform-provider-google-beta) ~>
-  v3.53+
+* [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) >= 3.53, < 5.0
+* [Terraform Provider for GCP Beta](https://github.com/terraform-providers/terraform-provider-google-beta) >= 3.53, < 5.0
 
 ### Service Account
 
 A service account can be used with required roles to execute this example:
 
-* Cloud Run Admin: `roles/run.admin`
-
-Know more about [Cloud Run Deployment Permissions](https://cloud.google.com/run/docs/reference/iam/roles#additional-configuration).
-
-The [Project Factory module](https://registry.terraform.io/modules/terraform-google-modules/project-factory/google/latest) and the
-[IAM module](https://registry.terraform.io/modules/terraform-google-modules/iam/google/latest) may be used in combination to provision a service account with the necessary roles applied.
-
-### APIs
-
-A project with the following APIs enabled must be used to host the main resource of this example:
-
-* Google Cloud Run: `run.googleapis.com`
+* Compute Shared VPC Admin: `roles/compute.xpnAdmin`
+* Network Admin: `roles/compute.networkAdmin`
+* Security Admin: `roles/compute.securityAdmin`
+* Serverless VPC Access Admin: `roles/vpcaccess.admin`
+* Cloud KMS Admin: `roles/cloudkms.admin`
+* Security Admin: `roles/compute.securityAdmin`
+* Serverless VPC Access Admin: `roles/vpcaccess.admin`
+* Cloud Run Developer: `roles/run.developer`
+* Compute Network User: `roles/compute.networkUser`
+* Artifact Registry Reader: `roles/artifactregistry.reader`

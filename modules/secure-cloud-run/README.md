@@ -1,5 +1,62 @@
 # Secure Cloud Run
 
+This module handles the deployment required for Cloud Run usage. Secure-cloud-run module will call the secure-cloud-run-core, secure-cloud-run-net and secure-cloud-run-net modules.
+
+When using a Shared VPC, you can chose where to create the VPC Connector.
+
+_Note:_ When using a single VPC you should provides VPC and Serverless project id with the same value and the value for `connector_on_host_project` variable must be `false`.
+
+The resources/services/activations/deletions that this module will create/trigger are:
+
+* Creates Firewall rules on your **VPC Project**.
+  * Serverless to VPC Connector
+  * VPC Connector to Serverless
+  * VPC Connector to LB
+  * VPC Connector Health Checks
+* Creates a sub network to VPC Connector usage purpose.
+* Creates Serverless Connector on your **VPC Project** or **Serverless Project**. Refer the comparison below:
+  * Advantages of creating connectors in the [VPC Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#host-project)
+  * Advantages of creating connectors in the [Serverless Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#service-projects)
+* Grant the necessary roles for Cloud Run are able to use VPC Connector on your Shared VPC when creating VPC Connector in host project.
+  * Grant Network User role to Cloud Services service account.
+  * Grant VPC Access User to Cloud Run Service Identity when deploying VPC Access.
+
+* Secure-cloud-run-security module will apply:
+  * Creates KMS Keyring and Key for [customer managed encryption keys](https://cloud.google.com/run/docs/securing/using-cmek) in the **KMS Project** to be used by Cloud Run.
+  * Enables Organization Policies related to Cloud Run in the **Serverless Project**.
+  * Allow Ingress only from internal and Cloud Load Balancing.
+  * Allow VPC Egress to Private Ranges Only.
+
+* Secure-cloud-run-core module will apply:
+  * Creates a Cloud Run Service.
+  * Creates a Load Balancer Service using Google-managed SSL certificates.
+  * Creates Cloud Armor Service only including the preconfigured rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation.
+
+## Usage
+
+Basic usage of this module is as follows:
+
+```hcl
+module "secure_cloud_run" {
+  source = "../modules/secure-cloud-run"
+
+  vpc_project_id                          = <VPC Project ID>
+  kms_project_id                          = <KMS Project ID>
+  serverless_project_id                   = <Serverless Project ID>
+  domain                                  = <Domain>
+  shared_vpc_name                         = <Shared VPC Name
+  ip_cidr_range                           = <IP CIDR Range>
+  service_name                            = <Service Name>
+  location                                = <Location>
+  region                                  = <Region>
+  image                                   = <Image>
+  cloud_run_sa                            = <Cloud Run Service Account>
+  artifact_registry_repository_location   = <Artifact Registry Repository Location>
+  artifact_registry_repository_name       = <Artifact Registry Repository Name>
+  artifact_registry_repository_project_id = <Artifact Registry Repository Project ID>
+}
+```
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
@@ -16,7 +73,7 @@
 | folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
 | grant\_artifact\_register\_reader | When true it will grant permission to read an image from your artifact registry. When true, you must provide `artifact_registry_repository_project_id`, `artifact_registry_repository_location` and `artifact_registry_repository_name`. | `bool` | `false` | no |
 | image | Image url to be deployed on Cloud Run. | `string` | n/a | yes |
-| ip\_cidr\_range | The range of internal addresses that are owned by this subnetwork. Provide this property when you create the subnetwork. For example, 10.0.0.0/8 or 192.168.0.0/16. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported | `string` | n/a | yes |
+| ip\_cidr\_range | The range of internal addresses that are owned by the subnetwork and which is going to be used by VPC Connector. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported. | `string` | n/a | yes |
 | key\_name | The name of KMS Key to be created and used in Cloud Run. | `string` | `"cloud-run-kms-key"` | no |
 | key\_protection\_level | The protection level to use when creating a version based on this template. Possible values: ["SOFTWARE", "HSM"] | `string` | `"HSM"` | no |
 | key\_rotation\_period | Period of key rotation in seconds. | `string` | `"2592000s"` | no |
@@ -54,3 +111,50 @@
 | service\_url | Url of the created service. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Requirements
+
+### Software
+
+The following dependencies must be available:
+
+* [Terraform](https://www.terraform.io/downloads.html) >= 0.13.0
+* [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) < 5.0
+
+### APIs
+
+The Secure-cloud-run module will enable the following APIs to the Serverlesss Project:
+
+* Google VPC Access API: `vpcaccess.googleapis.com`
+* Compute API: `compute.googleapis.com`
+* Container Registry API: `container.googleapis.com`
+* Cloud Run API: `run.googleapis.com`
+
+The Secure-cloud-run module will enable the following APIs to the VPC Project:
+
+* Google VPC Access API: `vpcaccess.googleapis.com`
+* Compute API: `compute.googleapis.com`
+
+The Secure-cloud-run module will enable the following APIs to the KMS Project:
+* Cloud KMS API: `cloudkms.googleapis.com`
+
+### Service Account
+
+A service account with the following roles must be used to provision
+the resources of this module:
+
+* VPC Project
+  * Compute Shared VPC Admin: `roles/compute.xpnAdmin`
+  * Network Admin: `roles/compute.networkAdmin`
+  * Security Admin: `roles/compute.securityAdmin`
+  * Serverless VPC Access Admin: `roles/vpcaccess.admin`
+* KMS Project
+  * Cloud KMS Admin: `roles/cloudkms.admin`
+* Serverless Project
+  * Security Admin: `roles/compute.securityAdmin`
+  * Serverless VPC Access Admin: `roles/vpcaccess.admin`
+  * Cloud Run Developer: `roles/run.developer`
+  * Compute Network User: `roles/compute.networkUser`
+  * Artifact Registry Reader: `roles/artifactregistry.reader`
+
+**Note:** [Secret Manager Secret Accessor](https://cloud.google.com/run/docs/configuring/secrets#access-secret) role must be granted to the Cloud Run service account to allow read access on the secret.
