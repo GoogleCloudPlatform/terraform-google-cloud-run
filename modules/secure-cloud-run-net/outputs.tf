@@ -21,17 +21,17 @@ output "connector_id" {
 
 output "gca_vpcaccess_sa" {
   value       = google_project_service_identity.vpcaccess_identity_sa.email
-  description = "Service Account for VPC Access."
+  description = "Google APIs Service Agent for VPC Access."
 }
 
 output "cloud_services_sa" {
   value       = "${data.google_project.serverless_project_id.number}@cloudservices.gserviceaccount.com"
-  description = "Service Account for Cloud Run Service."
+  description = "Google APIs service agent."
 }
 
 output "run_identity_services_sa" {
   value       = google_project_service_identity.run_identity_sa.email
-  description = "Service Identity to run services."
+  description = "Google APIs Service Agent to Cloud Run Service."
 }
 
 output "subnet_name" {
