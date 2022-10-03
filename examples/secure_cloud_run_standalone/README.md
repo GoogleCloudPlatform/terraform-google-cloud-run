@@ -38,6 +38,7 @@ The resources/services/activations/deletions that this example will create/trigg
 To provision this example, run the following from within this directory:
 
 - Rename `terraform.example.tfvars` to `terraform.tfvars` by running `mv terraform.example.tfvars terraform.tfvars` and update the file with values from your environment.
+- Rename `providers.tf.example` to `providers.tf` by running `mv providers.tf.example providers.tf`. Then, open the `providers.tf` and change the value for the field `impersonate_service_account =` with the Terraform service account that will be used to deploy this example.
 - `terraform init` to get the plugins.
 - `terraform plan` to see the infrastructure plan.
 - `terraform apply` to apply the infrastructure build.
