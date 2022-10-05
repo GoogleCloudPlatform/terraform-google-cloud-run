@@ -114,11 +114,9 @@ These sections describe requirements for using this example.
 A service account can be used with required roles to execute this example:
 
 * Compute Shared VPC Admin: `roles/compute.xpnAdmin`
-* Network Admin: `roles/compute.networkAdmin`
 * Security Admin: `roles/compute.securityAdmin`
 * Serverless VPC Access Admin: `roles/vpcaccess.admin`
 * Cloud KMS Admin: `roles/cloudkms.admin`
-* Security Admin: `roles/compute.securityAdmin`
 * Serverless VPC Access Admin: `roles/vpcaccess.admin`
 * Cloud Run Developer: `roles/run.developer`
 * Compute Network User: `roles/compute.networkUser`
