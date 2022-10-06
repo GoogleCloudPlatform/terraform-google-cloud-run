@@ -43,6 +43,8 @@ To provision this example, run the following from within this directory:
 - `terraform plan` to see the infrastructure plan.
 - `terraform apply` to apply the infrastructure build.
 
+**Note:** The user or service account being used to deploy the `Standalone Example` should be part of the Access Level Perimeter. You must add the account used in the `access_level_members` variable.
+
 ### Clean up
 
 - Run `terraform destroy` to clean up your environment.
@@ -59,10 +61,10 @@ This example assumes that below mentioned prerequisites are in place before cons
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| access\_context\_manager\_policy\_id | The id of the default Access Context Manager policy. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR_ORGANIZATION_ID --format="value(name)"`. | `number` | `null` | no |
+| access\_context\_manager\_policy\_id | The id of the default Access Context Manager policy. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR_ORGANIZATION_ID --format="value(name)"`. This variable must be provided if `create_access_context_manager_access_policy` is set to `false` | `number` | `null` | no |
 | access\_level\_members | The list of members who will be in the access level. | `list(string)` | n/a | yes |
 | billing\_account | The ID of the billing account to associate this project with. | `string` | n/a | yes |
-| create\_access\_context\_manager\_access\_policy | Defines if Access Context Manager will be created by Terraform. | `bool` | `false` | no |
+| create\_access\_context\_manager\_access\_policy | Defines if Access Context Manager will be created by Terraform. If set to `false`, you must provide `access_context_manager_policy_id`. More information about Access Context Manager creation in [this documentation](https://cloud.google.com/access-context-manager/docs/create-access-level). | `bool` | n/a | yes |
 | domain | Domain name to run the load balancer on. | `string` | n/a | yes |
 | org\_id | The organization ID. | `string` | n/a | yes |
 | parent\_folder\_id | The ID of a folder to host the infrastructure created in this example. | `string` | `""` | no |
