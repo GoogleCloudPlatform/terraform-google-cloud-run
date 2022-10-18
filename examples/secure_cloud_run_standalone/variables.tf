@@ -37,15 +37,14 @@ variable "serverless_folder_suffix" {
 }
 
 variable "access_context_manager_policy_id" {
+  description = "The id of the default Access Context Manager policy. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR_ORGANIZATION_ID --format=\"value(name)\"`. This variable must be provided if `create_access_context_manager_access_policy` is set to `false`"
   type        = number
-  description = "The id of the default Access Context Manager policy. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR_ORGANIZATION_ID --format=\"value(name)\"`."
   default     = null
 }
 
 variable "create_access_context_manager_access_policy" {
-  description = "Defines if Access Context Manager will be created by Terraform."
+  description = "Defines if Access Context Manager will be created by Terraform. If set to `false`, you must provide `access_context_manager_policy_id`. More information about Access Context Manager creation in [this documentation](https://cloud.google.com/access-context-manager/docs/create-access-level)."
   type        = bool
-  default     = false
 }
 
 variable "access_level_members" {

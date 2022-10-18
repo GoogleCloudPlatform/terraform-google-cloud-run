@@ -16,9 +16,10 @@
  * limitations under the License.
  */
 
-org_id                           = "000000000000"
-parent_folder_id                 = "000000000000"
-billing_account                  = "000000-000000-000000"
-access_context_manager_policy_id = "000000000000"
-access_level_members             = ["user:demouser@example.com"]
-domain                           = "YOUR-DOMAIN-NAME"
+org_id                                      = "000000000000"
+parent_folder_id                            = "000000000000"
+billing_account                             = "000000-000000-000000"
+access_context_manager_policy_id            = "000000000000"
+access_level_members                        = ["user:demouser@example.com"]
+domain                                      = "YOUR-DOMAIN-NAME"
+create_access_context_manager_access_policy = false
