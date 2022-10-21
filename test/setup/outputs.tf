@@ -26,3 +26,8 @@ output "sa_key" {
   value     = google_service_account_key.int_test.private_key
   sensitive = true
 }
+
+output "verified_domain_name" {
+  value = []
+}
+
