@@ -294,3 +294,15 @@ variable "domain_map_annotations" {
   type        = map(string)
   default     = {}
 }
+
+variable "ssl_certificates" {
+  description = "SSL cert self_link list. Required if ssl is true and no private_key and certificate is provided."
+  type        = list(string)
+  default     = []
+}
+
+variable "use_ssl_certificates" {
+  description = "If true, use the certificates provided by ssl_certificates, otherwise, create cert from private_key and certificate"
+  type        = bool
+  default     = false
+}
