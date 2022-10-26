@@ -47,7 +47,7 @@ variable "kms_project_id" {
 
 variable "domain" {
   description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
-  type        = string
+  type        = list(string)
 }
 
 variable "policy_for" {
@@ -71,10 +71,22 @@ variable "organization_id" {
 variable "resource_names_suffix" {
   description = "A suffix to concat in the end of the network resources names."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "ip_cidr_range" {
   description = "The range of internal addresses that are owned by the subnetwork and which is going to be used by VPC Connector. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported."
   type        = string
+}
+
+variable "create_cloud_armor_policies" {
+  type        = bool
+  description = "When `true` the terraform will create the Cloud Armor policies. When `false`, the user must provide his own Cloud Armor name in `cloud_armor_policies_name`."
+  default     = true
+}
+
+variable "cloud_armor_policies_name" {
+  type        = string
+  description = "Cloud Armor policy name already created the serverless project. If `create_cloud_armor_policies` is `false`, this variable must be provided, If `create_cloud_armor_policies` is `true`, this variable will be ignored."
+  default     = null
 }

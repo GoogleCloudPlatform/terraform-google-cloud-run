@@ -58,7 +58,7 @@ variable "region" {
 
 variable "domain" {
   description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
-  type        = string
+  type        = list(string)
 }
 
 variable "default_rules" {
@@ -99,7 +99,7 @@ variable "owasp_rules" {
       priority   = "1002"
       expression = "evaluatePreconfiguredExpr('lfi-v33-stable')"
     }
-    rule_canary = {
+    rule_rce = {
       action     = "deny(403)"
       priority   = "1003"
       expression = "evaluatePreconfiguredExpr('rce-v33-stable')"
@@ -158,151 +158,37 @@ variable "members" {
   default     = []
 }
 
-variable "generate_revision_name" {
-  description = "Option to enable revision name generation."
+variable "create_cloud_armor_policies" {
   type        = bool
+  description = "When `true` the terraform will create the Cloud Armor policies. When `false`, the user must provide his own Cloud Armor name in `cloud_armor_policies_name`."
   default     = true
 }
 
-variable "traffic_split" {
-  description = "Managing traffic routing to the service."
-  type = list(object({
-    latest_revision = bool
-    percent         = number
-    revision_name   = string
-  }))
-  default = [{
-    latest_revision = true
-    percent         = 100
-    revision_name   = "v1-0-0"
-  }]
-}
-
-variable "service_labels" {
-  description = "A set of key/value label pairs to assign to the service."
-  type        = map(string)
-  default     = {}
-}
-
-// Metadata
-variable "template_labels" {
-  description = "A set of key/value label pairs to assign to the container metadata."
-  type        = map(string)
-  default     = {}
-}
-
-// template spec
-variable "container_concurrency" {
-  description = "Concurrent request limits to the service."
-  type        = number
+variable "cloud_armor_policies_name" {
+  type        = string
+  description = "Cloud Armor policy name already created in the project. If `create_cloud_armor_policies` is `false`, this variable must be provided, If `create_cloud_armor_policies` is `true`, this variable will be ignored."
   default     = null
 }
 
-variable "timeout_seconds" {
-  description = "Timeout for each request."
-  type        = number
-  default     = 120
-}
-
-variable "volumes" {
-  description = "[Beta] Volumes needed for environment variables (when using secret)."
-  type = list(object({
-    name = string
-    secret = set(object({
-      secret_name = string
-      items       = map(string)
-    }))
-  }))
-  default = []
-}
-
-# template spec container
-# resources
-# cpu = (core count * 1000)m
-# memory = (size) in Mi/Gi
-variable "limits" {
-  description = "Resource limits to the container."
-  type        = map(string)
-  default     = null
-}
-variable "requests" {
-  description = "Resource requests to the container."
-  type        = map(string)
-  default     = {}
-}
-
-variable "ports" {
-  description = "Port which the container listens to (http1 or h2c)."
-  type = object({
-    name = string
-    port = number
-  })
-  default = {
-    name = "http1"
-    port = 8080
-  }
-}
-
-variable "argument" {
-  description = "Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments."
-  type        = list(string)
-  default     = []
-}
-
-variable "container_command" {
-  description = "Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten."
-  type        = list(string)
-  default     = []
-}
-
-variable "volume_mounts" {
-  type = list(object({
-    mount_path = string
-    name       = string
-  }))
-  description = "[Beta] Volume Mounts to be attached to the container (when using secret)."
-  default     = []
-}
-
-// Domain Mapping
 variable "verified_domain_name" {
-  description = "Custom Domain Name."
-  type        = string
-  default     = ""
-}
-
-variable "force_override" {
-  description = "Option to force override existing mapping."
-  type        = bool
-  default     = false
-}
-
-variable "certificate_mode" {
-  description = "The mode of the certificate (NONE or AUTOMATIC)."
-  type        = string
-  default     = "NONE"
-}
-
-variable "domain_map_labels" {
-  description = "A set of key/value label pairs to assign to the Domain mapping."
-  type        = map(string)
-  default     = {}
-}
-
-variable "domain_map_annotations" {
-  description = "Annotations to the domain map."
-  type        = map(string)
-  default     = {}
-}
-
-variable "ssl_certificates" {
-  description = "SSL cert self_link list. Required if ssl is true and no private_key and certificate is provided."
   type        = list(string)
-  default     = []
+  description = "Custom Domain Name"
 }
 
-variable "use_ssl_certificates" {
-  description = "If true, use the certificates provided by ssl_certificates, otherwise, create cert from private_key and certificate"
-  type        = bool
-  default     = false
+variable "max_scale_instances" {
+  description = "Sets the maximum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling)."
+  type        = number
+  default     = 2
+}
+
+variable "min_scale_instances" {
+  description = "Sets the minimum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling)."
+  type        = number
+  default     = 1
+}
+
+variable "vpc_egress_value" {
+  description = "Sets VPC Egress firewall rule. Supported values are all-traffic, all (deprecated), and private-ranges-only. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic."
+  type        = string
+  default     = "private-ranges-only"
 }

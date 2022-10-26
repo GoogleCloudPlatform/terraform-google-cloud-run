@@ -58,14 +58,16 @@ This example assumes that below mentioned pre-requisites are in place before con
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| cloud\_armor\_policies\_name | Cloud Armor policy name already created the serverless project. If `create_cloud_armor_policies` is `false`, this variable must be provided, If `create_cloud_armor_policies` is `true`, this variable will be ignored. | `string` | `null` | no |
 | cloud\_run\_sa | Service account to be used on Cloud Run. | `string` | n/a | yes |
-| domain | Domain name to run the load balancer on. Used if `ssl` is `true`. | `string` | n/a | yes |
+| create\_cloud\_armor\_policies | When `true` the terraform will create the Cloud Armor policies. When `false`, the user must provide his own Cloud Armor name in `cloud_armor_policies_name`. | `bool` | `true` | no |
+| domain | Domain name to run the load balancer on. Used if `ssl` is `true`. | `list(string)` | n/a | yes |
 | folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
 | ip\_cidr\_range | The range of internal addresses that are owned by the subnetwork and which is going to be used by VPC Connector. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported. | `string` | n/a | yes |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | organization\_id | The organization ID to apply the policy to. | `string` | `""` | no |
 | policy\_for | Policy Root: set one of the following values to determine where the policy is applied. Possible values: ["project", "folder", "organization"]. | `string` | `"project"` | no |
-| resource\_names\_suffix | A suffix to concat in the end of the network resources names. | `string` | `""` | no |
+| resource\_names\_suffix | A suffix to concat in the end of the network resources names. | `string` | `null` | no |
 | serverless\_project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |
 | ssl | Run load balancer on HTTPS and provision managed certificate with provided `domain`. | `bool` | `true` | no |

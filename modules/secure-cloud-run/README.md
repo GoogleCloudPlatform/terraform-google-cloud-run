@@ -65,10 +65,12 @@ module "secure_cloud_run" {
 | artifact\_registry\_repository\_location | Artifact Registry Repository location to grant serverless identity viewer role. | `string` | `null` | no |
 | artifact\_registry\_repository\_name | Artifact Registry Repository name to grant serverless identity viewer role | `string` | `null` | no |
 | artifact\_registry\_repository\_project\_id | Artifact Registry Repository Project ID to grant serverless identity viewer role. | `string` | `null` | no |
+| cloud\_armor\_policies\_name | Cloud Armor policy ID already created. If `create_cloud_armor_policies` is `false`, this variable must be provided, If `create_cloud_armor_policies` is `true`, this variable will be ignored. | `string` | `null` | no |
 | cloud\_run\_sa | Service account to be used on Cloud Run. | `string` | n/a | yes |
 | connector\_name | The name for the connector to be created. | `string` | `"serverless-vpc-connector"` | no |
+| create\_cloud\_armor\_policies | When `true` the terraform will create the Cloud Armor policies. When `false`, the user must provide his own Cloud Armor name in `cloud_armor_policies_name`. | `bool` | `true` | no |
 | create\_subnet | The subnet will be created with the subnet\_name variable if true. When false, it will use the subnet\_name for the subnet. | `bool` | `true` | no |
-| domain | Domain name to run the load balancer on. | `string` | n/a | yes |
+| domain | Domain name to run the load balancer on. | `list(string)` | n/a | yes |
 | env\_vars | Environment variables (cleartext) | <pre>list(object({<br>    value = string<br>    name  = string<br>  }))</pre> | `[]` | no |
 | folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
 | grant\_artifact\_register\_reader | When true it will grant permission to read an image from your artifact registry. When true, you must provide `artifact_registry_repository_project_id`, `artifact_registry_repository_location` and `artifact_registry_repository_name`. | `bool` | `false` | no |
@@ -80,7 +82,9 @@ module "secure_cloud_run" {
 | keyring\_name | Keyring name. | `string` | `"cloud-run-kms-keyring"` | no |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
+| max\_scale\_instances | Sets the maximum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling). | `number` | `2` | no |
 | members | Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users.` | `list(string)` | `[]` | no |
+| min\_scale\_instances | Sets the minimum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling). | `number` | `1` | no |
 | organization\_id | The organization ID to apply the policy to. | `string` | `""` | no |
 | policy\_for | Policy Root: set one of the following values to determine where the policy is applied. Possible values: ["project", "folder", "organization"]. | `string` | `"project"` | no |
 | prevent\_destroy | Set the `prevent_destroy` lifecycle attribute on the Cloud KMS key. | `bool` | `true` | no |
@@ -89,9 +93,9 @@ module "secure_cloud_run" {
 | serverless\_project\_id | The project to deploy the cloud run service. | `string` | n/a | yes |
 | service\_name | Shared VPC name. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |
-| ssl\_certificates | SSL cert self\_link list. Required if ssl is true and no private\_key and certificate is provided. | `list(string)` | `[]` | no |
 | subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | `null` | no |
-| use\_ssl\_certificates | If true, use the certificates provided by ssl\_certificates, otherwise, create cert from private\_key and certificate | `bool` | `false` | no |
+| verified\_domain\_name | Custom Domain Name | `list(string)` | `[]` | no |
+| vpc\_egress\_value | Sets VPC Egress firewall rule. Supported values are all-traffic, all (deprecated), and private-ranges-only. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic. | `string` | `"private-ranges-only"` | no |
 | vpc\_project\_id | The host project for the shared vpc. | `string` | n/a | yes |
 
 ## Outputs

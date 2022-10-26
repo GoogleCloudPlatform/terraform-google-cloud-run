@@ -15,33 +15,36 @@
  */
 
 locals {
-  cloudrun_key_name     = "cloud-run-${var.resource_names_suffix}"
-  cloudrun_keyring_name = "cloud-run-keyring-${var.resource_names_suffix}"
+  suffix                = var.resource_names_suffix == null ? "" : "-${var.resource_names_suffix}"
+  cloudrun_key_name     = "cloud-run${local.suffix}"
+  cloudrun_keyring_name = "cloud-run-keyring${local.suffix}"
 }
 
 module "secure_cloud_run" {
   source = "../../modules/secure-cloud-run"
 
-  connector_name        = "con-run"
-  subnet_name           = "vpc-subnet"
-  vpc_project_id        = var.vpc_project_id
-  serverless_project_id = var.serverless_project_id
-  domain                = var.domain
-  kms_project_id        = var.kms_project_id
-  shared_vpc_name       = var.shared_vpc_name
-  ip_cidr_range         = var.ip_cidr_range
-  key_name              = local.cloudrun_key_name
-  keyring_name          = local.cloudrun_keyring_name
-  prevent_destroy       = false
-  key_rotation_period   = "2592000s"
-  service_name          = "hello-world"
-  location              = "us-central1"
-  region                = "us-central1"
-  image                 = "us-docker.pkg.dev/cloudrun/container/hello"
-  cloud_run_sa          = var.cloud_run_sa
-  policy_for            = var.policy_for
-  folder_id             = var.folder_id
-  organization_id       = var.organization_id
-  resource_names_suffix = var.resource_names_suffix
-  create_subnet         = true
+  connector_name              = "con-run"
+  subnet_name                 = "vpc-subnet"
+  vpc_project_id              = var.vpc_project_id
+  serverless_project_id       = var.serverless_project_id
+  domain                      = var.domain
+  kms_project_id              = var.kms_project_id
+  shared_vpc_name             = var.shared_vpc_name
+  ip_cidr_range               = var.ip_cidr_range
+  key_name                    = local.cloudrun_key_name
+  keyring_name                = local.cloudrun_keyring_name
+  prevent_destroy             = false
+  key_rotation_period         = "2592000s"
+  service_name                = "hello-world"
+  location                    = "us-central1"
+  region                      = "us-central1"
+  image                       = "us-docker.pkg.dev/cloudrun/container/hello"
+  cloud_run_sa                = var.cloud_run_sa
+  policy_for                  = var.policy_for
+  folder_id                   = var.folder_id
+  organization_id             = var.organization_id
+  resource_names_suffix       = var.resource_names_suffix
+  create_subnet               = true
+  create_cloud_armor_policies = var.create_cloud_armor_policies
+  cloud_armor_policies_name   = var.cloud_armor_policies_name
 }

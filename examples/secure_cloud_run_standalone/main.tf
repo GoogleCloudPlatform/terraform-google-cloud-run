@@ -46,6 +46,8 @@ module "secure_harness" {
   keyring_name                                = "krg-secure-artifact-registry"
   prevent_destroy                             = false
   artifact_registry_repository_name           = local.repository_name
+  egress_policies                             = var.egress_policies
+  ingress_policies                            = var.ingress_policies
 }
 
 resource "null_resource" "copy_image" {
