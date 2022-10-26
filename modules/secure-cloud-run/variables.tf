@@ -192,3 +192,11 @@ variable "use_ssl_certificates" {
   default     = false
 }
 
+/*
+variable "private_key" {
+  description = "Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty."
+  type        = string
+  default     = null
+}
+*/
+
