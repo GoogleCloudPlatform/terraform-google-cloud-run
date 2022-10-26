@@ -22,6 +22,8 @@ module "lb-http" {
   ssl                             = var.ssl
   managed_ssl_certificate_domains = [var.domain]
   https_redirect                  = var.ssl
+  ssl_certificates     = var.ssl_certificates
+  use_ssl_certificates = var.use_ssl_certificates
 
   backends = {
     default = {

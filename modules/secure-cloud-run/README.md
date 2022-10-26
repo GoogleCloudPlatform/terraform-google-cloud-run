@@ -89,7 +89,9 @@ module "secure_cloud_run" {
 | serverless\_project\_id | The project to deploy the cloud run service. | `string` | n/a | yes |
 | service\_name | Shared VPC name. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |
+| ssl\_certificates | SSL cert self\_link list. Required if ssl is true and no private\_key and certificate is provided. | `list(string)` | `[]` | no |
 | subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | `null` | no |
+| use\_ssl\_certificates | If true, use the certificates provided by ssl\_certificates, otherwise, create cert from private\_key and certificate | `bool` | `false` | no |
 | vpc\_project\_id | The host project for the shared vpc. | `string` | n/a | yes |
 
 ## Outputs
