@@ -194,7 +194,7 @@ variable "cloud_armor_policies_name" {
 
 variable "verified_domain_name" {
   type        = list(string)
-  description = "Custom Domain Name"
+  description = "List of Custom Domain Name"
   default     = []
 }
 

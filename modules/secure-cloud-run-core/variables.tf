@@ -172,7 +172,7 @@ variable "cloud_armor_policies_name" {
 
 variable "verified_domain_name" {
   type        = list(string)
-  description = "Custom Domain Name"
+  description = "List of custom Domain Name."
 }
 
 variable "max_scale_instances" {
