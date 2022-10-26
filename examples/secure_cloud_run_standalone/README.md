@@ -65,7 +65,7 @@ This example assumes that below mentioned prerequisites are in place before cons
 | access\_level\_members | The list of members who will be in the access level. | `list(string)` | n/a | yes |
 | billing\_account | The ID of the billing account to associate this project with. | `string` | n/a | yes |
 | create\_access\_context\_manager\_access\_policy | Defines if Access Context Manager will be created by Terraform. If set to `false`, you must provide `access_context_manager_policy_id`. More information about Access Context Manager creation in [this documentation](https://cloud.google.com/access-context-manager/docs/create-access-level). | `bool` | n/a | yes |
-| domain | Domain name to run the load balancer on. | `string` | n/a | yes |
+| domain | Domain name to run on the load balancer on. | `list(string)` | n/a | yes |
 | org\_id | The organization ID. | `string` | n/a | yes |
 | parent\_folder\_id | The ID of a folder to host the infrastructure created in this example. | `string` | `""` | no |
 | serverless\_folder\_suffix | The suffix to be concat in the Serverless folder name fldr-serverless-<SUFFIX>. | `string` | `""` | no |
