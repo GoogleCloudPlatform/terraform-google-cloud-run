@@ -182,7 +182,7 @@ variable "resource_names_suffix" {
 
 variable "create_cloud_armor_policies" {
   type        = bool
-  description = "When `true` the terraform will create the Cloud Armor policies. When `false`, the user must provide his own Cloud Armor name in `cloud_armor_policies_name`."
+  description = "When `true`, the terraform will create the Cloud Armor policies. When `false`, the user must provide their own Cloud Armor name in `cloud_armor_policies_name`."
   default     = true
 }
 
