@@ -8,6 +8,17 @@ The resources/services/activations/deletions that this module will create/trigge
 * Creates Domain mapping for the deployed service
 * Applies Cloud Run Invoker role to members
 
+## Mapping custom domains and subdomains
+
+You can map multiple custom domains and subdomains to the same Cloud Run service. If you want to register a domain with Cloud Domains, see [Registering a domain with Cloud Domains within the Cloud Run console](https://cloud.google.com/run/docs/mapping-custom-domains#register-domain).
+
+To add a custom domain or subdomain to your Cloud Run service, you need to add the values to the `verified_domain_name` variable.
+
+Before you've mapped your service to a custom domain in Cloud Run, you need to update your DNS records at your domain registry.
+If you're using Cloud DNS as your DNS provider, see [Adding a record](https://cloud.google.com/dns/docs/records#adding_a_record).
+
+In case your DNS is not managed by Google Cloud Domains, the ownership of your domain needs to be verified adding a `txt record` on your DNS configuration. This verification can be done following the steps from [this documentation](https://cloud.google.com/identity/docs/verify-domain-txt).
+
 ## Assumptions and Prerequisites
 
 This module assumes that below mentioned prerequisites are in place before consuming the module.
@@ -65,7 +76,7 @@ module "cloud_run" {
 | template\_labels | A set of key/value label pairs to assign to the container metadata | `map(string)` | `{}` | no |
 | timeout\_seconds | Timeout for each request | `number` | `120` | no |
 | traffic\_split | Managing traffic routing to the service | <pre>list(object({<br>    latest_revision = bool<br>    percent         = number<br>    revision_name   = string<br>  }))</pre> | <pre>[<br>  {<br>    "latest_revision": true,<br>    "percent": 100,<br>    "revision_name": "v1-0-0"<br>  }<br>]</pre> | no |
-| verified\_domain\_name | Custom Domain Name | `string` | `""` | no |
+| verified\_domain\_name | List of Custom Domain Name | `list(string)` | `[]` | no |
 | volume\_mounts | [Beta] Volume Mounts to be attached to the container (when using secret) | <pre>list(object({<br>    mount_path = string<br>    name       = string<br>  }))</pre> | `[]` | no |
 | volumes | [Beta] Volumes needed for environment variables (when using secret) | <pre>list(object({<br>    name = string<br>    secret = set(object({<br>      secret_name = string<br>      items       = map(string)<br>    }))<br>  }))</pre> | `[]` | no |
 
@@ -82,6 +93,7 @@ module "cloud_run" {
 | service\_name | Name of the created service |
 | service\_status | Status of the created service |
 | service\_url | The URL on which the deployed service is available |
+| verified\_domain\_name | List of Custom Domain Name |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

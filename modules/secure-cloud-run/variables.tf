@@ -179,3 +179,10 @@ variable "resource_names_suffix" {
   type        = string
   default     = null
 }
+
+variable "verified_domain_name" {
+  type        = list(string)
+  description = "List of Custom Domain Name"
+  default     = []
+}
+
