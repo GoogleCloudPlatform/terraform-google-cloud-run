@@ -180,9 +180,26 @@ variable "resource_names_suffix" {
   default     = null
 }
 
+variable "max_scale_instances" {
+  description = "Sets the maximum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling)."
+  type        = number
+  default     = 2
+}
+
+variable "min_scale_instances" {
+  description = "Sets the minimum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling)."
+  type        = number
+  default     = 1
+}
+
+variable "vpc_egress_value" {
+  description = "Sets VPC Egress firewall rule. Supported values are all-traffic, all (deprecated), and private-ranges-only. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic."
+  type        = string
+  default     = "private-ranges-only"
+}
+
 variable "verified_domain_name" {
   type        = list(string)
   description = "List of Custom Domain Name"
   default     = []
 }
-
