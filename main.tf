@@ -123,10 +123,10 @@ resource "google_cloud_run_service" "main" {
 }
 
 resource "google_cloud_run_domain_mapping" "domain_map" {
-  count    = var.verified_domain_name != "" ? 1 : 0
+  for_each = toset(var.verified_domain_name)
   provider = google-beta
   location = google_cloud_run_service.main.location
-  name     = var.verified_domain_name
+  name     = each.value
   project  = google_cloud_run_service.main.project
 
   metadata {
