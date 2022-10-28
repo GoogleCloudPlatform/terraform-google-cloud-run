@@ -50,11 +50,17 @@ output "service_status" {
 }
 
 output "domain_map_id" {
-  value       = google_cloud_run_domain_mapping.domain_map.*.id
+  value       = values(google_cloud_run_domain_mapping.domain_map)[*].id
   description = "Unique Identifier for the created domain map"
 }
 
 output "domain_map_status" {
-  value       = google_cloud_run_domain_mapping.domain_map.*.status
+  value       = values(google_cloud_run_domain_mapping.domain_map)[*].status
   description = "Status of Domain mapping"
 }
+
+output "verified_domain_name" {
+  value       = values(google_cloud_run_domain_mapping.domain_map)[*].name
+  description = "List of Custom Domain Name"
+}
+

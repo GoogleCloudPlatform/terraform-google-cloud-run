@@ -132,6 +132,7 @@ module "cloud_run_core" {
   region                      = var.region
   create_cloud_armor_policies = var.create_cloud_armor_policies
   cloud_armor_policies_name   = var.cloud_armor_policies_name
+  verified_domain_name        = var.verified_domain_name
 
   depends_on = [
     module.serverless_project_apis,

@@ -191,3 +191,9 @@ variable "cloud_armor_policies_name" {
   description = "Cloud Armor policy name already created in the project. If `create_cloud_armor_policies` is `false`, this variable must be provided, If `create_cloud_armor_policies` is `true`, this variable will be ignored."
   default     = null
 }
+
+variable "verified_domain_name" {
+  type        = list(string)
+  description = "List of Custom Domain Name"
+  default     = []
+}
