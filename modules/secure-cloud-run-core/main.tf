@@ -38,11 +38,11 @@ module "cloud_run" {
   argument               = var.argument
   container_command      = var.container_command
   volume_mounts          = var.volume_mounts
-  verified_domain_name   = var.verified_domain_name
   force_override         = var.force_override
   certificate_mode       = var.certificate_mode
   domain_map_labels      = var.domain_map_labels
   domain_map_annotations = var.domain_map_annotations
+  verified_domain_name   = var.verified_domain_name
 
   service_annotations = {
     "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"

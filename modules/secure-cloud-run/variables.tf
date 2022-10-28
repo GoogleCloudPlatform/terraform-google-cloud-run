@@ -197,3 +197,9 @@ variable "vpc_egress_value" {
   type        = string
   default     = "private-ranges-only"
 }
+
+variable "verified_domain_name" {
+  type        = list(string)
+  description = "List of Custom Domain Name"
+  default     = []
+}

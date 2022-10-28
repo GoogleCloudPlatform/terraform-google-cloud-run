@@ -194,9 +194,9 @@ variable "volume_mounts" {
 
 // Domain Mapping
 variable "verified_domain_name" {
-  type        = string
-  description = "Custom Domain Name"
-  default     = ""
+  type        = list(string)
+  description = "List of Custom Domain Name"
+  default     = []
 }
 
 variable "force_override" {

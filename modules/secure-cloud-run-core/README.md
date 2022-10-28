@@ -66,7 +66,7 @@ module "cloud_run_core" {
 | template\_labels | A set of key/value label pairs to assign to the container metadata. | `map(string)` | `{}` | no |
 | timeout\_seconds | Timeout for each request. | `number` | `120` | no |
 | traffic\_split | Managing traffic routing to the service. | <pre>list(object({<br>    latest_revision = bool<br>    percent         = number<br>    revision_name   = string<br>  }))</pre> | <pre>[<br>  {<br>    "latest_revision": true,<br>    "percent": 100,<br>    "revision_name": "v1-0-0"<br>  }<br>]</pre> | no |
-| verified\_domain\_name | Custom Domain Name. | `string` | `""` | no |
+| verified\_domain\_name | List of custom Domain Name. | `list(string)` | n/a | yes |
 | volume\_mounts | [Beta] Volume Mounts to be attached to the container (when using secret). | <pre>list(object({<br>    mount_path = string<br>    name       = string<br>  }))</pre> | `[]` | no |
 | volumes | [Beta] Volumes needed for environment variables (when using secret). | <pre>list(object({<br>    name = string<br>    secret = set(object({<br>      secret_name = string<br>      items       = map(string)<br>    }))<br>  }))</pre> | `[]` | no |
 | vpc\_connector\_id | VPC Connector id in the format projects/PROJECT/locations/LOCATION/connectors/NAME. | `string` | n/a | yes |
