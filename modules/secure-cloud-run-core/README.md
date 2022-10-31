@@ -37,9 +37,11 @@ module "cloud_run_core" {
 |------|-------------|------|---------|:--------:|
 | argument | Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments. | `list(string)` | `[]` | no |
 | certificate\_mode | The mode of the certificate (NONE or AUTOMATIC). | `string` | `"NONE"` | no |
+| cloud\_armor\_policies\_name | Cloud Armor policy name already created in the project. If `create_cloud_armor_policies` is `false`, this variable must be provided, If `create_cloud_armor_policies` is `true`, this variable will be ignored. | `string` | `null` | no |
 | cloud\_run\_sa | Service account to be used on Cloud Run. | `string` | n/a | yes |
 | container\_command | Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten. | `list(string)` | `[]` | no |
 | container\_concurrency | Concurrent request limits to the service. | `number` | `null` | no |
+| create\_cloud\_armor\_policies | When `true`, the terraform will create the Cloud Armor policies. When `false`, the user must provide their own Cloud Armor name in `cloud_armor_policies_name`. | `bool` | `true` | no |
 | default\_rules | Default rule for Cloud Armor. | <pre>map(object({<br>    action         = string<br>    priority       = string<br>    versioned_expr = string<br>    src_ip_ranges  = list(string)<br>    description    = string<br>  }))</pre> | <pre>{<br>  "default_rule": {<br>    "action": "allow",<br>    "description": "Default allow all rule",<br>    "priority": "2147483647",<br>    "src_ip_ranges": [<br>      "*"<br>    ],<br>    "versioned_expr": "SRC_IPS_V1"<br>  }<br>}</pre> | no |
 | domain | Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name. | `string` | n/a | yes |
 | domain\_map\_annotations | Annotations to the domain map. | `map(string)` | `{}` | no |
