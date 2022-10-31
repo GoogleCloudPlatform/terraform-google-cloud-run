@@ -133,6 +133,9 @@ module "cloud_run_core" {
   create_cloud_armor_policies = var.create_cloud_armor_policies
   cloud_armor_policies_name   = var.cloud_armor_policies_name
   verified_domain_name        = var.verified_domain_name
+  vpc_egress_value            = var.vpc_egress_value
+  min_scale_instances         = var.min_scale_instances
+  max_scale_instances         = var.max_scale_instances
 
   depends_on = [
     module.serverless_project_apis,

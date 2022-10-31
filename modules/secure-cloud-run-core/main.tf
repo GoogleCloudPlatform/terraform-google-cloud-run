@@ -49,9 +49,9 @@ module "cloud_run" {
   }
 
   template_annotations = {
-    "autoscaling.knative.dev/maxScale"        = 2,
-    "autoscaling.knative.dev/minScale"        = 1,
+    "autoscaling.knative.dev/maxScale"        = var.max_scale_instances,
+    "autoscaling.knative.dev/minScale"        = var.min_scale_instances,
     "run.googleapis.com/vpc-access-connector" = var.vpc_connector_id,
-    "run.googleapis.com/vpc-access-egress"    = "private-ranges-only"
+    "run.googleapis.com/vpc-access-egress"    = var.vpc_egress_value
   }
 }

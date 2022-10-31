@@ -82,7 +82,9 @@ module "secure_cloud_run" {
 | keyring\_name | Keyring name. | `string` | `"cloud-run-kms-keyring"` | no |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
+| max\_scale\_instances | Sets the maximum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling). | `number` | `2` | no |
 | members | Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users.` | `list(string)` | `[]` | no |
+| min\_scale\_instances | Sets the minimum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling). | `number` | `1` | no |
 | organization\_id | The organization ID to apply the policy to. | `string` | `""` | no |
 | policy\_for | Policy Root: set one of the following values to determine where the policy is applied. Possible values: ["project", "folder", "organization"]. | `string` | `"project"` | no |
 | prevent\_destroy | Set the `prevent_destroy` lifecycle attribute on the Cloud KMS key. | `bool` | `true` | no |
@@ -93,6 +95,7 @@ module "secure_cloud_run" {
 | shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |
 | subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | `null` | no |
 | verified\_domain\_name | List of Custom Domain Name | `list(string)` | `[]` | no |
+| vpc\_egress\_value | Sets VPC Egress firewall rule. Supported values are all-traffic, all (deprecated), and private-ranges-only. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic. | `string` | `"private-ranges-only"` | no |
 | vpc\_project\_id | The host project for the shared vpc. | `string` | n/a | yes |
 
 ## Outputs
