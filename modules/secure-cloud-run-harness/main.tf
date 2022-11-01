@@ -67,6 +67,10 @@ module "service_accounts" {
   project_id = module.serverless_project.project_id
   prefix     = "sa"
   names      = ["cloud-run"]
+
+  depends_on = [
+    time_sleep.wait_90_seconds
+  ]
 }
 
 resource "google_project_iam_member" "cloud_run_sa_roles" {
@@ -74,6 +78,10 @@ resource "google_project_iam_member" "cloud_run_sa_roles" {
   project  = module.serverless_project.project_id
   role     = each.value
   member   = module.service_accounts.iam_email
+
+  depends_on = [
+    time_sleep.wait_90_seconds
+  ]
 }
 
 resource "google_project_service_identity" "serverless_sa" {
@@ -81,12 +89,20 @@ resource "google_project_service_identity" "serverless_sa" {
 
   project = module.serverless_project.project_id
   service = "run.googleapis.com"
+
+  depends_on = [
+    time_sleep.wait_90_seconds
+  ]
 }
 
 resource "google_service_account_iam_member" "identity_service_account_user" {
   service_account_id = module.service_accounts.service_account.id
   role               = "roles/iam.serviceAccountUser"
   member             = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
+
+  depends_on = [
+    time_sleep.wait_90_seconds
+  ]
 }
 
 resource "google_project_service_identity" "artifact_sa" {
@@ -94,6 +110,10 @@ resource "google_project_service_identity" "artifact_sa" {
 
   project = module.security_project.project_id
   service = "artifactregistry.googleapis.com"
+
+  depends_on = [
+    time_sleep.wait_90_seconds
+  ]
 }
 
 resource "google_artifact_registry_repository" "repo" {
@@ -103,6 +123,10 @@ resource "google_artifact_registry_repository" "repo" {
   description   = var.artifact_registry_repository_description
   format        = var.artifact_registry_repository_format
   kms_key_name  = module.artifact_registry_kms.keys[var.key_name]
+
+  depends_on = [
+    time_sleep.wait_90_seconds
+  ]
 }
 
 resource "google_artifact_registry_repository_iam_member" "member" {
@@ -111,6 +135,10 @@ resource "google_artifact_registry_repository_iam_member" "member" {
   repository = google_artifact_registry_repository.repo.repository_id
   role       = "roles/artifactregistry.reader"
   member     = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
+
+  depends_on = [
+    time_sleep.wait_90_seconds
+  ]
 }
 
 module "artifact_registry_kms" {
@@ -130,4 +158,8 @@ module "artifact_registry_kms" {
   prevent_destroy      = var.prevent_destroy
   key_rotation_period  = var.key_rotation_period
   key_protection_level = var.key_protection_level
+
+  depends_on = [
+    time_sleep.wait_90_seconds
+  ]
 }
