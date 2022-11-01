@@ -54,7 +54,7 @@ variable "access_level_members" {
 
 variable "domain" {
   description = "Domain name to run on the load balancer on."
-  type        = list(string)
+  type        = string
 }
 
 variable "egress_policies" {
