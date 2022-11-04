@@ -46,14 +46,15 @@ module "access_level_members" {
 }
 
 module "regular_service_perimeter" {
-  source           = "terraform-google-modules/vpc-service-controls/google//modules/regular_service_perimeter"
-  version          = "~> 4.0"
-  policy           = local.access_context_manager_policy_id
-  perimeter_name   = local.perimeter_name
-  description      = "Serverless VPC Service Controls perimeter"
-  access_levels    = [module.access_level_members.name]
-  egress_policies  = var.egress_policies
-  ingress_policies = var.ingress_policies
+  source                  = "terraform-google-modules/vpc-service-controls/google//modules/regular_service_perimeter"
+  version                 = "~> 4.0"
+  policy                  = local.access_context_manager_policy_id
+  perimeter_name          = local.perimeter_name
+  description             = "Serverless VPC Service Controls perimeter"
+  access_levels           = [module.access_level_members.name]
+  egress_policies         = var.egress_policies
+  ingress_policies        = var.ingress_policies
+  vpc_accessible_services = ["RESTRICTED-SERVICES"]
 
   restricted_services = [
     "accessapproval.googleapis.com",
