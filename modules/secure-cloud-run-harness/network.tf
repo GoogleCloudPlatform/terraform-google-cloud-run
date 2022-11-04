@@ -73,3 +73,13 @@ module "network" {
     }
   ]
 }
+
+resource "google_dns_policy" "default_policy" {
+  project                   = module.serverless_project.project_id
+  name                      = "dns-default-policy"
+  enable_inbound_forwarding = var.dns_enable_inbound_forwarding
+  enable_logging            = var.dns_enable_logging
+  networks {
+    network_url = module.network.network_self_link
+  }
+}

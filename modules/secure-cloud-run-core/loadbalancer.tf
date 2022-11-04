@@ -21,7 +21,8 @@ module "lb-http" {
   project                         = var.project_id
   ssl                             = var.ssl
   managed_ssl_certificate_domains = [var.domain]
-  https_redirect                  = var.ssl
+  https_redirect                  = false
+  http_forward                    = false
 
   backends = {
     default = {
@@ -42,7 +43,7 @@ module "lb-http" {
         oauth2_client_secret = ""
       }
       log_config = {
-        enable      = false
+        enable      = true
         sample_rate = null
       }
     }
