@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+locals {
+  cloud_armor_id = var.create_cloud_armor_policies ? google_compute_security_policy.cloud-armor-security-policy[0].id : "projects/${var.project_id}/global/securityPolicies/${var.cloud_armor_policies_name}"
+}
+
 module "lb-http" {
   source                          = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
   version                         = "~> 6.3"
@@ -33,7 +37,7 @@ module "lb-http" {
         }
       ]
       enable_cdn              = false
-      security_policy         = google_compute_security_policy.cloud-armor-security-policy.id
+      security_policy         = local.cloud_armor_id
       custom_request_headers  = null
       custom_response_headers = null
 
@@ -62,6 +66,7 @@ resource "google_compute_region_network_endpoint_group" "serverless_neg" {
 }
 
 resource "google_compute_security_policy" "cloud-armor-security-policy" {
+  count   = var.create_cloud_armor_policies ? 1 : 0
   project = var.project_id
   name    = "cloud-armor-waf-policy"
   dynamic "rule" {

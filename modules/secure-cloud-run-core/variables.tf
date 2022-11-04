@@ -266,9 +266,8 @@ variable "volume_mounts" {
 
 // Domain Mapping
 variable "verified_domain_name" {
-  description = "Custom Domain Name."
-  type        = string
-  default     = ""
+  description = "List of custom Domain Name."
+  type        = list(string)
 }
 
 variable "force_override" {
@@ -293,4 +292,34 @@ variable "domain_map_annotations" {
   description = "Annotations to the domain map."
   type        = map(string)
   default     = {}
+}
+
+variable "create_cloud_armor_policies" {
+  type        = bool
+  description = "When `true`, the terraform will create the Cloud Armor policies. When `false`, the user must provide their own Cloud Armor name in `cloud_armor_policies_name`."
+  default     = true
+}
+
+variable "cloud_armor_policies_name" {
+  type        = string
+  description = "Cloud Armor policy name already created in the project. If `create_cloud_armor_policies` is `false`, this variable must be provided, If `create_cloud_armor_policies` is `true`, this variable will be ignored."
+  default     = null
+}
+
+variable "max_scale_instances" {
+  description = "Sets the maximum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling)."
+  type        = number
+  default     = 2
+}
+
+variable "min_scale_instances" {
+  description = "Sets the minimum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling)."
+  type        = number
+  default     = 1
+}
+
+variable "vpc_egress_value" {
+  description = "Sets VPC Egress firewall rule. Supported values are all-traffic, all (deprecated), and private-ranges-only. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic."
+  type        = string
+  default     = "private-ranges-only"
 }
