@@ -323,3 +323,16 @@ variable "vpc_egress_value" {
   type        = string
   default     = "private-ranges-only"
 }
+
+variable "ssl_certificates" {
+  type = object({
+    ssl_certificates_self_links       = list(string)
+    generate_certificates_for_domains = list(string)
+  })
+  validation {
+    condition = (!(length(var.ssl_certificates.ssl_certificates_self_links) == 0 && length(var.ssl_certificates.generate_certificates_for_domains) == 0) ||
+    !(length(var.ssl_certificates.ssl_certificates_self_links) > 0 && length(var.ssl_certificates.generate_certificates_for_domains) > 0))
+    error_message = "You must provide a SSL Certificate self-link or at least one domain to a SSL Certificate be generated."
+  }
+  description = "A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links in the pattern `projects/<PROJECT-ID>/global/sslCertificates/<CERT-NAME>` to be used by Load Balancer."
+}
