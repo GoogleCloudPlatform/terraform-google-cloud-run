@@ -151,11 +151,6 @@ variable "create_subnet" {
   default     = true
 }
 
-variable "domain" {
-  description = "Domain name to run the load balancer on."
-  type        = string
-}
-
 variable "policy_for" {
   description = "Policy Root: set one of the following values to determine where the policy is applied. Possible values: [\"project\", \"folder\", \"organization\"]."
   type        = string

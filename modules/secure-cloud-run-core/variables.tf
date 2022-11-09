@@ -56,11 +56,6 @@ variable "region" {
   type        = string
 }
 
-variable "domain" {
-  description = "Domain name to run the load balancer on. Used if `ssl` is `true`. Modify the default value below for your `domain` name."
-  type        = string
-}
-
 variable "default_rules" {
   description = "Default rule for Cloud Armor."
   default = {

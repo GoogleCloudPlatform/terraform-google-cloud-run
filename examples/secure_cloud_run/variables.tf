@@ -47,7 +47,7 @@ variable "kms_project_id" {
 
 variable "domain" {
   description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
-  type        = string
+  type        = list(string)
 }
 
 variable "policy_for" {
