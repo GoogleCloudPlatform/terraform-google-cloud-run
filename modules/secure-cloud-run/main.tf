@@ -129,18 +129,23 @@ module "cloud_run_security" {
 module "cloud_run_core" {
   source = "../secure-cloud-run-core"
 
-  service_name         = var.service_name
-  location             = var.location
-  project_id           = var.serverless_project_id
-  image                = var.image
-  cloud_run_sa         = var.cloud_run_sa
-  vpc_connector_id     = module.cloud_run_network.connector_id
-  encryption_key       = module.cloud_run_security.key_self_link
-  domain               = var.domain
-  env_vars             = var.env_vars
-  members              = var.members
-  region               = var.region
-  verified_domain_name = var.verified_domain_name
+  service_name                = var.service_name
+  location                    = var.location
+  project_id                  = var.serverless_project_id
+  image                       = var.image
+  cloud_run_sa                = var.cloud_run_sa
+  vpc_connector_id            = module.cloud_run_network.connector_id
+  encryption_key              = module.cloud_run_security.key_self_link
+  domain                      = var.domain
+  env_vars                    = var.env_vars
+  members                     = var.members
+  region                      = var.region
+  create_cloud_armor_policies = var.create_cloud_armor_policies
+  cloud_armor_policies_name   = var.cloud_armor_policies_name
+  verified_domain_name        = var.verified_domain_name
+  vpc_egress_value            = var.vpc_egress_value
+  min_scale_instances         = var.min_scale_instances
+  max_scale_instances         = var.max_scale_instances
 
   depends_on = [
     module.serverless_project_apis,
