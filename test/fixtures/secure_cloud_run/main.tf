@@ -31,7 +31,7 @@ module "secure_cloud_run" {
   cloud_run_sa          = module.serverless_project.service_account_email
   kms_project_id        = module.kms_project.project_id
   serverless_project_id = module.serverless_project.project_id
-  domain                = [var.domain]
+  domain                = var.domain
   resource_names_suffix = var.resource_names_suffix
   ip_cidr_range         = local.ip_range
 
