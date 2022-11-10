@@ -15,9 +15,11 @@
  */
 
 cloud_run_sa          = "YOUR-CLOUDRUN-SERVICE-ACCOUNT-EMAIL"
-domain                = "YOUR-DOMAIN-NAME"
+domain                = ["YOUR-DOMAIN-NAMES"]
 ip_cidr_range         = "0.0.0.0/28"
 kms_project_id        = "YOUR-KMS-PROJECT-ID"
 vpc_project_id        = "YOUR-VPC-PROJECT-ID"
 serverless_project_id = "YOUR-SERVERLESS-PROJECT-ID"
 shared_vpc_name       = "YOUR-SHARED-VPC-NAME"
+resource_names_suffix = "YOUR-RESOURCE-NAMES-SUFFIX"
+
