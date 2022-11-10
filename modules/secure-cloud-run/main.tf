@@ -25,7 +25,8 @@ module "serverless_project_apis" {
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
     "container.googleapis.com",
-    "run.googleapis.com"
+    "run.googleapis.com",
+    "cloudkms.googleapis.com"
   ]
 }
 
@@ -39,18 +40,6 @@ module "vpc_project_apis" {
   activate_apis = [
     "vpcaccess.googleapis.com",
     "compute.googleapis.com"
-  ]
-}
-
-module "kms_project_apis" {
-  source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 13.0"
-
-  project_id                  = var.kms_project_id
-  disable_services_on_destroy = false
-
-  activate_apis = [
-    "cloudkms.googleapis.com"
   ]
 }
 
@@ -88,6 +77,16 @@ resource "google_artifact_registry_repository_iam_member" "artifact_registry_iam
   repository = var.artifact_registry_repository_name
   role       = "roles/artifactregistry.reader"
   member     = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
+}
+
+data "google_service_account" "cloud_run_sa" {
+  account_id = var.cloud_run_sa
+}
+
+resource "google_service_account_iam_member" "identity_service_account_user" {
+  service_account_id = data.google_service_account.cloud_run_sa.name
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
 }
 
 module "cloud_run_security" {
@@ -130,15 +129,16 @@ module "cloud_run_core" {
   env_vars                    = var.env_vars
   members                     = var.members
   region                      = var.region
+  verified_domain_name        = var.verified_domain_name
   create_cloud_armor_policies = var.create_cloud_armor_policies
   cloud_armor_policies_name   = var.cloud_armor_policies_name
-  verified_domain_name        = var.verified_domain_name
   vpc_egress_value            = var.vpc_egress_value
   min_scale_instances         = var.min_scale_instances
   max_scale_instances         = var.max_scale_instances
 
   depends_on = [
     module.serverless_project_apis,
-    google_artifact_registry_repository_iam_member.artifact_registry_iam
+    google_artifact_registry_repository_iam_member.artifact_registry_iam,
+    google_service_account_iam_member.identity_service_account_user
   ]
 }
