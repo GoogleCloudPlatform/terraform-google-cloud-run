@@ -69,16 +69,6 @@ resource "google_project_service_identity" "serverless_sa" {
   service = "run.googleapis.com"
 }
 
-data "google_service_account" "cloud_run_sa" {
-  account_id = var.cloud_run_sa
-}
-
-resource "google_service_account_iam_member" "identity_service_account_user" {
-  service_account_id = data.google_service_account.cloud_run_sa.name
-  role               = "roles/iam.serviceAccountUser"
-  member             = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
-}
-
 resource "google_artifact_registry_repository_iam_member" "artifact_registry_iam" {
   count = var.grant_artifact_register_reader ? 1 : 0
 
