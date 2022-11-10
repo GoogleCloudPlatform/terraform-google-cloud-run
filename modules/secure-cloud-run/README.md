@@ -70,7 +70,7 @@ module "secure_cloud_run" {
 | connector\_name | The name for the connector to be created. | `string` | `"serverless-vpc-connector"` | no |
 | create\_cloud\_armor\_policies | When `true`, the terraform will create the Cloud Armor policies. When `false`, the user must provide their own Cloud Armor name in `cloud_armor_policies_name`. | `bool` | `true` | no |
 | create\_subnet | The subnet will be created with the subnet\_name variable if true. When false, it will use the subnet\_name for the subnet. | `bool` | `true` | no |
-| domain | Domain name to run the load balancer on. | `string` | n/a | yes |
+| domain | Domain name to run the load balancer on. | `list(string)` | n/a | yes |
 | env\_vars | Environment variables (cleartext) | <pre>list(object({<br>    value = string<br>    name  = string<br>  }))</pre> | `[]` | no |
 | folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
 | grant\_artifact\_register\_reader | When true it will grant permission to read an image from your artifact registry. When true, you must provide `artifact_registry_repository_project_id`, `artifact_registry_repository_location` and `artifact_registry_repository_name`. | `bool` | `false` | no |
