@@ -127,12 +127,6 @@ variable "owasp_rules" {
   }))
 }
 
-variable "ssl" {
-  description = "Run load balancer on HTTPS and provision managed certificate with provided `domain`."
-  type        = bool
-  default     = true
-}
-
 variable "lb_name" {
   description = "Name for load balancer and associated resources."
   default     = "tf-cr-lb"

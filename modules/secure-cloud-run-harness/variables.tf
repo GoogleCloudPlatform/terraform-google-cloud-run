@@ -174,3 +174,15 @@ variable "prevent_destroy" {
   type        = bool
   default     = true
 }
+
+variable "dns_enable_inbound_forwarding" {
+  type        = bool
+  description = "Toggle inbound query forwarding for VPC DNS."
+  default     = true
+}
+
+variable "dns_enable_logging" {
+  type        = bool
+  description = "Toggle DNS logging for VPC DNS."
+  default     = true
+}

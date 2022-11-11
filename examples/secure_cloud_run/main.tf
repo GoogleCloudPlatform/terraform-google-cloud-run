@@ -15,8 +15,9 @@
  */
 
 locals {
-  cloudrun_key_name     = "cloud-run-${var.resource_names_suffix}"
-  cloudrun_keyring_name = "cloud-run-keyring-${var.resource_names_suffix}"
+  suffix                = var.resource_names_suffix == null ? "" : "-${var.resource_names_suffix}"
+  cloudrun_key_name     = "cloud-run${local.suffix}"
+  cloudrun_keyring_name = "cloud-run-keyring${local.suffix}"
 }
 
 module "secure_cloud_run" {

@@ -46,7 +46,7 @@ variable "kms_project_id" {
 }
 
 variable "domain" {
-  description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
+  description = "Domain list to run on the load balancer. Used if `ssl` is `true`."
   type        = list(string)
 }
 

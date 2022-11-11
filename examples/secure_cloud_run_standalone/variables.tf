@@ -53,7 +53,7 @@ variable "access_level_members" {
 }
 
 variable "domain" {
-  description = "Domain name to run the load balancer on."
+  description = "Domain name to run on the load balancer on."
   type        = list(string)
 }
 

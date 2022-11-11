@@ -49,7 +49,7 @@ module "lb-http" {
         oauth2_client_secret = ""
       }
       log_config = {
-        enable      = false
+        enable      = true
         sample_rate = null
       }
     }
