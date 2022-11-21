@@ -24,7 +24,7 @@ to be used by Cloud Run.
     * roles/cloudkms.cryptoKeyEncrypter
   * Cloud Run user - Service project
     * roles/run.invoker
-    
+
 ## Usage
 
 ```hcl

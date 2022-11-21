@@ -43,7 +43,7 @@ The resources/services/activations/deletions that this module will create/trigge
     * Cloud Run user - **Security Project**
       * Cloud Run Invoker: `roles/run.invoker`
 
-* secure-cloud-run-core module will apply:  
+* secure-cloud-run-core module will apply:
   * Creates a Cloud Run Service.
   * Creates a Load Balancer Service using Google-managed SSL certificates.
   * Creates Cloud Armor Service only including the preconfigured rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation.
