@@ -95,6 +95,7 @@ module "secure_cloud_run" {
 | shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |
 | subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | `null` | no |
 | verified\_domain\_name | List of Custom Domain Name | `list(string)` | `[]` | no |
+| volumes | [Beta] Volumes needed for environment variables (when using secret). | <pre>list(object({<br>    name = string<br>    secret = set(object({<br>      secret_name = string<br>      items       = map(string)<br>    }))<br>  }))</pre> | `[]` | no |
 | vpc\_egress\_value | Sets VPC Egress firewall rule. Supported values are all-traffic, all (deprecated), and private-ranges-only. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic. | `string` | `"private-ranges-only"` | no |
 | vpc\_project\_id | The host project for the shared vpc. | `string` | n/a | yes |
 

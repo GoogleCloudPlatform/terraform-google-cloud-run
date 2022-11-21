@@ -14,6 +14,19 @@
  * limitations under the License.
  */
 
+locals {
+  annotations_for_template = {
+    "autoscaling.knative.dev/maxScale"        = var.max_scale_instances,
+    "autoscaling.knative.dev/minScale"        = var.min_scale_instances,
+    "run.googleapis.com/vpc-access-connector" = var.vpc_connector_id,
+    "run.googleapis.com/vpc-access-egress"    = var.vpc_egress_value
+  }
+
+  conditional_annotations = {
+    secret = length(local.secrets_alias) == 0 ? {} : { "run.googleapis.com/secrets" = join(", ", toset(local.secrets_alias)) }
+  }
+}
+
 module "cloud_run" {
   source = "../.."
 
@@ -48,10 +61,52 @@ module "cloud_run" {
     "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"
   }
 
-  template_annotations = {
-    "autoscaling.knative.dev/maxScale"        = var.max_scale_instances,
-    "autoscaling.knative.dev/minScale"        = var.min_scale_instances,
-    "run.googleapis.com/vpc-access-connector" = var.vpc_connector_id,
-    "run.googleapis.com/vpc-access-egress"    = var.vpc_egress_value
-  }
+  template_annotations = merge(
+    local.annotations_for_template,
+    local.conditional_annotations["secret"]
+  )
+
+  depends_on = [
+    time_sleep.wait_30_seconds
+  ]
+}
+
+resource "google_project_service_identity" "serverless_sa" {
+  provider = google-beta
+  project  = var.project_id
+  service  = "run.googleapis.com"
+}
+
+resource "time_sleep" "wait_30_seconds" {
+  create_duration = "30s"
+
+  depends_on = [
+    google_secret_manager_secret_iam_member.member
+  ]
+}
+
+locals {
+  secrets = distinct(flatten([
+    for secret in var.volumes : [
+      for secret_name in secret.secret : [
+        {
+          "name" : secret.name,
+          "secret_name" : secret_name.secret_name,
+          "path" : secret_name.items.path
+        }
+      ]
+    ]
+  ]))
+
+  secrets_alias = [
+    for secret in local.secrets :
+    "${secret.name}:${secret.path}${secret.secret_name}"
+  ]
+}
+
+resource "google_secret_manager_secret_iam_member" "member" {
+  for_each  = { for secret in local.secrets : secret.name => secret }
+  secret_id = "${each.value.path}${each.value.secret_name}"
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${var.cloud_run_sa}"
 }

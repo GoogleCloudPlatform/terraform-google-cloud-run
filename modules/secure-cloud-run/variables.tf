@@ -216,3 +216,14 @@ variable "verified_domain_name" {
   default     = []
 }
 
+variable "volumes" {
+  description = "[Beta] Volumes needed for environment variables (when using secret)."
+  type = list(object({
+    name = string
+    secret = set(object({
+      secret_name = string
+      items       = map(string)
+    }))
+  }))
+  default = []
+}
