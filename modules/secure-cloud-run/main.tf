@@ -108,6 +108,11 @@ module "cloud_run_security" {
   group_cloud_run_developer               = var.group_cloud_run_developer
   group_cloud_run_user                    = var.group_cloud_run_user
 
+  encrypters = [
+      "serviceAccount:${google_project_service_identity.serverless_sa.email}",
+      "serviceAccount:${var.cloud_run_sa}"
+    ]
+    
   decrypters = [
     "serviceAccount:${google_project_service_identity.serverless_sa.email}",
     "serviceAccount:${var.cloud_run_sa}"

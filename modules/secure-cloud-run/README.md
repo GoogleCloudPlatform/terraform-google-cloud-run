@@ -9,25 +9,25 @@ _Note:_ When using a single VPC you should provides VPC and Serverless project i
 The resources/services/activations/deletions that this module will create/trigger are:
 
 * secure-cloud-run-network module will apply:
-* Creates Firewall rules on your **VPC Project**.
-  * Serverless to VPC Connector
-  * VPC Connector to Serverless
-  * VPC Connector to LB
-  * VPC Connector Health Checks
-* Creates a sub network to VPC Connector usage purpose.
-* Creates Serverless Connector on your **VPC Project** or **Serverless Project**. Refer the comparison below:
-  * Advantages of creating connectors in the [VPC Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#host-project)
-  * Advantages of creating connectors in the [Serverless Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#service-projects)
-* Grant the necessary roles for Cloud Run are able to use VPC Connector on your Shared VPC when creating VPC Connector in host project.
-  * Grant Network User role to Cloud Services service account.
-  * Grant VPC Access User to Cloud Run Service Identity when deploying VPC Access.
+  * Creates Firewall rules on your **VPC Project**.
+    * Serverless to VPC Connector
+    * VPC Connector to Serverless
+    * VPC Connector to LB
+    * VPC Connector Health Checks
+  * Creates a sub network to VPC Connector usage purpose.
+  * Creates Serverless Connector on your **VPC Project** or **Serverless Project**. Refer the comparison below:
+    * Advantages of creating connectors in the [VPC Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#host-project)
+    * Advantages of creating connectors in the [Serverless Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#service-projects)
+  * Grant the necessary roles for Cloud Run are able to use VPC Connector on your Shared VPC when creating VPC Connector in host project.
+    * Grant Network User role to Cloud Services service account.
+    * Grant VPC Access User to Cloud Run Service Identity when deploying VPC Access.
 
-* secure-cloud-run-security module will apply:  
+* secure-cloud-run-security module will apply:
   * Creates KMS Keyring and Key for [customer managed encryption keys](https://cloud.google.com/run/docs/securing/using-cmek) in the **KMS Project** to be used by Cloud Run.
   * Enables Organization Policies related to Cloud Run in the **Serverless Project**.
   * Allow Ingress only from internal and Cloud Load Balancing.
   * Allow VPC Egress to Private Ranges Only.
-* When groups emails are provided, this module will grant the roles for each persona.
+  * When groups emails are provided, this module will grant the roles for each persona.
     * Serverless Administrator - **Service Project**
       * Cloud Run Administrator: `roles/run.admin`
       * Cloud Compute Network Viewer: `roles/compute.networkViewer`
