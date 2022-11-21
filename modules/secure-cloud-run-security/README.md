@@ -9,7 +9,21 @@ to be used by Cloud Run.
 * Enables Organization Policies related to Cloud Run in the **Serverless Project**.
   * Allow Ingress only from internal and Cloud Load Balancing.
   * Allow VPC Egress to Private Ranges Only.
-
+* When groups emails are provided, this module will grant the roles for each persona.
+  * Serverless administrator - Service Project
+    * roles/run.admin
+    * roles/compute.networkViewer
+    * compute.networkUser
+  * Servervless Security Administrator - Security project
+    * roles/run.viewer
+    * roles/cloudkms.viewer
+    * roles/artifactregistry.reader
+  * Cloud Run developer - Security project
+    * roles/run.developer
+    * roles/artifactregistry.writer
+    * roles/cloudkms.cryptoKeyEncrypter
+  * Cloud Run user - Service project
+    * roles/run.invoker
 ## Usage
 
 ```hcl
@@ -44,6 +58,10 @@ module "cloud_run_security" {
 | decrypters | List of comma-separated owners for each key declared in set\_decrypters\_for. | `list(string)` | `[]` | no |
 | encrypters | List of comma-separated owners for each key declared in set\_encrypters\_for. | `list(string)` | `[]` | no |
 | folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
+| group\_cloud\_run\_developer | The Cloud Run Developer email group witch the following roles will be added: Cloud Run Developer, Artifact Registry Writer and Cloud KMS CryptoKey Encrypter. | `string` | `""` | no |
+| group\_cloud\_run\_user | The Cloud Run User email group witch the following roles will be added: Cloud Run Invoker. | `string` | `""` | no |
+| group\_serverless\_administrator | The Serverless Administrators email group witch the following roles will be added: Cloud Run Admin, Compute Network Viewer and Compute Network User. | `string` | `""` | no |
+| group\_serverless\_security\_administrator | The Serverless Security Administrators email group witch the following roles will be added: Cloud Run Viewer, Cloud KMS Viewer and Artifact Registry Reader. | `string` | `""` | no |
 | key\_name | Key name. | `string` | n/a | yes |
 | key\_protection\_level | The protection level to use when creating a version based on this template. Possible values: ["SOFTWARE", "HSM"] | `string` | `"HSM"` | no |
 | key\_rotation\_period | Period of key rotation in seconds. | `string` | `"2592000s"` | no |

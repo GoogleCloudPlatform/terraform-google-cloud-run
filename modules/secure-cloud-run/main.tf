@@ -92,22 +92,21 @@ resource "google_service_account_iam_member" "identity_service_account_user" {
 module "cloud_run_security" {
   source = "../secure-cloud-run-security"
 
-  kms_project_id        = var.kms_project_id
-  location              = var.location
-  serverless_project_id = var.serverless_project_id
-  prevent_destroy       = var.prevent_destroy
-  key_name              = var.key_name
-  keyring_name          = var.keyring_name
-  key_rotation_period   = var.key_rotation_period
-  key_protection_level  = var.key_protection_level
-  policy_for            = var.policy_for
-  folder_id             = var.folder_id
-  organization_id       = var.organization_id
-
-  encrypters = [
-    "serviceAccount:${google_project_service_identity.serverless_sa.email}",
-    "serviceAccount:${var.cloud_run_sa}"
-  ]
+  kms_project_id                          = var.kms_project_id
+  location                                = var.location
+  serverless_project_id                   = var.serverless_project_id
+  prevent_destroy                         = var.prevent_destroy
+  key_name                                = var.key_name
+  keyring_name                            = var.keyring_name
+  key_rotation_period                     = var.key_rotation_period
+  key_protection_level                    = var.key_protection_level
+  policy_for                              = var.policy_for
+  folder_id                               = var.folder_id
+  organization_id                         = var.organization_id
+  group_serverless_administrator          = var.group_serverless_administrator
+  group_serverless_security_administrator = var.group_serverless_security_administrator
+  group_cloud_run_developer               = var.group_cloud_run_developer
+  group_cloud_run_user                    = var.group_cloud_run_user
 
   decrypters = [
     "serviceAccount:${google_project_service_identity.serverless_sa.email}",
