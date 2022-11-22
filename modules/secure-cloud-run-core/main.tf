@@ -25,6 +25,23 @@ locals {
   conditional_annotations = {
     secret = length(local.secrets_alias) == 0 ? {} : { "run.googleapis.com/secrets" = join(", ", toset(local.secrets_alias)) }
   }
+
+  secrets = distinct(flatten([
+    for secret in var.volumes : [
+      for secret_name in secret.secret : [
+        {
+          "name" : secret.name,
+          "secret_name" : secret_name.secret_name,
+          "path" : secret_name.items.path
+        }
+      ]
+    ]
+  ]))
+
+  secrets_alias = [
+    for secret in local.secrets :
+    "${secret.name}:${secret.path}${secret.secret_name}"
+  ]
 }
 
 module "cloud_run" {
@@ -82,25 +99,6 @@ resource "time_sleep" "wait_30_seconds" {
 
   depends_on = [
     google_secret_manager_secret_iam_member.member
-  ]
-}
-
-locals {
-  secrets = distinct(flatten([
-    for secret in var.volumes : [
-      for secret_name in secret.secret : [
-        {
-          "name" : secret.name,
-          "secret_name" : secret_name.secret_name,
-          "path" : secret_name.items.path
-        }
-      ]
-    ]
-  ]))
-
-  secrets_alias = [
-    for secret in local.secrets :
-    "${secret.name}:${secret.path}${secret.secret_name}"
   ]
 }
 
