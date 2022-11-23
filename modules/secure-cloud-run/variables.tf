@@ -226,6 +226,7 @@ variable "volumes" {
     }))
   }))
   default = []
+}
 
 variable "group_serverless_administrator" {
   description = "The Serverless Administrators email group."
