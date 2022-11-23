@@ -226,4 +226,27 @@ variable "volumes" {
     }))
   }))
   default = []
+
+variable "group_serverless_administrator" {
+  description = "The Serverless Administrators email group."
+  type        = string
+  default     = ""
+}
+
+variable "group_serverless_security_administrator" {
+  description = "The Serverless Security Administrators email group."
+  type        = string
+  default     = ""
+}
+
+variable "group_cloud_run_developer" {
+  description = "The Cloud Run Developer email group."
+  type        = string
+  default     = ""
+}
+
+variable "group_cloud_run_user" {
+  description = "The Cloud Run User email group."
+  type        = string
+  default     = ""
 }

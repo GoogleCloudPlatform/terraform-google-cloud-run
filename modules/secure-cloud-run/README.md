@@ -8,26 +8,42 @@ _Note:_ When using a single VPC you should provides VPC and Serverless project i
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
-* Creates Firewall rules on your **VPC Project**.
-  * Serverless to VPC Connector
-  * VPC Connector to Serverless
-  * VPC Connector to LB
-  * VPC Connector Health Checks
-* Creates a sub network to VPC Connector usage purpose.
-* Creates Serverless Connector on your **VPC Project** or **Serverless Project**. Refer the comparison below:
-  * Advantages of creating connectors in the [VPC Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#host-project)
-  * Advantages of creating connectors in the [Serverless Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#service-projects)
-* Grant the necessary roles for Cloud Run are able to use VPC Connector on your Shared VPC when creating VPC Connector in host project.
-  * Grant Network User role to Cloud Services service account.
-  * Grant VPC Access User to Cloud Run Service Identity when deploying VPC Access.
+* secure-cloud-run-network module will apply:
+  * Creates Firewall rules on your **VPC Project**.
+    * Serverless to VPC Connector
+    * VPC Connector to Serverless
+    * VPC Connector to LB
+    * VPC Connector Health Checks
+  * Creates a sub network to VPC Connector usage purpose.
+  * Creates Serverless Connector on your **VPC Project** or **Serverless Project**. Refer the comparison below:
+    * Advantages of creating connectors in the [VPC Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#host-project)
+    * Advantages of creating connectors in the [Serverless Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#service-projects)
+  * Grant the necessary roles for Cloud Run are able to use VPC Connector on your Shared VPC when creating VPC Connector in host project.
+    * Grant Network User role to Cloud Services service account.
+    * Grant VPC Access User to Cloud Run Service Identity when deploying VPC Access.
 
-* Secure-cloud-run-security module will apply:
+* secure-cloud-run-security module will apply:
   * Creates KMS Keyring and Key for [customer managed encryption keys](https://cloud.google.com/run/docs/securing/using-cmek) in the **KMS Project** to be used by Cloud Run.
   * Enables Organization Policies related to Cloud Run in the **Serverless Project**.
   * Allow Ingress only from internal and Cloud Load Balancing.
   * Allow VPC Egress to Private Ranges Only.
+  * When groups emails are provided, this module will grant the roles for each persona.
+    * Serverless Administrator - **Service Project**
+      * Cloud Run Administrator: `roles/run.admin`
+      * Cloud Compute Network Viewer: `roles/compute.networkViewer`
+      * Cloud Compute Network User: `compute.networkUser`
+    * Servervless Security Administrator - **Security Project**
+      * Cloud Run Viewer: `roles/run.viewer`
+      * Cloud KMS Viewer: `roles/cloudkms.viewer`
+      * roles/artifactregistry.reader
+    * Cloud Run developer - **Security Project**
+      * Cloud Run Develper: `roles/run.developer`
+      * Cloud Run: `roles/artifactregistry.writer`
+      * Cloud Run KMS Encrypter: `roles/cloudkms.cryptoKeyEncrypter`
+    * Cloud Run user - **Security Project**
+      * Cloud Run Invoker: `roles/run.invoker`
 
-* Secure-cloud-run-core module will apply:
+* secure-cloud-run-core module will apply:
   * Creates a Cloud Run Service.
   * Creates a Load Balancer Service using Google-managed SSL certificates.
   * Creates Cloud Armor Service only including the preconfigured rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation.
@@ -74,6 +90,10 @@ module "secure_cloud_run" {
 | env\_vars | Environment variables (cleartext) | <pre>list(object({<br>    value = string<br>    name  = string<br>  }))</pre> | `[]` | no |
 | folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
 | grant\_artifact\_register\_reader | When true it will grant permission to read an image from your artifact registry. When true, you must provide `artifact_registry_repository_project_id`, `artifact_registry_repository_location` and `artifact_registry_repository_name`. | `bool` | `false` | no |
+| group\_cloud\_run\_developer | The Cloud Run Developer email group. | `string` | `""` | no |
+| group\_cloud\_run\_user | The Cloud Run User email group. | `string` | `""` | no |
+| group\_serverless\_administrator | The Serverless Administrators email group. | `string` | `""` | no |
+| group\_serverless\_security\_administrator | The Serverless Security Administrators email group. | `string` | `""` | no |
 | image | Image url to be deployed on Cloud Run. | `string` | n/a | yes |
 | ip\_cidr\_range | The range of internal addresses that are owned by the subnetwork and which is going to be used by VPC Connector. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported. | `string` | n/a | yes |
 | key\_name | The name of KMS Key to be created and used in Cloud Run. | `string` | `"cloud-run-kms-key"` | no |
