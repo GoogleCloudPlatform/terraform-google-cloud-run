@@ -92,3 +92,27 @@ variable "organization_id" {
   type        = string
   default     = ""
 }
+
+variable "group_serverless_administrator" {
+  description = "The Serverless Administrators email group witch the following roles will be added: Cloud Run Admin, Compute Network Viewer and Compute Network User."
+  type        = string
+  default     = ""
+}
+
+variable "group_serverless_security_administrator" {
+  description = "The Serverless Security Administrators email group witch the following roles will be added: Cloud Run Viewer, Cloud KMS Viewer and Artifact Registry Reader."
+  type        = string
+  default     = ""
+}
+
+variable "group_cloud_run_developer" {
+  description = "The Cloud Run Developer email group witch the following roles will be added: Cloud Run Developer, Artifact Registry Writer and Cloud KMS CryptoKey Encrypter."
+  type        = string
+  default     = ""
+}
+
+variable "group_cloud_run_user" {
+  description = "The Cloud Run User email group witch the following roles will be added: Cloud Run Invoker."
+  type        = string
+  default     = ""
+}

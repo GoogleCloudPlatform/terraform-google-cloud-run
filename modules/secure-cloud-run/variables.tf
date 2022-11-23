@@ -223,3 +223,27 @@ variable "ssl_certificates" {
   }
   description = "A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links in the pattern `projects/<PROJECT-ID>/global/sslCertificates/<CERT-NAME>` to be used by Load Balancer."
 }
+
+variable "group_serverless_administrator" {
+  description = "The Serverless Administrators email group."
+  type        = string
+  default     = ""
+}
+
+variable "group_serverless_security_administrator" {
+  description = "The Serverless Security Administrators email group."
+  type        = string
+  default     = ""
+}
+
+variable "group_cloud_run_developer" {
+  description = "The Cloud Run Developer email group."
+  type        = string
+  default     = ""
+}
+
+variable "group_cloud_run_user" {
+  description = "The Cloud Run User email group."
+  type        = string
+  default     = ""
+}
