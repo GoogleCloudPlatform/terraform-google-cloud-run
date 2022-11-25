@@ -216,26 +216,22 @@ variable "verified_domain_name" {
   default     = []
 }
 
-variable "group_serverless_administrator" {
-  description = "The Serverless Administrators email group."
-  type        = string
-  default     = ""
-}
+variable "groups" {
+  description = <<EOT
+  Groups which will have roles assigned.
+  The Serverless Administrators email group which the following roles will be added: Cloud Run Admin, Compute Network Viewer and Compute Network User.
+  The Serverless Security Administrators email group which the following roles will be added: Cloud Run Viewer, Cloud KMS Viewer and Artifact Registry Reader.
+  The Cloud Run Developer email group which the following roles will be added: Cloud Run Developer, Artifact Registry Writer and Cloud KMS CryptoKey Encrypter.
+  The Cloud Run User email group which the following roles will be added: Cloud Run Invoker.
+  EOT
 
-variable "group_serverless_security_administrator" {
-  description = "The Serverless Security Administrators email group."
-  type        = string
-  default     = ""
-}
+  type = object({
+    group_serverless_administrator          = optional(string, null)
+    group_serverless_security_administrator = optional(string, null)
+    group_cloud_run_developer               = optional(string, null)
+    group_cloud_run_developer               = optional(string, null)
+    group_cloud_run_user                    = optional(string, null)
+  })
 
-variable "group_cloud_run_developer" {
-  description = "The Cloud Run Developer email group."
-  type        = string
-  default     = ""
-}
-
-variable "group_cloud_run_user" {
-  description = "The Cloud Run User email group."
-  type        = string
-  default     = ""
+  default = {}
 }
