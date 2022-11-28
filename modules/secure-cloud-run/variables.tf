@@ -223,6 +223,26 @@ variable "volumes" {
   default = []
 }
 
+variable "groups" {
+  description = <<EOT
+  Groups which will have roles assigned.
+  The Serverless Administrators email group which the following roles will be added: Cloud Run Admin, Compute Network Viewer and Compute Network User.
+  The Serverless Security Administrators email group which the following roles will be added: Cloud Run Viewer, Cloud KMS Viewer and Artifact Registry Reader.
+  The Cloud Run Developer email group which the following roles will be added: Cloud Run Developer, Artifact Registry Writer and Cloud KMS CryptoKey Encrypter.
+  The Cloud Run User email group which the following roles will be added: Cloud Run Invoker.
+  EOT
+
+  type = object({
+    group_serverless_administrator          = optional(string, null)
+    group_serverless_security_administrator = optional(string, null)
+    group_cloud_run_developer               = optional(string, null)
+    group_cloud_run_developer               = optional(string, null)
+    group_cloud_run_user                    = optional(string, null)
+  })
+
+  default = {}
+}
+
 variable "ssl_certificates" {
   type = object({
     ssl_certificates_self_links       = list(string)
@@ -234,28 +254,4 @@ variable "ssl_certificates" {
     error_message = "You must provide a SSL Certificate self-link or at least one domain to a SSL Certificate be generated."
   }
   description = "A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links in the pattern `projects/<PROJECT-ID>/global/sslCertificates/<CERT-NAME>` to be used by Load Balancer."
-}
-
-variable "group_serverless_administrator" {
-  description = "The Serverless Administrators email group."
-  type        = string
-  default     = ""
-}
-
-variable "group_serverless_security_administrator" {
-  description = "The Serverless Security Administrators email group."
-  type        = string
-  default     = ""
-}
-
-variable "group_cloud_run_developer" {
-  description = "The Cloud Run Developer email group."
-  type        = string
-  default     = ""
-}
-
-variable "group_cloud_run_user" {
-  description = "The Cloud Run User email group."
-  type        = string
-  default     = ""
 }
