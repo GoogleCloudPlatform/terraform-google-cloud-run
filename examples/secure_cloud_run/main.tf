@@ -27,7 +27,6 @@ module "secure_cloud_run" {
   subnet_name                 = "vpc-subnet"
   vpc_project_id              = var.vpc_project_id
   serverless_project_id       = var.serverless_project_id
-  domain                      = var.domain
   kms_project_id              = var.kms_project_id
   shared_vpc_name             = var.shared_vpc_name
   ip_cidr_range               = var.ip_cidr_range
@@ -61,4 +60,9 @@ module "secure_cloud_run" {
   #     ]
   #   }
   # ]
+ 
+  ssl_certificates = {
+    generate_certificates_for_domains = var.domain
+    ssl_certificates_self_links       = []
+  }
 }
