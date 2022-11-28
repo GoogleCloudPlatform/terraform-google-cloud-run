@@ -192,6 +192,37 @@ variable "volume_mounts" {
   default     = []
 }
 
+variable "startup_probe" {
+  type = object({
+    initial_delay_seconds = optional(number, 0)
+    period_seconds        = optional(number, 10)
+    timeout_seconds       = optional(number, 1)
+    failure_threshold     = optional(number, 3)
+    http_get = optional(object({
+      path         = string
+      http_headers = optional(map(string), {})
+    }), null)
+    tcp_socket = optional(object({ port = optional(number, 8080) }), null)
+  })
+  description = "Startup probe to check if the container is ready to serve traffic"
+  default     = {}
+}
+
+variable "liveness_probe" {
+  type = object({
+    initial_delay_seconds = optional(number, 0)
+    period_seconds        = optional(number, 10)
+    timeout_seconds       = optional(number, 1)
+    failure_threshold     = optional(number, 3)
+    http_get = optional(object({
+      path         = optional(string, "/")
+      http_headers = optional(map(string), null)
+    }), null)
+  })
+  description = "Liveness probe to check if the container is alive"
+  default     = {}
+}
+
 // Domain Mapping
 variable "verified_domain_name" {
   type        = list(string)

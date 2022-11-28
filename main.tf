@@ -48,6 +48,40 @@ resource "google_cloud_run_service" "main" {
           requests = var.requests
         }
 
+        startup_probe {
+          dynamic "http_get" {
+            for_each = var.startup_probe["http_get"] != null ? [var.startup_probe["http_get"]] : []
+            content {
+              path = var.startup_probe["http_get"]["path"]
+            }
+          }
+
+          dynamic "tcp_socket" {
+            for_each = var.startup_probe["tcp_socket"] != null ? [var.startup_probe["tcp_socket"]] : []
+            content {
+              port = var.startup_probe["tcp_socket"]["port"]
+            }
+          }
+
+          initial_delay_seconds = var.startup_probe["initial_delay_seconds"]
+          period_seconds        = var.startup_probe["period_seconds"]
+          timeout_seconds       = var.startup_probe["timeout_seconds"]
+          failure_threshold     = var.startup_probe["failure_threshold"]
+        }
+
+        liveness_probe {
+          dynamic "http_get" {
+            for_each = var.liveness_probe["http_get"] != null ? [var.liveness_probe["http_get"]] : []
+            content {
+              path = var.liveness_probe["http_get"]["path"]
+            }
+          }
+          initial_delay_seconds = var.liveness_probe["initial_delay_seconds"]
+          period_seconds        = var.liveness_probe["period_seconds"]
+          timeout_seconds       = var.liveness_probe["timeout_seconds"]
+          failure_threshold     = var.liveness_probe["failure_threshold"]
+        }
+
         dynamic "env" {
           for_each = var.env_vars
           content {
