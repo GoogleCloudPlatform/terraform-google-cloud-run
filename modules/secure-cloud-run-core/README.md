@@ -5,6 +5,7 @@ This module handles the basic deployment core configurations for Cloud Run modul
 The resources/services/activations/deletions that this module will create/trigger are:
 
 * Creates a Cloud Run Service.
+* Adds "Secret Manager Secret Accessor" role on the Secret for the Service Account used to run Cloud Run.
 * Creates a Load Balancer Service using Google-managed SSL certificates.
 * Creates Cloud Armor Service only including the pre-configured rules for SQLi, XSS, LFI, RCE, RFI, Scanner Detection, Protocol Attack and Session Fixation.
 

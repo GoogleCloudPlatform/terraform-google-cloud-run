@@ -135,6 +135,7 @@ module "cloud_run_core" {
   vpc_egress_value            = var.vpc_egress_value
   min_scale_instances         = var.min_scale_instances
   max_scale_instances         = var.max_scale_instances
+  volumes                     = var.volumes
   ssl_certificates            = var.ssl_certificates
 
   depends_on = [
