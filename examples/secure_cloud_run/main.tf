@@ -60,7 +60,7 @@ module "secure_cloud_run" {
   #     ]
   #   }
   # ]
- 
+
   ssl_certificates = {
     generate_certificates_for_domains = var.domain
     ssl_certificates_self_links       = []
