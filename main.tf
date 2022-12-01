@@ -154,6 +154,12 @@ resource "google_cloud_run_service" "main" {
       revision_name   = lookup(traffic.value, "latest_revision") ? null : lookup(traffic.value, "revision_name")
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      template.0.spec.0.containers.0.image
+    ]
+  }
 }
 
 resource "google_cloud_run_domain_mapping" "domain_map" {
