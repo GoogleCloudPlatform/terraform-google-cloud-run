@@ -157,9 +157,12 @@ resource "google_cloud_run_service" "main" {
 
   lifecycle {
     ignore_changes = [
-      template.0.spec.0.containers.0.image,
-      metadata.0.labels["commit-sha"],
-      template.0.metadata.0.labels["commit-sha"],
+      template[0].spec[0].containers[0].image,
+      template[0].metadata[0].labels["commit-sha"],
+      metadata[0].labels["commit-sha"],
+      metadata[0].annotations["run.googleapis.com/client-name"],
+      metadata[0].annotations["run.googleapis.com/client-version"],
+      traffic
     ]
   }
 }
