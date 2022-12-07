@@ -162,6 +162,7 @@ resource "google_cloud_run_service" "main" {
       metadata[0].labels["commit-sha"],
       metadata[0].annotations["run.googleapis.com/client-name"],
       metadata[0].annotations["run.googleapis.com/client-version"],
+      traffic
     ]
   }
 }
