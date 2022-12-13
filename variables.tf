@@ -46,12 +46,14 @@ variable "traffic_split" {
     latest_revision = bool
     percent         = number
     revision_name   = string
+    tag             = string
   }))
   description = "Managing traffic routing to the service"
   default = [{
     latest_revision = true
     percent         = 100
     revision_name   = "v1-0-0"
+    tag             = null
   }]
 }
 
