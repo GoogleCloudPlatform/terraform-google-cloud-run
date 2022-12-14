@@ -118,6 +118,7 @@ resource "google_cloud_run_service" "main" {
       percent         = lookup(traffic.value, "percent", 100)
       latest_revision = lookup(traffic.value, "latest_revision", null)
       revision_name   = lookup(traffic.value, "latest_revision") ? null : lookup(traffic.value, "revision_name")
+      tag             = lookup(traffic.value, "tag", null)
     }
   }
 }
