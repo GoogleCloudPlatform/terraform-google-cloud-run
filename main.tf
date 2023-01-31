@@ -121,6 +121,18 @@ resource "google_cloud_run_service" "main" {
       tag             = lookup(traffic.value, "tag", null)
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      metadata[0].annotations["client.knative.dev/user-image"],
+      metadata[0].annotations["run.googleapis.com/client-name"],
+      metadata[0].annotations["run.googleapis.com/client-version"],
+      metadata[0].annotations["run.googleapis.com/operation-id"],
+      template[0].metadata[0].annotations["client.knative.dev/user-image"],
+      template[0].metadata[0].annotations["run.googleapis.com/client-name"],
+      template[0].metadata[0].annotations["run.googleapis.com/client-version"],
+    ]
+  }
 }
 
 resource "google_cloud_run_domain_mapping" "domain_map" {
