@@ -48,6 +48,72 @@ resource "google_cloud_run_service" "main" {
           requests = var.requests
         }
 
+        dynamic "startup_probe" {
+          for_each = var.startup_probe != null ? [1] : []
+          content {
+            failure_threshold     = var.startup_probe.failure_threshold
+            initial_delay_seconds = var.startup_probe.initial_delay_seconds
+            timeout_seconds       = var.startup_probe.timeout_seconds
+            period_seconds        = var.startup_probe.period_seconds
+            dynamic "http_get" {
+              for_each = var.startup_probe.http_get != null ? [1] : []
+              content {
+                path = var.startup_probe.http_get.path
+                dynamic "http_headers" {
+                  for_each = var.startup_probe.http_get.http_headers != null ? var.startup_probe.http_get.http_headers : []
+                  content {
+                    name  = http_headers.value["name"]
+                    value = http_headers.value["value"]
+                  }
+                }
+              }
+            }
+            dynamic "tcp_socket" {
+              for_each = var.startup_probe.tcp_socket != null ? [1] : []
+              content {
+                port = var.startup_probe.tcp_socket.port
+              }
+            }
+            dynamic "grpc" {
+              for_each = var.startup_probe.grpc != null ? [1] : []
+              content {
+                port    = var.startup_probe.grpc.port
+                service = var.startup_probe.grpc.service
+              }
+            }
+          }
+        }
+
+        dynamic "liveness_probe" {
+          for_each = var.liveness_probe != null ? [1] : []
+          content {
+            failure_threshold     = var.liveness_probe.failure_threshold
+            initial_delay_seconds = var.liveness_probe.initial_delay_seconds
+            timeout_seconds       = var.liveness_probe.timeout_seconds
+            period_seconds        = var.liveness_probe.period_seconds
+            dynamic "http_get" {
+              for_each = var.liveness_probe.http_get != null ? [1] : []
+              content {
+                path = var.liveness_probe.http_get.path
+                dynamic "http_headers" {
+                  for_each = var.liveness_probe.http_get.http_headers != null ? var.liveness_probe.http_get.http_headers : []
+                  content {
+                    name  = http_headers.value["name"]
+                    value = http_headers.value["value"]
+                  }
+                }
+              }
+            }
+            dynamic "grpc" {
+              for_each = var.liveness_probe.grpc != null ? [1] : []
+              content {
+                port    = var.liveness_probe.grpc.port
+                service = var.liveness_probe.grpc.service
+              }
+            }
+          }
+        }
+
         dynamic "env" {
           for_each = var.env_vars
           content {
