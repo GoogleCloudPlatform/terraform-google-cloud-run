@@ -116,6 +116,12 @@ module "cloud_run_security" {
   ]
 }
 
+resource "google_project_iam_member" "serverless_service_agent" {
+  project = var.serverless_project_id
+  role    = "roles/run.serviceAgent"
+  member  = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
+}
+
 module "cloud_run_core" {
   source = "../secure-cloud-run-core"
 
@@ -141,6 +147,7 @@ module "cloud_run_core" {
   depends_on = [
     module.serverless_project_apis,
     google_artifact_registry_repository_iam_member.artifact_registry_iam,
-    google_service_account_iam_member.identity_service_account_user
+    google_service_account_iam_member.identity_service_account_user,
+    google_project_iam_member.serverless_service_agent
   ]
 }
