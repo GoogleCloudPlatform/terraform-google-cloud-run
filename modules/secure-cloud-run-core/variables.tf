@@ -165,7 +165,7 @@ variable "traffic_split" {
     latest_revision = true
     percent         = 100
     revision_name   = "v1-0-0"
-    tag             = "dedicatedurl"
+    tag             = null
   }]
 }
 
