@@ -188,11 +188,11 @@ variable "startup_probe" {
   })
   default     = null
   description = <<-EOF
-    Startup probe of application within the container. 
-    All other probes are disabled if a startup probe is provided, until it succeeds. 
-    Container will not be added to service endpoints if the probe fails. 
+    Startup probe of application within the container.
+    All other probes are disabled if a startup probe is provided, until it succeeds.
+    Container will not be added to service endpoints if the probe fails.
     More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
-  EOF  
+  EOF
 }
 
 variable "liveness_probe" {
@@ -215,9 +215,9 @@ variable "liveness_probe" {
   })
   default     = null
   description = <<-EOF
-    Periodic probe of container liveness. Container will be restarted if the probe fails. 
+    Periodic probe of container liveness. Container will be restarted if the probe fails.
     More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
-  EOF  
+  EOF
 }
 variable "env_vars" {
   type = list(object({
