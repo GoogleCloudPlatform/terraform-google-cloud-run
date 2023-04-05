@@ -42,7 +42,7 @@ module "serverless_connector" {
   vpc_connectors = [{
     name            = "central-serverless"
     region          = "us-central1"
-    subnet_name     = "${module.vpc.subnets["us-central1/cloud-run-subnet"]["name"]}"
+    subnet_name     = module.vpc.subnets["us-central1/cloud-run-subnet"]["name"]
     host_project_id = var.project_id
     machine_type    = "e2-micro"
     min_instances   = 2

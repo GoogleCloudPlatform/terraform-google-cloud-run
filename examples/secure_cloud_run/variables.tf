@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-variable "ssl" {
-  description = "Run load balancer on HTTPS and provision managed certificate with provided `domain`."
-  type        = bool
-  default     = true
-}
-
 variable "serverless_project_id" {
   description = "The project where cloud run is going to be deployed."
   type        = string
