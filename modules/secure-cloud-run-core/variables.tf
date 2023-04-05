@@ -129,6 +129,7 @@ variable "owasp_rules" {
 
 variable "lb_name" {
   description = "Name for load balancer and associated resources."
+  type        = string
   default     = "tf-cr-lb"
 }
 
