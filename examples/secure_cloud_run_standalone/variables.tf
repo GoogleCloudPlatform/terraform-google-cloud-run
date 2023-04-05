@@ -30,12 +30,6 @@ variable "parent_folder_id" {
   default     = ""
 }
 
-variable "serverless_folder_suffix" {
-  description = "The suffix to be concat in the Serverless folder name fldr-serverless-<SUFFIX>."
-  type        = string
-  default     = ""
-}
-
 variable "access_context_manager_policy_id" {
   description = "The id of the default Access Context Manager policy. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR_ORGANIZATION_ID --format=\"value(name)\"`. This variable must be provided if `create_access_context_manager_access_policy` is set to `false`"
   type        = number

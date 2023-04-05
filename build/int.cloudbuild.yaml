@@ -23,7 +23,7 @@ steps:
   - 'TF_VAR_terraform_sa=$_SFB_TF_SA_NAME'
   - 'TF_VAR_cloudbuild_project_id=$_SFB_CLOUDBUILD_PROJECT_ID'
   - 'TF_VAR_seed_project_id=$_SFB_SEED_PROJECT_ID'
-  - 'TF_VAR_domain=test.infra.cft.tips'
+  - 'TF_VAR_domain=test.blueprints.joonix.net'
   - 'TF_VAR_resource_names_suffix=$SHORT_SHA'
 - id: prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
@@ -39,7 +39,7 @@ steps:
   - 'TF_VAR_org_id=$_ORG_ID'
   - 'TF_VAR_parent_folder_id=$_FOLDER_ID'
   - 'TF_VAR_billing_account=$_BILLING_ACCOUNT'
-  - 'TF_VAR_domain=test.infra.cft.tips'
+  - 'TF_VAR_domain=test.blueprints.joonix.net'
   - 'TF_VAR_serverless_folder_suffix=$SHORT_SHA'
   - 'TF_VAR_create_access_context_manager_access_policy=false'
   waitFor:
@@ -89,4 +89,4 @@ tags:
 - 'integration'
 substitutions:
   _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.7'
+  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.10'

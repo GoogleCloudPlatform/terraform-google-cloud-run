@@ -39,7 +39,7 @@ module "secure_harness" {
   vpc_name                                    = "vpc-secure-cloud-run"
   subnet_ip                                   = "10.0.0.0/28"
   private_service_connect_ip                  = "10.3.0.5"
-  create_access_context_manager_access_policy = false
+  create_access_context_manager_access_policy = var.create_access_context_manager_access_policy
   access_context_manager_policy_id            = var.access_context_manager_policy_id
   access_level_members                        = var.access_level_members
   key_name                                    = "key-secure-artifact-registry"
