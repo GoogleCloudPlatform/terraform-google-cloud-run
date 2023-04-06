@@ -105,7 +105,7 @@ resource "google_cloud_run_service" "main" {
     metadata {
       labels      = var.template_labels
       annotations = local.template_annotations
-      name        = var.generate_revision_name ? null : "${var.service_name}-${var.traffic_split.0.revision_name}"
+      name        = var.generate_revision_name ? null : "${var.service_name}-${var.traffic_split[0].revision_name}"
     } // metadata
   }   // template
 
@@ -120,6 +120,18 @@ resource "google_cloud_run_service" "main" {
       revision_name   = lookup(traffic.value, "latest_revision") ? null : lookup(traffic.value, "revision_name")
       tag             = lookup(traffic.value, "tag", null)
     }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata[0].annotations["client.knative.dev/user-image"],
+      metadata[0].annotations["run.googleapis.com/client-name"],
+      metadata[0].annotations["run.googleapis.com/client-version"],
+      metadata[0].annotations["run.googleapis.com/operation-id"],
+      template[0].metadata[0].annotations["client.knative.dev/user-image"],
+      template[0].metadata[0].annotations["run.googleapis.com/client-name"],
+      template[0].metadata[0].annotations["run.googleapis.com/client-version"],
+    ]
   }
 }
 
