@@ -29,6 +29,11 @@ variable "serverless_project_id" {
   type        = string
 }
 
+variable "serverless_service_identity_email" {
+  description = "The Service Identity email for the serverless resource (Cloud Run or Cloud Function)."
+  type        = string
+}
+
 variable "connector_name" {
   description = "The name of the serverless connector which is going to be created."
   type        = string
