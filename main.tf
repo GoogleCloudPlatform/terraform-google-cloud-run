@@ -171,7 +171,7 @@ resource "google_cloud_run_service" "main" {
     metadata {
       labels      = var.template_labels
       annotations = local.template_annotations
-      name        = var.generate_revision_name ? null : "${var.service_name}-${var.traffic_split.0.revision_name}"
+      name        = var.generate_revision_name ? null : "${var.service_name}-${var.traffic_split[0].revision_name}"
     } // metadata
   }   // template
 

@@ -71,7 +71,6 @@ This example assumes that below mentioned pre-requisites are in place before con
 | resource\_names\_suffix | A suffix to concat in the end of the network resources names. | `string` | `""` | no |
 | serverless\_project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |
-| ssl | Run load balancer on HTTPS and provision managed certificate with provided `domain`. | `bool` | `true` | no |
 | vpc\_project\_id | The project where shared vpc is. | `string` | n/a | yes |
 
 ## Outputs
