@@ -7,6 +7,22 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.4.0...v0.5.0) (2023-04-06)
+
+
+### Features
+
+* Cloud Run Jobs sub module ([#99](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/99)) ([2a4269c](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/2a4269c9902df34df23d1b812f69a33b4b0f74db))
+
+
+### Bug Fixes
+
+* add lifecycle for operation-id on domain_map ([#109](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/109)) ([71c6f29](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/71c6f29cfd0d7e5d3c1ea7bcf30c8901f72786da))
+* annotations serverside diffs ([#92](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/92)) ([af92754](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/af927547a9d86ecb3656ea0e9c5e4bfcb5f518ea))
+* **deps:** update terraform terracurl to v1 ([#111](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/111)) ([dcc504e](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/dcc504ee3be249daf3df9ac99c52d5e5ffeb4093))
+* dev tools to 1.10 for Go 1.18 ([#110](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/110)) ([3e11fb6](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/3e11fb66563df0d295b9311230582e28117dec5f))
+* Resource readiness deadline exceeded error in secure-cloud-run ([#102](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/102)) ([541ed8d](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/541ed8d1e669d6a5f917a69a660a06b2c0f74548))
+
 ## [0.4.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.3.0...v0.4.0) (2022-12-14)
 
 
