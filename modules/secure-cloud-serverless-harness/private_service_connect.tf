@@ -16,7 +16,7 @@
 
 module "private_service_connect" {
   source                     = "terraform-google-modules/network/google//modules/private-service-connect"
-  version                    = "~> 5.2"
+  version                    = "~> 6.0"
   project_id                 = module.serverless_project.project_id
   network_self_link          = module.network.network_self_link
   private_service_connect_ip = var.private_service_connect_ip
