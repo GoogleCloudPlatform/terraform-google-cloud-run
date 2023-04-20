@@ -7,6 +7,19 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.5.0...v0.6.0) (2023-04-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* changes harness module to be re-used by cloud function ([#113](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/113))
+* changes net module to be serverless generic ([#112](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/112))
+
+### Features
+
+* changes harness module to be re-used by cloud function ([#113](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/113)) ([6d7ebe9](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/6d7ebe9b805559d1e2acf227c9bab326abfe45cc))
+* changes net module to be serverless generic ([#112](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/112)) ([8e34988](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/8e34988c0138b9c3357bdec0883fe11c660f0057))
+
 ## [0.5.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.4.0...v0.5.0) (2023-04-06)
 
 
