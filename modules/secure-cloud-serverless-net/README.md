@@ -49,6 +49,7 @@ module "cloud_run_network" {
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
 | resource\_names\_suffix | A suffix to concat in the end of the resources names. | `string` | `null` | no |
 | serverless\_project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
+| serverless\_service\_identity\_email | The Service Identity email for the serverless resource (Cloud Run or Cloud Function). | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be used to create Serverless Connector. | `string` | n/a | yes |
 | subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | n/a | yes |
 | vpc\_project\_id | The project where shared vpc is. | `string` | n/a | yes |
@@ -60,7 +61,6 @@ module "cloud_run_network" {
 | cloud\_services\_sa | Google APIs service agent. |
 | connector\_id | VPC serverless connector ID. |
 | gca\_vpcaccess\_sa | Google APIs Service Agent for VPC Access. |
-| run\_identity\_services\_sa | Google APIs Service Agent to Cloud Run Service. |
 | subnet\_name | The name of the sub-network used to create VPC Connector. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
