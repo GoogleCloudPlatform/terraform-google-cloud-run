@@ -15,12 +15,13 @@
  */
 
 locals {
+  api = var.serverless_type == "CLOUD_RUN" ? "run" : "cloudfunctions"
   serverless_apis = [
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
     "container.googleapis.com",
     "artifactregistry.googleapis.com",
-    "run.googleapis.com",
+    "${local.api}.googleapis.com",
     "cloudkms.googleapis.com",
     "dns.googleapis.com"
   ]
@@ -66,7 +67,7 @@ module "service_accounts" {
   version    = "~> 3.0"
   project_id = module.serverless_project.project_id
   prefix     = "sa"
-  names      = ["cloud-run"]
+  names      = ["serverless-${local.api}"]
 
   depends_on = [
     time_sleep.wait_90_seconds
@@ -88,7 +89,7 @@ resource "google_project_service_identity" "serverless_sa" {
   provider = google-beta
 
   project = module.serverless_project.project_id
-  service = "run.googleapis.com"
+  service = "${local.api}.googleapis.com"
 
   depends_on = [
     time_sleep.wait_90_seconds

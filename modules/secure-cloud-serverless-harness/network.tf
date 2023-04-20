@@ -20,7 +20,7 @@ locals {
 
 module "network" {
   source                                 = "terraform-google-modules/network/google"
-  version                                = "~> 5.2"
+  version                                = "~> 6.0"
   project_id                             = module.serverless_project.project_id
   network_name                           = local.network_name
   shared_vpc_host                        = "false"

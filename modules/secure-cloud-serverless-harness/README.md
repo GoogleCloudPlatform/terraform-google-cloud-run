@@ -79,6 +79,7 @@ module "secure_cloud_run_harness" {
 | security\_project\_name | The name to give the security project. | `string` | n/a | yes |
 | serverless\_folder\_suffix | The suffix to be concat in the Serverless folder name fldr-serverless-<SUFFIX>. | `string` | `""` | no |
 | serverless\_project\_name | The name to give the Cloud Run project. | `string` | n/a | yes |
+| serverless\_type | The type of resource to be used. It supports only CLOUD\_RUN or CLOUD\_FUNCTION | `string` | n/a | yes |
 | service\_account\_project\_roles | Common roles to apply to the Cloud Run service account in the serverless project. | `list(string)` | `[]` | no |
 | subnet\_ip | The CDIR IP range of the subnetwork. | `string` | n/a | yes |
 | vpc\_name | The name of the network. | `string` | n/a | yes |

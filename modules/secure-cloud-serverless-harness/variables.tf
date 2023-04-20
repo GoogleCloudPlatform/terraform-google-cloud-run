@@ -19,6 +19,11 @@ variable "billing_account" {
   type        = string
 }
 
+variable "serverless_type" {
+  description = "The type of resource to be used. It supports only CLOUD_RUN or CLOUD_FUNCTION"
+  type        = string
+}
+
 variable "security_project_name" {
   description = "The name to give the security project."
   type        = string

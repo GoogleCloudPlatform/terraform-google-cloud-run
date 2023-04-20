@@ -27,7 +27,7 @@ resource "random_id" "random_folder_suffix" {
 }
 
 module "secure_harness" {
-  source                                      = "../../modules/secure-cloud-run-harness"
+  source                                      = "../../modules/secure-cloud-serverless-harness"
   billing_account                             = var.billing_account
   security_project_name                       = "prj-kms-secure-cloud-run"
   serverless_project_name                     = "prj-secure-cloud-run"
@@ -48,6 +48,7 @@ module "secure_harness" {
   artifact_registry_repository_name           = local.repository_name
   egress_policies                             = var.egress_policies
   ingress_policies                            = var.ingress_policies
+  serverless_type                             = "CLOUD_RUN"
 }
 
 resource "null_resource" "copy_image" {
