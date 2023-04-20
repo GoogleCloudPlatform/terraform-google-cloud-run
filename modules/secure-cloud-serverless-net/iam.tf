@@ -25,13 +25,6 @@ resource "google_project_service_identity" "vpcaccess_identity_sa" {
   service = "vpcaccess.googleapis.com"
 }
 
-resource "google_project_service_identity" "run_identity_sa" {
-  provider = google-beta
-
-  project = var.serverless_project_id
-  service = "run.googleapis.com"
-}
-
 resource "google_project_iam_member" "gca_sa_vpcaccess" {
   count = var.connector_on_host_project ? 0 : 1
 
@@ -53,5 +46,5 @@ resource "google_project_iam_member" "run_identity_services" {
 
   project = var.vpc_project_id
   role    = "roles/vpcaccess.user"
-  member  = "serviceAccount:${google_project_service_identity.run_identity_sa.email}"
+  member  = "serviceAccount:${var.serverless_service_identity_email}"
 }
