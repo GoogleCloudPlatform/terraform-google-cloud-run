@@ -19,7 +19,10 @@ locals {
   access_level_name                = "alp_${local.prefix}_members_${random_id.random_access_level_suffix.hex}"
   perimeter_name                   = "sp_${local.prefix}_perimeter_${random_id.random_access_level_suffix.hex}"
   access_context_manager_policy_id = var.create_access_context_manager_access_policy ? google_access_context_manager_access_policy.access_policy[0].id : var.access_context_manager_policy_id
-
+  access_level_members = concat(var.access_level_members,
+    [for project in module.serverless_project : "serviceAccount:${project.services_identities["cloudbuild"]}"],
+    [for project in module.serverless_project : "serviceAccount:${project.services_identities["gcs"]}"]
+  )
 }
 
 resource "random_id" "random_access_level_suffix" {
@@ -42,7 +45,7 @@ module "access_level_members" {
   description = "${local.prefix} Access Level"
   policy      = local.access_context_manager_policy_id
   name        = local.access_level_name
-  members     = var.access_level_members
+  members     = local.access_level_members
 }
 
 module "regular_service_perimeter" {
@@ -183,19 +186,45 @@ module "regular_service_perimeter" {
 }
 
 resource "google_access_context_manager_service_perimeter_resource" "service_perimeter_serverless_resource" {
+  for_each       = module.serverless_project
   perimeter_name = "accessPolicies/${local.access_context_manager_policy_id}/servicePerimeters/${module.regular_service_perimeter.perimeter_name}"
-  resource       = "projects/${module.serverless_project.project_number}"
+  resource       = "projects/${each.value.project_number}"
+  depends_on = [
+    module.serverless_project,
+    module.security_project,
+    module.network_project,
+    module.regular_service_perimeter
+  ]
 }
 
 resource "google_access_context_manager_service_perimeter_resource" "service_perimeter_security_resource" {
   perimeter_name = "accessPolicies/${local.access_context_manager_policy_id}/servicePerimeters/${module.regular_service_perimeter.perimeter_name}"
   resource       = "projects/${module.security_project.project_number}"
+  depends_on = [
+    module.serverless_project,
+    module.security_project,
+    module.network_project,
+    module.regular_service_perimeter
+  ]
+}
+
+resource "google_access_context_manager_service_perimeter_resource" "service_perimeter_network_resource" {
+  count          = var.use_shared_vpc ? 1 : 0
+  perimeter_name = "accessPolicies/${local.access_context_manager_policy_id}/servicePerimeters/${module.regular_service_perimeter.perimeter_name}"
+  resource       = "projects/${module.network_project[0].project_number}"
+  depends_on = [
+    module.serverless_project,
+    module.security_project,
+    module.network_project,
+    module.regular_service_perimeter
+  ]
 }
 
 resource "time_sleep" "wait_90_seconds" {
   depends_on = [
     google_access_context_manager_service_perimeter_resource.service_perimeter_security_resource,
-    google_access_context_manager_service_perimeter_resource.service_perimeter_serverless_resource
+    google_access_context_manager_service_perimeter_resource.service_perimeter_serverless_resource,
+    google_access_context_manager_service_perimeter_resource.service_perimeter_network_resource
   ]
 
   create_duration  = "90s"

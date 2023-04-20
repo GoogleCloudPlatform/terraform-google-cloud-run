@@ -77,3 +77,8 @@ variable "resource_names_suffix" {
   type        = string
   default     = null
 }
+
+variable "serverless_type" {
+  description = "The type of resource to be used. It supports only CLOUD_RUN or CLOUD_FUNCTION"
+  type        = string
+}

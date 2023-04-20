@@ -70,6 +70,7 @@ module "secure_cloud_run_harness" {
 | key\_rotation\_period | Period of key rotation in seconds. Default value is equivalent to 30 days. | `string` | `"2592000s"` | no |
 | keyring\_name | Keyring name. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
+| network\_project\_name | The name to give the shared vpc project. | `string` | `""` | no |
 | org\_id | The organization ID. | `string` | n/a | yes |
 | owners | List of comma-separated owners for each key declared in set\_owners\_for. | `list(string)` | `[]` | no |
 | parent\_folder\_id | The ID of a folder to host the infrastructure created in this module. | `string` | `""` | no |
@@ -78,10 +79,11 @@ module "secure_cloud_run_harness" {
 | region | The region in which the subnetwork will be created. | `string` | n/a | yes |
 | security\_project\_name | The name to give the security project. | `string` | n/a | yes |
 | serverless\_folder\_suffix | The suffix to be concat in the Serverless folder name fldr-serverless-<SUFFIX>. | `string` | `""` | no |
-| serverless\_project\_name | The name to give the Cloud Run project. | `string` | n/a | yes |
+| serverless\_project\_names | The name to give the Cloud Serverless project. | `list(string)` | n/a | yes |
 | serverless\_type | The type of resource to be used. It supports only CLOUD\_RUN or CLOUD\_FUNCTION | `string` | n/a | yes |
-| service\_account\_project\_roles | Common roles to apply to the Cloud Run service account in the serverless project. | `list(string)` | `[]` | no |
+| service\_account\_project\_roles | Common roles to apply to the Cloud Serverless service account in the serverless project. | `map(list(string))` | `{}` | no |
 | subnet\_ip | The CDIR IP range of the subnetwork. | `string` | n/a | yes |
+| use\_shared\_vpc | Defines if the network created will be a single or shared vpc. | `bool` | `false` | no |
 | vpc\_name | The name of the network. | `string` | n/a | yes |
 
 ## Outputs
@@ -90,17 +92,19 @@ module "secure_cloud_run_harness" {
 |------|-------------|
 | artifact\_registry\_repository\_id | The Artifact Registry Repository full identifier where the images should be stored. |
 | artifact\_registry\_repository\_name | The Artifact Registry Repository last part of the repository name where the images should be stored. |
-| cloud\_run\_service\_identity\_email | The Cloud Run Service Identity email. |
+| cloud\_serverless\_service\_identity\_email | The Cloud Run Service Identity email. |
+| cloudfunction\_source\_bucket | Cloud Function Source Bucket. |
+| network\_project\_id | Project ID of the project created to host the Cloud Run Network. |
 | restricted\_access\_level\_name | Access level name. |
 | restricted\_service\_perimeter\_name | Service Perimeter name. |
 | security\_project\_id | Project ID of the project created for KMS and Artifact Register. |
 | security\_project\_number | Project number of the project created for KMS and Artifact Register. |
 | serverless\_folder\_id | The folder created to alocate Serverless infra. |
-| serverless\_project\_id | Project ID of the project created to deploy Cloud Run. |
-| serverless\_project\_number | Project number of the project created to deploy Cloud Run. |
-| service\_account\_email | The email of the Service Account created to be used by Cloud Run. |
+| serverless\_project\_ids | Project ID of the projects created to deploy Cloud Run. |
+| serverless\_project\_numbers | Project number of the projects created to deploy Cloud Run. |
+| service\_account\_email | The email of the Service Account created to be used by Cloud Serverless. |
 | service\_subnet | The sub-network name created in harness. |
-| service\_vpc | The network created for Cloud Run. |
+| service\_vpc | The network created for Cloud Serverless. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

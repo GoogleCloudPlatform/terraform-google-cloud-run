@@ -15,23 +15,33 @@
  */
 
 locals {
-  api = var.serverless_type == "CLOUD_RUN" ? "run" : "cloudfunctions"
-  serverless_apis = [
+  api = var.serverless_type == "CLOUD_FUNCTION" ? ["cloudfunctions.googleapis.com", "cloudbuild.googleapis.com", "eventarc.googleapis.com", "eventarcpublishing.googleapis.com"] : []
+  serverless_apis = concat([
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
     "container.googleapis.com",
     "artifactregistry.googleapis.com",
-    "${local.api}.googleapis.com",
+    "run.googleapis.com",
     "cloudkms.googleapis.com",
     "dns.googleapis.com"
-  ]
+  ], local.api)
   kms_apis = [
     "cloudkms.googleapis.com",
     "artifactregistry.googleapis.com"
   ]
 
-  decrypters = join(",", concat(["serviceAccount:${google_project_service_identity.artifact_sa.email}"], var.decrypters))
-  encrypters = join(",", concat(["serviceAccount:${google_project_service_identity.artifact_sa.email}"], var.encrypters))
+  network_apis = [
+    "vpcaccess.googleapis.com",
+    "compute.googleapis.com",
+    "dns.googleapis.com"
+  ]
+
+  network_project_id = var.use_shared_vpc ? module.network_project[0].project_id : ""
+
+  eventarc_identities = [for project in module.serverless_project : "serviceAccount:${project.services_identities["eventarc"]}"]
+  gcs_identities      = [for project in module.serverless_project : "serviceAccount:${project.services_identities["gcs"]}"]
+  decrypters          = join(",", concat(["serviceAccount:${google_project_service_identity.artifact_sa.email}"], local.eventarc_identities, local.gcs_identities, var.decrypters))
+  encrypters          = join(",", concat(["serviceAccount:${google_project_service_identity.artifact_sa.email}"], local.eventarc_identities, local.gcs_identities, var.encrypters))
 
 }
 
@@ -40,9 +50,23 @@ resource "google_folder" "fld_serverless" {
   parent       = var.parent_folder_id == "" ? "organizations/${var.org_id}" : "folders/${var.parent_folder_id}"
 }
 
+module "network_project" {
+  count             = var.use_shared_vpc ? 1 : 0
+  source            = "terraform-google-modules/project-factory/google"
+  version           = "~> 14.2"
+  random_project_id = "true"
+  activate_apis     = local.network_apis
+  name              = var.network_project_name
+  org_id            = var.org_id
+  billing_account   = var.billing_account
+  folder_id         = google_folder.fld_serverless.name
+
+  enable_shared_vpc_host_project = true
+}
+
 module "security_project" {
   source            = "terraform-google-modules/project-factory/google"
-  version           = "~> 13.0"
+  version           = "~> 14.2"
   random_project_id = "true"
   activate_apis     = local.kms_apis
   name              = var.security_project_name
@@ -52,70 +76,19 @@ module "security_project" {
 }
 
 module "serverless_project" {
-  source            = "terraform-google-modules/project-factory/google"
-  version           = "~> 13.0"
-  random_project_id = "true"
-  activate_apis     = local.serverless_apis
-  name              = var.serverless_project_name
-  org_id            = var.org_id
-  billing_account   = var.billing_account
-  folder_id         = google_folder.fld_serverless.name
+  source = "../service-project-factory"
+
+  for_each = toset(var.serverless_project_names)
+
+  billing_account               = var.billing_account
+  serverless_type               = var.serverless_type
+  org_id                        = var.org_id
+  activate_apis                 = local.serverless_apis
+  folder_name                   = google_folder.fld_serverless.name
+  project_name                  = each.value
+  service_account_project_roles = length(var.service_account_project_roles) > 0 ? var.service_account_project_roles[each.value] : []
 }
 
-module "service_accounts" {
-  source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 3.0"
-  project_id = module.serverless_project.project_id
-  prefix     = "sa"
-  names      = ["serverless-${local.api}"]
-
-  depends_on = [
-    time_sleep.wait_90_seconds
-  ]
-}
-
-resource "google_project_iam_member" "cloud_run_sa_roles" {
-  for_each = toset(var.service_account_project_roles)
-  project  = module.serverless_project.project_id
-  role     = each.value
-  member   = module.service_accounts.iam_email
-
-  depends_on = [
-    time_sleep.wait_90_seconds
-  ]
-}
-
-resource "google_project_service_identity" "serverless_sa" {
-  provider = google-beta
-
-  project = module.serverless_project.project_id
-  service = "${local.api}.googleapis.com"
-
-  depends_on = [
-    time_sleep.wait_90_seconds
-  ]
-}
-
-resource "google_service_account_iam_member" "identity_service_account_user" {
-  service_account_id = module.service_accounts.service_account.id
-  role               = "roles/iam.serviceAccountUser"
-  member             = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
-
-  depends_on = [
-    time_sleep.wait_90_seconds
-  ]
-}
-
-resource "google_project_service_identity" "artifact_sa" {
-  provider = google-beta
-
-  project = module.security_project.project_id
-  service = "artifactregistry.googleapis.com"
-
-  depends_on = [
-    time_sleep.wait_90_seconds
-  ]
-}
 
 resource "google_artifact_registry_repository" "repo" {
   project       = module.security_project.project_id
@@ -131,11 +104,12 @@ resource "google_artifact_registry_repository" "repo" {
 }
 
 resource "google_artifact_registry_repository_iam_member" "member" {
+  for_each   = module.serverless_project
   project    = module.security_project.project_id
   location   = var.location
   repository = google_artifact_registry_repository.repo.repository_id
   role       = "roles/artifactregistry.reader"
-  member     = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
+  member     = "serviceAccount:${each.value.cloud_serverless_service_identity_email}"
 
   depends_on = [
     time_sleep.wait_90_seconds
@@ -161,6 +135,38 @@ module "artifact_registry_kms" {
   key_protection_level = var.key_protection_level
 
   depends_on = [
+    time_sleep.wait_90_seconds
+  ]
+}
+
+resource "google_project_service_identity" "artifact_sa" {
+  provider = google-beta
+
+  project = module.security_project.project_id
+  service = "artifactregistry.googleapis.com"
+
+  depends_on = [
+    time_sleep.wait_90_seconds
+  ]
+}
+
+module "cloudfunction_source_bucket" {
+  for_each = var.serverless_type == "CLOUD_RUN" ? {} : module.serverless_project
+  source   = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
+  version  = "~>3.4"
+
+  project_id    = each.value.project_id
+  name          = "bkt-${var.location}-${each.value.project_number}-cfv2-zip-files"
+  location      = var.location
+  storage_class = "REGIONAL"
+  force_destroy = true
+
+  encryption = {
+    default_kms_key_name = module.artifact_registry_kms.keys[var.key_name]
+  }
+
+  depends_on = [
+    module.artifact_registry_kms,
     time_sleep.wait_90_seconds
   ]
 }

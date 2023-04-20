@@ -15,10 +15,15 @@
  */
 
 module "private_service_connect" {
+  for_each = module.network
+
   source                     = "terraform-google-modules/network/google//modules/private-service-connect"
   version                    = "~> 6.0"
-  project_id                 = module.serverless_project.project_id
-  network_self_link          = module.network.network_self_link
+  project_id                 = each.value.project_id
+  network_self_link          = each.value.network_self_link
   private_service_connect_ip = var.private_service_connect_ip
   forwarding_rule_target     = "vpc-sc"
+  depends_on = [
+    time_sleep.wait_90_seconds
+  ]
 }
