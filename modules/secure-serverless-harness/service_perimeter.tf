@@ -220,13 +220,14 @@ resource "google_access_context_manager_service_perimeter_resource" "service_per
   ]
 }
 
-resource "time_sleep" "wait_90_seconds" {
+resource "time_sleep" "wait_180_seconds" {
   depends_on = [
     google_access_context_manager_service_perimeter_resource.service_perimeter_security_resource,
     google_access_context_manager_service_perimeter_resource.service_perimeter_serverless_resource,
-    google_access_context_manager_service_perimeter_resource.service_perimeter_network_resource
+    google_access_context_manager_service_perimeter_resource.service_perimeter_network_resource,
+    module.access_level_members
   ]
 
-  create_duration  = "90s"
-  destroy_duration = "90s"
+  create_duration  = "180s"
+  destroy_duration = "180s"
 }

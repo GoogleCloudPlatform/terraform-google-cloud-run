@@ -38,6 +38,10 @@ module "service_accounts" {
   project_id = module.serverless_project.project_id
   prefix     = "sa"
   names      = [replace(lower(var.serverless_type), "_", "-")]
+
+  depends_on = [
+    module.serverless_project
+  ]
 }
 
 resource "google_project_iam_member" "cloud_run_sa_roles" {
@@ -59,6 +63,7 @@ resource "google_service_account_iam_member" "identity_service_account_user" {
   role               = "roles/iam.serviceAccountUser"
   member             = "serviceAccount:${google_project_service_identity.serverless_sa.email}"
 }
+
 resource "google_project_service_identity" "cloudbuild_sa" {
   provider = google-beta
 

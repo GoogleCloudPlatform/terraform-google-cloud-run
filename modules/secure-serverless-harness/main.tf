@@ -99,7 +99,7 @@ resource "google_artifact_registry_repository" "repo" {
   kms_key_name  = module.artifact_registry_kms.keys[var.key_name]
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
@@ -112,7 +112,7 @@ resource "google_artifact_registry_repository_iam_member" "member" {
   member     = "serviceAccount:${each.value.cloud_serverless_service_identity_email}"
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
@@ -135,7 +135,7 @@ module "artifact_registry_kms" {
   key_protection_level = var.key_protection_level
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
@@ -146,7 +146,7 @@ resource "google_project_service_identity" "artifact_sa" {
   service = "artifactregistry.googleapis.com"
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
@@ -167,6 +167,6 @@ module "cloudfunction_source_bucket" {
 
   depends_on = [
     module.artifact_registry_kms,
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
