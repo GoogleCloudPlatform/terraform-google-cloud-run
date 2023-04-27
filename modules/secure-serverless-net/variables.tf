@@ -81,4 +81,9 @@ variable "resource_names_suffix" {
 variable "serverless_type" {
   description = "The type of resource to be used. It supports only CLOUD_RUN or CLOUD_FUNCTION"
   type        = string
+
+  validation {
+    condition     = contains(["CLOUD_RUN", "CLOUD_FUNCTION"], var.serverless_type)
+    error_message = "unsupported value for serverless_type"
+  }
 }
