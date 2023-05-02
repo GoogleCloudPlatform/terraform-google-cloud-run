@@ -23,13 +23,13 @@ module "firewall_rules" {
   count = var.connector_on_host_project ? 0 : 1
 
   source  = "terraform-google-modules/network/google//modules/firewall-rules"
-  version = "~> 6.0"
+  version = "~> 7.0"
 
   project_id   = var.vpc_project_id
   network_name = var.shared_vpc_name
 
-  rules = [{
-    name                    = "serverless-to-vpc-connector${local.suffix}"
+  rules = concat([{
+    name                    = "fw-serverless-to-vpc-connector${local.suffix}"
     description             = null
     priority                = null
     direction               = "INGRESS"
@@ -56,7 +56,7 @@ module "firewall_rules" {
     }
     },
     {
-      name                    = "vpc-connector-to-serverless${local.suffix}"
+      name                    = "fw-vpc-connector-to-serverless${local.suffix}"
       description             = null
       priority                = null
       direction               = "EGRESS"
@@ -83,26 +83,7 @@ module "firewall_rules" {
       }
     },
     {
-      name                    = "vpc-connector-to-lb${local.suffix}"
-      description             = null
-      priority                = null
-      direction               = "EGRESS"
-      ranges                  = []
-      source_tags             = null
-      source_service_accounts = null
-      target_tags             = local.tags
-      target_service_accounts = null
-      allow = [{
-        protocol = "tcp"
-        ports    = ["80"]
-      }]
-      deny = []
-      log_config = {
-        metadata = "INCLUDE_ALL_METADATA"
-      }
-    },
-    {
-      name                    = "vpc-connector-health-checks${local.suffix}"
+      name                    = "fw-vpc-connector-health-checks${local.suffix}"
       description             = null
       priority                = null
       direction               = "INGRESS"
@@ -121,7 +102,7 @@ module "firewall_rules" {
       }
     },
     {
-      name                    = "vpc-connector-requests${local.suffix}"
+      name                    = "fw-vpc-connector-requests${local.suffix}"
       description             = null
       priority                = null
       direction               = "INGRESS"
@@ -146,5 +127,25 @@ module "firewall_rules" {
       log_config = {
         metadata = "INCLUDE_ALL_METADATA"
       }
-  }]
+    }], var.serverless_type == "CLOUD_RUN" ? [
+    {
+      name                    = "fw-vpc-connector-to-lb${local.suffix}"
+      description             = null
+      priority                = null
+      direction               = "EGRESS"
+      ranges                  = ["0.0.0.0/0"]
+      source_tags             = null
+      source_service_accounts = null
+      target_tags             = local.tags
+      target_service_accounts = null
+      allow = [{
+        protocol = "tcp"
+        ports    = ["80"]
+      }]
+      deny = []
+      log_config = {
+        metadata = "INCLUDE_ALL_METADATA"
+      }
+    }
+  ] : [])
 }
