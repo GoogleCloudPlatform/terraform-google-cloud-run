@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+locals {
+  api = var.serverless_type == "CLOUD_RUN" ? "run" : "cloudfunctions"
+}
+
 data "google_project" "serverless_project_id" {
   project_id = var.serverless_project_id
 }

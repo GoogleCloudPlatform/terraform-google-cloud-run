@@ -27,10 +27,10 @@ resource "random_id" "random_folder_suffix" {
 }
 
 module "secure_harness" {
-  source                                      = "../../modules/secure-cloud-serverless-harness"
+  source                                      = "../../modules/secure-serverless-harness"
   billing_account                             = var.billing_account
   security_project_name                       = "prj-kms-secure-cloud-run"
-  serverless_project_name                     = "prj-secure-cloud-run"
+  serverless_project_names                    = ["prj-secure-cloud-run"]
   org_id                                      = var.org_id
   parent_folder_id                            = var.parent_folder_id
   serverless_folder_suffix                    = random_id.random_folder_suffix.hex
@@ -65,18 +65,18 @@ module "secure_cloud_run" {
   source                                  = "../../modules/secure-cloud-run"
   location                                = local.location
   region                                  = local.region
-  serverless_project_id                   = module.secure_harness.serverless_project_id
-  vpc_project_id                          = module.secure_harness.serverless_project_id
+  serverless_project_id                   = module.secure_harness.serverless_project_ids[0]
+  vpc_project_id                          = module.secure_harness.network_project_id[0]
   kms_project_id                          = module.secure_harness.security_project_id
   key_name                                = "key-secure-cloud-run"
   keyring_name                            = "krg-secure-cloud-run"
   service_name                            = "srv-secure-cloud-run"
   image                                   = "${local.location}-docker.pkg.dev/${module.secure_harness.security_project_id}/${module.secure_harness.artifact_registry_repository_name}/hello:latest"
-  cloud_run_sa                            = module.secure_harness.service_account_email
+  cloud_run_sa                            = module.secure_harness.service_account_email[module.secure_harness.serverless_project_ids[0]]
   connector_name                          = "con-secure-cloud-run"
-  subnet_name                             = module.secure_harness.service_subnet
+  subnet_name                             = module.secure_harness.service_subnet[0]
   create_subnet                           = false
-  shared_vpc_name                         = module.secure_harness.service_vpc.network_name
+  shared_vpc_name                         = module.secure_harness.service_vpc[0].network_name
   ip_cidr_range                           = "10.0.0.0/28"
   prevent_destroy                         = false
   artifact_registry_repository_location   = local.location

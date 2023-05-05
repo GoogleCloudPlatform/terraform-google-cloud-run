@@ -14,11 +14,25 @@
  * limitations under the License.
  */
 
-module "private_service_connect" {
-  source                     = "terraform-google-modules/network/google//modules/private-service-connect"
-  version                    = "~> 6.0"
-  project_id                 = module.serverless_project.project_id
-  network_self_link          = module.network.network_self_link
-  private_service_connect_ip = var.private_service_connect_ip
-  forwarding_rule_target     = "vpc-sc"
+terraform {
+  required_version = ">= 0.13"
+
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "< 5.0"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "< 5.0"
+    }
+  }
+
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-serverless-net/v0.6.0"
+  }
+
+  provider_meta "google-beta" {
+    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-serverless-net/v0.6.0"
+  }
 }

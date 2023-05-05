@@ -15,12 +15,12 @@
  */
 
 output "serverless_project_id" {
-  value       = module.secure_harness.serverless_project_id
+  value       = module.secure_harness.serverless_project_ids[0]
   description = "The serverless project id."
 }
 
 output "serverless_project_number" {
-  value       = module.secure_harness.serverless_project_number
+  value       = module.secure_harness.serverless_project_numbers[module.secure_harness.serverless_project_ids[0]]
   description = "The serverless project number."
 }
 
@@ -35,22 +35,22 @@ output "security_project_number" {
 }
 
 output "service_account_email" {
-  value       = module.secure_harness.service_account_email
+  value       = module.secure_harness.service_account_email[module.secure_harness.serverless_project_ids[0]]
   description = "The service account email created to be used by Cloud Run."
 }
 
 output "service_vpc_self_link" {
-  value       = module.secure_harness.service_vpc.network.self_link
+  value       = module.secure_harness.service_vpc[0].network.self_link
   description = "The Network self-link created in harness."
 }
 
 output "service_vpc_name" {
-  value       = module.secure_harness.service_vpc.network_name
+  value       = module.secure_harness.service_vpc[0].network_name
   description = "The Network self-link created in harness."
 }
 
 output "service_vpc_subnet_name" {
-  value       = module.secure_harness.service_subnet
+  value       = module.secure_harness.service_subnet[0]
   description = "The sub-network name created in harness."
 }
 

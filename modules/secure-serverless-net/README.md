@@ -50,6 +50,7 @@ module "cloud_run_network" {
 | resource\_names\_suffix | A suffix to concat in the end of the resources names. | `string` | `null` | no |
 | serverless\_project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
 | serverless\_service\_identity\_email | The Service Identity email for the serverless resource (Cloud Run or Cloud Function). | `string` | n/a | yes |
+| serverless\_type | The type of resource to be used. It supports only CLOUD\_RUN or CLOUD\_FUNCTION | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be used to create Serverless Connector. | `string` | n/a | yes |
 | subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | n/a | yes |
 | vpc\_project\_id | The project where shared vpc is. | `string` | n/a | yes |
