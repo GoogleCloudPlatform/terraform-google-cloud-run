@@ -33,7 +33,8 @@ locals {
   network_apis = [
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
-    "dns.googleapis.com"
+    "dns.googleapis.com",
+    "servicenetworking.googleapis.com"
   ]
 
   network_project_id = var.use_shared_vpc ? module.network_project[0].project_id : ""
