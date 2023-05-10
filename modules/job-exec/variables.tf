@@ -74,7 +74,7 @@ variable "env_secret_vars" {
     value_source = set(object({
       secret_key_ref = object({
         secret  = string
-        version = string
+        version = optional(string, "latest")
       })
     }))
   }))
@@ -142,7 +142,10 @@ variable "vpc_access" {
 }
 
 variable "limits" {
-  type        = map(string)
+  type = object({
+    cpu    = optional(string)
+    memory = optional(string)
+  })
   description = "Resource limits to the container"
   default     = null
 }
