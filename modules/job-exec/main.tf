@@ -20,13 +20,20 @@ resource "google_cloud_run_v2_job" "job" {
   location     = var.location
   launch_stage = var.launch_stage
   template {
-    labels = var.labels
+    labels      = var.labels
+    parallelism = var.parallelism
+    task_count  = var.task_count
     template {
       max_retries = var.max_retries
+
       containers {
         image   = var.image
         command = var.container_command
         args    = var.argument
+
+        resources {
+          limits = var.limits
+        }
 
         dynamic "env" {
           for_each = var.env_vars

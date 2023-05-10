@@ -100,6 +100,18 @@ variable "max_retries" {
   description = "Number of retries allowed per Task, before marking this Task failed."
 }
 
+variable "parallelism" {
+  type        = number
+  default     = null
+  description = "Specifies the maximum desired number of tasks the execution should run at given time. Must be <= taskCount."
+}
+
+variable "task_count" {
+  type        = number
+  default     = null
+  description = "Specifies the desired number of tasks the execution should run."
+}
+
 variable "volumes" {
   type = list(object({
     name = string
@@ -127,4 +139,10 @@ variable "vpc_access" {
   }))
   description = "VPC Access configuration to use for this Task."
   default     = []
+}
+
+variable "limits" {
+  type        = map(string)
+  description = "Resource limits to the container"
+  default     = null
 }
