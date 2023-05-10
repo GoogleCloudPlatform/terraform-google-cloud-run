@@ -23,7 +23,8 @@ locals {
     "artifactregistry.googleapis.com",
     "run.googleapis.com",
     "cloudkms.googleapis.com",
-    "dns.googleapis.com"
+    "dns.googleapis.com",
+    "servicenetworking.googleapis.com"
   ], local.api)
   kms_apis = [
     "cloudkms.googleapis.com",
