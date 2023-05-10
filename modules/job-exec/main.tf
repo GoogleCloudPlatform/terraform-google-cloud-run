@@ -19,12 +19,15 @@ resource "google_cloud_run_v2_job" "job" {
   project      = var.project_id
   location     = var.location
   launch_stage = var.launch_stage
+
   template {
     labels      = var.labels
     parallelism = var.parallelism
     task_count  = var.task_count
+
     template {
-      max_retries = var.max_retries
+      max_retries     = var.max_retries
+      service_account = var.service_account_email
 
       containers {
         image   = var.image
