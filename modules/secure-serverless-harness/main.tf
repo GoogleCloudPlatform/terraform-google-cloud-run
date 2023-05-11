@@ -26,20 +26,19 @@ locals {
     "dns.googleapis.com",
     "servicenetworking.googleapis.com"
   ], local.api)
-  kms_apis = [
+  kms_apis = concat([
     "cloudkms.googleapis.com",
     "artifactregistry.googleapis.com"
-  ]
+  ], var.security_project_extra_apis)
 
-  network_apis = [
+  network_apis = concat([
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
     "dns.googleapis.com",
     "servicenetworking.googleapis.com"
-  ]
+  ], var.network_project_extra_apis)
 
-  network_project_id = var.use_shared_vpc ? module.network_project[0].project_id : ""
-
+  network_project_id  = var.use_shared_vpc ? module.network_project[0].project_id : ""
   eventarc_identities = [for project in module.serverless_project : "serviceAccount:${project.services_identities["eventarc"]}"]
   gcs_identities      = [for project in module.serverless_project : "serviceAccount:${project.services_identities["gcs"]}"]
   decrypters          = join(",", concat(["serviceAccount:${google_project_service_identity.artifact_sa.email}"], local.eventarc_identities, local.gcs_identities, var.decrypters))
@@ -85,10 +84,10 @@ module "serverless_project" {
   billing_account               = var.billing_account
   serverless_type               = var.serverless_type
   org_id                        = var.org_id
-  activate_apis                 = local.serverless_apis
+  activate_apis                 = concat(local.serverless_apis, try(var.serverless_project_extra_apis[each.value], []))
   folder_name                   = google_folder.fld_serverless.name
   project_name                  = each.value
-  service_account_project_roles = length(var.service_account_project_roles) > 0 ? var.service_account_project_roles[each.value] : []
+  service_account_project_roles = try(var.service_account_project_roles[each.value], [])
 }
 
 
