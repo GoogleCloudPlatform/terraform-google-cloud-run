@@ -36,8 +36,6 @@ locals {
     "dns.googleapis.com"
   ]
 
-  network_project_id = var.use_shared_vpc ? module.network_project[0].project_id : ""
-
   eventarc_identities = [for project in module.serverless_project : "serviceAccount:${project.services_identities["eventarc"]}"]
   gcs_identities      = [for project in module.serverless_project : "serviceAccount:${project.services_identities["gcs"]}"]
   decrypters          = join(",", concat(["serviceAccount:${google_project_service_identity.artifact_sa.email}"], local.eventarc_identities, local.gcs_identities, var.decrypters))
