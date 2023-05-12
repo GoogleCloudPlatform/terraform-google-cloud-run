@@ -231,3 +231,34 @@ variable "members" {
   description = "Users/SAs to be given invoker access to the service"
   default     = []
 }
+
+variable "startup_probe" {
+  description = "Startup probe configuration"
+  type = object({
+    initial_delay_seconds = number
+    failure_threshold     = number
+    timeout_seconds       = number
+    period_seconds        = number
+    http_get = optional(object({
+      path = string
+      port = optional(number)
+      http_headers = optional(set(object({
+        name  = string
+        value = string
+      })))
+    }))
+    tcp_socket = optional(object({
+      port = optional(number)
+    }))
+    grpc = optional(object({
+      port    = optional(number)
+      service = optional(string)
+    }))
+  })
+  default = {
+    initial_delay_seconds = 10
+    timeout_seconds       = 1
+    period_seconds        = 10
+    failure_threshold     = 3
+  }
+}

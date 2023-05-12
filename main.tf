@@ -79,6 +79,47 @@ resource "google_cloud_run_service" "main" {
             mount_path = volume_mounts.value["mount_path"]
           }
         }
+
+        dynamic "startup_probe" {
+          for_each = var.startup_probe != null ? [var.startup_probe] : []
+          content {
+            initial_delay_seconds = startup_probe.value.initial_delay_seconds
+            failure_threshold     = startup_probe.value.failure_threshold
+            timeout_seconds       = startup_probe.value.timeout_seconds
+            period_seconds        = startup_probe.value.period_seconds
+
+            dynamic "http_get" {
+              for_each = startup_probe.value.http_get != null ? [startup_probe.value.http_get] : []
+              content {
+                path = http_get.value.path
+                port = http_get.value.port
+
+                dynamic "http_headers" {
+                  for_each = http_get.value.http_headers != null ? http_get.value.http_headers : []
+                  content {
+                    name  = http_headers.value.name
+                    value = http_headers.value.value
+                  }
+                }
+              }
+            }
+
+            dynamic "tcp_socket" {
+              for_each = startup_probe.value.tcp_socket != null ? [startup_probe.value.tcp_socket] : []
+              content {
+                port = tcp_socket.value.port
+              }
+            }
+
+            dynamic "grpc" {
+              for_each = startup_probe.value.grpc != null ? [startup_probe.value.grpc] : []
+              content {
+                port    = grpc.value.port
+                service = grpc.value.service
+              }
+            }
+          }
+        }
       }                                                 // container
       container_concurrency = var.container_concurrency # maximum allowed concurrent requests 0,1,2-N
       timeout_seconds       = var.timeout_seconds       # max time instance is allowed to respond to a request
