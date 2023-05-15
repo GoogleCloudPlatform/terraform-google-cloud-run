@@ -255,10 +255,5 @@ variable "startup_probe" {
       service = optional(string)
     }))
   })
-  default = {
-    initial_delay_seconds = 10
-    timeout_seconds       = 1
-    period_seconds        = 10
-    failure_threshold     = 3
-  }
+  default = null
 }
