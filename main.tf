@@ -120,6 +120,40 @@ resource "google_cloud_run_service" "main" {
             }
           }
         }
+
+        dynamic "liveness_probe" {
+          for_each = var.liveness_probe != null ? [var.liveness_probe] : []
+          content {
+            initial_delay_seconds = liveness_probe.value.initial_delay_seconds
+            failure_threshold     = liveness_probe.value.failure_threshold
+            timeout_seconds       = liveness_probe.value.timeout_seconds
+            period_seconds        = liveness_probe.value.period_seconds
+
+            dynamic "http_get" {
+              for_each = liveness_probe.value.http_get != null ? [liveness_probe.value.http_get] : []
+              content {
+                path = http_get.value.path
+                port = http_get.value.port
+
+                dynamic "http_headers" {
+                  for_each = http_get.value.http_headers != null ? http_get.value.http_headers : []
+                  content {
+                    name  = http_headers.value.name
+                    value = http_headers.value.value
+                  }
+                }
+              }
+            }
+
+            dynamic "grpc" {
+              for_each = liveness_probe.value.grpc != null ? [liveness_probe.value.grpc] : []
+              content {
+                port    = grpc.value.port
+                service = grpc.value.service
+              }
+            }
+          }
+        }
       }                                                 // container
       container_concurrency = var.container_concurrency # maximum allowed concurrent requests 0,1,2-N
       timeout_seconds       = var.timeout_seconds       # max time instance is allowed to respond to a request
