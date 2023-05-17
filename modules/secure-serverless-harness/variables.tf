@@ -33,15 +33,33 @@ variable "security_project_name" {
   type        = string
 }
 
+variable "security_project_extra_apis" {
+  description = "The extra APIs to be enabled during security project creation."
+  type        = list(string)
+  default     = []
+}
+
 variable "network_project_name" {
   description = "The name to give the shared vpc project."
   type        = string
   default     = ""
 }
 
+variable "network_project_extra_apis" {
+  description = "The extra APIs to be enabled during network project creation."
+  type        = list(string)
+  default     = []
+}
+
 variable "serverless_project_names" {
   description = "The name to give the Cloud Serverless project."
   type        = list(string)
+}
+
+variable "serverless_project_extra_apis" {
+  description = "The extra APIs to be enabled during serverless projects creation."
+  type        = map(list(string))
+  default     = {}
 }
 
 variable "org_id" {

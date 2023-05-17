@@ -40,13 +40,6 @@ variable "exec" {
   default     = false
 }
 
-variable "service_account_email" {
-  type        = string
-  description = "Service Account email needed for the job"
-  default     = ""
-}
-
-
 variable "argument" {
   type        = list(string)
   description = "Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments"
