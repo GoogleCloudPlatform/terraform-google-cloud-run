@@ -42,7 +42,6 @@ Functional examples are included in the
 | location | Cloud Run job deployment location | `string` | n/a | yes |
 | name | The name of the Cloud Run job to create | `string` | n/a | yes |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
-| service\_account\_email | Service Account email needed for the job | `string` | `""` | no |
 
 ## Outputs
 
