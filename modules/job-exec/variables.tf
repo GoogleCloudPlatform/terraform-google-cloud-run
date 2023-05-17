@@ -149,3 +149,13 @@ variable "limits" {
   description = "Resource limits to the container"
   default     = null
 }
+
+variable "timeout" {
+  type        = string
+  description = "Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers."
+  default     = "600s"
+  validation {
+    condition     = can(regex("^[0-9]+(\\.[0-9]{1,9})?s$", var.timeout))
+    error_message = "The value must be a duration in seconds with up to nine fractional digits, ending with 's'. Example: \"3.5s\"."
+  }
+}

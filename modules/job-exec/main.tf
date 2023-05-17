@@ -28,6 +28,7 @@ resource "google_cloud_run_v2_job" "job" {
     template {
       max_retries     = var.max_retries
       service_account = var.service_account_email
+      timeout         = var.timeout
 
       containers {
         image   = var.image

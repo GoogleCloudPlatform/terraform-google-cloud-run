@@ -49,6 +49,7 @@ Functional examples are included in the
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
 | service\_account\_email | Service Account email needed for the job | `string` | `""` | no |
 | task\_count | Specifies the desired number of tasks the execution should run. | `number` | `null` | no |
+| timeout | Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers. | `string` | `"600s"` | no |
 | volume\_mounts | Volume to mount into the container's filesystem. | <pre>list(object({<br>    name       = string<br>    mount_path = string<br>  }))</pre> | `[]` | no |
 | volumes | A list of Volumes to make available to containers. | <pre>list(object({<br>    name = string<br>    cloud_sql_instance = object({<br>      instances = set(string)<br>    })<br>  }))</pre> | `[]` | no |
 | vpc\_access | VPC Access configuration to use for this Task. | <pre>list(object({<br>    connector = string<br>    egress    = string<br>  }))</pre> | `[]` | no |
