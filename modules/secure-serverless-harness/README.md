@@ -70,6 +70,7 @@ module "secure_cloud_run_harness" {
 | key\_rotation\_period | Period of key rotation in seconds. Default value is equivalent to 30 days. | `string` | `"2592000s"` | no |
 | keyring\_name | Keyring name. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
+| network\_project\_extra\_apis | The extra APIs to be enabled during network project creation. | `list(string)` | `[]` | no |
 | network\_project\_name | The name to give the shared vpc project. | `string` | `""` | no |
 | org\_id | The organization ID. | `string` | n/a | yes |
 | owners | List of comma-separated owners for each key declared in set\_owners\_for. | `list(string)` | `[]` | no |
@@ -77,8 +78,10 @@ module "secure_cloud_run_harness" {
 | prevent\_destroy | Set the prevent\_destroy lifecycle attribute on keys. | `bool` | `true` | no |
 | private\_service\_connect\_ip | The internal IP to be used for the private service connect. | `string` | n/a | yes |
 | region | The region in which the subnetwork will be created. | `string` | n/a | yes |
+| security\_project\_extra\_apis | The extra APIs to be enabled during security project creation. | `list(string)` | `[]` | no |
 | security\_project\_name | The name to give the security project. | `string` | n/a | yes |
 | serverless\_folder\_suffix | The suffix to be concat in the Serverless folder name fldr-serverless-<SUFFIX>. | `string` | `""` | no |
+| serverless\_project\_extra\_apis | The extra APIs to be enabled during serverless projects creation. | `map(list(string))` | `{}` | no |
 | serverless\_project\_names | The name to give the Cloud Serverless project. | `list(string)` | n/a | yes |
 | serverless\_type | The type of resource to be used. It supports only CLOUD\_RUN or CLOUD\_FUNCTION | `string` | n/a | yes |
 | service\_account\_project\_roles | Common roles to apply to the Cloud Serverless service account in the serverless project. | `map(list(string))` | `{}` | no |

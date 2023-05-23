@@ -1,17 +1,20 @@
 # Cloud Run Job
 
 ## Description
+
 ### tagline
+
 Deploy a Cloud Run Job and execute it.
 
 ### detailed
+
 This module was deploys a Cloud Run Job run and executes it.
 
 ## Usage
 
 Basic usage of this module is as follows:
 
-```hcl
+````hcl
 ```hcl
 module "cloud_run_core" {
   source = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-run-core"
@@ -23,7 +26,7 @@ module "cloud_run_core" {
   image      = "us-docker.pkg.dev/cloudrun/container/job"
   exec       = true
 }
-```
+````
 
 Functional examples are included in the
 [examples](./examples/) directory.

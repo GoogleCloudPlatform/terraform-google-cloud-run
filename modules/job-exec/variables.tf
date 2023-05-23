@@ -46,7 +46,6 @@ variable "service_account_email" {
   default     = ""
 }
 
-
 variable "argument" {
   type        = list(string)
   description = "Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments"

@@ -18,7 +18,7 @@ locals {
   network_name = startswith(var.vpc_name, "vpc-") ? var.vpc_name : "vpc-${var.vpc_name}"
 
   services_projects = var.use_shared_vpc ? { for key, project in module.serverless_project : key => project.project_id } : {}
-  network_projects  = var.use_shared_vpc ? { for key, project in module.network_project : key => project.project_id } : { for key, project in module.serverless_project : key => project.project_id }
+  network_projects  = var.use_shared_vpc ? { for key, project in module.network_project : key => try(project.project_id, null) } : { for key, project in module.serverless_project : key => try(project.project_id, null) }
 }
 
 module "network" {
@@ -90,6 +90,7 @@ resource "google_compute_shared_vpc_service_project" "shared_vpc_attachment" {
   service_project = each.value
   depends_on = [
     module.serverless_project,
+    local.network_projects,
     time_sleep.wait_180_seconds
   ]
 }
