@@ -7,6 +7,22 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.6.0...v0.7.0) (2023-05-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* adds support to multiple service projects and Shared VPC ([#115](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/115))
+
+### Features
+
+* adds support to multiple service projects and Shared VPC ([#115](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/115)) ([bc1b8b1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/bc1b8b1dec3830f184b3892c9aa41de17c581b41))
+
+
+### Bug Fixes
+
+* adds extra apis variable ([#119](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/119)) ([730fd95](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/730fd95f04971c4a4ed726628028bdc8c6a8d95d))
+
 ## [0.6.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.5.0...v0.6.0) (2023-04-20)
 
 
