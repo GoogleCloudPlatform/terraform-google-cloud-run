@@ -15,7 +15,7 @@
  */
 
 locals {
-  api = var.serverless_type == "CLOUD_FUNCTION" ? ["cloudfunctions.googleapis.com", "cloudbuild.googleapis.com", "eventarc.googleapis.com", "eventarcpublishing.googleapis.com"] : []
+  api = var.serverless_type == "CLOUD_FUNCTION" ? ["cloudfunctions.googleapis.com", "cloudbuild.googleapis.com", "eventarc.googleapis.com", "eventarcpublishing.googleapis.com", "networksecurity.googleapis.com"] : []
   serverless_apis = concat([
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
@@ -35,7 +35,8 @@ locals {
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
     "dns.googleapis.com",
-    "servicenetworking.googleapis.com"
+    "servicenetworking.googleapis.com",
+    "networksecurity.googleapis.com"
   ], var.network_project_extra_apis)
   eventarc_identities = [for project in module.serverless_project : "serviceAccount:${project.services_identities["eventarc"]}"]
   gcs_identities      = [for project in module.serverless_project : "serviceAccount:${project.services_identities["gcs"]}"]
