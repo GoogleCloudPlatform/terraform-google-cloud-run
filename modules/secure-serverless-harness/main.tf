@@ -15,7 +15,7 @@
  */
 
 locals {
-  api = var.serverless_type == "CLOUD_FUNCTION" ? ["cloudfunctions.googleapis.com", "cloudbuild.googleapis.com", "eventarc.googleapis.com", "eventarcpublishing.googleapis.com", "networksecurity.googleapis.com"] : []
+  api = var.serverless_type == "CLOUD_FUNCTION" ? ["cloudfunctions.googleapis.com", "cloudbuild.googleapis.com", "eventarc.googleapis.com", "eventarcpublishing.googleapis.com", "certificatemanager.googleapis.com", "networksecurity.googleapis.com"] : []
   serverless_apis = concat([
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
