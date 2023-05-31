@@ -44,7 +44,7 @@ module "vpc_project_apis" {
 }
 
 module "cloud_run_network" {
-  source = "../secure-cloud-run-net"
+  source = "../secure-serverless-net"
 
   connector_name            = var.connector_name
   subnet_name               = var.subnet_name
@@ -56,6 +56,9 @@ module "cloud_run_network" {
   ip_cidr_range             = var.ip_cidr_range
   create_subnet             = var.create_subnet
   resource_names_suffix     = var.resource_names_suffix
+  serverless_type           = "CLOUD_RUN"
+
+  serverless_service_identity_email = google_project_service_identity.serverless_sa.email
 
   depends_on = [
     module.vpc_project_apis

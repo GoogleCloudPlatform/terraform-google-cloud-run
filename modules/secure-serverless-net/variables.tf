@@ -29,6 +29,11 @@ variable "serverless_project_id" {
   type        = string
 }
 
+variable "serverless_service_identity_email" {
+  description = "The Service Identity email for the serverless resource (Cloud Run or Cloud Function)."
+  type        = string
+}
+
 variable "connector_name" {
   description = "The name of the serverless connector which is going to be created."
   type        = string
@@ -71,4 +76,14 @@ variable "resource_names_suffix" {
   description = "A suffix to concat in the end of the resources names."
   type        = string
   default     = null
+}
+
+variable "serverless_type" {
+  description = "The type of resource to be used. It supports only CLOUD_RUN or CLOUD_FUNCTION"
+  type        = string
+
+  validation {
+    condition     = contains(["CLOUD_RUN", "CLOUD_FUNCTION"], var.serverless_type)
+    error_message = "unsupported value for serverless_type"
+  }
 }

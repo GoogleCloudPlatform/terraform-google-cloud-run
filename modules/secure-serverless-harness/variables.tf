@@ -19,14 +19,47 @@ variable "billing_account" {
   type        = string
 }
 
+variable "serverless_type" {
+  description = "The type of resource to be used. It supports only CLOUD_RUN or CLOUD_FUNCTION"
+  type        = string
+  validation {
+    condition     = contains(["CLOUD_RUN", "CLOUD_FUNCTION"], var.serverless_type)
+    error_message = "unsupported value for serverless_type"
+  }
+}
+
 variable "security_project_name" {
   description = "The name to give the security project."
   type        = string
 }
 
-variable "serverless_project_name" {
-  description = "The name to give the Cloud Run project."
+variable "security_project_extra_apis" {
+  description = "The extra APIs to be enabled during security project creation."
+  type        = list(string)
+  default     = []
+}
+
+variable "network_project_name" {
+  description = "The name to give the shared vpc project."
   type        = string
+  default     = ""
+}
+
+variable "network_project_extra_apis" {
+  description = "The extra APIs to be enabled during network project creation."
+  type        = list(string)
+  default     = []
+}
+
+variable "serverless_project_names" {
+  description = "The name to give the Cloud Serverless project."
+  type        = list(string)
+}
+
+variable "serverless_project_extra_apis" {
+  description = "The extra APIs to be enabled during serverless projects creation."
+  type        = map(list(string))
+  default     = {}
 }
 
 variable "org_id" {
@@ -54,6 +87,12 @@ variable "access_context_manager_policy_id" {
 
 variable "create_access_context_manager_access_policy" {
   description = "Defines if Access Context Manager will be created by Terraform."
+  type        = bool
+  default     = false
+}
+
+variable "use_shared_vpc" {
+  description = "Defines if the network created will be a single or shared vpc."
   type        = bool
   default     = false
 }
@@ -102,9 +141,9 @@ variable "private_service_connect_ip" {
 }
 
 variable "service_account_project_roles" {
-  type        = list(string)
-  description = "Common roles to apply to the Cloud Run service account in the serverless project."
-  default     = []
+  type        = map(list(string))
+  description = "Common roles to apply to the Cloud Serverless service account in the serverless project."
+  default     = {}
 }
 
 variable "artifact_registry_repository_name" {

@@ -15,15 +15,19 @@
  */
 
 locals {
-  network_name = trimprefix(var.vpc_name, "vpc-") == var.vpc_name ? var.vpc_name : "vpc-${var.vpc_name}"
+  network_name = startswith(var.vpc_name, "vpc-") ? var.vpc_name : "vpc-${var.vpc_name}"
+
+  services_projects = var.use_shared_vpc ? { for key, project in module.serverless_project : key => project.project_id } : {}
+  network_projects  = var.use_shared_vpc ? { for key, project in module.network_project : key => try(project.project_id, null) } : { for key, project in module.serverless_project : key => try(project.project_id, null) }
 }
 
 module "network" {
+  for_each                               = local.network_projects
   source                                 = "terraform-google-modules/network/google"
-  version                                = "~> 5.2"
-  project_id                             = module.serverless_project.project_id
+  version                                = "~> 7.0"
+  project_id                             = each.value
   network_name                           = local.network_name
-  shared_vpc_host                        = "false"
+  shared_vpc_host                        = var.use_shared_vpc
   delete_default_internet_gateway_routes = "true"
 
   subnets = [
@@ -68,18 +72,40 @@ module "network" {
         ports    = ["443"]
       }]
 
-      ranges      = [module.private_service_connect.private_service_connect_ip]
+      ranges      = [var.private_service_connect_ip]
       target_tags = ["allow-google-apis", "vpc-connector"]
     }
+  ]
+  depends_on = [
+    module.network_project,
+    module.serverless_project,
+    time_sleep.wait_180_seconds
+  ]
+}
+
+resource "google_compute_shared_vpc_service_project" "shared_vpc_attachment" {
+  for_each = local.services_projects
+
+  host_project    = module.network[0].project_id
+  service_project = each.value
+  depends_on = [
+    module.serverless_project,
+    local.network_projects,
+    time_sleep.wait_180_seconds
   ]
 }
 
 resource "google_dns_policy" "default_policy" {
-  project                   = module.serverless_project.project_id
+  for_each = module.network
+
+  project                   = each.value.project_id
   name                      = "dns-default-policy"
   enable_inbound_forwarding = var.dns_enable_inbound_forwarding
   enable_logging            = var.dns_enable_logging
   networks {
-    network_url = module.network.network_self_link
+    network_url = each.value.network_self_link
   }
+  depends_on = [
+    time_sleep.wait_180_seconds
+  ]
 }

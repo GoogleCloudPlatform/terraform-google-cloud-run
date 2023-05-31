@@ -75,6 +75,6 @@ output "cloud_services_sa" {
 }
 
 output "run_identity_services_sa" {
-  value       = module.cloud_run_network.run_identity_services_sa
+  value       = google_project_service_identity.serverless_sa.email
   description = "Service Identity to run services."
 }

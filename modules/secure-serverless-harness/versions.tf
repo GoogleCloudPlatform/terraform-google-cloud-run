@@ -26,13 +26,21 @@ terraform {
       source  = "hashicorp/google-beta"
       version = "< 5.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "< 4.0"
+    }
+    time = {
+      source  = "hashicorp/time"
+      version = "< 1.0"
+    }
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-cloud-run-net/v0.4.0"
+    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-serverless-harness/v0.7.0"
   }
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-cloud-run-net/v0.4.0"
+    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-serverless-harness/v0.7.0"
   }
 }

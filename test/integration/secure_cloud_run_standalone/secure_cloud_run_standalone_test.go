@@ -25,6 +25,11 @@ import (
 	"github.com/tidwall/gjson"
 )
 
+type Protocols struct {
+	Protocol string
+	Ports    []string
+}
+
 func getPolicyID(t *testing.T, orgID string) string {
 	gcOpts := gcloud.WithCommonArgs([]string{"--format", "value(name)"})
 	op := gcloud.Run(t, fmt.Sprintf("access-context-manager policies list --organization=%s ", orgID), gcOpts)
@@ -332,6 +337,127 @@ func TestSecureCloudRunStandalone(t *testing.T) {
 				opOrgPolicies := gcloud.Run(t, fmt.Sprintf("resource-manager org-policies describe %s --project=%s", orgPolicy.constraint, serverlessProjectID), orgArgs).Array()
 				assert.Equal(orgPolicy.allowedValues, opOrgPolicies[0].Get("listPolicy.allowedValues").String(), fmt.Sprintf("Constraint %s should have policy %s", orgPolicy.constraint, orgPolicy.allowedValues))
 			}
+			// Firewall Rules
+			for _, firewall_rules := range []struct {
+				name       string
+				direction  string
+				ranges     []string
+				targetTags []string
+				sourceTags []string
+				allow      []Protocols
+			}{
+				{
+					name:       "fw-serverless-to-vpc-connector",
+					direction:  "INGRESS",
+					ranges:     []string{"107.178.230.64/26", "35.199.224.0/19"},
+					targetTags: []string{"vpc-connector"},
+					sourceTags: []string{},
+					allow: []Protocols{Protocols{
+						Protocol: "icmp",
+						Ports:    []string{},
+					},
+						Protocols{
+							Protocol: "tcp",
+							Ports:    []string{"667"},
+						},
+						Protocols{
+							Protocol: "udp",
+							Ports:    []string{"665", "666"},
+						}},
+				},
+				{
+					name:       "fw-vpc-connector-to-serverless",
+					direction:  "EGRESS",
+					ranges:     []string{"107.178.230.64/26", "35.199.224.0/19"},
+					targetTags: []string{"vpc-connector"},
+					sourceTags: []string{},
+					allow: []Protocols{Protocols{
+						Protocol: "icmp",
+						Ports:    []string{},
+					},
+						Protocols{
+							Protocol: "tcp",
+							Ports:    []string{"667"},
+						},
+						Protocols{
+							Protocol: "udp",
+							Ports:    []string{"665", "666"},
+						}},
+				},
+				{
+					name:       "fw-vpc-connector-health-checks",
+					direction:  "INGRESS",
+					ranges:     []string{"130.211.0.0/22", "35.191.0.0/16", "108.170.220.0/23"},
+					targetTags: []string{"vpc-connector"},
+					sourceTags: []string{},
+					allow: []Protocols{
+						Protocols{
+							Protocol: "tcp",
+							Ports:    []string{"667"},
+						},
+					},
+				},
+				{
+					name:       "fw-vpc-connector-requests",
+					direction:  "INGRESS",
+					ranges:     []string{},
+					sourceTags: []string{"vpc-connector"},
+					targetTags: []string{},
+					allow: []Protocols{Protocols{
+						Protocol: "icmp",
+						Ports:    []string{},
+					},
+						Protocols{
+							Protocol: "tcp",
+							Ports:    []string{},
+						},
+						Protocols{
+							Protocol: "udp",
+							Ports:    []string{},
+						},
+					},
+				},
+				{
+					name:       "fw-vpc-connector-to-lb",
+					direction:  "EGRESS",
+					ranges:     []string{"0.0.0.0/0"},
+					targetTags: []string{"vpc-connector"},
+					sourceTags: []string{},
+					allow: []Protocols{Protocols{
+						Protocol: "tcp",
+						Ports:    []string{"80"},
+					},
+					},
+				},
+			} {
+				fwRule := gcloud.Runf(t, "compute firewall-rules describe %s --project %s", firewall_rules.name, serverlessProjectID)
+				assert.Equal(firewall_rules.name, fwRule.Get("name").String(), fmt.Sprintf("firewall rule %s should exist", firewall_rules.name))
+				assert.Equal(firewall_rules.direction, fwRule.Get("direction").String(), fmt.Sprintf("firewall rule %s direction should be %s", firewall_rules.name, firewall_rules.direction))
+				assert.False(fwRule.Get("disabled").Bool(), fmt.Sprintf("firewall rule %s should be ENABLED", firewall_rules.name))
+				assert.True(fwRule.Get("logConfig.enable").Bool(), fmt.Sprintf("firewall rule %s should have log configuration enabled", firewall_rules.name))
+				assert.Equal("INCLUDE_ALL_METADATA", fwRule.Get("logConfig.metadata").String(), fmt.Sprintf("firewall rule %s should have log configuration metadata as INCLUDE_ALL_METADATA", firewall_rules.name))
+
+				if firewall_rules.direction == "EGRESS" {
+					assert.Equal(utils.GetResultStrSlice(fwRule.Get("destinationRanges").Array()), firewall_rules.ranges, fmt.Sprintf("firewall rule %s destination ranges should be %v", firewall_rules.name, firewall_rules.ranges))
+				} else {
+					assert.Equal(utils.GetResultStrSlice(fwRule.Get("sourceRanges").Array()), firewall_rules.ranges, fmt.Sprintf("firewall rule %s source ranges should be %v", firewall_rules.name, firewall_rules.ranges))
+				}
+
+				assert.Equal(firewall_rules.targetTags, utils.GetResultStrSlice(fwRule.Get("targetTags").Array()), fmt.Sprintf("firewall rule %s target tags should be %v", firewall_rules.name, firewall_rules.targetTags))
+				assert.Equal(firewall_rules.sourceTags, utils.GetResultStrSlice(fwRule.Get("sourceTags").Array()), fmt.Sprintf("firewall rule %s source tags should be %v", firewall_rules.name, firewall_rules.sourceTags))
+
+				assert.Equal(len(firewall_rules.allow), len(utils.GetResultStrSlice(fwRule.Get("allowed").Array())), fmt.Sprintf("firewall rule %s should have %d allowed", firewall_rules.name, len(firewall_rules.allow)))
+				for _, allow := range firewall_rules.allow {
+					assert.Contains(getResultFieldStrSlice(fwRule.Get("allowed").Array(), "IPProtocol"), allow.Protocol, fmt.Sprintf("firewall rule %s should allow %v protocol", firewall_rules.name, allow.Protocol))
+					allowed := fwRule.Get("allowed").Array()
+					for _, protocol := range allowed {
+						if protocol.Get("IPProtocol").String() == allow.Protocol {
+							assert.Equal(utils.GetResultStrSlice(protocol.Get("ports").Array()), allow.Ports, fmt.Sprintf("firewall rule %s should allow only %s port to the protocol %s ", firewall_rules.name, allow.Ports, allow.Protocol))
+						}
+					}
+				}
+			}
+
 		})
 
 	cloudRun.Test()

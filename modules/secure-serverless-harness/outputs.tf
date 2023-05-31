@@ -19,25 +19,34 @@ output "serverless_folder_id" {
   description = "The folder created to alocate Serverless infra."
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
-output "serverless_project_id" {
-  value       = module.serverless_project.project_id
-  description = "Project ID of the project created to deploy Cloud Run."
+output "network_project_id" {
+  value       = [for network in module.network : network.project_id]
+  description = "Project ID of the project created to host the Cloud Run Network."
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
-output "serverless_project_number" {
-  value       = module.serverless_project.project_number
-  description = "Project number of the project created to deploy Cloud Run."
+output "serverless_project_ids" {
+  value       = [for project in module.serverless_project : project.project_id]
+  description = "Project ID of the projects created to deploy Cloud Run."
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
+  ]
+}
+
+output "serverless_project_numbers" {
+  value       = { for project in module.serverless_project : project.project_id => project.project_number }
+  description = "Project number of the projects created to deploy Cloud Run."
+
+  depends_on = [
+    time_sleep.wait_180_seconds
   ]
 }
 
@@ -46,7 +55,7 @@ output "security_project_id" {
   description = "Project ID of the project created for KMS and Artifact Register."
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
@@ -55,34 +64,34 @@ output "security_project_number" {
   description = "Project number of the project created for KMS and Artifact Register."
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
 output "service_account_email" {
-  value       = module.service_accounts.email
-  description = "The email of the Service Account created to be used by Cloud Run."
+  value       = { for project in module.serverless_project : project.project_id => project.service_account_email }
+  description = "The email of the Service Account created to be used by Cloud Serverless."
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
 output "service_vpc" {
-  value       = module.network.network
-  description = "The network created for Cloud Run."
+  value       = [for network in module.network : network.network]
+  description = "The network created for Cloud Serverless."
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
 output "service_subnet" {
-  value       = module.network.subnets_names[0]
+  value       = [for network in module.network : network.subnets_names[0]]
   description = "The sub-network name created in harness."
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
@@ -91,7 +100,7 @@ output "artifact_registry_repository_id" {
   description = "The Artifact Registry Repository full identifier where the images should be stored."
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
@@ -100,16 +109,16 @@ output "artifact_registry_repository_name" {
   description = "The Artifact Registry Repository last part of the repository name where the images should be stored."
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
-output "cloud_run_service_identity_email" {
-  value       = google_project_service_identity.serverless_sa.email
+output "cloud_serverless_service_identity_email" {
+  value       = { for project in module.serverless_project : project.project_id => project.cloud_serverless_service_identity_email }
   description = "The Cloud Run Service Identity email."
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
@@ -118,7 +127,7 @@ output "restricted_service_perimeter_name" {
   description = "Service Perimeter name."
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
   ]
 }
 
@@ -127,6 +136,15 @@ output "restricted_access_level_name" {
   description = "Access level name."
 
   depends_on = [
-    time_sleep.wait_90_seconds
+    time_sleep.wait_180_seconds
+  ]
+}
+
+output "cloudfunction_source_bucket" {
+  value       = var.serverless_type == "CLOUD_RUN" ? {} : { for bucket in module.cloudfunction_source_bucket : bucket.bucket.project => bucket.bucket }
+  description = "Cloud Function Source Bucket."
+
+  depends_on = [
+    time_sleep.wait_180_seconds
   ]
 }
