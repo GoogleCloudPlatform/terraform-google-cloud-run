@@ -24,6 +24,6 @@ module "private_service_connect" {
   private_service_connect_ip = var.private_service_connect_ip
   forwarding_rule_target     = "vpc-sc"
   depends_on = [
-    time_sleep.wait_180_seconds
+    time_sleep.wait_vpc_sc_propagation
   ]
 }
