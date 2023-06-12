@@ -225,3 +225,9 @@ variable "dns_enable_logging" {
   description = "Toggle DNS logging for VPC DNS."
   default     = true
 }
+
+variable "time_to_wait_vpc_sc_propagation" {
+  type        = string
+  description = "The time to wait VPC-SC propagation when applying and destroying."
+  default     = "180s"
+}

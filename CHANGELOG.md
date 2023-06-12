@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.7.0...v0.8.0) (2023-06-01)
+
+
+### Features
+
+* Creates variable to customize time_sleep due VPC-SC  propagation time ([#124](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/124)) ([7260a62](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/7260a62d23888f863cb97085372f47dc9916f34b))
+
 ## [0.7.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.6.0...v0.7.0) (2023-05-17)
 
 
