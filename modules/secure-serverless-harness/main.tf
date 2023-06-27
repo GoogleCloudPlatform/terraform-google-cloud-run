@@ -15,7 +15,6 @@
  */
 
 locals {
-  api = var.serverless_type == "CLOUD_FUNCTION" ? ["cloudfunctions.googleapis.com", "cloudbuild.googleapis.com", "eventarc.googleapis.com", "eventarcpublishing.googleapis.com"] : []
   serverless_apis = concat([
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
@@ -25,7 +24,7 @@ locals {
     "cloudkms.googleapis.com",
     "dns.googleapis.com",
     "servicenetworking.googleapis.com"
-  ], local.api)
+  ])
   kms_apis = concat([
     "cloudkms.googleapis.com",
     "artifactregistry.googleapis.com"
@@ -84,7 +83,7 @@ module "serverless_project" {
   for_each = toset(var.serverless_project_names)
 
   billing_account               = var.billing_account
-  serverless_type               = var.serverless_type
+  api_to_enable                 = var.serverless_type == "CLOUD_RUN" ? "run.googleapis.com" : "cloudfunctions.googleapis.com"
   org_id                        = var.org_id
   activate_apis                 = concat(local.serverless_apis, try(var.serverless_project_extra_apis[each.value], []))
   folder_name                   = google_folder.fld_serverless.name
