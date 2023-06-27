@@ -78,12 +78,8 @@ variable "resource_names_suffix" {
   default     = null
 }
 
-variable "serverless_type" {
-  description = "The type of resource to be used. It supports only CLOUD_RUN or CLOUD_FUNCTION"
-  type        = string
-
-  validation {
-    condition     = contains(["CLOUD_RUN", "CLOUD_FUNCTION"], var.serverless_type)
-    error_message = "unsupported value for serverless_type"
-  }
+variable "enable_load_balancer_fw" {
+  description = "Create the firewall rule for Cloud Run to enable the VPC Connector to access the Loadbalancer instance using TCP port 80. Default is true. If using Cloud Function set to false."
+  type        = bool
+  default     = true
 }
