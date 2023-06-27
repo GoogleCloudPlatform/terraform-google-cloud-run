@@ -139,3 +139,12 @@ output "restricted_access_level_name" {
     time_sleep.wait_vpc_sc_propagation
   ]
 }
+
+output "artifact_registry_key" {
+  value       = module.artifact_registry_kms.keys[var.key_name]
+  description = "Artifact Registry KMS Key."
+
+  depends_on = [
+    time_sleep.wait_vpc_sc_propagation
+  ]
+}
