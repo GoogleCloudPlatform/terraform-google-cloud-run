@@ -19,12 +19,13 @@ variable "billing_account" {
   type        = string
 }
 
-variable "serverless_type" {
-  description = "The type of resource to be used. It supports only CLOUD_RUN or CLOUD_FUNCTION"
+variable "api_to_enable" {
+  description = "The API needed for the module. It supports only run.googleapis.com or cloudfunctions.googleapis.com"
   type        = string
+
   validation {
-    condition     = contains(["CLOUD_RUN", "CLOUD_FUNCTION"], var.serverless_type)
-    error_message = "unsupported value for serverless_type"
+    condition     = contains(["run.googleapis.com", "cloudfunctions.googleapis.com"], var.api_to_enable)
+    error_message = "Unsupported value for api_to_enable"
   }
 }
 

@@ -83,7 +83,7 @@ module "serverless_project" {
   for_each = toset(var.serverless_project_names)
 
   billing_account               = var.billing_account
-  api_to_enable                 = var.serverless_type == "CLOUD_RUN" ? "run.googleapis.com" : "cloudfunctions.googleapis.com"
+  api_to_enable                 = var.api_to_enable
   org_id                        = var.org_id
   activate_apis                 = concat(local.serverless_apis, try(var.serverless_project_extra_apis[each.value], []))
   folder_name                   = google_folder.fld_serverless.name
@@ -150,27 +150,6 @@ resource "google_project_service_identity" "artifact_sa" {
   service = "artifactregistry.googleapis.com"
 
   depends_on = [
-    time_sleep.wait_vpc_sc_propagation
-  ]
-}
-
-module "cloudfunction_source_bucket" {
-  for_each = var.serverless_type == "CLOUD_RUN" ? {} : module.serverless_project
-  source   = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-  version  = "~>3.4"
-
-  project_id    = each.value.project_id
-  name          = "bkt-${var.location}-${each.value.project_number}-cfv2-zip-files"
-  location      = var.location
-  storage_class = "REGIONAL"
-  force_destroy = true
-
-  encryption = {
-    default_kms_key_name = module.artifact_registry_kms.keys[var.key_name]
-  }
-
-  depends_on = [
-    module.artifact_registry_kms,
     time_sleep.wait_vpc_sc_propagation
   ]
 }

@@ -139,12 +139,3 @@ output "restricted_access_level_name" {
     time_sleep.wait_vpc_sc_propagation
   ]
 }
-
-output "cloudfunction_source_bucket" {
-  value       = var.serverless_type == "CLOUD_RUN" ? {} : { for bucket in module.cloudfunction_source_bucket : bucket.bucket.project => bucket.bucket }
-  description = "Cloud Function Source Bucket."
-
-  depends_on = [
-    time_sleep.wait_vpc_sc_propagation
-  ]
-}
