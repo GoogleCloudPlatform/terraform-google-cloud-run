@@ -34,7 +34,7 @@ module "service_accounts" {
   version    = "~> 4.2"
   project_id = module.serverless_project.project_id
   prefix     = "sa"
-  names      = var.api_to_enable == "run.googleapis.com" ? "cloud-run" : "cloud-function"
+  names      = var.api_to_enable == "run.googleapis.com" ? ["cloud-run"] : ["cloud-function"]
 
   depends_on = [
     module.serverless_project
