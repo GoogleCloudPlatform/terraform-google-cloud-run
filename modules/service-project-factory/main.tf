@@ -34,7 +34,7 @@ module "service_accounts" {
   version    = "~> 4.2"
   project_id = module.serverless_project.project_id
   prefix     = "sa"
-  names      = var.api_to_enable == "run.googleapis.com" ? ["cloud-run"] : ["cloud-function"]
+  names      = var.base_serverless_api == "run.googleapis.com" ? ["cloud-run"] : ["cloud-function"]
 
   depends_on = [
     module.serverless_project
@@ -52,7 +52,7 @@ resource "google_project_service_identity" "serverless_sa" {
   provider = google-beta
 
   project = module.serverless_project.project_id
-  service = var.api_to_enable
+  service = var.base_serverless_api
 }
 
 resource "google_service_account_iam_member" "identity_service_account_user" {
@@ -80,7 +80,7 @@ data "google_storage_project_service_account" "gcs_account" {
 }
 
 resource "google_project_iam_member" "gcs_pubsub_publishing" {
-  count   = var.api_to_enable == "run.googleapis.com" ? 0 : 1
+  count   = var.base_serverless_api == "run.googleapis.com" ? 0 : 1
   project = module.serverless_project.project_id
   role    = "roles/pubsub.publisher"
   member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"

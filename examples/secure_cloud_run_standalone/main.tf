@@ -48,7 +48,7 @@ module "secure_harness" {
   artifact_registry_repository_name           = local.repository_name
   egress_policies                             = var.egress_policies
   ingress_policies                            = var.ingress_policies
-  api_to_enable                               = "run.googleapis.com"
+  base_serverless_api                         = "run.googleapis.com"
 }
 
 resource "null_resource" "copy_image" {

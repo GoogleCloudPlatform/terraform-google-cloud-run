@@ -83,7 +83,7 @@ module "serverless_project" {
   for_each = toset(var.serverless_project_names)
 
   billing_account               = var.billing_account
-  api_to_enable                 = var.api_to_enable
+  base_serverless_api           = var.base_serverless_api
   org_id                        = var.org_id
   activate_apis                 = concat(local.serverless_apis, try(var.serverless_project_extra_apis[each.value], []))
   folder_name                   = google_folder.fld_serverless.name

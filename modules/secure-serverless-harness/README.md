@@ -54,10 +54,10 @@ module "secure_cloud_run_harness" {
 |------|-------------|------|---------|:--------:|
 | access\_context\_manager\_policy\_id | The ID of the default Access Context Manager policy. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR_ORGANIZATION_ID --format="value(name)"`. | `number` | `null` | no |
 | access\_level\_members | The list of additional members who will be in the access level. | `list(string)` | n/a | yes |
-| api\_to\_enable | The API needed for the module. It supports only run.googleapis.com or cloudfunctions.googleapis.com | `string` | n/a | yes |
 | artifact\_registry\_repository\_description | The description of the Artifact Registry Repository to be created. | `string` | `"Secure Cloud Run Artifact Registry Repository"` | no |
 | artifact\_registry\_repository\_format | The format of the Artifact Registry Repository to be created. | `string` | `"DOCKER"` | no |
 | artifact\_registry\_repository\_name | The name of the Artifact Registry Repository to be created. | `string` | n/a | yes |
+| base\_serverless\_api | The API needed for the module. It supports only run.googleapis.com or cloudfunctions.googleapis.com | `string` | n/a | yes |
 | billing\_account | The ID of the billing account to associate this project with. | `string` | n/a | yes |
 | create\_access\_context\_manager\_access\_policy | Defines if Access Context Manager will be created by Terraform. | `bool` | `false` | no |
 | decrypters | List of comma-separated owners for each key declared in set\_decrypters\_for. | `list(string)` | `[]` | no |
@@ -95,6 +95,7 @@ module "secure_cloud_run_harness" {
 
 | Name | Description |
 |------|-------------|
+| artifact\_registry\_key | Artifact Registry KMS Key. |
 | artifact\_registry\_repository\_id | The Artifact Registry Repository full identifier where the images should be stored. |
 | artifact\_registry\_repository\_name | The Artifact Registry Repository last part of the repository name where the images should be stored. |
 | cloud\_serverless\_service\_identity\_email | The Cloud Run Service Identity email. |
