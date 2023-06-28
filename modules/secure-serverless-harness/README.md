@@ -57,7 +57,7 @@ module "secure_cloud_run_harness" {
 | artifact\_registry\_repository\_description | The description of the Artifact Registry Repository to be created. | `string` | `"Secure Cloud Run Artifact Registry Repository"` | no |
 | artifact\_registry\_repository\_format | The format of the Artifact Registry Repository to be created. | `string` | `"DOCKER"` | no |
 | artifact\_registry\_repository\_name | The name of the Artifact Registry Repository to be created. | `string` | n/a | yes |
-| base\_serverless\_api | The API needed for the module. It supports only run.googleapis.com or cloudfunctions.googleapis.com | `string` | n/a | yes |
+| base\_serverless\_api | This variable will enable Cloud Function or Cloud Run API, based in which resources will be used in the harness. Cloud Run API will be used for the terraform-google-cloud-run repository while Cloud Function API will be used in the terraform-google-cloud-functions repository. It supports only run.googleapis.com or cloudfunctions.googleapis.com | `string` | n/a | yes |
 | billing\_account | The ID of the billing account to associate this project with. | `string` | n/a | yes |
 | create\_access\_context\_manager\_access\_policy | Defines if Access Context Manager will be created by Terraform. | `bool` | `false` | no |
 | decrypters | List of comma-separated owners for each key declared in set\_decrypters\_for. | `list(string)` | `[]` | no |

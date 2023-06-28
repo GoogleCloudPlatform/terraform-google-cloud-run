@@ -20,7 +20,7 @@ variable "billing_account" {
 }
 
 variable "base_serverless_api" {
-  description = "The API needed for the module. It supports only run.googleapis.com or cloudfunctions.googleapis.com"
+  description = "This variable will enable Cloud Function or Cloud Run API, based in which resources will be used in the harness. Cloud Run API will be used for the terraform-google-cloud-run repository while Cloud Function API will be used in the terraform-google-cloud-functions repository. It supports only run.googleapis.com or cloudfunctions.googleapis.com"
   type        = string
 
   validation {
