@@ -15,7 +15,7 @@
  */
 
 locals {
-  serverless_apis = concat([
+  serverless_apis = [
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
     "container.googleapis.com",
@@ -24,7 +24,7 @@ locals {
     "cloudkms.googleapis.com",
     "dns.googleapis.com",
     "servicenetworking.googleapis.com"
-  ])
+  ]
   kms_apis = concat([
     "cloudkms.googleapis.com",
     "artifactregistry.googleapis.com"
