@@ -96,7 +96,7 @@ output "service_subnet" {
 }
 
 output "artifact_registry_repository_id" {
-  value       = google_artifact_registry_repository.repo.id
+  value       = var.base_serverless_api == "run.googleapis.com" ? google_artifact_registry_repository.repo[0].id : ""
   description = "The Artifact Registry Repository full identifier where the images should be stored."
 
   depends_on = [
@@ -105,7 +105,7 @@ output "artifact_registry_repository_id" {
 }
 
 output "artifact_registry_repository_name" {
-  value       = google_artifact_registry_repository.repo.repository_id
+  value       = var.base_serverless_api == "run.googleapis.com" ? google_artifact_registry_repository.repo[0].repository_id : ""
   description = "The Artifact Registry Repository last part of the repository name where the images should be stored."
 
   depends_on = [
