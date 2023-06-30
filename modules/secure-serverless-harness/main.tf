@@ -60,6 +60,8 @@ module "network_project" {
   billing_account   = var.billing_account
   folder_id         = google_folder.fld_serverless.name
 
+  disable_services_on_destroy = var.disable_services_on_destroy
+
   enable_shared_vpc_host_project = true
 }
 
@@ -72,6 +74,8 @@ module "security_project" {
   org_id            = var.org_id
   billing_account   = var.billing_account
   folder_id         = google_folder.fld_serverless.name
+
+  disable_services_on_destroy = var.disable_services_on_destroy
 }
 
 module "serverless_project" {
@@ -86,6 +90,8 @@ module "serverless_project" {
   folder_name                   = google_folder.fld_serverless.name
   project_name                  = each.value
   service_account_project_roles = try(var.service_account_project_roles[each.value], [])
+
+  disable_services_on_destroy = var.disable_services_on_destroy
 }
 
 

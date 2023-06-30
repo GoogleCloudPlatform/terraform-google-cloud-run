@@ -50,6 +50,12 @@ variable "activate_apis" {
   type        = list(string)
 }
 
+variable "disable_services_on_destroy" {
+  description = "Whether project services will be disabled when the resources are destroyed"
+  default     = false
+  type        = bool
+}
+
 variable "folder_name" {
   description = "The folder name."
   type        = string
