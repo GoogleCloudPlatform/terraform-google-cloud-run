@@ -17,8 +17,19 @@ This guide will walk you through the steps to deploy a Cloud Run service in thre
 ## Usage Steps in Google Console
 
 To provision this example, run the following from within this directory:
-- Open `terraform.tfvars` and update the file with values from your environment.
+- Open `terraform.tfvars` and update the file with values from your environment. For eg. 
 
+```js
+# terraform.tfvars
+project_id            = "<your_gcp_project_id>"
+repo_name             = "<your_github_repo_name>"       # kshitizregmi/chatapp
+branch_name           = "<your_github_branch>"
+version_name          = "<your_model_version>"
+application_name      = "<your_application_name>"
+user_name             = "<your_github_user_name or your_organization_name>"
+```
+
+## Steps
 
 ```bash
 terraform init
