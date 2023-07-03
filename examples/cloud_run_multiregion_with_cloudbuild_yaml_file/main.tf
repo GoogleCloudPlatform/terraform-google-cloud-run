@@ -35,8 +35,8 @@ resource "google_cloudbuild_trigger" "app_trigger" {
   description  = each.value.description
 
   github {
-    owner = "<user_name>"  # your github username or the organization name
-    name  = "<repo_name>"       # your repo name or the organization repo name
+    owner = var.user_name       # your github username or the organization name
+    name  = var.repo_name       # your repo name or the organization repo name
     push {
       branch = var.branch_name
     }
