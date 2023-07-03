@@ -9,7 +9,7 @@ variable "repo_name" {
 }
 
 variable "branch_name" {
-  description = "The name of the branch to trigger deployments"
+  description = "The name of the github  branch to trigger deployments"
   type        = string
 }
 
@@ -19,11 +19,11 @@ variable "version_name" {
 }
 
 variable "application_name" {
-  description = "Application Name"
+  description = "Application Name for.eg. chatapp"
   type = string
 }
 
 variable "user_name" {
-  description = "Application Name"
+  description = "Github User Name or Organization Name"
   type = string
 }
