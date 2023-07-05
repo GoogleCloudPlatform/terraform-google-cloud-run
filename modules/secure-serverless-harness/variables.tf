@@ -220,8 +220,20 @@ variable "dns_enable_inbound_forwarding" {
   default     = true
 }
 
+variable "disable_services_on_destroy" {
+  description = "Whether project services will be disabled when the resources are destroyed"
+  default     = false
+  type        = bool
+}
+
 variable "dns_enable_logging" {
   type        = bool
   description = "Toggle DNS logging for VPC DNS."
   default     = true
+}
+
+variable "time_to_wait_vpc_sc_propagation" {
+  type        = string
+  description = "The time to wait VPC-SC propagation when applying and destroying."
+  default     = "180s"
 }

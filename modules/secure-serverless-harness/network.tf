@@ -79,7 +79,7 @@ module "network" {
   depends_on = [
     module.network_project,
     module.serverless_project,
-    time_sleep.wait_180_seconds
+    time_sleep.wait_vpc_sc_propagation
   ]
 }
 
@@ -91,7 +91,7 @@ resource "google_compute_shared_vpc_service_project" "shared_vpc_attachment" {
   depends_on = [
     module.serverless_project,
     local.network_projects,
-    time_sleep.wait_180_seconds
+    time_sleep.wait_vpc_sc_propagation
   ]
 }
 
@@ -106,6 +106,6 @@ resource "google_dns_policy" "default_policy" {
     network_url = each.value.network_self_link
   }
   depends_on = [
-    time_sleep.wait_180_seconds
+    time_sleep.wait_vpc_sc_propagation
   ]
 }

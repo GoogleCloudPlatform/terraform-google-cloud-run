@@ -60,6 +60,8 @@ module "network_project" {
   billing_account   = var.billing_account
   folder_id         = google_folder.fld_serverless.name
 
+  disable_services_on_destroy = var.disable_services_on_destroy
+
   enable_shared_vpc_host_project = true
 }
 
@@ -72,6 +74,8 @@ module "security_project" {
   org_id            = var.org_id
   billing_account   = var.billing_account
   folder_id         = google_folder.fld_serverless.name
+
+  disable_services_on_destroy = var.disable_services_on_destroy
 }
 
 module "serverless_project" {
@@ -86,6 +90,8 @@ module "serverless_project" {
   folder_name                   = google_folder.fld_serverless.name
   project_name                  = each.value
   service_account_project_roles = try(var.service_account_project_roles[each.value], [])
+
+  disable_services_on_destroy = var.disable_services_on_destroy
 }
 
 
@@ -98,7 +104,7 @@ resource "google_artifact_registry_repository" "repo" {
   kms_key_name  = module.artifact_registry_kms.keys[var.key_name]
 
   depends_on = [
-    time_sleep.wait_180_seconds
+    time_sleep.wait_vpc_sc_propagation
   ]
 }
 
@@ -111,7 +117,7 @@ resource "google_artifact_registry_repository_iam_member" "member" {
   member     = "serviceAccount:${each.value.cloud_serverless_service_identity_email}"
 
   depends_on = [
-    time_sleep.wait_180_seconds
+    time_sleep.wait_vpc_sc_propagation
   ]
 }
 
@@ -134,7 +140,7 @@ module "artifact_registry_kms" {
   key_protection_level = var.key_protection_level
 
   depends_on = [
-    time_sleep.wait_180_seconds
+    time_sleep.wait_vpc_sc_propagation
   ]
 }
 
@@ -145,7 +151,7 @@ resource "google_project_service_identity" "artifact_sa" {
   service = "artifactregistry.googleapis.com"
 
   depends_on = [
-    time_sleep.wait_180_seconds
+    time_sleep.wait_vpc_sc_propagation
   ]
 }
 
@@ -166,6 +172,6 @@ module "cloudfunction_source_bucket" {
 
   depends_on = [
     module.artifact_registry_kms,
-    time_sleep.wait_180_seconds
+    time_sleep.wait_vpc_sc_propagation
   ]
 }
