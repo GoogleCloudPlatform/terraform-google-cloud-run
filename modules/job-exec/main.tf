@@ -19,6 +19,7 @@ resource "google_cloud_run_v2_job" "job" {
   project      = var.project_id
   location     = var.location
   launch_stage = var.launch_stage
+  labels       = var.labels
 
   template {
     labels      = var.labels
