@@ -19,12 +19,13 @@ variable "billing_account" {
   type        = string
 }
 
-variable "serverless_type" {
-  description = "The type of resource to be used. It supports only CLOUD_RUN or CLOUD_FUNCTION"
+variable "base_serverless_api" {
+  description = "This variable will enable Cloud Function or Cloud Run specific resources. Cloud Run API will be used for the terraform-google-cloud-run repository while Cloud Function API will be used in the terraform-google-cloud-functions repository. It supports only run.googleapis.com or cloudfunctions.googleapis.com"
   type        = string
+
   validation {
-    condition     = contains(["CLOUD_RUN", "CLOUD_FUNCTION"], var.serverless_type)
-    error_message = "unsupported value for serverless_type"
+    condition     = contains(["run.googleapis.com", "cloudfunctions.googleapis.com"], var.base_serverless_api)
+    error_message = "Unsupported value for base_serverless_api"
   }
 }
 
