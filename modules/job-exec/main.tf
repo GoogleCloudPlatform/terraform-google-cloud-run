@@ -34,16 +34,16 @@ resource "google_cloud_run_v2_job" "job" {
           }
         }
 
-        dynamic "env" {
-          for_each = var.env_secret_vars
+	dynamic "env" {
+          for_each = var.cr_env_secret_vars
           content {
             name = env.value["name"]
-            dynamic "value_from" {
-              for_each = env.value.value_from
+            dynamic "value_source" {
+              for_each = env.value.value_source
               content {
-                secret_key_ref {
-                  name = value_from.value.secret_key_ref["name"]
-                  key  = value_from.value.secret_key_ref["key"]
+                secret_key_ref  {
+                  secret = value_source.value.secret_key_ref["secret"]
+		  version = value_source.value.secret_key_ref["version"]
                 }
               }
             }
