@@ -127,7 +127,7 @@ module "firewall_rules" {
       log_config = {
         metadata = "INCLUDE_ALL_METADATA"
       }
-    }], var.serverless_type == "CLOUD_RUN" ? [
+    }], var.enable_load_balancer_fw ? [
     {
       name                    = "fw-vpc-connector-to-lb${local.suffix}"
       description             = null
