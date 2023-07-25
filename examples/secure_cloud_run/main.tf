@@ -33,7 +33,7 @@ module "secure_cloud_run" {
   key_name                    = local.cloudrun_key_name
   keyring_name                = local.cloudrun_keyring_name
   prevent_destroy             = false
-  key_rotation_period         = "2592000s"
+  key_rotation_period         = "7776000s"
   service_name                = "hello-world"
   location                    = "us-central1"
   region                      = "us-central1"

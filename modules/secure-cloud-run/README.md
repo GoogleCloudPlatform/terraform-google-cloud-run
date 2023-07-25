@@ -94,7 +94,7 @@ module "secure_cloud_run" {
 | ip\_cidr\_range | The range of internal addresses that are owned by the subnetwork and which is going to be used by VPC Connector. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported. | `string` | n/a | yes |
 | key\_name | The name of KMS Key to be created and used in Cloud Run. | `string` | `"cloud-run-kms-key"` | no |
 | key\_protection\_level | The protection level to use when creating a version based on this template. Possible values: ["SOFTWARE", "HSM"] | `string` | `"HSM"` | no |
-| key\_rotation\_period | Period of key rotation in seconds. | `string` | `"2592000s"` | no |
+| key\_rotation\_period | Period of key rotation in seconds. | `string` | `"7776000s"` | no |
 | keyring\_name | Keyring name. | `string` | `"cloud-run-kms-keyring"` | no |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
