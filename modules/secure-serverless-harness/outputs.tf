@@ -122,6 +122,15 @@ output "cloud_serverless_service_identity_email" {
   ]
 }
 
+output "access_context_manager_policy_id" {
+  value       = local.access_context_manager_policy_id
+  description = "Access Context Manager ID."
+
+  depends_on = [
+    time_sleep.wait_vpc_sc_propagation
+  ]
+}
+
 output "restricted_service_perimeter_name" {
   value       = module.regular_service_perimeter.perimeter_name
   description = "Service Perimeter name."
@@ -134,6 +143,15 @@ output "restricted_service_perimeter_name" {
 output "restricted_access_level_name" {
   value       = module.access_level_members.name
   description = "Access level name."
+
+  depends_on = [
+    time_sleep.wait_vpc_sc_propagation
+  ]
+}
+
+output "restricted_access_level_name_id" {
+  value       = module.access_level_members.name_id
+  description = "Access level name id."
 
   depends_on = [
     time_sleep.wait_vpc_sc_propagation
