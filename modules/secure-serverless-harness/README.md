@@ -95,12 +95,14 @@ module "secure_cloud_run_harness" {
 
 | Name | Description |
 |------|-------------|
+| access\_context\_manager\_policy\_id | Access Context Manager ID. |
 | artifact\_registry\_key | Artifact Registry KMS Key. |
 | artifact\_registry\_repository\_id | The Artifact Registry Repository full identifier where the images should be stored. |
 | artifact\_registry\_repository\_name | The Artifact Registry Repository last part of the repository name where the images should be stored. |
 | cloud\_serverless\_service\_identity\_email | The Cloud Run Service Identity email. |
 | network\_project\_id | Project ID of the project created to host the Cloud Run Network. |
 | restricted\_access\_level\_name | Access level name. |
+| restricted\_access\_level\_name\_id | Access level name id. |
 | restricted\_service\_perimeter\_name | Service Perimeter name. |
 | security\_project\_id | Project ID of the project created for KMS and Artifact Register. |
 | security\_project\_number | Project number of the project created for KMS and Artifact Register. |

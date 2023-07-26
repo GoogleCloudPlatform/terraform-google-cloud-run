@@ -21,7 +21,8 @@ locals {
   access_context_manager_policy_id = var.create_access_context_manager_access_policy ? google_access_context_manager_access_policy.access_policy[0].id : var.access_context_manager_policy_id
   access_level_members = concat(var.access_level_members,
     [for project in module.serverless_project : "serviceAccount:${project.services_identities["cloudbuild"]}"],
-    [for project in module.serverless_project : "serviceAccount:${project.services_identities["gcs"]}"]
+    [for project in module.serverless_project : "serviceAccount:${project.services_identities["gcs"]}"],
+    [for project in module.serverless_project : "serviceAccount:${project.services_identities["cloudservices"]}"]
   )
 }
 
