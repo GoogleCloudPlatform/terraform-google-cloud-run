@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.9.0...v0.9.1) (2023-07-26)
+
+
+### Bug Fixes
+
+* fix vpc connector creation in Shared VPCs ([#137](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/137)) ([5979144](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/597914420843e4086ada0d9113737eccb0e6279f))
+
 ## [0.9.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.8.0...v0.9.0) (2023-07-10)
 
 
