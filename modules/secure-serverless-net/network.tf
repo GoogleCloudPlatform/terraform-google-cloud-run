@@ -34,22 +34,20 @@ resource "google_compute_subnetwork" "vpc_subnetwork" {
   }
 }
 
-module "serverless_connector" {
-  source  = "terraform-google-modules/network/google//modules/vpc-serverless-connector-beta"
-  version = "~> 5.0"
+resource "google_vpc_access_connector" "serverless_connector" {
+  name           = "${var.connector_name}${local.suffix}"
+  region         = var.location
+  project        = var.connector_on_host_project ? var.vpc_project_id : var.serverless_project_id
+  machine_type   = "e2-micro"
+  min_instances  = 2
+  max_instances  = 10
+  min_throughput = 200
+  max_throughput = 1000
+  subnet {
+    name       = local.subnet_name
+    project_id = var.vpc_project_id
+  }
 
-  project_id = var.connector_on_host_project ? var.vpc_project_id : var.serverless_project_id
-  vpc_connectors = [{
-    name            = "${var.connector_name}${local.suffix}"
-    region          = var.location
-    subnet_name     = local.subnet_name
-    host_project_id = var.vpc_project_id
-    machine_type    = "e2-micro"
-    min_instances   = 2
-    max_instances   = 7
-    max_throughput  = 700
-    }
-  ]
   depends_on = [
     google_project_iam_member.gca_sa_vpcaccess,
     google_project_iam_member.cloud_services,

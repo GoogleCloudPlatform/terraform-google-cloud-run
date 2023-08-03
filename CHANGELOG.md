@@ -7,6 +7,32 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.9.0...v0.9.1) (2023-07-26)
+
+
+### Bug Fixes
+
+* fix vpc connector creation in Shared VPCs ([#137](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/137)) ([5979144](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/597914420843e4086ada0d9113737eccb0e6279f))
+
+## [0.9.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.8.0...v0.9.0) (2023-07-10)
+
+
+### Features
+
+* migrate serverless_type to service-based flag ([#131](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/131)) ([8546af0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/8546af0969653284a79a540e2998997a62178a3a))
+
+
+### Bug Fixes
+
+* adds variable to not disable APIs on destroy ([#126](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/126)) ([3faedb5](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/3faedb5c67ebbf17ff48fe92b3bf9a13ba7893d3))
+
+## [0.8.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.7.0...v0.8.0) (2023-06-01)
+
+
+### Features
+
+* Creates variable to customize time_sleep due VPC-SC  propagation time ([#124](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/124)) ([7260a62](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/7260a62d23888f863cb97085372f47dc9916f34b))
+
 ## [0.7.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.6.0...v0.7.0) (2023-05-17)
 
 

@@ -57,9 +57,11 @@ module "secure_cloud_run_harness" {
 | artifact\_registry\_repository\_description | The description of the Artifact Registry Repository to be created. | `string` | `"Secure Cloud Run Artifact Registry Repository"` | no |
 | artifact\_registry\_repository\_format | The format of the Artifact Registry Repository to be created. | `string` | `"DOCKER"` | no |
 | artifact\_registry\_repository\_name | The name of the Artifact Registry Repository to be created. | `string` | n/a | yes |
+| base\_serverless\_api | This variable will enable Cloud Function or Cloud Run specific resources. Cloud Run API will be used for the terraform-google-cloud-run repository while Cloud Function API will be used in the terraform-google-cloud-functions repository. It supports only run.googleapis.com or cloudfunctions.googleapis.com | `string` | n/a | yes |
 | billing\_account | The ID of the billing account to associate this project with. | `string` | n/a | yes |
 | create\_access\_context\_manager\_access\_policy | Defines if Access Context Manager will be created by Terraform. | `bool` | `false` | no |
 | decrypters | List of comma-separated owners for each key declared in set\_decrypters\_for. | `list(string)` | `[]` | no |
+| disable\_services\_on\_destroy | Whether project services will be disabled when the resources are destroyed | `bool` | `false` | no |
 | dns\_enable\_inbound\_forwarding | Toggle inbound query forwarding for VPC DNS. | `bool` | `true` | no |
 | dns\_enable\_logging | Toggle DNS logging for VPC DNS. | `bool` | `true` | no |
 | egress\_policies | A list of all [egress policies](https://cloud.google.com/vpc-service-controls/docs/ingress-egress-rules#egress-rules-reference), each list object has a `from` and `to` value that describes egress\_from and egress\_to.<br><br>Example: `[{ from={ identities=[], identity_type="ID_TYPE" }, to={ resources=[], operations={ "SRV_NAME"={ OP_TYPE=[] }}}}]`<br><br>Valid Values:<br>`ID_TYPE` = `null` or `IDENTITY_TYPE_UNSPECIFIED` (only allow indentities from list); `ANY_IDENTITY`; `ANY_USER_ACCOUNT`; `ANY_SERVICE_ACCOUNT`<br>`SRV_NAME` = "`*`" (allow all services) or [Specific Services](https://cloud.google.com/vpc-service-controls/docs/supported-products#supported_products)<br>`OP_TYPE` = [methods](https://cloud.google.com/vpc-service-controls/docs/supported-method-restrictions) or [permissions](https://cloud.google.com/vpc-service-controls/docs/supported-method-restrictions). | <pre>list(object({<br>    from = any<br>    to   = any<br>  }))</pre> | `[]` | no |
@@ -83,9 +85,9 @@ module "secure_cloud_run_harness" {
 | serverless\_folder\_suffix | The suffix to be concat in the Serverless folder name fldr-serverless-<SUFFIX>. | `string` | `""` | no |
 | serverless\_project\_extra\_apis | The extra APIs to be enabled during serverless projects creation. | `map(list(string))` | `{}` | no |
 | serverless\_project\_names | The name to give the Cloud Serverless project. | `list(string)` | n/a | yes |
-| serverless\_type | The type of resource to be used. It supports only CLOUD\_RUN or CLOUD\_FUNCTION | `string` | n/a | yes |
 | service\_account\_project\_roles | Common roles to apply to the Cloud Serverless service account in the serverless project. | `map(list(string))` | `{}` | no |
 | subnet\_ip | The CDIR IP range of the subnetwork. | `string` | n/a | yes |
+| time\_to\_wait\_vpc\_sc\_propagation | The time to wait VPC-SC propagation when applying and destroying. | `string` | `"180s"` | no |
 | use\_shared\_vpc | Defines if the network created will be a single or shared vpc. | `bool` | `false` | no |
 | vpc\_name | The name of the network. | `string` | n/a | yes |
 
@@ -93,12 +95,14 @@ module "secure_cloud_run_harness" {
 
 | Name | Description |
 |------|-------------|
+| access\_context\_manager\_policy\_id | Access Context Manager ID. |
+| artifact\_registry\_key | Artifact Registry KMS Key. |
 | artifact\_registry\_repository\_id | The Artifact Registry Repository full identifier where the images should be stored. |
 | artifact\_registry\_repository\_name | The Artifact Registry Repository last part of the repository name where the images should be stored. |
 | cloud\_serverless\_service\_identity\_email | The Cloud Run Service Identity email. |
-| cloudfunction\_source\_bucket | Cloud Function Source Bucket. |
 | network\_project\_id | Project ID of the project created to host the Cloud Run Network. |
 | restricted\_access\_level\_name | Access level name. |
+| restricted\_access\_level\_name\_id | Access level name id. |
 | restricted\_service\_perimeter\_name | Service Perimeter name. |
 | security\_project\_id | Project ID of the project created for KMS and Artifact Register. |
 | security\_project\_number | Project number of the project created for KMS and Artifact Register. |
