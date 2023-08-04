@@ -96,7 +96,7 @@ output "service_subnet" {
 }
 
 output "artifact_registry_repository_id" {
-  value       = google_artifact_registry_repository.repo.id
+  value       = var.base_serverless_api == "run.googleapis.com" ? google_artifact_registry_repository.repo[0].id : ""
   description = "The Artifact Registry Repository full identifier where the images should be stored."
 
   depends_on = [
@@ -105,7 +105,7 @@ output "artifact_registry_repository_id" {
 }
 
 output "artifact_registry_repository_name" {
-  value       = google_artifact_registry_repository.repo.repository_id
+  value       = var.base_serverless_api == "run.googleapis.com" ? google_artifact_registry_repository.repo[0].repository_id : ""
   description = "The Artifact Registry Repository last part of the repository name where the images should be stored."
 
   depends_on = [
@@ -116,6 +116,15 @@ output "artifact_registry_repository_name" {
 output "cloud_serverless_service_identity_email" {
   value       = { for project in module.serverless_project : project.project_id => project.cloud_serverless_service_identity_email }
   description = "The Cloud Run Service Identity email."
+
+  depends_on = [
+    time_sleep.wait_vpc_sc_propagation
+  ]
+}
+
+output "access_context_manager_policy_id" {
+  value       = local.access_context_manager_policy_id
+  description = "Access Context Manager ID."
 
   depends_on = [
     time_sleep.wait_vpc_sc_propagation
@@ -140,9 +149,18 @@ output "restricted_access_level_name" {
   ]
 }
 
-output "cloudfunction_source_bucket" {
-  value       = var.serverless_type == "CLOUD_RUN" ? {} : { for bucket in module.cloudfunction_source_bucket : bucket.bucket.project => bucket.bucket }
-  description = "Cloud Function Source Bucket."
+output "restricted_access_level_name_id" {
+  value       = module.access_level_members.name_id
+  description = "Access level name id."
+
+  depends_on = [
+    time_sleep.wait_vpc_sc_propagation
+  ]
+}
+
+output "artifact_registry_key" {
+  value       = module.artifact_registry_kms.keys[var.key_name]
+  description = "Artifact Registry KMS Key."
 
   depends_on = [
     time_sleep.wait_vpc_sc_propagation

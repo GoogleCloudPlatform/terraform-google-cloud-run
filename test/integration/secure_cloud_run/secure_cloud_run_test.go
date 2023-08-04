@@ -95,9 +95,9 @@ func TestSecureCloudRun(t *testing.T) {
 		assert.Equal(connectorId, opVPCConnector.Get("name").String(), fmt.Sprintf("Should have same id: %s", connectorId))
 		assert.Equal(expectedSubnet, opVPCConnector.Get("subnet.name").String(), fmt.Sprintf("Should have same subnetwork: %s", expectedSubnet))
 		assert.Equal(expectedMachineType, opVPCConnector.Get("machineType").String(), fmt.Sprintf("Should have same machineType: %s", expectedMachineType))
-		assert.Equal("7", opVPCConnector.Get("maxInstances").String(), "Should have maxInstances equals to 7")
+		assert.Equal("10", opVPCConnector.Get("maxInstances").String(), "Should have maxInstances equals to 10")
 		assert.Equal("2", opVPCConnector.Get("minInstances").String(), "Should have minInstances equals to 2")
-		assert.Equal("700", opVPCConnector.Get("maxThroughput").String(), "Should have maxThroughput equals to 700")
+		assert.Equal("1000", opVPCConnector.Get("maxThroughput").String(), "Should have maxThroughput equals to 1000")
 		assert.Equal("200", opVPCConnector.Get("minThroughput").String(), "Should have minThroughput equals to 200")
 
 		expectedCloudArmorName := "cloud-armor-waf-policy"
@@ -155,7 +155,7 @@ func TestSecureCloudRun(t *testing.T) {
 			allow      []Protocols
 		}{
 			{
-				name:       "fw-serverless-to-vpc-connector",
+				name:       fmt.Sprintf("fw-serverless-to-vpc-connector-%s", resourcesSuffix),
 				direction:  "INGRESS",
 				ranges:     []string{"107.178.230.64/26", "35.199.224.0/19"},
 				targetTags: []string{"vpc-connector"},
@@ -174,7 +174,7 @@ func TestSecureCloudRun(t *testing.T) {
 					}},
 			},
 			{
-				name:       "fw-vpc-connector-to-serverless",
+				name:       fmt.Sprintf("fw-vpc-connector-to-serverless-%s", resourcesSuffix),
 				direction:  "EGRESS",
 				ranges:     []string{"107.178.230.64/26", "35.199.224.0/19"},
 				targetTags: []string{"vpc-connector"},
@@ -193,7 +193,7 @@ func TestSecureCloudRun(t *testing.T) {
 					}},
 			},
 			{
-				name:       "fw-vpc-connector-health-checks",
+				name:       fmt.Sprintf("fw-vpc-connector-health-checks-%s", resourcesSuffix),
 				direction:  "INGRESS",
 				ranges:     []string{"130.211.0.0/22", "35.191.0.0/16", "108.170.220.0/23"},
 				targetTags: []string{"vpc-connector"},
@@ -206,7 +206,7 @@ func TestSecureCloudRun(t *testing.T) {
 				},
 			},
 			{
-				name:       "fw-vpc-connector-requests",
+				name:       fmt.Sprintf("fw-vpc-connector-requests-%s", resourcesSuffix),
 				direction:  "INGRESS",
 				ranges:     []string{},
 				sourceTags: []string{"vpc-connector"},
@@ -226,7 +226,7 @@ func TestSecureCloudRun(t *testing.T) {
 				},
 			},
 			{
-				name:       "fw-vpc-connector-to-lb",
+				name:       fmt.Sprintf("fw-vpc-connector-to-lb-%s", resourcesSuffix),
 				direction:  "EGRESS",
 				ranges:     []string{"0.0.0.0/0"},
 				targetTags: []string{"vpc-connector"},
@@ -238,7 +238,7 @@ func TestSecureCloudRun(t *testing.T) {
 				},
 			},
 		} {
-			fwRule := gcloud.Runf(t, "compute firewall-rules describe %s --project %s", firewall_rules.name, vpcProjectId)
+			fwRule := gcloud.Runf(t, "compute firewall-rules describe %s --project %s --impersonate-service-account=%s", firewall_rules.name, vpcProjectId, serviceaccount)
 			assert.Equal(firewall_rules.name, fwRule.Get("name").String(), fmt.Sprintf("firewall rule %s should exist", firewall_rules.name))
 			assert.Equal(firewall_rules.direction, fwRule.Get("direction").String(), fmt.Sprintf("firewall rule %s direction should be %s", firewall_rules.name, firewall_rules.direction))
 			assert.False(fwRule.Get("disabled").Bool(), fmt.Sprintf("firewall rule %s should be ENABLED", firewall_rules.name))

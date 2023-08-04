@@ -36,10 +36,11 @@ output "cloud_serverless_service_identity_email" {
 
 output "services_identities" {
   value = {
-    "eventarc"   = google_project_service_identity.eventarc_sa.email,
-    "cloudbuild" = google_project_service_identity.cloudbuild_sa.email,
-    "gcs"        = data.google_storage_project_service_account.gcs_account.email_address,
-    "serverless" = google_project_service_identity.serverless_sa.email
+    "eventarc"      = google_project_service_identity.eventarc_sa.email,
+    "cloudbuild"    = google_project_service_identity.cloudbuild_sa.email,
+    "gcs"           = data.google_storage_project_service_account.gcs_account.email_address,
+    "serverless"    = google_project_service_identity.serverless_sa.email,
+    "cloudservices" = "${module.serverless_project.project_number}@cloudservices.gserviceaccount.com"
   }
   description = "Services Identities for the serverless project."
 }
