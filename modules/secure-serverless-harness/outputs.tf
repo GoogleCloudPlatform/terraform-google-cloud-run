@@ -16,7 +16,7 @@
 
 output "serverless_folder_id" {
   value       = google_folder.fld_serverless.name
-  description = "The folder created to alocate Serverless infra."
+  description = "The folder created to allocate Serverless infra."
 
   depends_on = [
     time_sleep.wait_vpc_sc_propagation
@@ -25,7 +25,7 @@ output "serverless_folder_id" {
 
 output "network_project_id" {
   value       = [for network in module.network : network.project_id]
-  description = "Project ID of the project created to host the Cloud Run Network."
+  description = "Project ID of the project created to host the Serverless Network."
 
   depends_on = [
     time_sleep.wait_vpc_sc_propagation
@@ -34,7 +34,7 @@ output "network_project_id" {
 
 output "serverless_project_ids" {
   value       = [for project in module.serverless_project : project.project_id]
-  description = "Project ID of the projects created to deploy Cloud Run."
+  description = "Project ID of the projects created to deploy Serverless application."
 
   depends_on = [
     time_sleep.wait_vpc_sc_propagation
@@ -43,7 +43,7 @@ output "serverless_project_ids" {
 
 output "serverless_project_numbers" {
   value       = { for project in module.serverless_project : project.project_id => project.project_number }
-  description = "Project number of the projects created to deploy Cloud Run."
+  description = "Project number of the projects created to deploy Serverless applications."
 
   depends_on = [
     time_sleep.wait_vpc_sc_propagation

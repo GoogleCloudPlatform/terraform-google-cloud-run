@@ -1,6 +1,6 @@
 # Secure Cloud Run
 
-This module handles the deployment required for Cloud Run usage. Secure-cloud-run module will call the secure-cloud-run-core, secure-cloud-run-net and secure-cloud-run-net modules.
+This module handles the deployment required for Cloud Run usage. Secure-cloud-run module will call the secure-cloud-run-core, secure-serverless-net and secure-cloud-run-security modules.
 
 When using a Shared VPC, you can chose where to create the VPC Connector.
 
@@ -8,7 +8,7 @@ _Note:_ When using a single VPC you should provides VPC and Serverless project i
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
-* secure-cloud-run-network module will apply:
+* secure-serverless-net module will apply:
   * Creates Firewall rules on your **VPC Project**.
     * Serverless to VPC Connector
     * VPC Connector to Serverless
@@ -18,7 +18,7 @@ The resources/services/activations/deletions that this module will create/trigge
   * Creates Serverless Connector on your **VPC Project** or **Serverless Project**. Refer the comparison below:
     * Advantages of creating connectors in the [VPC Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#host-project)
     * Advantages of creating connectors in the [Serverless Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#service-projects)
-  * Grant the necessary roles for Cloud Run are able to use VPC Connector on your Shared VPC when creating VPC Connector in host project.
+  * Grant the necessary roles for Cloud Run be able to use VPC Connector on your Shared VPC when creating VPC Connector in host project.
     * Grant Network User role to Cloud Services service account.
     * Grant VPC Access User to Cloud Run Service Identity when deploying VPC Access.
 
@@ -46,7 +46,7 @@ The resources/services/activations/deletions that this module will create/trigge
 * secure-cloud-run-core module will apply:
   * Creates a Cloud Run Service.
   * Creates a Load Balancer Service using Google-managed SSL certificates.
-  * Creates Cloud Armor Service only including the preconfigured rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation.
+  * Creates Cloud Armor Service only including the pre-configured rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation.
 
 ## Usage
 
@@ -160,6 +160,7 @@ The Secure-cloud-run module will enable the following APIs to the VPC Project:
 * Compute API: `compute.googleapis.com`
 
 The Secure-cloud-run module will enable the following APIs to the KMS Project:
+
 * Cloud KMS API: `cloudkms.googleapis.com`
 
 ### Service Account

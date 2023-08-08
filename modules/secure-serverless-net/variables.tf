@@ -25,7 +25,7 @@ variable "vpc_project_id" {
 }
 
 variable "serverless_project_id" {
-  description = "The project where cloud run is going to be deployed."
+  description = "The project where Secure Serverless is going to be deployed."
   type        = string
 }
 
