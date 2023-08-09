@@ -22,7 +22,7 @@ The resources/services/activations/deletions that this example will create/trigg
   * Allow VPC Egress to Private Ranges Only.
   * Creates a Cloud Run Service.
   * Creates a Load Balancer Service using Google-managed SSL certificates.
-  * Creates Cloud Armor Service only including the preconfigured rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation.
+  * Creates Cloud Armor Service only including the pre-configured rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation.
 
 ## Organization Policies
 
