@@ -40,7 +40,7 @@ locals {
 
   secrets_alias = [
     for secret in local.secrets :
-    "${secret.name}:${secret.path}${secret.secret_name}"
+    "${secret.name}:${secret.path}"
   ]
 }
 
