@@ -58,7 +58,7 @@ module "lb-http" {
 
 resource "google_compute_region_network_endpoint_group" "serverless_neg" {
   provider              = google-beta
-  name                  = "serverless-neg"
+  name                  = "${service_name}-neg"
   project               = var.project_id
   network_endpoint_type = "SERVERLESS"
   region                = var.region
