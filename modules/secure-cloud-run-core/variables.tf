@@ -328,3 +328,19 @@ variable "ssl_certificates" {
   }
   description = "A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links in the pattern `projects/<PROJECT-ID>/global/sslCertificates/<CERT-NAME>` to be used by Load Balancer."
 }
+
+variable "env_secret_vars" {
+  type = list(object({
+    name = string
+    value_from = set(object({
+      secret_key_ref = map(string)
+    }))
+  }))
+  description = "[Beta] Environment variables (Secret Manager)"
+  default     = []
+}
+
+variable "ingress" {
+  default     = "internal-and-cloud-load-balancing"
+  description = "Set the ingress traffic sources allowed to call the service. Supported values:  all, internal and internal-and-cloud-load-balancing"
+}
