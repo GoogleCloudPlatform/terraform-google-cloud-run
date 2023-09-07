@@ -23,7 +23,7 @@ locals {
   }
 
   conditional_annotations = {
-    secret = length(local.secrets_alias) == 0 ? {} : { "run.googleapis.com/secrets" = join(", ", toset(local.secrets_alias)) }
+    secret = {}
   }
 
   secrets = distinct(flatten([
@@ -42,6 +42,7 @@ locals {
     for secret in local.secrets :
     "${secret.name}:${secret.path}"
   ]
+
 }
 
 module "cloud_run" {
@@ -55,6 +56,7 @@ module "cloud_run" {
   encryption_key         = var.encryption_key
   members                = var.members
   env_vars               = var.env_vars
+  env_secret_vars        = var.env_secret_vars
   generate_revision_name = var.generate_revision_name
   traffic_split          = var.traffic_split
   service_labels         = var.service_labels
@@ -75,7 +77,7 @@ module "cloud_run" {
   verified_domain_name   = var.verified_domain_name
 
   service_annotations = {
-    "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"
+    "run.googleapis.com/ingress" = var.ingress
   }
 
   template_annotations = merge(
@@ -104,7 +106,7 @@ resource "time_sleep" "wait_30_seconds" {
 
 resource "google_secret_manager_secret_iam_member" "member" {
   for_each  = { for secret in local.secrets : secret.name => secret }
-  secret_id = "${each.value.path}${each.value.secret_name}"
+  secret_id = each.value.path
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${var.cloud_run_sa}"
 }

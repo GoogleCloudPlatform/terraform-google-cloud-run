@@ -58,7 +58,7 @@ module "lb-http" {
 
 resource "google_compute_region_network_endpoint_group" "serverless_neg" {
   provider              = google-beta
-  name                  = "serverless-neg"
+  name                  = "${var.service_name}-neg"
   project               = var.project_id
   network_endpoint_type = "SERVERLESS"
   region                = var.region
@@ -70,7 +70,7 @@ resource "google_compute_region_network_endpoint_group" "serverless_neg" {
 resource "google_compute_security_policy" "cloud-armor-security-policy" {
   count   = var.create_cloud_armor_policies ? 1 : 0
   project = var.project_id
-  name    = "cloud-armor-waf-policy"
+  name    = "${var.service_name}-waf-policy"
   dynamic "rule" {
     for_each = var.default_rules
     content {
