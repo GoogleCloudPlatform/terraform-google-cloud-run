@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-output "load_balancer_ip" {
-  value       = module.lb-http.external_ip
-  description = "IP Address used by Load Balancer."
-}
-
 output "revision" {
   value       = module.cloud_run.revision
   description = "Deployed revision for the service."
