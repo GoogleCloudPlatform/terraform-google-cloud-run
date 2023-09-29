@@ -98,7 +98,6 @@ variable "groups" {
     group_serverless_administrator          = optional(string, null)
     group_serverless_security_administrator = optional(string, null)
     group_cloud_run_developer               = optional(string, null)
-    group_cloud_run_developer               = optional(string, null)
     group_cloud_run_user                    = optional(string, null)
   })
 
