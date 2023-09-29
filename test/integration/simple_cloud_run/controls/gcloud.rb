@@ -18,7 +18,7 @@ control "gcloud" do
   describe command("gcloud --project=#{attribute("project_id")} services list --enabled") do
     its(:exit_status) { should eq 0 }
     its(:stderr) { should eq "" }
-    its(:stdout) { should match "run\.googleapis\.com" }
+    its(:stdout) { should match "run/.googleapis/.com" }
   end
 
   describe command("gcloud --project=#{attribute("project_id")} run services list --region=#{attribute("service_location")} --format=json") do
