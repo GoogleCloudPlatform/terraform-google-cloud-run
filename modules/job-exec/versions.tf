@@ -24,7 +24,7 @@ terraform {
     }
     google = {
       source  = "hashicorp/google"
-      version = "< 5.0"
+      version = "< 5.4"
     }
   }
   provider_meta "google" {
