@@ -16,7 +16,7 @@
 
 module "project" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 10.0"
+  version = "~> 14.0"
 
   name                    = "ci-cloud-run"
   random_project_id       = "true"
