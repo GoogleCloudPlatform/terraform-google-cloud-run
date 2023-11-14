@@ -3,7 +3,7 @@ module github.com/terraform-google-modules/terraform-example-foundation/test/int
 go 1.20
 
 require (
-	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.9.2
+	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.10.0
 	github.com/stretchr/testify v1.8.4
 	github.com/tidwall/gjson v1.17.0
 )
