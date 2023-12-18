@@ -52,7 +52,8 @@ resource "google_project_service_identity" "serverless_sa" {
 }
 
 module "cloud_run" {
-  source = "../../"
+  source  = "GoogleCloudPlatform/cloud-run/google"
+  version = "~> 0.10"
 
   service_name          = "ci-cloud-run"
   project_id            = var.project_id
