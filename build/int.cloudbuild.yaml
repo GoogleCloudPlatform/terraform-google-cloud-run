@@ -14,6 +14,9 @@
 
 timeout: 3600s
 steps:
+- id: swap-module-refs
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['module-swapper']
 - id: secure cloud run on foundation
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSecureCloudRun --test-dir /workspace/test/integration --verbose']
