@@ -158,3 +158,9 @@ variable "timeout" {
     error_message = "The value must be a duration in seconds with up to nine fractional digits, ending with 's'. Example: \"3.5s\"."
   }
 }
+
+variable "encryption_key" {
+  type        = string
+  description = "(Optional) A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. For more information, go to https://cloud.google.com/run/docs/securing/using-cmek"
+  default     = null
+}

@@ -30,6 +30,7 @@ resource "google_cloud_run_v2_job" "job" {
       max_retries     = var.max_retries
       service_account = var.service_account_email
       timeout         = var.timeout
+      encryption_key  = var.encryption_key
 
       containers {
         image   = var.image
