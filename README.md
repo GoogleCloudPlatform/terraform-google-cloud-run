@@ -35,7 +35,7 @@ Basic usage of this module is as follows:
 ```hcl
 module "cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google"
-  version = "~> 0.2.0"
+  version = "~> 0.10.0"
 
   # Required variables
   service_name           = "<SERVICE NAME>"
@@ -104,9 +104,9 @@ module "cloud_run" {
 These sections describe requirements for using this module.
 
 ### Software
-- [Terraform](https://www.terraform.io/downloads.html) ~> v0.13+
-- [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) >= 3.53, < 5.0
-- [Terraform Provider for GCP Beta](https://github.com/terraform-providers/terraform-provider-google-beta) >= 3.53, < 5.0
+- [Terraform](https://www.terraform.io/downloads.html) ~> v1.3+
+- [Terraform Provider for GCP](https://github.com/terraform-providers/terraform-provider-google) < 6
+- [Terraform Provider for GCP Beta](https://github.com/terraform-providers/terraform-provider-google-beta) < 6
 
 ### Service Account
 

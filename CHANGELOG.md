@@ -7,6 +7,20 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.9.1...v0.10.0) (2023-11-14)
+
+
+### Features
+
+* add support for liveness and readiness probes ([#101](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/101)) ([0299bfe](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/0299bfec27f2cce76e2a213d77de1a125e2b3b50))
+* **job-exec:** Add support for multiple arguments ([#118](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/118)) ([301f510](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/301f5109aa88771651be59b4ba024d8bdf2b15c7))
+
+
+### Bug Fixes
+
+* **deps:** expand version constraint to Terraform Google Provider to v5 (major) ([#156](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/156)) ([7fb5ebb](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/7fb5ebb96a8b15a76536141b119f1185f072f8b5))
+* remove duplicate variable key ([#154](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/154)) ([f2be3c0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/f2be3c0562a6a55b108dfdd6c870d6761c8f1968))
+
 ## [0.9.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.9.0...v0.9.1) (2023-07-26)
 
 

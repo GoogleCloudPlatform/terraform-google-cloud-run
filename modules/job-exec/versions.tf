@@ -24,10 +24,10 @@ terraform {
     }
     google = {
       source  = "hashicorp/google"
-      version = "< 5.0"
+      version = "< 6"
     }
   }
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:job-exec/v0.9.1"
+    module_name = "blueprints/terraform/terraform-google-cloud-run:job-exec/v0.10.0"
   }
 }
