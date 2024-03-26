@@ -7,6 +7,22 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.10.0...v0.11.0) (2024-03-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** Update Terraform terraform-google-modules/vpc-service-controls/google to v5 ([#180](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/180))
+* **deps:** Update Terraform terraform-google-modules/network/google to v9 ([#178](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/178))
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v14 ([#179](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/179))
+
+### Bug Fixes
+
+* **deps:** Update Terraform terraform-google-modules/network/google to v9 ([#178](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/178)) ([a391262](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/a391262fac2087f08885c9620dd7015b1899d9bd))
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v14 ([#179](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/179)) ([dc0815e](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/dc0815e050255eb95873d3b1d042caa8bcb17110))
+* **deps:** Update Terraform terraform-google-modules/vpc-service-controls/google to v5 ([#180](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/180)) ([79ade48](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/79ade48010487ef9e38472a8fe709d38c7928e03))
+* ignoring client.knative.dev/nonce changes ([#185](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/185)) ([ce6e147](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/ce6e14792158da6c592678713c8957f634a38454))
+
 ## [0.10.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.9.1...v0.10.0) (2023-11-14)
 
 
