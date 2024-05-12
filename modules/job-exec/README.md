@@ -16,7 +16,7 @@ Basic usage of this module is as follows:
 
 ```hcl
 module "cloud_run_core" {
-  source = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-run-core"
+  source = "GoogleCloudPlatform/cloud-run/google//modules/job-exec"
   version = "~> 0.3.0"
 
   project_id = var.project_id

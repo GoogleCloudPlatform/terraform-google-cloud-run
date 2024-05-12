@@ -266,23 +266,19 @@ variable "container_command" {
 }
 
 variable "env_vars" {
-  type = list(object({
-    value = string
-    name  = string
-  }))
-  description = "List of environment variables to set in the container (cleartext)"
-  default     = []
+  type        = map(string)
+  description = "Map of environment variables to set in the container (cleartext)"
+  default     = {}
 }
 
 variable "env_secret_vars" {
-  type = list(object({
-    name = string
+  type = map(object({
     value_source = object({
       secret_key_ref = map(string)
     })
   }))
-  description = "List of environment variables to set in the container (Secret Manager)"
-  default     = []
+  description = "Map of environment variables to set in the container (Secret Manager)"
+  default     = {}
 }
 
 variable "volume_mounts" {

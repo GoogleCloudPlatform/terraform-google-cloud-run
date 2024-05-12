@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-locals {
-}
-
 resource "google_cloud_run_v2_service" "main" {
   provider = google-beta
 
@@ -166,15 +163,15 @@ resource "google_cloud_run_v2_service" "main" {
       dynamic "env" {
         for_each = var.env_vars
         content {
-          name  = env.value["name"]
-          value = env.value["value"]
+          name  = env.key
+          value = env.value
         }
       }
 
       dynamic "env" {
         for_each = var.env_secret_vars
         content {
-          name = env.value["name"]
+          name = env.key
           dynamic "value_source" {
             for_each = env.value.value_source[*]
             content {
