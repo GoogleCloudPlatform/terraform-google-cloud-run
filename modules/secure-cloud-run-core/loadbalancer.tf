@@ -26,7 +26,7 @@ module "lb-http" {
   ssl                             = true
   managed_ssl_certificate_domains = var.ssl_certificates.generate_certificates_for_domains
   ssl_certificates                = var.ssl_certificates.ssl_certificates_self_links
-  use_ssl_certificates            = length(var.ssl_certificates.generate_certificates_for_domains) == 0 ? true : false
+  create_ssl_certificate          = length(var.ssl_certificates.generate_certificates_for_domains) == 0 ? true : false
   https_redirect                  = false
   http_forward                    = false
 
