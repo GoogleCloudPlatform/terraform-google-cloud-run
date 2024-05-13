@@ -51,7 +51,7 @@ resource "google_folder" "fld_serverless" {
 module "network_project" {
   count             = var.use_shared_vpc ? 1 : 0
   source            = "terraform-google-modules/project-factory/google"
-  version           = "~> 14.2"
+  version           = "~> 15.0"
   random_project_id = "true"
   activate_apis     = local.network_apis
   name              = var.network_project_name
@@ -66,7 +66,7 @@ module "network_project" {
 
 module "security_project" {
   source            = "terraform-google-modules/project-factory/google"
-  version           = "~> 14.2"
+  version           = "~> 15.0"
   random_project_id = "true"
   activate_apis     = local.kms_apis
   name              = var.security_project_name
