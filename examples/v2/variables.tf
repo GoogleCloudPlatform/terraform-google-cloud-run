@@ -17,5 +17,4 @@
 variable "project_id" {
   description = "The project ID to deploy to"
   type        = string
-  default     = "dc-in-lz-pr-poc-01"
 }
