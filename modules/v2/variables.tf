@@ -230,146 +230,79 @@ variable "volumes" {
 }
 
 // Containers
-variable "container_name" {
-  type        = string
-  description = "Name of the container specified as a DNS_LABEL."
-  default     = null
-}
-
-variable "container_image" {
-  description = "URL of the Container image in Google Container Registry or Google Artifact Registry"
-  type        = string
-}
-
-variable "working_dir" {
-  description = "Container's working directory. If not specified, the container runtime's default will be used, which might be configured in the container image."
-  type        = string
-  default     = null
-}
-
-variable "depends_on_container" {
-  description = "Containers which should be started before this container. If specified the container will wait to start until all containers with the listed names are healthy."
-  type        = list(string)
-  default     = null
-}
-
-variable "container_args" {
-  type        = list(string)
-  description = "Arguments to the entrypoint. The docker image's CMD is used if this is not provided."
-  default     = []
-}
-
-variable "container_command" {
-  type        = list(string)
-  description = "Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided."
-  default     = []
-}
-
-variable "env_vars" {
-  type        = map(string)
-  description = "Map of environment variables to set in the container (cleartext)"
-  default     = {}
-}
-
-variable "env_secret_vars" {
+variable "containers" {
   type = map(object({
-    value_source = object({
-      secret_key_ref = map(string)
+    container_name       = optional(string, null)
+    container_image      = string
+    working_dir          = optional(string, null)
+    depends_on_container = optional(list(string), null)
+    container_args       = optional(list(string), null)
+    container_command    = optional(list(string), null)
+    env_vars             = optional(map(string), {})
+    env_secret_vars = optional(map(object({
+      secret  = string
+      version = string
+    })), {})
+    volume_mounts = optional(list(object({
+      name       = string
+      mount_path = string
+    })), [])
+    ports = optional(object({
+      name           = optional(string)
+      container_port = optional(number)
+      }), {
+      name           = "http1"
+      container_port = 8080
     })
+    resources = optional(object({
+      limits = optional(object({
+        cpu    = optional(string)
+        memory = optional(string)
+      }))
+      cpu_idle          = optional(bool, true)
+      startup_cpu_boost = optional(bool, false)
+    }), {})
+    startup_probe = optional(object({
+      failure_threshold     = optional(number, null)
+      initial_delay_seconds = optional(number, null)
+      timeout_seconds       = optional(number, null)
+      period_seconds        = optional(number, null)
+      http_get = optional(object({
+        path = optional(string)
+        port = optional(string)
+        http_headers = optional(list(object({
+          name  = string
+          value = string
+        })), null)
+      }), null)
+      tcp_socket = optional(object({
+        port = optional(number)
+      }), null)
+      grpc = optional(object({
+        port    = optional(number)
+        service = optional(string)
+      }), null)
+    }), null)
+    liveness_probe = optional(object({
+      failure_threshold     = optional(number, null)
+      initial_delay_seconds = optional(number, null)
+      timeout_seconds       = optional(number, null)
+      period_seconds        = optional(number, null)
+      http_get = optional(object({
+        path = optional(string)
+        port = optional(string)
+        http_headers = optional(list(object({
+          name  = string
+          value = string
+        })), null)
+      }), null)
+      grpc = optional(object({
+        port    = optional(number)
+        service = optional(string)
+      }), null)
+    }), null)
   }))
-  description = "Map of environment variables to set in the container (Secret Manager)"
-  default     = {}
-}
-
-variable "volume_mounts" {
-  type = list(object({
-    mount_path = string
-    name       = string
-  }))
-  description = "Volume to mount into the container's filesystem"
-  default     = []
-}
-
-variable "ports" {
-  type = object({
-    name           = optional(string)
-    container_port = optional(number)
-  })
-  description = "List of ports to expose from the container. Only a single port can be specified."
-  default = {
-    name           = "http1"
-    container_port = 8080
-  }
-}
-
-variable "resources" {
-  type = object({
-    limits = optional(object({
-      cpu    = optional(string)
-      memory = optional(string)
-    }))
-    cpu_idle          = optional(bool, true)
-    startup_cpu_boost = optional(bool, false)
-  })
-  description = "Compute Resource requirements by this container."
-  default     = {}
-}
-
-variable "startup_probe" {
-  type = object({
-    failure_threshold     = optional(number, null)
-    initial_delay_seconds = optional(number, null)
-    timeout_seconds       = optional(number, null)
-    period_seconds        = optional(number, null)
-    http_get = optional(object({
-      path = optional(string)
-      port = optional(string)
-      http_headers = optional(list(object({
-        name  = string
-        value = string
-      })), null)
-    }), null)
-    tcp_socket = optional(object({
-      port = optional(number)
-    }), null)
-    grpc = optional(object({
-      port    = optional(number)
-      service = optional(string)
-    }), null)
-  })
-  default     = null
-  description = <<-EOF
-    Startup probe of application within the container.
-    All other probes are disabled if a startup probe is provided, until it succeeds.
-    Container will not be added to service endpoints if the probe fails.
-    More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
-  EOF
-}
-
-variable "liveness_probe" {
-  type = object({
-    failure_threshold     = optional(number, null)
-    initial_delay_seconds = optional(number, null)
-    timeout_seconds       = optional(number, null)
-    period_seconds        = optional(number, null)
-    http_get = optional(object({
-      path = optional(string)
-      port = optional(string)
-      http_headers = optional(list(object({
-        name  = string
-        value = string
-      })), null)
-    }), null)
-    grpc = optional(object({
-      port    = optional(number)
-      service = optional(string)
-    }), null)
-  })
-  default     = null
-  description = <<-EOF
-    Periodic probe of container liveness. Container will be restarted if the probe fails.
-    More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
-  EOF
+  description = "Map of container images for the service"
 }
 
 // IAM

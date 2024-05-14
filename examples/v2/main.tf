@@ -14,7 +14,24 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The project ID to deploy to"
-  type        = string
+module "service_account" {
+  source     = "terraform-google-modules/service-accounts/google"
+  version    = "~> 4.2"
+  project_id = var.project_id
+  prefix     = "sa-cloud-run"
+  names      = ["simple"]
+}
+
+module "cloud_run_v2" {
+  source = "../../modules/v2"
+
+  service_name = "ci-cloud-run-v2"
+  project_id   = var.project_id
+  location     = "us-central1"
+  containers = {
+    hello-world = {
+      container_image = "us-docker.pkg.dev/cloudrun/container/hello"
+    }
+  }
+  service_account = module.service_account.email
 }

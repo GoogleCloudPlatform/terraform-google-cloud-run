@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+output "project_id" {
+  value       = module.cloud_run_v2.project_id
+  description = "Project ID of the service"
+}
+
 output "service_name" {
   value       = module.cloud_run_v2.service_name
   description = "Name of the created service"

@@ -15,7 +15,7 @@ This module was deploys a Cloud Run Job run and executes it.
 Basic usage of this module is as follows:
 
 ```hcl
-module "cloud_run_core" {
+module "job-exec" {
   source = "GoogleCloudPlatform/cloud-run/google//modules/job-exec"
   version = "~> 0.3.0"
 

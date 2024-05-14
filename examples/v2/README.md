@@ -25,6 +25,7 @@ This example assumes that below mentioned prerequisites are in place before cons
 | Name | Description |
 |------|-------------|
 | observed\_generation | The generation of this Service currently serving traffic. |
+| project\_id | Project ID of the service |
 | service\_id | Unique Identifier for the created service with format projects/{{project}}/locations/{{location}}/services/{{name}} |
 | service\_location | Location in which the Cloud Run service was created |
 | service\_name | Name of the created service |

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 output "project_id" {
   value       = google_cloud_run_v2_service.main.project
   description = "Google Cloud project in which the service was created"
