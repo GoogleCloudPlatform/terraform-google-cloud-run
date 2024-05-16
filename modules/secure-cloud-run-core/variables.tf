@@ -347,5 +347,6 @@ variable "ingress" {
 
 variable "network_interfaces" {
   description = "The network interfaces for the Cloud Run service"
+  default     = null
 }
 
