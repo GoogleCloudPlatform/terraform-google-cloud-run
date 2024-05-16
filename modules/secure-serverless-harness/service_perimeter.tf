@@ -16,8 +16,8 @@
 
 locals {
   prefix                           = "secure_cloud_run"
-  access_level_name                = "alp_${local.prefix}_members_${random_id.random_access_level_suffix.hex}"
-  perimeter_name                   = "sp_${local.prefix}_perimeter_${random_id.random_access_level_suffix.hex}"
+  access_level_name                = "alp_${local.prefix}_members_${random_string.random_access_level_suffix.result}"
+  perimeter_name                   = "sp_${local.prefix}_perimeter_${random_string.random_access_level_suffix.result}"
   access_context_manager_policy_id = var.create_access_context_manager_access_policy ? google_access_context_manager_access_policy.access_policy[0].id : var.access_context_manager_policy_id
   access_level_members = concat(var.access_level_members,
     [for project in module.serverless_project : "serviceAccount:${project.services_identities["cloudbuild"]}"],
@@ -26,8 +26,12 @@ locals {
   )
 }
 
-resource "random_id" "random_access_level_suffix" {
-  byte_length = 2
+resource "random_string" "random_access_level_suffix" {
+  length  = 4
+  lower   = true
+  numeric = true
+  upper   = false
+  special = false
 }
 
 /******************************************
@@ -42,7 +46,7 @@ resource "google_access_context_manager_access_policy" "access_policy" {
 
 module "access_level_members" {
   source      = "terraform-google-modules/vpc-service-controls/google//modules/access_level"
-  version     = "~> 4.0"
+  version     = "~> 5.0"
   description = "${local.prefix} Access Level"
   policy      = local.access_context_manager_policy_id
   name        = local.access_level_name
@@ -51,7 +55,7 @@ module "access_level_members" {
 
 module "regular_service_perimeter" {
   source                  = "terraform-google-modules/vpc-service-controls/google//modules/regular_service_perimeter"
-  version                 = "~> 4.0"
+  version                 = "~> 5.0"
   policy                  = local.access_context_manager_policy_id
   perimeter_name          = local.perimeter_name
   description             = "Serverless VPC Service Controls perimeter"
