@@ -344,3 +344,8 @@ variable "ingress" {
   default     = "internal-and-cloud-load-balancing"
   description = "Set the ingress traffic sources allowed to call the service. Supported values:  all, internal and internal-and-cloud-load-balancing"
 }
+
+variable "network_interfaces" {
+  description = "The network interfaces for the Cloud Run service"
+}
+
