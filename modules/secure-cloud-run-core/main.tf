@@ -19,7 +19,8 @@ locals {
     "autoscaling.knative.dev/maxScale"        = var.max_scale_instances,
     "autoscaling.knative.dev/minScale"        = var.min_scale_instances,
     "run.googleapis.com/vpc-access-connector" = var.vpc_connector_id,
-    "run.googleapis.com/vpc-access-egress"    = var.vpc_egress_value
+    "run.googleapis.com/vpc-access-egress"    = var.vpc_egress_value,
+    "run.googleapis.com/network-interfaces"   = var.network_interfaces
   }
 
   conditional_annotations = {
