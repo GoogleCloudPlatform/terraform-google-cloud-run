@@ -16,7 +16,7 @@
 
 module "serverless_project" {
   source                      = "terraform-google-modules/project-factory/google"
-  version                     = "~> 14.2"
+  version                     = "~> 15.0"
   random_project_id           = "true"
   activate_apis               = var.activate_apis
   name                        = var.project_name
