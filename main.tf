@@ -155,7 +155,7 @@ resource "google_cloud_run_service" "main" {
         content {
           name = volumes.value["name"]
           dynamic "secret" {
-            for_each = volumes.value.secret == null ? {} : volumes.value.secret
+            for_each = volumes.value.secret == null ? toset([]) : volumes.value.secret
             content {
               secret_name = secret.value["secret_name"]
               items {
@@ -165,7 +165,7 @@ resource "google_cloud_run_service" "main" {
             }
           }
           dynamic "csi" {
-            for_each = volumes.value.csi == null ? {} : volumes.value.csi
+            for_each = volumes.value.csi == null ? toset([]) : volumes.value.csi
             content {
               driver            = csi.value.driver
               read_only         = csi.value.read_only
