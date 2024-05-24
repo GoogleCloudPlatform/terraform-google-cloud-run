@@ -164,6 +164,14 @@ resource "google_cloud_run_service" "main" {
               }
             }
           }
+          dynamic "csi" {
+            for_each = volumes.value.csi
+            content {
+              driver            = csi.value.driver
+              read_only         = csi.value.read_only
+              volume_attributes = csi.value.volume_attributes
+            }
+          }
         }
       }
 
