@@ -66,7 +66,7 @@ spec:
       - name: containers
         description: Map of container images for the service
         varType: |-
-          map(object({
+          list(object({
               container_name       = optional(string, null)
               container_image      = string
               working_dir          = optional(string, null)
@@ -231,7 +231,7 @@ spec:
             }))
         defaultValue: []
       - name: volumes
-        description: "[Beta] Volumes needed for environment variables (when using secret)"
+        description: Volumes needed for environment variables (when using secret)
         varType: |-
           list(object({
               name = string

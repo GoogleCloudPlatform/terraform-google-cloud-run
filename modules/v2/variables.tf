@@ -225,13 +225,13 @@ variable "volumes" {
       read_only = optional(string)
     }))
   }))
-  description = "[Beta] Volumes needed for environment variables (when using secret)"
+  description = "Volumes needed for environment variables (when using secret)"
   default     = []
 }
 
 // Containers
 variable "containers" {
-  type = map(object({
+  type = list(object({
     container_name       = optional(string, null)
     container_image      = string
     working_dir          = optional(string, null)

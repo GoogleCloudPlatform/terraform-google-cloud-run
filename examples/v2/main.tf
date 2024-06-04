@@ -29,10 +29,11 @@ module "cloud_run_v2" {
   service_name = "ci-cloud-run-v2"
   project_id   = var.project_id
   location     = "us-central1"
-  containers = {
-    hello-world = {
+  containers = [
+    {
       container_image = "us-docker.pkg.dev/cloudrun/container/hello"
+      container_name  = "hello-world"
     }
-  }
+  ]
   service_account = module.service_account.email
 }

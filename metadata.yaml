@@ -24,7 +24,7 @@ spec:
     source:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
       sourceType: git
-    version: 0.10.0
+    version: 0.11.0
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -293,16 +293,16 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/accesscontextmanager.policyAdmin
+          - roles/orgpolicy.policyAdmin
+      - level: Project
+        roles:
           - roles/owner
       - level: Project
         roles:
           - roles/resourcemanager.folderAdmin
           - roles/resourcemanager.projectCreator
           - roles/resourcemanager.projectDeleter
-      - level: Project
-        roles:
-          - roles/accesscontextmanager.policyAdmin
-          - roles/orgpolicy.policyAdmin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com

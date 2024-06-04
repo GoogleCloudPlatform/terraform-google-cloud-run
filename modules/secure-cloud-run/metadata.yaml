@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
       sourceType: git
       dir: /modules/secure-cloud-run
-    version: 0.10.0
+    version: 0.11.0
     actuationTool:
       flavor: Terraform
       version: ">= 0.13"
@@ -242,16 +242,16 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/resourcemanager.folderAdmin
+          - roles/resourcemanager.projectCreator
+          - roles/resourcemanager.projectDeleter
+      - level: Project
+        roles:
           - roles/accesscontextmanager.policyAdmin
           - roles/orgpolicy.policyAdmin
       - level: Project
         roles:
           - roles/owner
-      - level: Project
-        roles:
-          - roles/resourcemanager.folderAdmin
-          - roles/resourcemanager.projectCreator
-          - roles/resourcemanager.projectDeleter
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
