@@ -1,0 +1,283 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-cloud-run-secure-serverless-harness
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Secure Serverless Harness
+    source:
+      repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
+      sourceType: git
+      dir: /modules/secure-serverless-harness
+    version: 0.10.0
+    actuationTool:
+      flavor: Terraform
+      version: ">= 0.13"
+    description: {}
+  content:
+    examples:
+      - name: cloud_run_vpc_connector
+        location: examples/cloud_run_vpc_connector
+      - name: secure_cloud_run
+        location: examples/secure_cloud_run
+      - name: secure_cloud_run_standalone
+        location: examples/secure_cloud_run_standalone
+      - name: simple_cloud_run
+        location: examples/simple_cloud_run
+      - name: simple_cloud_run_with_cmek
+        location: examples/simple_cloud_run_with_cmek
+      - name: simple_job_exec
+        location: examples/simple_job_exec
+      - name: v2
+        location: examples/v2
+  interfaces:
+    variables:
+      - name: access_context_manager_policy_id
+        description: The ID of the default Access Context Manager policy. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR_ORGANIZATION_ID --format="value(name)"`.
+        varType: number
+      - name: access_level_members
+        description: The list of additional members who will be in the access level.
+        varType: list(string)
+        required: true
+      - name: artifact_registry_repository_description
+        description: The description of the Artifact Registry Repository to be created.
+        varType: string
+        defaultValue: Secure Cloud Run Artifact Registry Repository
+      - name: artifact_registry_repository_format
+        description: The format of the Artifact Registry Repository to be created.
+        varType: string
+        defaultValue: DOCKER
+      - name: artifact_registry_repository_name
+        description: The name of the Artifact Registry Repository to be created.
+        varType: string
+        required: true
+      - name: base_serverless_api
+        description: This variable will enable Cloud Function or Cloud Run specific resources. Cloud Run API will be used for the terraform-google-cloud-run repository while Cloud Function API will be used in the terraform-google-cloud-functions repository. It supports only run.googleapis.com or cloudfunctions.googleapis.com
+        varType: string
+        required: true
+      - name: billing_account
+        description: The ID of the billing account to associate this project with.
+        varType: string
+        required: true
+      - name: create_access_context_manager_access_policy
+        description: Defines if Access Context Manager will be created by Terraform.
+        varType: bool
+        defaultValue: false
+      - name: decrypters
+        description: List of comma-separated owners for each key declared in set_decrypters_for.
+        varType: list(string)
+        defaultValue: []
+      - name: disable_services_on_destroy
+        description: Whether project services will be disabled when the resources are destroyed
+        varType: bool
+        defaultValue: false
+      - name: dns_enable_inbound_forwarding
+        description: Toggle inbound query forwarding for VPC DNS.
+        varType: bool
+        defaultValue: true
+      - name: dns_enable_logging
+        description: Toggle DNS logging for VPC DNS.
+        varType: bool
+        defaultValue: true
+      - name: egress_policies
+        description: |-
+          A list of all [egress policies](https://cloud.google.com/vpc-service-controls/docs/ingress-egress-rules#egress-rules-reference), each list object has a `from` and `to` value that describes egress_from and egress_to.
+
+          Example: `[{ from={ identities=[], identity_type="ID_TYPE" }, to={ resources=[], operations={ "SRV_NAME"={ OP_TYPE=[] }}}}]`
+
+          Valid Values:
+          `ID_TYPE` = `null` or `IDENTITY_TYPE_UNSPECIFIED` (only allow identities from list); `ANY_IDENTITY`; `ANY_USER_ACCOUNT`; `ANY_SERVICE_ACCOUNT`
+          `SRV_NAME` = "`*`" (allow all services) or [Specific Services](https://cloud.google.com/vpc-service-controls/docs/supported-products#supported_products)
+          `OP_TYPE` = [methods](https://cloud.google.com/vpc-service-controls/docs/supported-method-restrictions) or [permissions](https://cloud.google.com/vpc-service-controls/docs/supported-method-restrictions).
+        varType: |-
+          list(object({
+              from = any
+              to   = any
+            }))
+        defaultValue: []
+      - name: encrypters
+        description: List of comma-separated owners for each key declared in set_encrypters_for.
+        varType: list(string)
+        defaultValue: []
+      - name: ingress_policies
+        description: |-
+          A list of all [ingress policies](https://cloud.google.com/vpc-service-controls/docs/ingress-egress-rules#ingress-rules-reference), each list object has a `from` and `to` value that describes ingress_from and ingress_to.
+
+          Example: `[{ from={ sources={ resources=[], access_levels=[] }, identities=[], identity_type="ID_TYPE" }, to={ resources=[], operations={ "SRV_NAME"={ OP_TYPE=[] }}}}]`
+
+          Valid Values:
+          `ID_TYPE` = `null` or `IDENTITY_TYPE_UNSPECIFIED` (only allow identities from list); `ANY_IDENTITY`; `ANY_USER_ACCOUNT`; `ANY_SERVICE_ACCOUNT`
+          `SRV_NAME` = "`*`" (allow all services) or [Specific Services](https://cloud.google.com/vpc-service-controls/docs/supported-products#supported_products)
+          `OP_TYPE` = [methods](https://cloud.google.com/vpc-service-controls/docs/supported-method-restrictions) or [permissions](https://cloud.google.com/vpc-service-controls/docs/supported-method-restrictions).
+        varType: |-
+          list(object({
+              from = any
+              to   = any
+            }))
+        defaultValue: []
+      - name: key_name
+        description: Key name.
+        varType: string
+        required: true
+      - name: key_protection_level
+        description: "The protection level to use when creating a version based on this template. Possible values: [\"SOFTWARE\", \"HSM\"]."
+        varType: string
+        defaultValue: HSM
+      - name: key_rotation_period
+        description: Period of key rotation in seconds. Default value is equivalent to 30 days.
+        varType: string
+        defaultValue: 2592000s
+      - name: keyring_name
+        description: Keyring name.
+        varType: string
+        required: true
+      - name: location
+        description: The location where resources are going to be deployed.
+        varType: string
+        required: true
+      - name: network_project_extra_apis
+        description: The extra APIs to be enabled during network project creation.
+        varType: list(string)
+        defaultValue: []
+      - name: network_project_name
+        description: The name to give the shared vpc project.
+        varType: string
+        defaultValue: ""
+      - name: org_id
+        description: The organization ID.
+        varType: string
+        required: true
+      - name: owners
+        description: List of comma-separated owners for each key declared in set_owners_for.
+        varType: list(string)
+        defaultValue: []
+      - name: parent_folder_id
+        description: The ID of a folder to host the infrastructure created in this module.
+        varType: string
+        defaultValue: ""
+      - name: prevent_destroy
+        description: Set the prevent_destroy lifecycle attribute on keys.
+        varType: bool
+        defaultValue: true
+      - name: private_service_connect_ip
+        description: The internal IP to be used for the private service connect.
+        varType: string
+        required: true
+      - name: region
+        description: The region in which the subnetwork will be created.
+        varType: string
+        required: true
+      - name: security_project_extra_apis
+        description: The extra APIs to be enabled during security project creation.
+        varType: list(string)
+        defaultValue: []
+      - name: security_project_name
+        description: The name to give the security project.
+        varType: string
+        required: true
+      - name: serverless_folder_suffix
+        description: The suffix to be concat in the Serverless folder name fldr-serverless-<SUFFIX>.
+        varType: string
+        defaultValue: ""
+      - name: serverless_project_extra_apis
+        description: The extra APIs to be enabled during serverless projects creation.
+        varType: map(list(string))
+        defaultValue: {}
+      - name: serverless_project_names
+        description: The name to give the Cloud Serverless project.
+        varType: list(string)
+        required: true
+      - name: service_account_project_roles
+        description: Common roles to apply to the Cloud Serverless service account in the serverless project.
+        varType: map(list(string))
+        defaultValue: {}
+      - name: subnet_ip
+        description: The CDIR IP range of the subnetwork.
+        varType: string
+        required: true
+      - name: time_to_wait_vpc_sc_propagation
+        description: The time to wait VPC-SC propagation when applying and destroying.
+        varType: string
+        defaultValue: 180s
+      - name: use_shared_vpc
+        description: Defines if the network created will be a single or shared vpc.
+        varType: bool
+        defaultValue: false
+      - name: vpc_name
+        description: The name of the network.
+        varType: string
+        required: true
+    outputs:
+      - name: access_context_manager_policy_id
+        description: Access Context Manager ID.
+      - name: artifact_registry_key
+        description: Artifact Registry KMS Key.
+      - name: artifact_registry_repository_id
+        description: The Artifact Registry Repository full identifier where the images should be stored.
+      - name: artifact_registry_repository_name
+        description: The Artifact Registry Repository last part of the repository name where the images should be stored.
+      - name: cloud_serverless_service_identity_email
+        description: The Cloud Run Service Identity email.
+      - name: network_project_id
+        description: Project ID of the project created to host the Serverless Network.
+      - name: restricted_access_level_name
+        description: Access level name.
+      - name: restricted_access_level_name_id
+        description: Access level name id.
+      - name: restricted_service_perimeter_name
+        description: Service Perimeter name.
+      - name: security_project_id
+        description: Project ID of the project created for KMS and Artifact Register.
+      - name: security_project_number
+        description: Project number of the project created for KMS and Artifact Register.
+      - name: serverless_folder_id
+        description: The folder created to allocate Serverless infra.
+      - name: serverless_project_ids
+        description: Project ID of the projects created to deploy Serverless application.
+      - name: serverless_project_numbers
+        description: Project number of the projects created to deploy Serverless applications.
+      - name: service_account_email
+        description: The email of the Service Account created to be used by Cloud Serverless.
+      - name: service_subnet
+        description: The sub-network name created in harness.
+      - name: service_vpc
+        description: The network created for Cloud Serverless.
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/owner
+      - level: Project
+        roles:
+          - roles/resourcemanager.folderAdmin
+          - roles/resourcemanager.projectCreator
+          - roles/resourcemanager.projectDeleter
+      - level: Project
+        roles:
+          - roles/accesscontextmanager.policyAdmin
+          - roles/orgpolicy.policyAdmin
+    services:
+      - cloudresourcemanager.googleapis.com
+      - storage-api.googleapis.com
+      - serviceusage.googleapis.com
+      - run.googleapis.com
+      - cloudkms.googleapis.com
+      - iam.googleapis.com
+      - accesscontextmanager.googleapis.com
+      - cloudbilling.googleapis.com

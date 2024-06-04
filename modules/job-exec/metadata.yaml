@@ -1,0 +1,183 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-cloud-run-job-exec
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Cloud Run Job
+    source:
+      repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
+      sourceType: git
+      dir: /modules/job-exec
+    version: 0.10.0
+    actuationTool:
+      flavor: Terraform
+      version: ">= 0.13"
+    description: {}
+  content:
+    examples:
+      - name: cloud_run_vpc_connector
+        location: examples/cloud_run_vpc_connector
+      - name: secure_cloud_run
+        location: examples/secure_cloud_run
+      - name: secure_cloud_run_standalone
+        location: examples/secure_cloud_run_standalone
+      - name: simple_cloud_run
+        location: examples/simple_cloud_run
+      - name: simple_cloud_run_with_cmek
+        location: examples/simple_cloud_run_with_cmek
+      - name: simple_job_exec
+        location: examples/simple_job_exec
+      - name: v2
+        location: examples/v2
+  interfaces:
+    variables:
+      - name: argument
+        description: Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments
+        varType: list(string)
+        defaultValue: []
+      - name: container_command
+        description: Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten
+        varType: list(string)
+        defaultValue: []
+      - name: env_secret_vars
+        description: Environment variables (Secret Manager)
+        varType: |-
+          list(object({
+              name = string
+              value_source = set(object({
+                secret_key_ref = object({
+                  secret  = string
+                  version = optional(string, "latest")
+                })
+              }))
+            }))
+        defaultValue: []
+      - name: env_vars
+        description: Environment variables (cleartext)
+        varType: |-
+          list(object({
+              value = string
+              name  = string
+            }))
+        defaultValue: []
+      - name: exec
+        description: Whether to execute job after creation
+        varType: bool
+        defaultValue: false
+      - name: image
+        description: GCR hosted image URL to deploy
+        varType: string
+        required: true
+      - name: labels
+        description: A set of key/value label pairs to assign to the Cloud Run job.
+        varType: map(string)
+        defaultValue: {}
+      - name: launch_stage
+        description: The launch stage. (see https://cloud.google.com/products#product-launch-stages). Defaults to GA.
+        varType: string
+        defaultValue: ""
+      - name: limits
+        description: Resource limits to the container
+        varType: |-
+          object({
+              cpu    = optional(string)
+              memory = optional(string)
+            })
+      - name: location
+        description: Cloud Run job deployment location
+        varType: string
+        required: true
+      - name: max_retries
+        description: Number of retries allowed per Task, before marking this Task failed.
+        varType: number
+      - name: name
+        description: The name of the Cloud Run job to create
+        varType: string
+        required: true
+      - name: parallelism
+        description: Specifies the maximum desired number of tasks the execution should run at given time. Must be <= taskCount.
+        varType: number
+      - name: project_id
+        description: The project ID to deploy to
+        varType: string
+        required: true
+      - name: service_account_email
+        description: Service Account email needed for the job
+        varType: string
+        defaultValue: ""
+      - name: task_count
+        description: Specifies the desired number of tasks the execution should run.
+        varType: number
+      - name: timeout
+        description: Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers.
+        varType: string
+        defaultValue: 600s
+      - name: volume_mounts
+        description: Volume to mount into the container's filesystem.
+        varType: |-
+          list(object({
+              name       = string
+              mount_path = string
+            }))
+        defaultValue: []
+      - name: volumes
+        description: A list of Volumes to make available to containers.
+        varType: |-
+          list(object({
+              name = string
+              cloud_sql_instance = object({
+                instances = set(string)
+              })
+            }))
+        defaultValue: []
+      - name: vpc_access
+        description: VPC Access configuration to use for this Task.
+        varType: |-
+          list(object({
+              connector = string
+              egress    = string
+            }))
+        defaultValue: []
+    outputs:
+      - name: id
+        description: Cloud Run Job ID
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/owner
+      - level: Project
+        roles:
+          - roles/resourcemanager.folderAdmin
+          - roles/resourcemanager.projectCreator
+          - roles/resourcemanager.projectDeleter
+      - level: Project
+        roles:
+          - roles/accesscontextmanager.policyAdmin
+          - roles/orgpolicy.policyAdmin
+    services:
+      - cloudresourcemanager.googleapis.com
+      - storage-api.googleapis.com
+      - serviceusage.googleapis.com
+      - run.googleapis.com
+      - cloudkms.googleapis.com
+      - iam.googleapis.com
+      - accesscontextmanager.googleapis.com
+      - cloudbilling.googleapis.com
