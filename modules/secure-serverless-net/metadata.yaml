@@ -1,0 +1,133 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-cloud-run-secure-serverless-net
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Secure Serverless Network
+    source:
+      repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
+      sourceType: git
+      dir: /modules/secure-serverless-net
+    version: 0.11.0
+    actuationTool:
+      flavor: Terraform
+      version: ">= 0.13"
+    description: {}
+  content:
+    examples:
+      - name: cloud_run_vpc_connector
+        location: examples/cloud_run_vpc_connector
+      - name: secure_cloud_run
+        location: examples/secure_cloud_run
+      - name: secure_cloud_run_standalone
+        location: examples/secure_cloud_run_standalone
+      - name: simple_cloud_run
+        location: examples/simple_cloud_run
+      - name: simple_cloud_run_with_cmek
+        location: examples/simple_cloud_run_with_cmek
+      - name: simple_job_exec
+        location: examples/simple_job_exec
+      - name: v2
+        location: examples/v2
+  interfaces:
+    variables:
+      - name: connector_name
+        description: The name of the serverless connector which is going to be created.
+        varType: string
+        required: true
+      - name: connector_on_host_project
+        description: Connector is going to be created on the host project if true. When false, connector is going to be created on service project. For more information, access [documentation](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc).
+        varType: bool
+        defaultValue: false
+      - name: create_subnet
+        description: The subnet will be created with the subnet_name variable if true. When false, it will use the subnet_name for the subnet.
+        varType: bool
+        defaultValue: true
+      - name: enable_load_balancer_fw
+        description: Create the firewall rule for Cloud Run to enable the VPC Connector to access the Load Balancer instance using TCP port 80. Default is true. If using Cloud Function set to false.
+        varType: bool
+        defaultValue: true
+      - name: flow_sampling
+        description: Sampling rate of VPC flow logs. The value must be in [0,1]. Where 1.0 means all logs, 0.5 mean half of the logs and 0.0 means no logs are reported.
+        varType: number
+        defaultValue: 1
+      - name: ip_cidr_range
+        description: The range of internal addresses that are owned by the subnetwork and which is going to be used by VPC Connector. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported.
+        varType: string
+        required: true
+      - name: location
+        description: The location where resources are going to be deployed.
+        varType: string
+        required: true
+      - name: resource_names_suffix
+        description: A suffix to concat in the end of the resources names.
+        varType: string
+      - name: serverless_project_id
+        description: The project where Secure Serverless is going to be deployed.
+        varType: string
+        required: true
+      - name: serverless_service_identity_email
+        description: The Service Identity email for the serverless resource (Cloud Run or Cloud Function).
+        varType: string
+        required: true
+      - name: shared_vpc_name
+        description: Shared VPC name which is going to be used to create Serverless Connector.
+        varType: string
+        required: true
+      - name: subnet_name
+        description: Subnet name to be re-used to create Serverless Connector.
+        varType: string
+        required: true
+      - name: vpc_project_id
+        description: The project where shared vpc is.
+        varType: string
+        required: true
+    outputs:
+      - name: cloud_services_sa
+        description: Google APIs service agent.
+      - name: connector_id
+        description: VPC serverless connector ID.
+      - name: gca_vpcaccess_sa
+        description: Google APIs Service Agent for VPC Access.
+      - name: subnet_name
+        description: The name of the sub-network used to create VPC Connector.
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/owner
+      - level: Project
+        roles:
+          - roles/resourcemanager.folderAdmin
+          - roles/resourcemanager.projectCreator
+          - roles/resourcemanager.projectDeleter
+      - level: Project
+        roles:
+          - roles/accesscontextmanager.policyAdmin
+          - roles/orgpolicy.policyAdmin
+    services:
+      - cloudresourcemanager.googleapis.com
+      - storage-api.googleapis.com
+      - serviceusage.googleapis.com
+      - run.googleapis.com
+      - cloudkms.googleapis.com
+      - iam.googleapis.com
+      - accesscontextmanager.googleapis.com
+      - cloudbilling.googleapis.com
