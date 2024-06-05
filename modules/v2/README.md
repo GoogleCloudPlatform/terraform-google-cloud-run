@@ -22,11 +22,11 @@ module "cloud_run_core" {
   project_id      = var.project_id
   service_name    = "hello-world"
   location        = "us-central1"
-  containers      = {
-    hello-world = {
+  containers      = [
+    {
       container_image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-  }
+  ]
 }
 ```
 
