@@ -248,7 +248,7 @@ variable "containers" {
       mount_path = string
     })), [])
     ports = optional(object({
-      name           = optional(string)
+      name           = optional(string, "http1")
       container_port = optional(number)
       }), {
       name           = "http1"
