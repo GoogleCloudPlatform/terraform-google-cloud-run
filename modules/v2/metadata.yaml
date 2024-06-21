@@ -311,7 +311,7 @@ spec:
             source: https://github.com/terraform-google-modules/terraform-google-network//modules/vpc-serverless-connector-beta
             version: v9.1.0
           spec:
-            output_expr: connector_ids[0]
+            output_expr: one(connector_ids)
             input_path: connector
     outputs:
       - name: creator
