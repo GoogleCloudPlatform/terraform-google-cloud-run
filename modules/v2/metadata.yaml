@@ -138,6 +138,31 @@ spec:
               }), null)
             }))
         required: true
+        connections:
+        - source:
+            source: https://github.com/q2w/terraform-google-memorystore
+            version: v1.0.0
+          spec:
+            output_expr: env_vars
+            input_path: env_vars
+        - source:
+            source: https://github.com/q2w/terraform-google-sql-db//modules/postgresql
+            version: v1.0.0
+          spec:
+            output_expr: env_vars
+            input_path: env_vars
+        - source:
+            source: https://github.com/q2w/terraform-google-service-accounts//modules/simple-sa
+            version: v1.0.0
+          spec:
+            output_expr: env_vars
+            input_path: env_vars
+        - source:
+            source: https://github.com/q2w/terraform-google-cloud-run///modules/v2
+            version: v1.0.0
+          spec:
+            output_expr: { "BACKEND_SERVICE_ENDPOINT": service_uri }
+            input_path: env_vars
       - name: custom_audiences
         description: One or more custom audiences that you want this service to support. Specify each custom audience as the full URL in a string. Refer https://cloud.google.com/run/docs/configuring/custom-audiences
         varType: list(string)
@@ -180,6 +205,12 @@ spec:
       - name: service_account
         description: Email address of the IAM service account associated with the revision of the service
         varType: string
+        connections:
+        - source:
+            source: https://github.com/q2w/terraform-google-service-accounts//modules/simple-sa
+            version: v1.0.0
+          spec:
+            output_expr: email
       - name: service_annotations
         description: Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. Refer https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#annotations
         varType: map(string)
@@ -275,6 +306,13 @@ spec:
               }))
             })
         defaultValue: {}
+        connections:
+        - source:
+            source: https://github.com/terraform-google-modules/terraform-google-network//modules/vpc-serverless-connector-beta
+            version: v9.1.0
+          spec:
+            output_expr: connector_ids[0]
+            input_path: connector
     outputs:
       - name: creator
         description: Email address of the authenticated creator.
