@@ -209,7 +209,7 @@ variable "volumes" {
       }))
     }))
     cloud_sql_instance = optional(object({
-      instances = optional(string)
+      instances = optional(list(string))
     }))
     empty_dir = optional(object({
       medium     = optional(string)
