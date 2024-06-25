@@ -199,7 +199,7 @@ variable "execution_environment" {
 variable "volumes" {
   type = list(object({
     name = string
-    secret = object({
+    secret = optional(object({
       secret       = string
       default_mode = optional(string)
       items = optional(object({
@@ -207,7 +207,7 @@ variable "volumes" {
         version = optional(string)
         mode    = optional(string)
       }))
-    })
+    }))
     cloud_sql_instance = optional(object({
       instances = optional(string)
     }))
