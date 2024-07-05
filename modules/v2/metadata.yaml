@@ -293,6 +293,13 @@ spec:
               }))
             }))
         defaultValue: []
+        connections:
+        - source:
+            source: https://github.com/q2w/terraform-google-sql-db//modules/postgresql
+            version: latest
+          spec:
+            output_expr: instance_connection_name
+            input_path: cloud_sql_instance.instances
       - name: vpc_access
         description: VPC Access configuration to use for this Task. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc
         varType: |-
