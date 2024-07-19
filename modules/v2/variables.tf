@@ -199,7 +199,7 @@ variable "execution_environment" {
 variable "volumes" {
   type = list(object({
     name = string
-    secret = object({
+    secret = optional(object({
       secret       = string
       default_mode = optional(string)
       items = optional(object({
@@ -207,9 +207,9 @@ variable "volumes" {
         version = optional(string)
         mode    = optional(string)
       }))
-    })
+    }))
     cloud_sql_instance = optional(object({
-      instances = optional(string)
+      instances = optional(list(string))
     }))
     empty_dir = optional(object({
       medium     = optional(string)
@@ -248,12 +248,9 @@ variable "containers" {
       mount_path = string
     })), [])
     ports = optional(object({
-      name           = optional(string)
-      container_port = optional(number)
-      }), {
-      name           = "http1"
-      container_port = 8080
-    })
+      name           = optional(string, "http1")
+      container_port = optional(number, 8080)
+    }))
     resources = optional(object({
       limits = optional(object({
         cpu    = optional(string)
@@ -273,7 +270,7 @@ variable "containers" {
         http_headers = optional(list(object({
           name  = string
           value = string
-        })), null)
+        })), [])
       }), null)
       tcp_socket = optional(object({
         port = optional(number)
