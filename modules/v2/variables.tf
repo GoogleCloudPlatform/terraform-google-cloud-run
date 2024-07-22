@@ -308,3 +308,15 @@ variable "members" {
   description = "Users/SAs to be given invoker access to the service"
   default     = []
 }
+
+variable "create_service_account" {
+  type        = bool
+  description = "Create a new service account for cloud run service"
+  default     = true
+}
+
+variable "service_account_project_roles" {
+  type        = list(string)
+  description = "Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account"
+  default     = []
+}

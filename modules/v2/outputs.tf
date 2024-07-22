@@ -73,3 +73,8 @@ output "traffic_statuses" {
   value       = google_cloud_run_v2_service.main.traffic_statuses
   description = "Detailed status information for corresponding traffic targets."
 }
+
+output "service_account_id" {
+  description = "Service account id and email"
+  value       = local.service_account_id
+}

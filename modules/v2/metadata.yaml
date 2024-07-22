@@ -135,6 +135,10 @@ spec:
               }), null)
             }))
         required: true
+      - name: create_service_account
+        description: Create a new service account for cloud run service
+        varType: bool
+        defaultValue: true
       - name: custom_audiences
         description: One or more custom audiences that you want this service to support. Specify each custom audience as the full URL in a string. Refer https://cloud.google.com/run/docs/configuring/custom-audiences
         varType: list(string)
@@ -177,6 +181,10 @@ spec:
       - name: service_account
         description: Email address of the IAM service account associated with the revision of the service
         varType: string
+      - name: service_account_project_roles
+        description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account
+        varType: list(string)
+        defaultValue: []
       - name: service_annotations
         description: Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. Refer https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#annotations
         varType: map(string)
@@ -289,6 +297,8 @@ spec:
         description: The generation of this Service currently serving traffic.
       - name: project_id
         description: Google Cloud project in which the service was created
+      - name: service_account_id
+        description: Service account id and email
       - name: service_id
         description: Unique Identifier for the created service with format projects/{{project}}/locations/{{location}}/services/{{name}}
       - name: service_name
