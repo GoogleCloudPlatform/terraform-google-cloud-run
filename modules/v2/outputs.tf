@@ -76,5 +76,5 @@ output "traffic_statuses" {
 
 output "service_account_id" {
   description = "Service account id and email"
-  value       = local.service_account_id
+  value       = local.service_account_output
 }

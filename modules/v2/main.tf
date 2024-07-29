@@ -15,12 +15,19 @@
  */
 
 locals {
-  service_account = coalesce(var.service_account, (var.create_service_account ? google_service_account.sa[0].email : null))
-
+  service_account = (
+    var.service_account != null
+    ? var.service_account
+    : (
+      var.create_service_account
+      ? google_service_account.sa[0].email
+      : null
+    )
+  )
   create_service_account = var.service_account == null && var.create_service_account
 
-  service_account_prefix = substr("${var.service_name}-${var.location}", 0, 25)
-  service_account_id = local.create_service_account ? {
+  service_account_prefix = substr("${var.service_name}-${var.location}", 0, 27)
+  service_account_output = local.create_service_account ? {
     id    = google_service_account.sa[0].account_id,
     email = google_service_account.sa[0].email
   } : {}
@@ -29,14 +36,8 @@ locals {
 resource "google_service_account" "sa" {
   count        = local.create_service_account ? 1 : 0
   project      = var.project_id
-  account_id   = "${local.service_account_prefix}-${random_string.service_account_suffix.result}"
+  account_id   = "${local.service_account_prefix}-sa"
   display_name = "Service account for ${var.service_name} in ${var.location}"
-}
-
-resource "random_string" "service_account_suffix" {
-  length  = 4
-  lower   = true
-  numeric = true
 }
 
 resource "google_project_iam_member" "roles" {
