@@ -69,9 +69,12 @@ resource "google_cloud_run_v2_service" "main" {
         working_dir = containers.value.working_dir
         depends_on  = containers.value.depends_on_container
 
-        ports {
-          name           = containers.value.ports["name"]
-          container_port = containers.value.ports["container_port"]
+        dynamic "ports" {
+          for_each = containers.value.ports != null ? [containers.value.ports] : []
+          content {
+            name           = ports.value["name"]
+            container_port = ports.value["container_port"]
+          }
         }
 
         resources {
