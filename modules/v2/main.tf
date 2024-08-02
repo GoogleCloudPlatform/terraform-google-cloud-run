@@ -14,6 +14,39 @@
  * limitations under the License.
  */
 
+locals {
+  service_account = (
+    var.service_account != null
+    ? var.service_account
+    : (
+      var.create_service_account
+      ? google_service_account.sa[0].email
+      : null
+    )
+  )
+  create_service_account = var.service_account == null && var.create_service_account
+
+  service_account_prefix = substr("${var.service_name}-${var.location}", 0, 27)
+  service_account_output = local.create_service_account ? {
+    id    = google_service_account.sa[0].account_id,
+    email = google_service_account.sa[0].email
+  } : {}
+}
+
+resource "google_service_account" "sa" {
+  count        = local.create_service_account ? 1 : 0
+  project      = var.project_id
+  account_id   = "${local.service_account_prefix}-sa"
+  display_name = "Service account for ${var.service_name} in ${var.location}"
+}
+
+resource "google_project_iam_member" "roles" {
+  for_each = toset(var.service_account_project_roles)
+  project  = var.project_id
+  role     = each.value
+  member   = "serviceAccount:${local.service_account}"
+}
+
 resource "google_cloud_run_v2_service" "main" {
   provider = google-beta
 
@@ -28,7 +61,7 @@ resource "google_cloud_run_v2_service" "main" {
     labels          = var.template_labels
     annotations     = var.template_annotations
     timeout         = var.timeout
-    service_account = var.service_account
+    service_account = local.service_account
 
     execution_environment            = var.execution_environment
     encryption_key                   = var.encryption_key
