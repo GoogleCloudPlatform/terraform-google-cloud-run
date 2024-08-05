@@ -16,7 +16,7 @@
 
 module "job" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/job-exec"
-  version = "~> 0.11"
+  version = "~> 0.12"
 
   project_id = var.project_id
   name       = "simple-job"
