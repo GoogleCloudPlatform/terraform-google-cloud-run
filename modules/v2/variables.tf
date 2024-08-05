@@ -248,12 +248,9 @@ variable "containers" {
       mount_path = string
     })), [])
     ports = optional(object({
-      name           = optional(string)
-      container_port = optional(number)
-      }), {
-      name           = "http1"
-      container_port = 8080
-    })
+      name           = optional(string, "http1")
+      container_port = optional(number, 8080)
+    }))
     resources = optional(object({
       limits = optional(object({
         cpu    = optional(string)
@@ -273,7 +270,7 @@ variable "containers" {
         http_headers = optional(list(object({
           name  = string
           value = string
-        })), null)
+        })), [])
       }), null)
       tcp_socket = optional(object({
         port = optional(number)
@@ -309,5 +306,17 @@ variable "containers" {
 variable "members" {
   type        = list(string)
   description = "Users/SAs to be given invoker access to the service"
+  default     = []
+}
+
+variable "create_service_account" {
+  type        = bool
+  description = "Create a new service account for cloud run service"
+  default     = true
+}
+
+variable "service_account_project_roles" {
+  type        = list(string)
+  description = "Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account"
   default     = []
 }
