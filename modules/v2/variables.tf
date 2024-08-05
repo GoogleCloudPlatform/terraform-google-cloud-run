@@ -291,7 +291,10 @@ variable "containers" {
         http_headers = optional(list(object({
           name  = string
           value = string
-        })), null)
+        })), [])
+      }), null)
+      tcp_socket = optional(object({
+        port = optional(number)
       }), null)
       grpc = optional(object({
         port    = optional(number)
