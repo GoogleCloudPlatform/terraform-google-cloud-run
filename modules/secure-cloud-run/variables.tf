@@ -205,6 +205,12 @@ variable "cloud_armor_policies_name" {
   default     = null
 }
 
+variable "timeout_seconds" {
+  type        = number
+  description = "Timeout for each request"
+  default     = 120
+}
+
 variable "verified_domain_name" {
   type        = list(string)
   description = "List of Custom Domain Name"
