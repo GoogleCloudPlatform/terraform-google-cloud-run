@@ -7,6 +7,23 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.13.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.12.0...v0.13.0) (2024-08-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* Create service account as part of cloud run v2 ([#219](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/219))
+* Update variable field type and defaults ([#216](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/216))
+
+### Features
+
+* Create service account as part of cloud run v2 ([#219](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/219)) ([f64526a](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/f64526ad32d27113a8f74b686fd4ffcd54ff618b))
+
+
+### Bug Fixes
+
+* Update variable field type and defaults ([#216](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/216)) ([8846d89](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/8846d892dc094ea77d6eb6b53d064f0fcd63b0cc))
+
 ## [0.12.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.11.0...v0.12.0) (2024-06-05)
 
 
