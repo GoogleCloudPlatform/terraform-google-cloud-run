@@ -143,6 +143,7 @@ module "cloud_run_core" {
   vpc_egress_value            = var.vpc_egress_value
   min_scale_instances         = var.min_scale_instances
   max_scale_instances         = var.max_scale_instances
+  timeout_seconds             = var.timeout_seconds
   volumes                     = var.volumes
   ssl_certificates            = var.ssl_certificates
 
