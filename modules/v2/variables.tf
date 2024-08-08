@@ -250,7 +250,7 @@ variable "containers" {
     ports = optional(object({
       name           = optional(string, "http1")
       container_port = optional(number, 8080)
-    }),{})
+    }), {})
     resources = optional(object({
       limits = optional(object({
         cpu    = optional(string)
