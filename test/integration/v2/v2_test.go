@@ -24,9 +24,11 @@ import (
 )
 
 func Testv2(t *testing.T) {
-	run_v2 := tft.NewTFBlueprintTest(t)
+	runV2 := tft.NewTFBlueprintTest(t)
 
-	run_v2.DefineVerify(func(assert *assert.Assertions) {
+	runV2.DefineVerify(func(assert *assert.Assertions) {
+		runV2.DefaultVerify(assert)
+
 		projectID := run_v2.GetTFSetupStringOutput("project_id")
 		serviceName := run_v2.GetTFSetupStringOutput("service_name")
 		serviceLocation := run_v2.GetTFSetupStringOutput("service_location")
@@ -36,5 +38,5 @@ func Testv2(t *testing.T) {
 		// T01: Verify if the Cloud Run Service deployed is in ACTIVE state
 		assert.Equal("ACTIVE", run_cmd.Get("state").String(), fmt.Sprintf("Should be ACTIVE. Cloud Run service is not successfully deployed."))
 	})
-	run_v2.Test()
+	runV2.Test()
 }
