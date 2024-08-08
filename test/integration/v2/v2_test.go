@@ -20,21 +20,25 @@ import (
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 	"github.com/stretchr/testify/assert"
 )
 
-func Testv2(t *testing.T) {
-	run_v2 := tft.NewTFBlueprintTest(t)
+func TestV2(t *testing.T) {
+	runV2 := tft.NewTFBlueprintTest(t)
 
-	run_v2.DefineVerify(func(assert *assert.Assertions) {
-		projectID := run_v2.GetTFSetupStringOutput("project_id")
-		serviceName := run_v2.GetTFSetupStringOutput("service_name")
-		serviceLocation := run_v2.GetTFSetupStringOutput("service_location")
+	runV2.DefineVerify(func(assert *assert.Assertions) {
+		runV2.DefaultVerify(assert)
+
+		projectID := runV2.GetTFSetupStringOutput("project_id")
+		serviceName := runV2.GetStringOutput("service_name")
+		serviceLocation := runV2.GetStringOutput("service_location")
 
 		run_cmd := gcloud.Run(t, "run services describe", gcloud.WithCommonArgs([]string{serviceName, "--project", projectID, "--region", serviceLocation, "--format", "json"}))
 
-		// T01: Verify if the Cloud Run Service deployed is in ACTIVE state
-		assert.Equal("ACTIVE", run_cmd.Get("state").String(), fmt.Sprintf("Should be ACTIVE. Cloud Run service is not successfully deployed."))
+		// Verify the Cloud Run Service deployed is in ready state.
+		readyCondition := utils.GetFirstMatchResult(t, run_cmd.Get("status").Get("conditions").Array(), "type", "Ready")
+		assert.Equal("True", readyCondition.Get("status").String(), fmt.Sprintf("Should be in ready status"))
 	})
-	run_v2.Test()
+	runV2.Test()
 }

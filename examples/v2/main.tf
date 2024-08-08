@@ -14,14 +14,6 @@
  * limitations under the License.
  */
 
-module "service_account" {
-  source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 4.2"
-  project_id = var.project_id
-  prefix     = "sa-cloud-run"
-  names      = ["simple"]
-}
-
 module "cloud_run_v2" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/v2"
   version = "~> 0.12"
@@ -35,5 +27,4 @@ module "cloud_run_v2" {
       container_name  = "hello-world"
     }
   ]
-  service_account = module.service_account.email
 }
