@@ -135,6 +135,31 @@ spec:
               }), null)
             }))
         required: true
+        connections:
+        - source:
+            source: github.com/terraform-google-modules/terraform-google-memorystore
+            version: v10.0.0
+          spec:
+            outputExpr: env_vars
+            inputPath: env_vars
+        - source:
+            source: github.com/terraform-google-modules/terraform-google-sql-db//modules/postgresql
+            version: v21.0.0
+          spec:
+            outputExpr: env_vars
+            inputPath: env_vars
+        - source:
+            source: github.com/terraform-google-modules/terraform-google-service-accounts//modules/simple-sa
+            version: v4.2.3
+          spec:
+            outputExpr: env_vars
+            inputPath: env_vars
+        - source:
+            source: github.com/GoogleCloudPlatform/terraform-google-cloud-run///modules/v2
+            version: v0.12.0
+          spec:
+            outputExpr: "{ \"SERVICE_ENDPOINT\": service_uri }"
+            inputPath: env_vars
       - name: create_service_account
         description: Create a new service account for cloud run service
         varType: bool
@@ -181,6 +206,12 @@ spec:
       - name: service_account
         description: Email address of the IAM service account associated with the revision of the service
         varType: string
+        connections:
+        - source:
+            source: github.com/terraform-google-modules/terraform-google-service-accounts//modules/simple-sa
+            version: v4.2.3
+          spec:
+            outputExpr: email
       - name: service_account_project_roles
         description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account
         varType: list(string)
@@ -267,6 +298,13 @@ spec:
               }))
             }))
         defaultValue: []
+        connections:
+        - source:
+            source: github.com/q2w/terraform-google-sql-db//modules/postgresql
+            version: v21.0.0
+          spec:
+            outputExpr: instance_connection_name
+            inputPath: cloud_sql_instance.instances
       - name: vpc_access
         description: VPC Access configuration to use for this Task. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc
         varType: |-
@@ -280,6 +318,13 @@ spec:
               }))
             })
         defaultValue: {}
+        connections:
+        - source:
+            source: github.com/terraform-google-modules/terraform-google-network//modules/vpc-serverless-connector-beta
+            version: v9.1.0
+          spec:
+            outputExpr: one(connector_ids)
+            inputPath: connector
     outputs:
       - name: creator
         description: Email address of the authenticated creator.

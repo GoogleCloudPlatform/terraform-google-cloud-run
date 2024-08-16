@@ -126,7 +126,7 @@ variable "template_scaling" {
     max_instance_count = optional(number)
   })
   description = "Scaling settings for this Revision."
-  default     = {}
+  default     = null
 }
 
 variable "vpc_access" {
@@ -140,7 +140,7 @@ variable "vpc_access" {
     }))
   })
   description = "VPC Access configuration to use for this Task. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc"
-  default     = {}
+  default     = null
 }
 
 variable "template_labels" {
@@ -250,7 +250,7 @@ variable "containers" {
     ports = optional(object({
       name           = optional(string, "http1")
       container_port = optional(number, 8080)
-    }))
+    }), {})
     resources = optional(object({
       limits = optional(object({
         cpu    = optional(string)
