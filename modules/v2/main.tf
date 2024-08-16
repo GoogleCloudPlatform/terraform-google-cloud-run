@@ -259,8 +259,8 @@ resource "google_cloud_run_v2_service" "main" {
         dynamic "gcs" {
           for_each = volumes.value.gcs[*]
           content {
-            bucket    = gcs.value["medium"]
-            read_only = gcs.value["size_limit"]
+            bucket    = gcs.value["bucket"]
+            read_only = gcs.value["read_only"]
           }
         }
         dynamic "nfs" {
