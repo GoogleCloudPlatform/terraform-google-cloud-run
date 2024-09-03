@@ -28,8 +28,9 @@ locals {
 
   service_account_prefix = substr("${var.service_name}-${var.location}", 0, 27)
   service_account_output = local.create_service_account ? {
-    id    = google_service_account.sa[0].account_id,
-    email = google_service_account.sa[0].email
+    id     = google_service_account.sa[0].account_id,
+    email  = google_service_account.sa[0].email,
+    member = google_service_account.sa[0].member
   } : {}
 }
 
@@ -259,8 +260,8 @@ resource "google_cloud_run_v2_service" "main" {
         dynamic "gcs" {
           for_each = volumes.value.gcs[*]
           content {
-            bucket    = gcs.value["medium"]
-            read_only = gcs.value["size_limit"]
+            bucket    = gcs.value["bucket"]
+            read_only = gcs.value["read_only"]
           }
         }
         dynamic "nfs" {
