@@ -1,0 +1,76 @@
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-cloud-run-job-exec-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Cloud Run Job
+    source:
+      repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
+      sourceType: git
+      dir: /modules/job-exec
+  ui:
+    input:
+      variables:
+        argument:
+          name: argument
+          title: Argument
+        container_command:
+          name: container_command
+          title: Container Command
+        env_secret_vars:
+          name: env_secret_vars
+          title: Env Secret Vars
+        env_vars:
+          name: env_vars
+          title: Env Vars
+        exec:
+          name: exec
+          title: Exec
+        image:
+          name: image
+          title: Image
+        labels:
+          name: labels
+          title: Labels
+        launch_stage:
+          name: launch_stage
+          title: Launch Stage
+        limits:
+          name: limits
+          title: Limits
+        location:
+          name: location
+          title: Location
+        max_retries:
+          name: max_retries
+          title: Max Retries
+        name:
+          name: name
+          title: Name
+        parallelism:
+          name: parallelism
+          title: Parallelism
+        project_id:
+          name: project_id
+          title: Project Id
+        service_account_email:
+          name: service_account_email
+          title: Service Account Email
+        task_count:
+          name: task_count
+          title: Task Count
+        timeout:
+          name: timeout
+          title: Timeout
+        volume_mounts:
+          name: volume_mounts
+          title: Volume Mounts
+        volumes:
+          name: volumes
+          title: Volumes
+        vpc_access:
+          name: vpc_access
+          title: Vpc Access
