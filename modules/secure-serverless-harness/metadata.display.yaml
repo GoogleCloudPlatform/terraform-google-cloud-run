@@ -1,0 +1,130 @@
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-cloud-run-secure-serverless-harness-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Secure Serverless Harness
+    source:
+      repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
+      sourceType: git
+      dir: /modules/secure-serverless-harness
+  ui:
+    input:
+      variables:
+        access_context_manager_policy_id:
+          name: access_context_manager_policy_id
+          title: Access Context Manager Policy Id
+        access_level_members:
+          name: access_level_members
+          title: Access Level Members
+        artifact_registry_repository_description:
+          name: artifact_registry_repository_description
+          title: Artifact Registry Repository Description
+        artifact_registry_repository_format:
+          name: artifact_registry_repository_format
+          title: Artifact Registry Repository Format
+        artifact_registry_repository_name:
+          name: artifact_registry_repository_name
+          title: Artifact Registry Repository Name
+        base_serverless_api:
+          name: base_serverless_api
+          title: Base Serverless Api
+        billing_account:
+          name: billing_account
+          title: Billing Account
+        create_access_context_manager_access_policy:
+          name: create_access_context_manager_access_policy
+          title: Create Access Context Manager Access Policy
+        decrypters:
+          name: decrypters
+          title: Decrypters
+        disable_services_on_destroy:
+          name: disable_services_on_destroy
+          title: Disable Services On Destroy
+        dns_enable_inbound_forwarding:
+          name: dns_enable_inbound_forwarding
+          title: Dns Enable Inbound Forwarding
+        dns_enable_logging:
+          name: dns_enable_logging
+          title: Dns Enable Logging
+        egress_policies:
+          name: egress_policies
+          title: Egress Policies
+        encrypters:
+          name: encrypters
+          title: Encrypters
+        ingress_policies:
+          name: ingress_policies
+          title: Ingress Policies
+        key_name:
+          name: key_name
+          title: Key Name
+        key_protection_level:
+          name: key_protection_level
+          title: Key Protection Level
+        key_rotation_period:
+          name: key_rotation_period
+          title: Key Rotation Period
+        keyring_name:
+          name: keyring_name
+          title: Keyring Name
+        location:
+          name: location
+          title: Location
+        network_project_extra_apis:
+          name: network_project_extra_apis
+          title: Network Project Extra Apis
+        network_project_name:
+          name: network_project_name
+          title: Network Project Name
+        org_id:
+          name: org_id
+          title: Org Id
+        owners:
+          name: owners
+          title: Owners
+        parent_folder_id:
+          name: parent_folder_id
+          title: Parent Folder Id
+        prevent_destroy:
+          name: prevent_destroy
+          title: Prevent Destroy
+        private_service_connect_ip:
+          name: private_service_connect_ip
+          title: Private Service Connect Ip
+        region:
+          name: region
+          title: Region
+        security_project_extra_apis:
+          name: security_project_extra_apis
+          title: Security Project Extra Apis
+        security_project_name:
+          name: security_project_name
+          title: Security Project Name
+        serverless_folder_suffix:
+          name: serverless_folder_suffix
+          title: Serverless Folder Suffix
+        serverless_project_extra_apis:
+          name: serverless_project_extra_apis
+          title: Serverless Project Extra Apis
+        serverless_project_names:
+          name: serverless_project_names
+          title: Serverless Project Names
+        service_account_project_roles:
+          name: service_account_project_roles
+          title: Service Account Project Roles
+        subnet_ip:
+          name: subnet_ip
+          title: Subnet Ip
+        time_to_wait_vpc_sc_propagation:
+          name: time_to_wait_vpc_sc_propagation
+          title: Time To Wait Vpc Sc Propagation
+        use_shared_vpc:
+          name: use_shared_vpc
+          title: Use Shared Vpc
+        vpc_name:
+          name: vpc_name
+          title: Vpc Name
