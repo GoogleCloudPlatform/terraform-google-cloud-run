@@ -1,0 +1,141 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-cloud-run-secure-cloud-run-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Secure Cloud Run
+    source:
+      repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
+      sourceType: git
+      dir: /modules/secure-cloud-run
+  ui:
+    input:
+      variables:
+        artifact_registry_repository_location:
+          name: artifact_registry_repository_location
+          title: Artifact Registry Repository Location
+        artifact_registry_repository_name:
+          name: artifact_registry_repository_name
+          title: Artifact Registry Repository Name
+        artifact_registry_repository_project_id:
+          name: artifact_registry_repository_project_id
+          title: Artifact Registry Repository Project Id
+        cloud_armor_policies_name:
+          name: cloud_armor_policies_name
+          title: Cloud Armor Policies Name
+        cloud_run_sa:
+          name: cloud_run_sa
+          title: Cloud Run Sa
+        connector_name:
+          name: connector_name
+          title: Connector Name
+        create_cloud_armor_policies:
+          name: create_cloud_armor_policies
+          title: Create Cloud Armor Policies
+        create_subnet:
+          name: create_subnet
+          title: Create Subnet
+        env_vars:
+          name: env_vars
+          title: Env Vars
+        folder_id:
+          name: folder_id
+          title: Folder Id
+        grant_artifact_register_reader:
+          name: grant_artifact_register_reader
+          title: Grant Artifact Register Reader
+        groups:
+          name: groups
+          title: Groups
+        image:
+          name: image
+          title: Image
+        ip_cidr_range:
+          name: ip_cidr_range
+          title: Ip Cidr Range
+        key_name:
+          name: key_name
+          title: Key Name
+        key_protection_level:
+          name: key_protection_level
+          title: Key Protection Level
+        key_rotation_period:
+          name: key_rotation_period
+          title: Key Rotation Period
+        keyring_name:
+          name: keyring_name
+          title: Keyring Name
+        kms_project_id:
+          name: kms_project_id
+          title: Kms Project Id
+        location:
+          name: location
+          title: Location
+        max_scale_instances:
+          name: max_scale_instances
+          title: Max Scale Instances
+        members:
+          name: members
+          title: Members
+        min_scale_instances:
+          name: min_scale_instances
+          title: Min Scale Instances
+        organization_id:
+          name: organization_id
+          title: Organization Id
+        policy_for:
+          name: policy_for
+          title: Policy For
+        prevent_destroy:
+          name: prevent_destroy
+          title: Prevent Destroy
+        region:
+          name: region
+          title: Region
+        resource_names_suffix:
+          name: resource_names_suffix
+          title: Resource Names Suffix
+        serverless_project_id:
+          name: serverless_project_id
+          title: Serverless Project Id
+        service_name:
+          name: service_name
+          title: Service Name
+        shared_vpc_name:
+          name: shared_vpc_name
+          title: Shared Vpc Name
+        ssl_certificates:
+          name: ssl_certificates
+          title: Ssl Certificates
+        subnet_name:
+          name: subnet_name
+          title: Subnet Name
+        verified_domain_name:
+          name: verified_domain_name
+          title: Verified Domain Name
+        volumes:
+          name: volumes
+          title: Volumes
+        vpc_egress_value:
+          name: vpc_egress_value
+          title: Vpc Egress Value
+        vpc_project_id:
+          name: vpc_project_id
+          title: Vpc Project Id

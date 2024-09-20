@@ -1,0 +1,122 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-cloud-run-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Terraform Cloud Run Module
+    source:
+      repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
+      sourceType: git
+  ui:
+    input:
+      variables:
+        argument:
+          name: argument
+          title: Argument
+        certificate_mode:
+          name: certificate_mode
+          title: Certificate Mode
+        container_command:
+          name: container_command
+          title: Container Command
+        container_concurrency:
+          name: container_concurrency
+          title: Container Concurrency
+        domain_map_annotations:
+          name: domain_map_annotations
+          title: Domain Map Annotations
+        domain_map_labels:
+          name: domain_map_labels
+          title: Domain Map Labels
+        encryption_key:
+          name: encryption_key
+          title: Encryption Key
+        env_secret_vars:
+          name: env_secret_vars
+          title: Env Secret Vars
+        env_vars:
+          name: env_vars
+          title: Env Vars
+        force_override:
+          name: force_override
+          title: Force Override
+        generate_revision_name:
+          name: generate_revision_name
+          title: Generate Revision Name
+        image:
+          name: image
+          title: Image
+        limits:
+          name: limits
+          title: Limits
+        liveness_probe:
+          name: liveness_probe
+          title: Liveness Probe
+        location:
+          name: location
+          title: Location
+        members:
+          name: members
+          title: Members
+        ports:
+          name: ports
+          title: Ports
+        project_id:
+          name: project_id
+          title: Project Id
+        requests:
+          name: requests
+          title: Requests
+        service_account_email:
+          name: service_account_email
+          title: Service Account Email
+        service_annotations:
+          name: service_annotations
+          title: Service Annotations
+        service_labels:
+          name: service_labels
+          title: Service Labels
+        service_name:
+          name: service_name
+          title: Service Name
+        startup_probe:
+          name: startup_probe
+          title: Startup Probe
+        template_annotations:
+          name: template_annotations
+          title: Template Annotations
+        template_labels:
+          name: template_labels
+          title: Template Labels
+        timeout_seconds:
+          name: timeout_seconds
+          title: Timeout Seconds
+        traffic_split:
+          name: traffic_split
+          title: Traffic Split
+        verified_domain_name:
+          name: verified_domain_name
+          title: Verified Domain Name
+        volume_mounts:
+          name: volume_mounts
+          title: Volume Mounts
+        volumes:
+          name: volumes
+          title: Volumes
