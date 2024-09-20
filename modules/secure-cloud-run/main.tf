@@ -16,7 +16,7 @@
 
 module "serverless_project_apis" {
   source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 15.0"
+  version = "~> 16.0"
 
   project_id                  = var.serverless_project_id
   disable_services_on_destroy = false
@@ -32,7 +32,7 @@ module "serverless_project_apis" {
 
 module "vpc_project_apis" {
   source  = "terraform-google-modules/project-factory/google//modules/project_services"
-  version = "~> 15.0"
+  version = "~> 16.0"
 
   project_id                  = var.vpc_project_id
   disable_services_on_destroy = false
