@@ -293,6 +293,9 @@ variable "containers" {
           value = string
         })), null)
       }), null)
+      tcp_socket = optional(object({
+        port = optional(number)
+      }), null)
       grpc = optional(object({
         port    = optional(number)
         service = optional(string)
