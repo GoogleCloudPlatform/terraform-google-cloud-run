@@ -64,95 +64,93 @@ spec:
         location: examples/v2
   interfaces:
     variables:
-      - name: argument
-        description: Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments
-        varType: list(string)
-        defaultValue: []
-      - name: certificate_mode
-        description: The mode of the certificate (NONE or AUTOMATIC)
-        varType: string
-        defaultValue: NONE
-      - name: container_command
-        description: Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten
-        varType: list(string)
-        defaultValue: []
-      - name: container_concurrency
-        description: Concurrent request limits to the service
-        varType: number
-      - name: domain_map_annotations
-        description: Annotations to the domain map
-        varType: map(string)
-        defaultValue: {}
-      - name: domain_map_labels
-        description: A set of key/value label pairs to assign to the Domain mapping
-        varType: map(string)
-        defaultValue: {}
-      - name: encryption_key
-        description: CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY.
-        varType: string
-      - name: env_secret_vars
-        description: "[Beta] Environment variables (Secret Manager)"
-        varType: |-
-          list(object({
-              name = string
-              value_from = set(object({
-                secret_key_ref = map(string)
-              }))
-            }))
-        defaultValue: []
-      - name: env_vars
-        description: Environment variables (cleartext)
-        varType: |-
-          list(object({
-              value = string
-              name  = string
-            }))
-        defaultValue: []
-      - name: force_override
-        description: Option to force override existing mapping
-        varType: bool
-        defaultValue: false
-      - name: generate_revision_name
-        description: Option to enable revision name generation
-        varType: bool
-        defaultValue: true
-      - name: image
-        description: GCR hosted image URL to deploy
+      - name: project_id
+        description: The project ID to deploy to
         varType: string
         required: true
-      - name: limits
-        description: Resource limits to the container
-        varType: map(string)
-      - name: liveness_probe
-        description: |
-          Periodic probe of container liveness. Container will be restarted if the probe fails.
-          More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
-        varType: |-
-          object({
-              failure_threshold     = optional(number, null)
-              initial_delay_seconds = optional(number, null)
-              timeout_seconds       = optional(number, null)
-              period_seconds        = optional(number, null)
-              http_get = optional(object({
-                path = optional(string)
-                http_headers = optional(list(object({
-                  name  = string
-                  value = string
-                })), null)
-              }), null)
-              grpc = optional(object({
-                port    = optional(number)
-                service = optional(string)
-              }), null)
-            })
+      - name: service_name
+        description: The name of the Cloud Run service to create
+        varType: string
+        required: true
       - name: location
         description: Cloud Run service deployment location
         varType: string
         required: true
-      - name: members
-        description: Users/SAs to be given invoker access to the service
-        varType: list(string)
+      - name: image
+        description: GCR hosted image URL to deploy
+        varType: string
+        required: true
+      - name: generate_revision_name
+        description: Option to enable revision name generation
+        varType: bool
+        defaultValue: true
+      - name: traffic_split
+        description: Managing traffic routing to the service
+        varType: |-
+          list(object({
+              latest_revision = bool
+              percent         = number
+              revision_name   = string
+              tag             = string
+            }))
+        defaultValue:
+          - latest_revision: true
+            percent: 100
+            revision_name: v1-0-0
+            tag: null
+      - name: service_labels
+        description: A set of key/value label pairs to assign to the service
+        varType: map(string)
+        defaultValue: {}
+      - name: service_annotations
+        description: Annotations to the service. Acceptable values all, internal, internal-and-cloud-load-balancing
+        varType: map(string)
+        defaultValue:
+          run.googleapis.com/ingress: all
+      - name: template_labels
+        description: A set of key/value label pairs to assign to the container metadata
+        varType: map(string)
+        defaultValue: {}
+      - name: template_annotations
+        description: Annotations to the container metadata including VPC Connector and SQL. See [more details](https://cloud.google.com/run/docs/reference/rpc/google.cloud.run.v1#revisiontemplate)
+        varType: map(string)
+        defaultValue:
+          autoscaling.knative.dev/maxScale: 2
+          autoscaling.knative.dev/minScale: 1
+          generated-by: terraform
+          run.googleapis.com/client-name: terraform
+      - name: encryption_key
+        description: CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY.
+        varType: string
+      - name: container_concurrency
+        description: Concurrent request limits to the service
+        varType: number
+      - name: timeout_seconds
+        description: Timeout for each request
+        varType: number
+        defaultValue: 120
+      - name: service_account_email
+        description: Service Account email needed for the service
+        varType: string
+        defaultValue: ""
+      - name: volumes
+        description: "[Beta] Volumes needed for environment variables (when using secret)"
+        varType: |-
+          list(object({
+              name = string
+              secret = set(object({
+                secret_name = string
+                items       = map(string)
+              }))
+            }))
         defaultValue: []
+      - name: limits
+        description: Resource limits to the container
+        varType: map(string)
+      - name: requests
+        description: Resource requests to the container
+        varType: map(string)
+        defaultValue: {}
       - name: ports
         description: Port which the container listens to (http1 or h2c)
         varType: |-
@@ -163,31 +161,14 @@ spec:
         defaultValue:
           name: http1
           port: 8080
-      - name: project_id
-        description: The project ID to deploy to
-        varType: string
-        required: true
-      - name: requests
-        description: Resource requests to the container
-        varType: map(string)
-        defaultValue: {}
-      - name: service_account_email
-        description: Service Account email needed for the service
-        varType: string
-        defaultValue: ""
-      - name: service_annotations
-        description: Annotations to the service. Acceptable values all, internal, internal-and-cloud-load-balancing
-        varType: map(string)
-        defaultValue:
-          run.googleapis.com/ingress: all
-      - name: service_labels
-        description: A set of key/value label pairs to assign to the service
-        varType: map(string)
-        defaultValue: {}
-      - name: service_name
-        description: The name of the Cloud Run service to create
-        varType: string
-        required: true
+      - name: argument
+        description: Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments
+        varType: list(string)
+        defaultValue: []
+      - name: container_command
+        description: Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten
+        varType: list(string)
+        defaultValue: []
       - name: startup_probe
         description: |
           Startup probe of application within the container.
@@ -215,39 +196,45 @@ spec:
                 service = optional(string)
               }), null)
             })
-      - name: template_annotations
-        description: Annotations to the container metadata including VPC Connector and SQL. See [more details](https://cloud.google.com/run/docs/reference/rpc/google.cloud.run.v1#revisiontemplate)
-        varType: map(string)
-        defaultValue:
-          autoscaling.knative.dev/maxScale: 2
-          autoscaling.knative.dev/minScale: 1
-          generated-by: terraform
-          run.googleapis.com/client-name: terraform
-      - name: template_labels
-        description: A set of key/value label pairs to assign to the container metadata
-        varType: map(string)
-        defaultValue: {}
-      - name: timeout_seconds
-        description: Timeout for each request
-        varType: number
-        defaultValue: 120
-      - name: traffic_split
-        description: Managing traffic routing to the service
+      - name: liveness_probe
+        description: |
+          Periodic probe of container liveness. Container will be restarted if the probe fails.
+          More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+        varType: |-
+          object({
+              failure_threshold     = optional(number, null)
+              initial_delay_seconds = optional(number, null)
+              timeout_seconds       = optional(number, null)
+              period_seconds        = optional(number, null)
+              http_get = optional(object({
+                path = optional(string)
+                http_headers = optional(list(object({
+                  name  = string
+                  value = string
+                })), null)
+              }), null)
+              grpc = optional(object({
+                port    = optional(number)
+                service = optional(string)
+              }), null)
+            })
+      - name: env_vars
+        description: Environment variables (cleartext)
         varType: |-
           list(object({
-              latest_revision = bool
-              percent         = number
-              revision_name   = string
-              tag             = string
+              value = string
+              name  = string
             }))
-        defaultValue:
-          - latest_revision: true
-            percent: 100
-            revision_name: v1-0-0
-            tag: null
-      - name: verified_domain_name
-        description: List of Custom Domain Name
-        varType: list(string)
+        defaultValue: []
+      - name: env_secret_vars
+        description: "[Beta] Environment variables (Secret Manager)"
+        varType: |-
+          list(object({
+              name = string
+              value_from = set(object({
+                secret_key_ref = map(string)
+              }))
+            }))
         defaultValue: []
       - name: volume_mounts
         description: "[Beta] Volume Mounts to be attached to the container (when using secret)"
@@ -257,44 +244,69 @@ spec:
               name       = string
             }))
         defaultValue: []
-      - name: volumes
-        description: "[Beta] Volumes needed for environment variables (when using secret)"
-        varType: |-
-          list(object({
-              name = string
-              secret = set(object({
-                secret_name = string
-                items       = map(string)
-              }))
-            }))
+      - name: verified_domain_name
+        description: List of Custom Domain Name
+        varType: list(string)
+        defaultValue: []
+      - name: force_override
+        description: Option to force override existing mapping
+        varType: bool
+        defaultValue: false
+      - name: certificate_mode
+        description: The mode of the certificate (NONE or AUTOMATIC)
+        varType: string
+        defaultValue: NONE
+      - name: domain_map_labels
+        description: A set of key/value label pairs to assign to the Domain mapping
+        varType: map(string)
+        defaultValue: {}
+      - name: domain_map_annotations
+        description: Annotations to the domain map
+        varType: map(string)
+        defaultValue: {}
+      - name: members
+        description: Users/SAs to be given invoker access to the service
+        varType: list(string)
         defaultValue: []
     outputs:
       - name: domain_map_id
         description: Unique Identifier for the created domain map
+        type:
+          - tuple
+          - []
       - name: domain_map_status
         description: Status of Domain mapping
+        type:
+          - tuple
+          - []
       - name: location
         description: Location in which the Cloud Run service was created
+        type: string
       - name: project_id
         description: Google Cloud project in which the service was created
+        type: string
       - name: revision
         description: Deployed revision for the service
+        type: string
       - name: service_id
         description: Unique Identifier for the created service
+        type: string
       - name: service_name
         description: Name of the created service
+        type: string
       - name: service_status
         description: Status of the created service
+        type: string
       - name: service_url
         description: The URL on which the deployed service is available
+        type: string
       - name: verified_domain_name
         description: List of Custom Domain Name
+        type:
+          - tuple
+          - []
   requirements:
     roles:
-      - level: Project
-        roles:
-          - roles/accesscontextmanager.policyAdmin
-          - roles/orgpolicy.policyAdmin
       - level: Project
         roles:
           - roles/owner
@@ -303,6 +315,10 @@ spec:
           - roles/resourcemanager.folderAdmin
           - roles/resourcemanager.projectCreator
           - roles/resourcemanager.projectDeleter
+      - level: Project
+        roles:
+          - roles/accesscontextmanager.policyAdmin
+          - roles/orgpolicy.policyAdmin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
@@ -312,3 +328,8 @@ spec:
       - iam.googleapis.com
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
+    providerVersions:
+      - source: hashicorp/google
+        version: < 6
+      - source: hashicorp/google-beta
+        version: < 6
