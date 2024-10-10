@@ -115,3 +115,7 @@ spec:
         vpc_access:
           name: vpc_access
           title: Vpc Access
+    runtime:
+      outputs:
+        service_uri:
+          visibility: VISIBILITY_ROOT
