@@ -78,3 +78,8 @@ output "service_account_id" {
   description = "Service account id and email"
   value       = local.service_account_output
 }
+
+output "apphub_service_uri" {
+  value       = local.apphub_service_uri
+  description = "Service URI in CAIS style to be used by Apphub."
+}
