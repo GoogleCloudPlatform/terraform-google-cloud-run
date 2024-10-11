@@ -64,3 +64,7 @@ output "verified_domain_name" {
   description = "List of Custom Domain Name"
 }
 
+output "apphub_service_uri" {
+  value       = local.apphub_service_uri
+  description = "Service URI in CAIS style to be used by Apphub."
+}
