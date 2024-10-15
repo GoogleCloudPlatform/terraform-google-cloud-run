@@ -115,6 +115,14 @@ spec:
         vpc_access:
           name: vpc_access
           title: Vpc Access
+          alt_defaults:
+            - type: ALTERNATE_TYPE_DC
+              value:
+                - name: network_interfaces
+                  value:
+                    network: "default"
+                    subnetwork: "default"
+
     runtime:
       outputs:
         service_uri:
