@@ -32,10 +32,6 @@ locals {
     email  = google_service_account.sa[0].email,
     member = google_service_account.sa[0].member
   } : {}
-  apphub_service_uri = {
-    service_uri = "//run.googleapis.com/projects/${var.project_id}/locations/${var.location}/services/${var.service_name}"
-    service_id  = var.service_name
-  }
 }
 
 resource "google_service_account" "sa" {

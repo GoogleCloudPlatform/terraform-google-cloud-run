@@ -80,6 +80,9 @@ output "service_account_id" {
 }
 
 output "apphub_service_uri" {
-  value       = local.apphub_service_uri
+  value       = {
+    service_uri = "//run.googleapis.com/${google_cloud_run_v2_service.main.id}"
+    service_id  = google_cloud_run_v2_service.main.id
+  }
   description = "Service URI in CAIS style to be used by Apphub."
 }
