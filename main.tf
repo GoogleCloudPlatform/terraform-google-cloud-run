@@ -17,10 +17,6 @@
 locals {
   cmek_template_annotation = var.encryption_key != null ? { "run.googleapis.com/encryption-key" = var.encryption_key } : {}
   template_annotations     = merge(var.template_annotations, local.cmek_template_annotation)
-  apphub_service_uri = {
-    service_uri = "//run.googleapis.com/projects/${var.project_id}/locations/${var.location}/services/${var.service_name}"
-    service_id  = var.service_name
-  }
 }
 
 resource "google_cloud_run_service" "main" {
