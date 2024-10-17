@@ -28,7 +28,7 @@ module "service_account" {
 
 module "kms" {
   source  = "terraform-google-modules/kms/google"
-  version = "~> 2.1"
+  version = "~> 3.0"
 
   project_id         = var.project_id
   location           = "us-central1"
