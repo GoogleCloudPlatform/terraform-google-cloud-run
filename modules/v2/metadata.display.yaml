@@ -118,8 +118,7 @@ spec:
           alt_defaults:
             - type: ALTERNATE_TYPE_DC
               value:
-                - name: network_interfaces
-                  value:
+                  network_interface:
                     network: "default"
                     subnetwork: "default"
 
