@@ -86,6 +86,7 @@ module "cloud_run" {
 
 | Name | Description |
 |------|-------------|
+| apphub\_service\_uri | Service URI in CAIS style to be used by Apphub. |
 | domain\_map\_id | Unique Identifier for the created domain map |
 | domain\_map\_status | Status of Domain mapping |
 | location | Location in which the Cloud Run service was created |
