@@ -82,7 +82,7 @@ output "service_account_id" {
 output "apphub_service_uri" {
   value       = {
     service_uri = "//run.googleapis.com/${google_cloud_run_v2_service.main.id}"
-    service_id  = google_cloud_run_v2_service.main.id
+    service_id  = substr("${var.name}-${md5("${var.location}-${var.project_id}")}", 0, 63)
   }
   description = "Service URI in CAIS style to be used by Apphub."
 }
