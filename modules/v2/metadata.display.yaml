@@ -115,7 +115,7 @@ spec:
         vpc_access:
           name: vpc_access
           title: Vpc Access
-          alt_defaults:
+          altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
                   network_interface:
