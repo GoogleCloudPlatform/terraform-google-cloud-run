@@ -67,7 +67,7 @@ output "verified_domain_name" {
 output "apphub_service_uri" {
   value = {
     service_uri = "//run.googleapis.com/${google_cloud_run_service.main.id}"
-    service_id  = substr("${var.name}-${md5("${var.location}-${var.project_id}")}", 0, 63)
+    service_id  = substr("${var.service_name}-${md5("${var.location}-${var.project_id}")}", 0, 63)
   }
   description = "Service URI in CAIS style to be used by Apphub."
 }
