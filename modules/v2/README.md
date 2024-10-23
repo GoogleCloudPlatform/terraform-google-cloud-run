@@ -72,6 +72,7 @@ Functional examples are included in the
 
 | Name | Description |
 |------|-------------|
+| apphub\_service\_uri | Service URI in CAIS style to be used by Apphub. |
 | creator | Email address of the authenticated creator. |
 | effective\_annotations | All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services. |
 | last\_modifier | Email address of the last authenticated modifier. |
