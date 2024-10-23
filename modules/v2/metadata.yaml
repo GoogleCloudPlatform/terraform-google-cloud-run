@@ -342,6 +342,12 @@ spec:
         varType: list(string)
         defaultValue: []
     outputs:
+      - name: apphub_service_uri
+        description: Service URI in CAIS style to be used by Apphub.
+        type:
+          - object
+          - service_id: string
+            service_uri: string
       - name: creator
         description: Email address of the authenticated creator.
         type: string
@@ -396,16 +402,16 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/accesscontextmanager.policyAdmin
-          - roles/orgpolicy.policyAdmin
-      - level: Project
-        roles:
           - roles/owner
       - level: Project
         roles:
           - roles/resourcemanager.folderAdmin
           - roles/resourcemanager.projectCreator
           - roles/resourcemanager.projectDeleter
+      - level: Project
+        roles:
+          - roles/accesscontextmanager.policyAdmin
+          - roles/orgpolicy.policyAdmin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
