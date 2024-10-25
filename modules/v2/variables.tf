@@ -293,6 +293,9 @@ variable "containers" {
           value = string
         })), null)
       }), null)
+      tcp_socket = optional(object({
+        port = optional(number)
+      }), null)
       grpc = optional(object({
         port    = optional(number)
         service = optional(string)
@@ -319,4 +322,11 @@ variable "service_account_project_roles" {
   type        = list(string)
   description = "Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account"
   default     = []
+}
+
+// Prometheus sidecar
+variable "enable_prometheus_sidecar" {
+  type        = bool
+  description = "Enable Pormetheus sidecar in Cloud Run instance."
+  default     = true
 }

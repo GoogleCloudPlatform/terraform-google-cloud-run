@@ -32,6 +32,27 @@ locals {
     email  = google_service_account.sa[0].email,
     member = google_service_account.sa[0].member
   } : {}
+
+  prometheus_sidecar_container = [{
+    container_name  = "collector"
+    container_image = "us-docker.pkg.dev/cloud-ops-agents-artifacts/cloud-run-gmp-sidecar/cloud-run-gmp-sidecar:1.1.1"
+    # Set default values for the sidecar container
+    ports                = {}
+    working_dir          = null
+    depends_on_container = null
+    container_args       = null
+    container_command    = null
+    env_vars             = {}
+    env_secret_vars      = {}
+    volume_mounts        = []
+    resources = {
+      cpu_idle          = true
+      startup_cpu_boost = false
+      limits            = {}
+    }
+    startup_probe  = []
+    liveness_probe = []
+  }]
 }
 
 resource "google_service_account" "sa" {
@@ -58,9 +79,14 @@ resource "google_cloud_run_v2_service" "main" {
   labels      = var.service_labels
 
   template {
-    revision        = var.revision
-    labels          = var.template_labels
-    annotations     = var.template_annotations
+    revision = var.revision
+    labels   = var.template_labels
+    annotations = var.enable_prometheus_sidecar ? merge(
+      var.template_annotations,
+      {
+        "run.googleapis.com/container-dependencies" = jsonencode({ "collector" : [var.containers[0].container_name] })
+      }
+    ) : var.template_annotations
     timeout         = var.timeout
     service_account = local.service_account
 
@@ -94,7 +120,8 @@ resource "google_cloud_run_v2_service" "main" {
     }
 
     dynamic "containers" {
-      for_each = var.containers
+      for_each = concat(var.containers,
+      var.enable_prometheus_sidecar ? local.prometheus_sidecar_container : [])
       content {
         name        = containers.value.container_name
         image       = containers.value.container_image
@@ -102,10 +129,12 @@ resource "google_cloud_run_v2_service" "main" {
         args        = containers.value.container_args
         working_dir = containers.value.working_dir
         depends_on  = containers.value.depends_on_container
-
-        ports {
-          name           = containers.value.ports["name"]
-          container_port = containers.value.ports["container_port"]
+        dynamic "ports" {
+          for_each = lookup(containers.value, "ports", {}) != {} ? [containers.value.ports] : []
+          content {
+            name           = ports.value["name"]
+            container_port = ports.value["container_port"]
+          }
         }
 
         resources {
