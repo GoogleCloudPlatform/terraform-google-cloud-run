@@ -22,7 +22,7 @@ locals {
 
 module "secure_cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-run"
-  version = "~> 0.12"
+  version = "~> 0.13"
 
   connector_name              = "con-run"
   subnet_name                 = "vpc-subnet"
