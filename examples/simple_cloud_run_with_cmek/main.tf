@@ -28,7 +28,7 @@ module "service_account" {
 
 module "kms" {
   source  = "terraform-google-modules/kms/google"
-  version = "~> 2.1"
+  version = "~> 3.0"
 
   project_id         = var.project_id
   location           = "us-central1"
@@ -53,7 +53,7 @@ resource "google_project_service_identity" "serverless_sa" {
 
 module "cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google"
-  version = "~> 0.12"
+  version = "~> 0.13"
 
   service_name          = "ci-cloud-run"
   project_id            = var.project_id
