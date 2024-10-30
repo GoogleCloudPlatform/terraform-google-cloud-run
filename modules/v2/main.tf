@@ -33,13 +33,17 @@ locals {
     member = google_service_account.sa[0].member
   } : {}
 
+  ingress_container = try(
+    [for container in var.containers : container if length(try(container.ports, {})) > 0][0],
+    null
+  )
   prometheus_sidecar_container = [{
     container_name  = "collector"
     container_image = "us-docker.pkg.dev/cloud-ops-agents-artifacts/cloud-run-gmp-sidecar/cloud-run-gmp-sidecar:1.1.1"
     # Set default values for the sidecar container
     ports                = {}
     working_dir          = null
-    depends_on_container = null
+    depends_on_container = [local.ingress_container.container_name]
     container_args       = null
     container_command    = null
     env_vars             = {}
@@ -63,10 +67,14 @@ resource "google_service_account" "sa" {
 }
 
 resource "google_project_iam_member" "roles" {
-  for_each = toset(var.service_account_project_roles)
-  project  = var.project_id
-  role     = each.value
-  member   = "serviceAccount:${local.service_account}"
+  for_each = toset(distinct(concat(
+    var.service_account_project_roles,
+    var.enable_prometheus_sidecar ? ["roles/monitoring.metricWriter"] : []
+  )))
+
+  project = var.project_id
+  role    = each.value
+  member  = "serviceAccount:${local.service_account}"
 }
 
 resource "google_cloud_run_v2_service" "main" {
@@ -79,14 +87,9 @@ resource "google_cloud_run_v2_service" "main" {
   labels      = var.service_labels
 
   template {
-    revision = var.revision
-    labels   = var.template_labels
-    annotations = var.enable_prometheus_sidecar ? merge(
-      var.template_annotations,
-      {
-        "run.googleapis.com/container-dependencies" = jsonencode({ "collector" : [var.containers[0].container_name] })
-      }
-    ) : var.template_annotations
+    revision        = var.revision
+    labels          = var.template_labels
+    annotations     = var.template_annotations
     timeout         = var.timeout
     service_account = local.service_account
 
