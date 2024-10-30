@@ -320,3 +320,9 @@ variable "service_account_project_roles" {
   description = "Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account"
   default     = []
 }
+
+variable "deletion_protection" {
+  description = "Whether Terraform will be prevented from destroying the service"
+  type        = bool
+  default     = false
+}

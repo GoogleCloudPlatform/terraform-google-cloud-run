@@ -56,6 +56,10 @@ spec:
         description: Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten
         varType: list(string)
         defaultValue: []
+      - name: deletion_protection
+        description: Whether Terraform will be prevented from destroying the service
+        varType: bool
+        defaultValue: false
       - name: env_secret_vars
         description: Environment variables (Secret Manager)
         varType: |-

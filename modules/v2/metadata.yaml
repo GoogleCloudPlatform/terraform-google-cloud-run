@@ -341,6 +341,10 @@ spec:
         description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account
         varType: list(string)
         defaultValue: []
+      - name: deletion_protection
+        description: Whether Terraform will be prevented from destroying the service
+        varType: bool
+        defaultValue: false
     outputs:
       - name: apphub_service_uri
         description: Service URI in CAIS style to be used by Apphub.

@@ -51,11 +51,12 @@ resource "google_project_iam_member" "roles" {
 resource "google_cloud_run_v2_service" "main" {
   provider = google-beta
 
-  project     = var.project_id
-  name        = var.service_name
-  location    = var.location
-  description = var.description
-  labels      = var.service_labels
+  project             = var.project_id
+  name                = var.service_name
+  location            = var.location
+  description         = var.description
+  labels              = var.service_labels
+  deletion_protection = var.deletion_protection
 
   template {
     revision        = var.revision

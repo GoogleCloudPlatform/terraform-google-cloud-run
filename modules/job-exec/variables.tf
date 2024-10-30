@@ -158,3 +158,9 @@ variable "timeout" {
     error_message = "The value must be a duration in seconds with up to nine fractional digits, ending with 's'. Example: \"3.5s\"."
   }
 }
+
+variable "deletion_protection" {
+  description = "Whether Terraform will be prevented from destroying the service"
+  type        = bool
+  default     = false
+}

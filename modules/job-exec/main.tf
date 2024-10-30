@@ -15,11 +15,12 @@
  */
 
 resource "google_cloud_run_v2_job" "job" {
-  name         = var.name
-  project      = var.project_id
-  location     = var.location
-  launch_stage = var.launch_stage
-  labels       = var.labels
+  name                = var.name
+  project             = var.project_id
+  location            = var.location
+  launch_stage        = var.launch_stage
+  labels              = var.labels
+  deletion_protection = var.deletion_protection
 
   template {
     labels      = var.labels
