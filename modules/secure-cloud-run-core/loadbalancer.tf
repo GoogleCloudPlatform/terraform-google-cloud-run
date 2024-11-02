@@ -19,8 +19,9 @@ locals {
 }
 
 module "lb-http" {
-  source                          = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
-  version                         = "~> 11.0"
+  source  = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
+  version = "~> 12.0"
+
   name                            = var.lb_name
   project                         = var.project_id
   ssl                             = true

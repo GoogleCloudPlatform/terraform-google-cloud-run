@@ -76,6 +76,7 @@ module "secure_cloud_run_harness" {
 | parent\_folder\_id | The ID of a folder to host the infrastructure created in this module. | `string` | `""` | no |
 | prevent\_destroy | Set the prevent\_destroy lifecycle attribute on keys. | `bool` | `true` | no |
 | private\_service\_connect\_ip | The internal IP to be used for the private service connect. | `string` | n/a | yes |
+| project\_deletion\_policy | The deletion policy for the project created. | `string` | `"PREVENT"` | no |
 | region | The region in which the subnetwork will be created. | `string` | n/a | yes |
 | security\_project\_extra\_apis | The extra APIs to be enabled during security project creation. | `list(string)` | `[]` | no |
 | security\_project\_name | The name to give the security project. | `string` | n/a | yes |

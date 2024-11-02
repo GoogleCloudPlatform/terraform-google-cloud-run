@@ -49,9 +49,10 @@ resource "google_folder" "fld_serverless" {
 }
 
 module "network_project" {
-  count             = var.use_shared_vpc ? 1 : 0
-  source            = "terraform-google-modules/project-factory/google"
-  version           = "~> 15.0"
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 17.0"
+  count   = var.use_shared_vpc ? 1 : 0
+
   random_project_id = "true"
   activate_apis     = local.network_apis
   name              = var.network_project_name
@@ -60,13 +61,15 @@ module "network_project" {
   folder_id         = google_folder.fld_serverless.name
 
   disable_services_on_destroy = var.disable_services_on_destroy
+  deletion_policy             = var.project_deletion_policy
 
   enable_shared_vpc_host_project = true
 }
 
 module "security_project" {
-  source            = "terraform-google-modules/project-factory/google"
-  version           = "~> 15.0"
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 17.0"
+
   random_project_id = "true"
   activate_apis     = local.kms_apis
   name              = var.security_project_name
@@ -75,6 +78,7 @@ module "security_project" {
   folder_id         = google_folder.fld_serverless.name
 
   disable_services_on_destroy = var.disable_services_on_destroy
+  deletion_policy             = var.project_deletion_policy
 }
 
 module "serverless_project" {
@@ -89,6 +93,7 @@ module "serverless_project" {
   folder_name                   = google_folder.fld_serverless.name
   project_name                  = each.value
   service_account_project_roles = try(var.service_account_project_roles[each.value], [])
+  project_deletion_policy       = var.project_deletion_policy
 
   disable_services_on_destroy = var.disable_services_on_destroy
 }
