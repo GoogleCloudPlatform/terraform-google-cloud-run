@@ -15,7 +15,7 @@
  */
 
 module "cloud_run_v2" {
-  source = "tjy9206/cloud-run/google//modules/v2"
+  source = "../../modules/v2"
 
   service_name = "ci-cloud-run-v2-gmp"
   project_id   = var.project_id
