@@ -328,5 +328,5 @@ variable "service_account_project_roles" {
 variable "enable_prometheus_sidecar" {
   type        = bool
   description = "Enable Prometheus sidecar in Cloud Run instance."
-  default     = true
+  default     = false
 }
