@@ -44,7 +44,7 @@ Functional examples are included in the
 | create\_service\_account | Create a new service account for cloud run service | `bool` | `true` | no |
 | custom\_audiences | One or more custom audiences that you want this service to support. Specify each custom audience as the full URL in a string. Refer https://cloud.google.com/run/docs/configuring/custom-audiences | `list(string)` | `null` | no |
 | description | Cloud Run service description. This field currently has a 512-character limit. | `string` | `null` | no |
-| enable\_prometheus\_sidecar | Enable Pormetheus sidecar in Cloud Run instance. | `bool` | `true` | no |
+| enable\_prometheus\_sidecar | Enable Prometheus sidecar in Cloud Run instance. | `bool` | `false` | no |
 | encryption\_key | A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. | `string` | `null` | no |
 | execution\_environment | The sandbox environment to host this Revision. | `string` | `"EXECUTION_ENVIRONMENT_GEN2"` | no |
 | ingress | Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS\_TRAFFIC\_UNSPECIFIED if no revision is active. | `string` | `"INGRESS_TRAFFIC_ALL"` | no |
