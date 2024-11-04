@@ -1,6 +1,6 @@
 # Upgrading to cloud-run v2 v0.14.0 from v0.13.0
 
-The cloud-run/v2 release v0.13.0 is backward incompatible.
+The cloud-run/v2 release v0.14.0 is backward incompatible.
 
 ## Google Cloud Provider Project deletion_policy
 
