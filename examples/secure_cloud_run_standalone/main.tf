@@ -52,6 +52,7 @@ module "secure_harness" {
   ingress_policies                            = var.ingress_policies
   base_serverless_api                         = "run.googleapis.com"
   project_deletion_policy                     = "DELETE"
+  folder_deletion_protection                  = false
 }
 
 resource "null_resource" "copy_image" {

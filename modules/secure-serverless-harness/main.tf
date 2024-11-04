@@ -44,8 +44,9 @@ locals {
 }
 
 resource "google_folder" "fld_serverless" {
-  display_name = var.serverless_folder_suffix == "" ? "fldr-serverless" : "fldr-serverless-${var.serverless_folder_suffix}"
-  parent       = var.parent_folder_id == "" ? "organizations/${var.org_id}" : "folders/${var.parent_folder_id}"
+  display_name        = var.serverless_folder_suffix == "" ? "fldr-serverless" : "fldr-serverless-${var.serverless_folder_suffix}"
+  parent              = var.parent_folder_id == "" ? "organizations/${var.org_id}" : "folders/${var.parent_folder_id}"
+  deletion_protection = var.folder_deletion_protection
 }
 
 module "network_project" {
