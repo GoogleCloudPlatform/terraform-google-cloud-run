@@ -21,6 +21,8 @@ resource "google_cloud_run_v2_job" "job" {
   launch_stage = var.launch_stage
   labels       = var.labels
 
+  deletion_protection = var.cloud_run_deletion_protection
+
   template {
     labels      = var.labels
     parallelism = var.parallelism

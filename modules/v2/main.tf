@@ -57,6 +57,8 @@ resource "google_cloud_run_v2_service" "main" {
   description = var.description
   labels      = var.service_labels
 
+  deletion_protection = var.cloud_run_deletion_protection
+
   template {
     revision        = var.revision
     labels          = var.template_labels

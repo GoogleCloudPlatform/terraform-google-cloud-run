@@ -18,3 +18,9 @@ variable "project_id" {
   description = "The project ID to deploy to"
   type        = string
 }
+
+variable "cloud_run_deletion_protection" {
+  type        = bool
+  description = "This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services"
+  default     = true
+}
