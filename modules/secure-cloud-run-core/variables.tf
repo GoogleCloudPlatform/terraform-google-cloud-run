@@ -350,3 +350,8 @@ variable "network_interfaces" {
   default     = null
 }
 
+variable "cpu_throttling" {
+  description = "Enable cpu throttling"
+  default     = true
+}
+
