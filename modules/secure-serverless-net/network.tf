@@ -35,14 +35,12 @@ resource "google_compute_subnetwork" "vpc_subnetwork" {
 }
 
 resource "google_vpc_access_connector" "serverless_connector" {
-  name           = "${var.connector_name}${local.suffix}"
-  region         = var.location
-  project        = var.connector_on_host_project ? var.vpc_project_id : var.serverless_project_id
-  machine_type   = "e2-micro"
-  min_instances  = 2
-  max_instances  = 10
-  min_throughput = 200
-  max_throughput = 1000
+  name          = "${var.connector_name}${local.suffix}"
+  region        = var.location
+  project       = var.connector_on_host_project ? var.vpc_project_id : var.serverless_project_id
+  machine_type  = "e2-micro"
+  min_instances = 2
+  max_instances = 10
   subnet {
     name       = local.subnet_name
     project_id = var.vpc_project_id

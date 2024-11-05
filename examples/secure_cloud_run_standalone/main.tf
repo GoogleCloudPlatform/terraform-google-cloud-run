@@ -28,7 +28,7 @@ resource "random_id" "random_folder_suffix" {
 
 module "secure_harness" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/secure-serverless-harness"
-  version = "~> 0.13"
+  version = "~> 0.14"
 
   billing_account                             = var.billing_account
   security_project_name                       = "prj-kms-secure-cloud-run"
@@ -51,6 +51,8 @@ module "secure_harness" {
   egress_policies                             = var.egress_policies
   ingress_policies                            = var.ingress_policies
   base_serverless_api                         = "run.googleapis.com"
+  project_deletion_policy                     = "DELETE"
+  folder_deletion_protection                  = false
 }
 
 resource "null_resource" "copy_image" {

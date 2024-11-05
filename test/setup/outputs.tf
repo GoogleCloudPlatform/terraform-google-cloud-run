@@ -31,3 +31,7 @@ output "verified_domain_name" {
   value = []
 }
 
+output "cloud_run_deletion_protection" {
+  description = "This field prevents Terraform from destroying or recreating the Cloud Run Jobs and Services. Set to `false` in integration tests."
+  value       = false
+}
