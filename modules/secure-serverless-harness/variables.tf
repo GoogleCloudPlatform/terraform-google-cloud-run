@@ -238,3 +238,15 @@ variable "time_to_wait_vpc_sc_propagation" {
   description = "The time to wait VPC-SC propagation when applying and destroying."
   default     = "180s"
 }
+
+variable "project_deletion_policy" {
+  description = "The deletion policy for the project created."
+  type        = string
+  default     = "PREVENT"
+}
+
+variable "folder_deletion_protection" {
+  description = "Prevent Terraform from destroying or recreating the folder."
+  type        = string
+  default     = true
+}

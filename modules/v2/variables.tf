@@ -324,6 +324,12 @@ variable "service_account_project_roles" {
   default     = []
 }
 
+variable "cloud_run_deletion_protection" {
+  type        = bool
+  description = "This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services"
+  default     = true
+}
+
 // Prometheus sidecar
 variable "enable_prometheus_sidecar" {
   type        = bool

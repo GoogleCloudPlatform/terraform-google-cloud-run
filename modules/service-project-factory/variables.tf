@@ -66,3 +66,9 @@ variable "service_account_project_roles" {
   description = "Common roles to apply to the Cloud Run service account in the serverless project."
   default     = []
 }
+
+variable "project_deletion_policy" {
+  description = "The deletion policy for the project created."
+  type        = string
+  default     = "PREVENT"
+}
