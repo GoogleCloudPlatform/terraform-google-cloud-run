@@ -336,6 +336,6 @@ spec:
       - cloudbilling.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: < 6
+        version: < 7
       - source: hashicorp/google-beta
-        version: < 6
+        version: < 7
