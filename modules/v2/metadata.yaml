@@ -308,25 +308,25 @@ spec:
               source: github.com/terraform-google-modules/terraform-google-memorystore
               version: ~> 12.0
             spec:
-              outputExpr: env_vars
+              outputExpr: '{"REDIS_HOST": host, "REDIS_PORT": env_vars.REDIS_PORT}'
               inputPath: env_vars
           - source:
               source: github.com/terraform-google-modules/terraform-google-sql-db//modules/postgresql
               version: ~> 23.0
             spec:
-              outputExpr: env_vars
+              outputExpr: '{"CLOUD_SQL_DATABASE_HOST" : instance_first_ip_address, "CLOUD_SQL_DATABASE_CONNECTION_NAME" : instance_connection_name, "CLOUD_SQL_DATABASE_NAME" : env_vars.CLOUD_SQL_DATABASE_NAME}'
               inputPath: env_vars
           - source:
               source: github.com/terraform-google-modules/terraform-google-sql-db//modules/mysql
               version: ~> 23.0
             spec:
-              outputExpr: env_vars
+              outputExpr: '{"CLOUD_SQL_DATABASE_HOST" : instance_first_ip_address, "CLOUD_SQL_DATABASE_CONNECTION_NAME" : instance_connection_name, "CLOUD_SQL_DATABASE_NAME" : env_vars.CLOUD_SQL_DATABASE_NAME}'
               inputPath: env_vars
           - source:
               source: github.com/terraform-google-modules/terraform-google-service-accounts//modules/simple-sa
               version: ~> 4.4
             spec:
-              outputExpr: env_vars
+              outputExpr: '{"SERVICE_ACCOUNT_EMAIL" : email, "SERVICE_ACCOUNT_IAM_EMAIL" : iam_email}'
               inputPath: env_vars
           - source:
               source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
@@ -348,6 +348,10 @@ spec:
         defaultValue: []
       - name: enable_prometheus_sidecar
         description: Enable Pormetheus sidecar in Cloud Run instance.
+        varType: bool
+        defaultValue: false
+      - name: cloud_run_deletion_protection
+        description: This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services
         varType: bool
         defaultValue: true
     outputs:
@@ -432,6 +436,6 @@ spec:
       - cloudbilling.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: < 6
+        version: < 7
       - source: hashicorp/google-beta
-        version: < 6
+        version: < 7
