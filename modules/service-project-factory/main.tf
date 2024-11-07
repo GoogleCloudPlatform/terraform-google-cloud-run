@@ -15,8 +15,9 @@
  */
 
 module "serverless_project" {
-  source                      = "terraform-google-modules/project-factory/google"
-  version                     = "~> 15.0"
+  source  = "terraform-google-modules/project-factory/google"
+  version = "~> 17.0"
+
   random_project_id           = "true"
   activate_apis               = var.activate_apis
   name                        = var.project_name
@@ -24,6 +25,8 @@ module "serverless_project" {
   billing_account             = var.billing_account
   folder_id                   = var.folder_name
   disable_services_on_destroy = var.disable_services_on_destroy
+  deletion_policy             = var.project_deletion_policy
+
 
   svpc_host_project_id = var.network_project_id
   grant_network_role   = var.network_project_id != "" ? true : false
