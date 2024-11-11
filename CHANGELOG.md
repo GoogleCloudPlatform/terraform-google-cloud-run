@@ -7,6 +7,20 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.14.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.13.0...v0.14.0) (2024-11-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade modules to use provider v6 ([#257](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/257))
+* **deps:** Update Terraform terraform-google-modules/kms/google to v3 ([#237](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/237))
+
+### Bug Fixes
+
+* **deps:** Update Terraform terraform-google-modules/kms/google to v3 ([#237](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/237)) ([543be71](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/543be717b4bacbd75895d7c67f825c7c3c89465c))
+* upgrade modules to use provider v6 ([#257](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/257)) ([3312703](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/3312703a81091f25bb7c2c104c04a29620206685))
+* Various fixes to volumes and volume mounts ([#213](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/213)) ([3f922b8](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/3f922b818ec522cd8dbfa6ff27999d656fb712d9))
+
 ## [0.13.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.12.0...v0.13.0) (2024-09-20)
 
 
