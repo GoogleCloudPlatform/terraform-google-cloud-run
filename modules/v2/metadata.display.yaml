@@ -50,7 +50,7 @@ spec:
           name: enable_prometheus_sidecar
           title: Enable Prometheus Sidecar
           altDefaults:
-            - type: ALTERNATE_TYPE_UNSPECIFIED
+            - type: ALTERNATE_TYPE_DC
               value: true
         encryption_key:
           name: encryption_key
