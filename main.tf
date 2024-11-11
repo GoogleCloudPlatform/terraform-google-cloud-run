@@ -225,6 +225,7 @@ resource "google_cloud_run_domain_mapping" "domain_map" {
   lifecycle {
     ignore_changes = [
       metadata[0].annotations["run.googleapis.com/operation-id"],
+      metadata[0].annotations["run.googleapis.com/urls"],
     ]
   }
 }
