@@ -46,6 +46,12 @@ spec:
         description:
           name: description
           title: Description
+        enable_prometheus_sidecar:
+          name: enable_prometheus_sidecar
+          title: Enable Prometheus Sidecar
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: true
         encryption_key:
           name: encryption_key
           title: Encryption Key

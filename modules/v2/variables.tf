@@ -293,6 +293,9 @@ variable "containers" {
           value = string
         })), null)
       }), null)
+      tcp_socket = optional(object({
+        port = optional(number)
+      }), null)
       grpc = optional(object({
         port    = optional(number)
         service = optional(string)
@@ -325,4 +328,11 @@ variable "cloud_run_deletion_protection" {
   type        = bool
   description = "This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services"
   default     = true
+}
+
+// Prometheus sidecar
+variable "enable_prometheus_sidecar" {
+  type        = bool
+  description = "Enable Prometheus sidecar in Cloud Run instance."
+  default     = false
 }

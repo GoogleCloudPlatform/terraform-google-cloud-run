@@ -32,6 +32,31 @@ locals {
     email  = google_service_account.sa[0].email,
     member = google_service_account.sa[0].member
   } : {}
+
+  ingress_container = try(
+    [for container in var.containers : container if length(try(container.ports, {})) > 0][0],
+    null
+  )
+  prometheus_sidecar_container = [{
+    container_name  = "collector"
+    container_image = "us-docker.pkg.dev/cloud-ops-agents-artifacts/cloud-run-gmp-sidecar/cloud-run-gmp-sidecar:1.1.1"
+    # Set default values for the sidecar container
+    ports                = {}
+    working_dir          = null
+    depends_on_container = [local.ingress_container.container_name]
+    container_args       = null
+    container_command    = null
+    env_vars             = {}
+    env_secret_vars      = {}
+    volume_mounts        = []
+    resources = {
+      cpu_idle          = true
+      startup_cpu_boost = false
+      limits            = {}
+    }
+    startup_probe  = []
+    liveness_probe = []
+  }]
 }
 
 resource "google_service_account" "sa" {
@@ -42,10 +67,14 @@ resource "google_service_account" "sa" {
 }
 
 resource "google_project_iam_member" "roles" {
-  for_each = toset(var.service_account_project_roles)
-  project  = var.project_id
-  role     = each.value
-  member   = "serviceAccount:${local.service_account}"
+  for_each = toset(distinct(concat(
+    var.service_account_project_roles,
+    var.enable_prometheus_sidecar ? ["roles/monitoring.metricWriter"] : []
+  )))
+
+  project = var.project_id
+  role    = each.value
+  member  = "serviceAccount:${local.service_account}"
 }
 
 resource "google_cloud_run_v2_service" "main" {
@@ -96,7 +125,8 @@ resource "google_cloud_run_v2_service" "main" {
     }
 
     dynamic "containers" {
-      for_each = var.containers
+      for_each = concat(var.containers,
+      var.enable_prometheus_sidecar ? local.prometheus_sidecar_container : [])
       content {
         name        = containers.value.container_name
         image       = containers.value.container_image
@@ -104,10 +134,12 @@ resource "google_cloud_run_v2_service" "main" {
         args        = containers.value.container_args
         working_dir = containers.value.working_dir
         depends_on  = containers.value.depends_on_container
-
-        ports {
-          name           = containers.value.ports["name"]
-          container_port = containers.value.ports["container_port"]
+        dynamic "ports" {
+          for_each = lookup(containers.value, "ports", {}) != {} ? [containers.value.ports] : []
+          content {
+            name           = ports.value["name"]
+            container_port = ports.value["container_port"]
+          }
         }
 
         resources {

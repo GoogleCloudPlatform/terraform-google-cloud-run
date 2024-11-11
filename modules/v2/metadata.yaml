@@ -46,6 +46,8 @@ spec:
         location: examples/simple_job_exec
       - name: v2
         location: examples/v2
+      - name: v2_with_gmp
+        location: examples/v2_with_gmp
   interfaces:
     variables:
       - name: project_id
@@ -138,7 +140,7 @@ spec:
         connections:
           - source:
               source: github.com/terraform-google-modules/terraform-google-network//modules/vpc-serverless-connector-beta
-              version: ~> 9.1.0
+              version: ~> 9.1
             spec:
               outputExpr: connector_ids
               inputPath: connector
@@ -291,6 +293,9 @@ spec:
                     value = string
                   })), null)
                 }), null)
+                tcp_socket = optional(object({
+                  port = optional(number)
+                }), null)
                 grpc = optional(object({
                   port    = optional(number)
                   service = optional(string)
@@ -341,6 +346,10 @@ spec:
         description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account
         varType: list(string)
         defaultValue: []
+      - name: enable_prometheus_sidecar
+        description: Enable Pormetheus sidecar in Cloud Run instance.
+        varType: bool
+        defaultValue: false
       - name: cloud_run_deletion_protection
         description: This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services
         varType: bool

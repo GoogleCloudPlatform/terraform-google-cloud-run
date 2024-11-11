@@ -62,6 +62,8 @@ spec:
         location: examples/simple_job_exec
       - name: v2
         location: examples/v2
+      - name: v2_with_gmp
+        location: examples/v2_with_gmp
   interfaces:
     variables:
       - name: project_id
