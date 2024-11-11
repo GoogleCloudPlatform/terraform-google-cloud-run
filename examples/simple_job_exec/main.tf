@@ -16,11 +16,13 @@
 
 module "job" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/job-exec"
-  version = "~> 0.12"
+  version = "~> 0.14"
 
   project_id = var.project_id
   name       = "simple-job"
   location   = "us-central1"
   image      = "us-docker.pkg.dev/cloudrun/container/job"
   exec       = true
+
+  cloud_run_deletion_protection = var.cloud_run_deletion_protection
 }

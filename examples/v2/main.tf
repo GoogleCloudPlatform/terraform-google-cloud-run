@@ -16,11 +16,14 @@
 
 module "cloud_run_v2" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/v2"
-  version = "~> 0.12"
+  version = "~> 0.14"
 
   service_name = "ci-cloud-run-v2"
   project_id   = var.project_id
   location     = "us-central1"
+
+  cloud_run_deletion_protection = var.cloud_run_deletion_protection
+
   containers = [
     {
       container_image = "us-docker.pkg.dev/cloudrun/container/hello"
