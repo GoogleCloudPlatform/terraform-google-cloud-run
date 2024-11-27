@@ -20,13 +20,13 @@ variable "project_id" {
   type        = string
 }
 
-variable "service_name" {
-  description = "The name of the Cloud Run service to create"
+variable "location" {
+  description = "Cloud Run service deployment location"
   type        = string
 }
 
-variable "location" {
-  description = "Cloud Run service deployment location"
+variable "service_name" {
+  description = "The name of the Cloud Run service to create"
   type        = string
 }
 
@@ -34,6 +34,160 @@ variable "description" {
   description = "Cloud Run service description. This field currently has a 512-character limit."
   type        = string
   default     = null
+}
+
+// Containers
+variable "containers" {
+  type = list(object({
+    container_name       = optional(string, null)
+    container_image      = string
+    working_dir          = optional(string, null)
+    depends_on_container = optional(list(string), null)
+    container_args       = optional(list(string), null)
+    container_command    = optional(list(string), null)
+    env_vars             = optional(map(string), {})
+    env_secret_vars = optional(map(object({
+      secret  = string
+      version = string
+    })), {})
+    volume_mounts = optional(list(object({
+      name       = string
+      mount_path = string
+    })), [])
+    ports = optional(object({
+      name           = optional(string, "http1")
+      container_port = optional(number, 8080)
+    }), {})
+    resources = optional(object({
+      limits = optional(object({
+        cpu    = optional(string)
+        memory = optional(string)
+      }))
+      cpu_idle          = optional(bool, true)
+      startup_cpu_boost = optional(bool, false)
+    }), {})
+    startup_probe = optional(object({
+      failure_threshold     = optional(number, null)
+      initial_delay_seconds = optional(number, null)
+      timeout_seconds       = optional(number, null)
+      period_seconds        = optional(number, null)
+      http_get = optional(object({
+        path = optional(string)
+        port = optional(string)
+        http_headers = optional(list(object({
+          name  = string
+          value = string
+        })), [])
+      }), null)
+      tcp_socket = optional(object({
+        port = optional(number)
+      }), null)
+      grpc = optional(object({
+        port    = optional(number)
+        service = optional(string)
+      }), null)
+    }), null)
+    liveness_probe = optional(object({
+      failure_threshold     = optional(number, null)
+      initial_delay_seconds = optional(number, null)
+      timeout_seconds       = optional(number, null)
+      period_seconds        = optional(number, null)
+      http_get = optional(object({
+        path = optional(string)
+        port = optional(string)
+        http_headers = optional(list(object({
+          name  = string
+          value = string
+        })), null)
+      }), null)
+      tcp_socket = optional(object({
+        port = optional(number)
+      }), null)
+      grpc = optional(object({
+        port    = optional(number)
+        service = optional(string)
+      }), null)
+    }), null)
+  }))
+  description = "Map of container images for the service"
+}
+
+variable "create_service_account" {
+  type        = bool
+  description = "Create a new service account for cloud run service"
+  default     = true
+}
+
+variable "service_account_project_roles" {
+  type        = list(string)
+  description = "Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account"
+  default     = []
+}
+
+variable "members" {
+  type        = list(string)
+  description = "Users/SAs to be given invoker access to the service"
+  default     = []
+}
+
+variable "vpc_access" {
+  type = object({
+    connector = optional(string)
+    egress    = optional(string)
+    network_interfaces = optional(object({
+      network    = optional(string)
+      subnetwork = optional(string)
+      tags       = optional(list(string))
+    }))
+  })
+  description = "VPC Access configuration to use for this Task. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc"
+  default     = null
+}
+
+variable "cloud_run_deletion_protection" {
+  type        = bool
+  description = "This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services"
+  default     = true
+}
+
+// Prometheus sidecar
+variable "enable_prometheus_sidecar" {
+  type        = bool
+  description = "Enable Prometheus sidecar in Cloud Run instance."
+  default     = false
+}
+
+variable "volumes" {
+  type = list(object({
+    name = string
+    secret = optional(object({
+      secret       = string
+      default_mode = optional(string)
+      items = optional(object({
+        path    = string
+        version = optional(string)
+        mode    = optional(string)
+      }))
+    }))
+    cloud_sql_instance = optional(object({
+      instances = optional(list(string))
+    }))
+    empty_dir = optional(object({
+      medium     = optional(string)
+      size_limit = optional(string)
+    }))
+    gcs = optional(object({
+      bucket    = string
+      read_only = optional(string)
+    }))
+    nfs = optional(object({
+      server    = string
+      path      = string
+      read_only = optional(string)
+    }))
+  }))
+  description = "Volumes needed for environment variables (when using secret)"
+  default     = []
 }
 
 variable "traffic" {
@@ -129,20 +283,6 @@ variable "template_scaling" {
   default     = null
 }
 
-variable "vpc_access" {
-  type = object({
-    connector = optional(string)
-    egress    = optional(string)
-    network_interfaces = optional(object({
-      network    = optional(string)
-      subnetwork = optional(string)
-      tags       = optional(list(string))
-    }))
-  })
-  description = "VPC Access configuration to use for this Task. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc"
-  default     = null
-}
-
 variable "template_labels" {
   type        = map(string)
   description = "Unstructured key value map that can be used to organize and categorize objects. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels"
@@ -194,145 +334,4 @@ variable "execution_environment" {
     condition     = contains(["EXECUTION_ENVIRONMENT_GEN1", "EXECUTION_ENVIRONMENT_GEN2"], var.execution_environment)
     error_message = "Allowed values for ingress are \"EXECUTION_ENVIRONMENT_GEN1\", \"EXECUTION_ENVIRONMENT_GEN2\"."
   }
-}
-
-variable "volumes" {
-  type = list(object({
-    name = string
-    secret = optional(object({
-      secret       = string
-      default_mode = optional(string)
-      items = optional(object({
-        path    = string
-        version = optional(string)
-        mode    = optional(string)
-      }))
-    }))
-    cloud_sql_instance = optional(object({
-      instances = optional(list(string))
-    }))
-    empty_dir = optional(object({
-      medium     = optional(string)
-      size_limit = optional(string)
-    }))
-    gcs = optional(object({
-      bucket    = string
-      read_only = optional(string)
-    }))
-    nfs = optional(object({
-      server    = string
-      path      = string
-      read_only = optional(string)
-    }))
-  }))
-  description = "Volumes needed for environment variables (when using secret)"
-  default     = []
-}
-
-// Containers
-variable "containers" {
-  type = list(object({
-    container_name       = optional(string, null)
-    container_image      = string
-    working_dir          = optional(string, null)
-    depends_on_container = optional(list(string), null)
-    container_args       = optional(list(string), null)
-    container_command    = optional(list(string), null)
-    env_vars             = optional(map(string), {})
-    env_secret_vars = optional(map(object({
-      secret  = string
-      version = string
-    })), {})
-    volume_mounts = optional(list(object({
-      name       = string
-      mount_path = string
-    })), [])
-    ports = optional(object({
-      name           = optional(string, "http1")
-      container_port = optional(number, 8080)
-    }), {})
-    resources = optional(object({
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string)
-      }))
-      cpu_idle          = optional(bool, true)
-      startup_cpu_boost = optional(bool, false)
-    }), {})
-    startup_probe = optional(object({
-      failure_threshold     = optional(number, null)
-      initial_delay_seconds = optional(number, null)
-      timeout_seconds       = optional(number, null)
-      period_seconds        = optional(number, null)
-      http_get = optional(object({
-        path = optional(string)
-        port = optional(string)
-        http_headers = optional(list(object({
-          name  = string
-          value = string
-        })), [])
-      }), null)
-      tcp_socket = optional(object({
-        port = optional(number)
-      }), null)
-      grpc = optional(object({
-        port    = optional(number)
-        service = optional(string)
-      }), null)
-    }), null)
-    liveness_probe = optional(object({
-      failure_threshold     = optional(number, null)
-      initial_delay_seconds = optional(number, null)
-      timeout_seconds       = optional(number, null)
-      period_seconds        = optional(number, null)
-      http_get = optional(object({
-        path = optional(string)
-        port = optional(string)
-        http_headers = optional(list(object({
-          name  = string
-          value = string
-        })), null)
-      }), null)
-      tcp_socket = optional(object({
-        port = optional(number)
-      }), null)
-      grpc = optional(object({
-        port    = optional(number)
-        service = optional(string)
-      }), null)
-    }), null)
-  }))
-  description = "Map of container images for the service"
-}
-
-// IAM
-variable "members" {
-  type        = list(string)
-  description = "Users/SAs to be given invoker access to the service"
-  default     = []
-}
-
-variable "create_service_account" {
-  type        = bool
-  description = "Create a new service account for cloud run service"
-  default     = true
-}
-
-variable "service_account_project_roles" {
-  type        = list(string)
-  description = "Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account"
-  default     = []
-}
-
-variable "cloud_run_deletion_protection" {
-  type        = bool
-  description = "This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services"
-  default     = true
-}
-
-// Prometheus sidecar
-variable "enable_prometheus_sidecar" {
-  type        = bool
-  description = "Enable Prometheus sidecar in Cloud Run instance."
-  default     = false
 }
