@@ -67,7 +67,7 @@ resource "null_resource" "copy_image" {
 
 module "secure_cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-run"
-  version = "~> 0.13"
+  version = "~> 0.14"
 
   location                                = local.location
   region                                  = local.region
