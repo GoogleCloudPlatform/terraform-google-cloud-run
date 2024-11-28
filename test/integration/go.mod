@@ -2,11 +2,11 @@ module github.com/terraform-google-modules/terraform-example-foundation/test/int
 
 go 1.22.7
 
-toolchain go1.22.8
+toolchain go1.22.9
 
 require (
 	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.16.3
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	github.com/tidwall/gjson v1.18.0
 )
 
