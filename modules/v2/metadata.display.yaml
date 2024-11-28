@@ -137,10 +137,9 @@ spec:
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
-                  network_interface:
-                    network: "default"
-                    subnetwork: "default"
-
+                network_interfaces:
+                  network: default
+                  subnetwork: default
     runtime:
       outputs:
         service_uri:
