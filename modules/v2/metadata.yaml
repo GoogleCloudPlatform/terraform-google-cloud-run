@@ -390,8 +390,10 @@ spec:
       - name: service_account_id
         description: Service account id and email
         type:
-          - map
-          - string
+          - object
+          - email: string
+            id: string
+            member: string
       - name: service_id
         description: Unique Identifier for the created service with format projects/{{project}}/locations/{{location}}/services/{{name}}
         type: string
