@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.15.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.15.1...v0.15.2) (2024-11-28)
+
+
+### Bug Fixes
+
+* update output type of service_account_id for modules/v2 ([#271](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/271)) ([935685a](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/935685adedd380ab81a7cc2dd7a372bfe61a9e94))
+
 ## [0.15.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.15.0...v0.15.1) (2024-11-28)
 
 
