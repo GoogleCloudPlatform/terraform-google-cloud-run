@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.15.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.15.0...v0.15.1) (2024-11-28)
+
+
+### Bug Fixes
+
+* Update alternate default for vpc_access input of modules/v2 ([#267](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/267)) ([0f6aacf](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/0f6aacf00093b874c4a810de6d149290245c2995))
+
 ## [0.15.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.14.0...v0.15.0) (2024-11-27)
 
 
