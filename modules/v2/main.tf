@@ -24,7 +24,7 @@ locals {
       : null
     )
   )
-  create_service_account = var.service_account == null && var.create_service_account
+  create_service_account = var.create_service_account ? var.service_account == null : false
 
   service_account_prefix = substr("${var.service_name}-${var.location}", 0, 27)
   service_account_output = local.create_service_account ? {
