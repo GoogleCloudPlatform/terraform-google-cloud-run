@@ -41,6 +41,11 @@ spec:
         containers:
           name: containers
           title: Containers
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value:
+                - container_name: service-container
+                  container_image: us-docker.pkg.dev/cloudrun/container/hello
         create_service_account:
           name: create_service_account
           title: Create Service Account
