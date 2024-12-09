@@ -37,7 +37,7 @@ spec:
         cloud_run_deletion_protection:
           name: cloud_run_deletion_protection
           title: Cloud Run Deletion Protection
-          invisible: false
+          level: 1
         containers:
           name: containers
           title: Containers
@@ -49,18 +49,18 @@ spec:
         create_service_account:
           name: create_service_account
           title: Create Service Account
-          invisible: false
+          level: 1
         custom_audiences:
           name: custom_audiences
           title: Custom Audiences
         description:
           name: description
           title: Description
-          invisible: false
+          level: 1
         enable_prometheus_sidecar:
           name: enable_prometheus_sidecar
           title: Enable Prometheus Sidecar
-          invisible: false
+          level: 1
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value: true
@@ -85,7 +85,7 @@ spec:
         members:
           name: members
           title: Members
-          invisible: false
+          level: 1
         project_id:
           name: project_id
           title: Project Id
@@ -98,7 +98,7 @@ spec:
         service_account_project_roles:
           name: service_account_project_roles
           title: Service Account Project Roles
-          invisible: false
+          level: 1
         service_annotations:
           name: service_annotations
           title: Service Annotations
@@ -113,6 +113,7 @@ spec:
         service_scaling:
           name: service_scaling
           title: Service Scaling
+          level: 1
         session_affinity:
           name: session_affinity
           title: Session Affinity
@@ -134,11 +135,11 @@ spec:
         volumes:
           name: volumes
           title: Volumes
-          invisible: false
+          level: 1
         vpc_access:
           name: vpc_access
           title: Vpc Access
-          invisible: false
+          level: 1
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
