@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.15.3](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.15.2...v0.15.3) (2024-12-09)
+
+
+### Bug Fixes
+
+* add connection metadata and display metadata ([#273](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/273)) ([55999f3](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/55999f355f67a92abaf035d214cd83ea3db4404f))
+
 ## [0.15.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.15.1...v0.15.2) (2024-11-28)
 
 
