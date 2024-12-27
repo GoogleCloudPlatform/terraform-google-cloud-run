@@ -57,6 +57,8 @@ spec:
           name: description
           title: Description
           level: 1
+          regexValidation: ^[\s\S]{0,512}$
+          validation: This field currently has a 512-character limit.
         enable_prometheus_sidecar:
           name: enable_prometheus_sidecar
           title: Enable Prometheus Sidecar
