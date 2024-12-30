@@ -86,6 +86,7 @@ module "secure_cloud_run_harness" {
 | serverless\_project\_names | The name to give the Cloud Serverless project. | `list(string)` | n/a | yes |
 | service\_account\_project\_roles | Common roles to apply to the Cloud Serverless service account in the serverless project. | `map(list(string))` | `{}` | no |
 | subnet\_ip | The CDIR IP range of the subnetwork. | `string` | n/a | yes |
+| time\_to\_wait\_service\_identity\_propagation | The time to wait for service identity propagation. | `string` | `"180s"` | no |
 | time\_to\_wait\_vpc\_sc\_propagation | The time to wait VPC-SC propagation when applying and destroying. | `string` | `"180s"` | no |
 | use\_shared\_vpc | Defines if the network created will be a single or shared vpc. | `bool` | `false` | no |
 | vpc\_name | The name of the network. | `string` | n/a | yes |

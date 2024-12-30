@@ -46,6 +46,8 @@ spec:
         location: examples/simple_job_exec
       - name: v2
         location: examples/v2
+      - name: v2_with_gmp
+        location: examples/v2_with_gmp
   interfaces:
     variables:
       - name: access_context_manager_policy_id
@@ -115,6 +117,10 @@ spec:
         description: List of comma-separated owners for each key declared in set_encrypters_for.
         varType: list(string)
         defaultValue: []
+      - name: folder_deletion_protection
+        description: Prevent Terraform from destroying or recreating the folder.
+        varType: string
+        defaultValue: true
       - name: ingress_policies
         description: |-
           A list of all [ingress policies](https://cloud.google.com/vpc-service-controls/docs/ingress-egress-rules#ingress-rules-reference), each list object has a `from` and `to` value that describes ingress_from and ingress_to.
@@ -179,6 +185,10 @@ spec:
         description: The internal IP to be used for the private service connect.
         varType: string
         required: true
+      - name: project_deletion_policy
+        description: The deletion policy for the project created.
+        varType: string
+        defaultValue: PREVENT
       - name: region
         description: The region in which the subnetwork will be created.
         varType: string
@@ -211,6 +221,10 @@ spec:
         description: The CDIR IP range of the subnetwork.
         varType: string
         required: true
+      - name: time_to_wait_service_identity_propagation
+        description: The time to wait for service identity propagation.
+        varType: string
+        defaultValue: 180s
       - name: time_to_wait_vpc_sc_propagation
         description: The time to wait VPC-SC propagation when applying and destroying.
         varType: string
@@ -262,7 +276,12 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/owner
+          - roles/run.admin
+          - roles/iam.serviceAccountAdmin
+          - roles/artifactregistry.admin
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
+          - roles/cloudkms.admin
       - level: Project
         roles:
           - roles/resourcemanager.folderAdmin
@@ -281,3 +300,5 @@ spec:
       - iam.googleapis.com
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
+      - monitoring.googleapis.com
+      - compute.googleapis.com

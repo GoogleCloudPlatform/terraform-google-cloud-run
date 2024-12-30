@@ -146,7 +146,8 @@ module "artifact_registry_kms" {
   key_protection_level = var.key_protection_level
 
   depends_on = [
-    time_sleep.wait_vpc_sc_propagation
+    time_sleep.wait_vpc_sc_propagation,
+    time_sleep.wait_service_identity_propagation
   ]
 }
 
@@ -159,4 +160,9 @@ resource "google_project_service_identity" "artifact_sa" {
   depends_on = [
     time_sleep.wait_vpc_sc_propagation
   ]
+}
+
+resource "time_sleep" "wait_service_identity_propagation" {
+  depends_on      = [google_project_service_identity.artifact_sa]
+  create_duration = var.time_to_wait_service_identity_propagation
 }

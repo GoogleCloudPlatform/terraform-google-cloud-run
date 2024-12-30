@@ -16,7 +16,12 @@
 
 locals {
   int_required_roles = [
-    "roles/owner"
+    "roles/run.admin",
+    "roles/iam.serviceAccountAdmin",
+    "roles/artifactregistry.admin",
+    "roles/iam.serviceAccountUser",
+    "roles/serviceusage.serviceUsageViewer",
+    "roles/cloudkms.admin"
   ]
 
   folder_required_roles = [
