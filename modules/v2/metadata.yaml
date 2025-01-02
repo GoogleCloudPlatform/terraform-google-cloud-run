@@ -423,7 +423,8 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/owner
+          - roles/accesscontextmanager.policyAdmin
+          - roles/orgpolicy.policyAdmin
       - level: Project
         roles:
           - roles/resourcemanager.folderAdmin
@@ -431,8 +432,12 @@ spec:
           - roles/resourcemanager.projectDeleter
       - level: Project
         roles:
-          - roles/accesscontextmanager.policyAdmin
-          - roles/orgpolicy.policyAdmin
+          - roles/run.admin
+          - roles/iam.serviceAccountAdmin
+          - roles/artifactregistry.admin
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
+          - roles/cloudkms.admin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
@@ -443,8 +448,9 @@ spec:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
       - monitoring.googleapis.com
+      - compute.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: < 7
+        version: ">= 6, < 7"
       - source: hashicorp/google-beta
-        version: < 7
+        version: ">= 6, < 7"

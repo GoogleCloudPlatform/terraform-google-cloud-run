@@ -46,6 +46,8 @@ spec:
         location: examples/simple_job_exec
       - name: v2
         location: examples/v2
+      - name: v2_with_gmp
+        location: examples/v2_with_gmp
   interfaces:
     variables:
       - name: decrypters
@@ -125,16 +127,21 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/accesscontextmanager.policyAdmin
-          - roles/orgpolicy.policyAdmin
-      - level: Project
-        roles:
-          - roles/owner
+          - roles/run.admin
+          - roles/iam.serviceAccountAdmin
+          - roles/artifactregistry.admin
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
+          - roles/cloudkms.admin
       - level: Project
         roles:
           - roles/resourcemanager.folderAdmin
           - roles/resourcemanager.projectCreator
           - roles/resourcemanager.projectDeleter
+      - level: Project
+        roles:
+          - roles/accesscontextmanager.policyAdmin
+          - roles/orgpolicy.policyAdmin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
@@ -144,3 +151,5 @@ spec:
       - iam.googleapis.com
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
+      - monitoring.googleapis.com
+      - compute.googleapis.com

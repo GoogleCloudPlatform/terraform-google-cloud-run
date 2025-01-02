@@ -239,6 +239,12 @@ variable "time_to_wait_vpc_sc_propagation" {
   default     = "180s"
 }
 
+variable "time_to_wait_service_identity_propagation" {
+  type        = string
+  description = "The time to wait for service identity propagation."
+  default     = "180s"
+}
+
 variable "project_deletion_policy" {
   description = "The deletion policy for the project created."
   type        = string
