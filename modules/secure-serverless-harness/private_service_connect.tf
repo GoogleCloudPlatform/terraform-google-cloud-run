@@ -18,7 +18,7 @@ module "private_service_connect" {
   for_each = module.network
 
   source                     = "terraform-google-modules/network/google//modules/private-service-connect"
-  version                    = "~> 9.0"
+  version                    = "~> 10.0"
   project_id                 = each.value.project_id
   network_self_link          = each.value.network_self_link
   private_service_connect_ip = var.private_service_connect_ip
