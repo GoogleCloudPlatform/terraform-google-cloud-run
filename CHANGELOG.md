@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.15.5](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.15.4...v0.15.5) (2025-01-02)
+
+
+### Bug Fixes
+
+* remove create_ssl_certificate (used with private_key/certificate) ([#276](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/276)) ([26d4ca5](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/26d4ca56332d9fc6a6e6d41818a0e757723b8d10))
+
 ## [0.15.4](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.15.3...v0.15.4) (2024-12-12)
 
 
