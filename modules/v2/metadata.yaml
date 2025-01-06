@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -171,6 +171,12 @@ spec:
             spec:
               outputExpr: "{\"SERVICE_ENDPOINT\": service_uri}"
               inputPath: env_vars
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-secret-manager//modules/simple-secret
+              version: ">= 0.5.1"
+            spec:
+              outputExpr: env_vars
+              inputPath: env_secret_vars
       - name: create_service_account
         description: Create a new service account for cloud run service
         varType: bool
