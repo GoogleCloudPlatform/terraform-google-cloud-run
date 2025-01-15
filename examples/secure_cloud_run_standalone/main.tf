@@ -28,7 +28,7 @@ resource "random_id" "random_folder_suffix" {
 
 module "secure_harness" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/secure-serverless-harness"
-  version = "~> 0.15"
+  version = "~> 0.16"
 
   billing_account                             = var.billing_account
   security_project_name                       = "prj-kms-secure-cloud-run"
@@ -67,7 +67,7 @@ resource "null_resource" "copy_image" {
 
 module "secure_cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-run"
-  version = "~> 0.15"
+  version = "~> 0.16"
 
   location                                = local.location
   region                                  = local.region
