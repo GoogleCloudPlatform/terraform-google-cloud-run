@@ -38,6 +38,9 @@ spec:
           name: cloud_run_deletion_protection
           title: Cloud Run Deletion Protection
           level: 1
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: false
         containers:
           name: containers
           title: Containers
@@ -69,12 +72,27 @@ spec:
         encryption_key:
           name: encryption_key
           title: Encryption Key
+          level: 1
         execution_environment:
           name: execution_environment
           title: Execution Environment
+          level: 1
+          enumValueLabels:
+            - label: EXECUTION_ENVIRONMENT_GEN2
+              value: EXECUTION_ENVIRONMENT_GEN2
+            - label: EXECUTION_ENVIRONMENT_GEN1
+              value: EXECUTION_ENVIRONMENT_GEN1
         ingress:
           name: ingress
           title: Ingress
+          level: 1
+          enumValueLabels:
+            - label: INGRESS_TRAFFIC_ALL
+              value: INGRESS_TRAFFIC_ALL
+            - label: INGRESS_TRAFFIC_INTERNAL_ONLY
+              value: INGRESS_TRAFFIC_INTERNAL_ONLY
+            - label: INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER
+              value: INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER
         launch_stage:
           name: launch_stage
           title: Launch Stage
@@ -84,6 +102,7 @@ spec:
         max_instance_request_concurrency:
           name: max_instance_request_concurrency
           title: Max Instance Request Concurrency
+          level: 1
         members:
           name: members
           title: Members
@@ -94,6 +113,7 @@ spec:
         revision:
           name: revision
           title: Revision
+          level: 1
         service_account:
           name: service_account
           title: Service Account
@@ -119,6 +139,12 @@ spec:
         session_affinity:
           name: session_affinity
           title: Session Affinity
+          level: 1
+          enumValueLabels:
+            - label: "true"
+              value: "true"
+            - label: "false"
+              value: "false"
         template_annotations:
           name: template_annotations
           title: Template Annotations
@@ -128,6 +154,7 @@ spec:
         template_scaling:
           name: template_scaling
           title: Template Scaling
+          level: 1
         timeout:
           name: timeout
           title: Timeout

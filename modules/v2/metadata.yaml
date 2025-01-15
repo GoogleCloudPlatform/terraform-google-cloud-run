@@ -175,7 +175,7 @@ spec:
               source: github.com/GoogleCloudPlatform/terraform-google-secret-manager//modules/simple-secret
               version: ">= 0.5.1"
             spec:
-              outputExpr: env_vars
+              outputExpr: "{\"SECRET\": env_vars.SECRET }"
               inputPath: env_secret_vars
       - name: create_service_account
         description: Create a new service account for cloud run service
@@ -354,10 +354,10 @@ spec:
             spec:
               outputExpr: email
       - name: encryption_key
-        description: A reference to a customer managed encryption key (CMEK) to use to encrypt this container image.
+        description: A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. This is optional.
         varType: string
       - name: max_instance_request_concurrency
-        description: Sets the maximum number of requests that each serving instance can receive
+        description: Sets the maximum number of requests that each serving instance can receive. This is optional.
         varType: string
       - name: session_affinity
         description: Enables session affinity. For more information, go to https://cloud.google.com/run/docs/configuring/session-affinity
