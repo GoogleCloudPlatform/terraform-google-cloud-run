@@ -308,14 +308,14 @@ variable "service_account" {
 }
 
 variable "encryption_key" {
-  description = "A reference to a customer managed encryption key (CMEK) to use to encrypt this container image."
+  description = "A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. This is optional."
   type        = string
   default     = null
 }
 
 variable "max_instance_request_concurrency" {
   type        = string
-  description = "Sets the maximum number of requests that each serving instance can receive"
+  description = "Sets the maximum number of requests that each serving instance can receive. This is optional."
   default     = null
 }
 
