@@ -145,7 +145,7 @@ spec:
               source: github.com/terraform-google-modules/terraform-google-memorystore
               version: ">= 12.0"
             spec:
-              outputExpr: "{\"REDIS_HOST\": host, \"REDIS_PORT\": env_vars.REDIS_PORT}"
+              outputExpr: "{\"REDIS_HOST\": host, \"REDIS_PORT\": env_vars.REDIS_PORT, \"REDIS_AUTH_STRING\": auth_string}"
               inputPath: env_vars
           - source:
               source: github.com/terraform-google-modules/terraform-google-sql-db//modules/postgresql
