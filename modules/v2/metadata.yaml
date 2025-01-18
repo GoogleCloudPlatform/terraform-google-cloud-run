@@ -185,6 +185,37 @@ spec:
         description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account
         varType: list(string)
         defaultValue: []
+        connections:
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-secret-manager//modules/simple-secret
+              version: ">= 0.5.1"
+            spec:
+              outputExpr: "[\"roles/secretmanager.secretAccessor\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/postgresql
+              version: ">= 23.0"
+            spec:
+              outputExpr: "[\"roles/cloudsql.instanceUser\", \"roles/cloudsql.client\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/mysql
+              version: ">= 23.0"
+            spec:
+              outputExpr: "[\"roles/cloudsql.instanceUser\", \"roles/cloudsql.client\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-memorystore
+              version: ">= 12.0"
+            spec:
+              outputExpr: "[\"roles/redis.editor\"]"
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
+              version: ">= 0.13"
+            spec:
+              outputExpr: "[\"roles/run.invoker\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-project-factory//modules/project_services
+              version: ">= 17.1.0"
+            spec:
+              outputExpr: "[\"roles/aiplatform.user\"]"
       - name: members
         description: Users/SAs to be given invoker access to the service
         varType: list(string)
