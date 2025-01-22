@@ -402,7 +402,8 @@ spec:
         description: Service URI in CAIS style to be used by Apphub.
         type:
           - object
-          - service_id: string
+          - location: string
+            service_id: string
             service_uri: string
       - name: creator
         description: Email address of the authenticated creator.
@@ -475,6 +476,7 @@ spec:
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
