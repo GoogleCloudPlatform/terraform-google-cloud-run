@@ -21,7 +21,8 @@ locals {
     "roles/artifactregistry.admin",
     "roles/iam.serviceAccountUser",
     "roles/serviceusage.serviceUsageViewer",
-    "roles/cloudkms.admin"
+    "roles/cloudkms.admin",
+    "roles/resourcemanager.projectIamAdmin"
   ]
 
   folder_required_roles = [

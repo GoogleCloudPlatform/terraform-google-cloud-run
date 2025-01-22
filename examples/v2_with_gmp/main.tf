@@ -27,5 +27,6 @@ module "cloud_run_v2" {
       container_name  = "hello-world"
     }
   ]
-  enable_prometheus_sidecar = true
+  enable_prometheus_sidecar     = true
+  cloud_run_deletion_protection = false
 }
