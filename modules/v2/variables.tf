@@ -126,7 +126,7 @@ variable "service_account_project_roles" {
 
 variable "members" {
   type        = list(string)
-  description = "Users/SAs to be given invoker access to the service"
+  description = "Users/SAs to be given invoker access to the service. This can be `allUsers`, `allAuthenticatedUsers` or any other Users/SAs. For a comprehensive list of Users/SAs, please refer to the provided link: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service_iam#member/members-1."
   default     = []
 }
 
