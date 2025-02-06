@@ -172,6 +172,7 @@ spec:
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
+                egress: ALL_TRAFFIC
                 network_interfaces:
                   network: default
                   subnetwork: default
