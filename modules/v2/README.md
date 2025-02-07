@@ -52,7 +52,7 @@ Functional examples are included in the
 | launch\_stage | The launch stage as defined by Google Cloud Platform Launch Stages. Cloud Run supports ALPHA, BETA, and GA. If no value is specified, GA is assumed. | `string` | `"GA"` | no |
 | location | Cloud Run service deployment location | `string` | n/a | yes |
 | max\_instance\_request\_concurrency | Sets the maximum number of requests that each serving instance can receive. This is optional. | `string` | `null` | no |
-| members | Users/SAs to be given invoker access to the service | `list(string)` | `[]` | no |
+| members | Users/SAs to be given invoker access to the service. Grant invoker access by specifying the users or service accounts (SAs). Use allUsers for public access, allAuthenticatedUsers for access by logged-in Google users, or provide a list of specific users/SAs. See the complete list of available options: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service_iam#member/members-1 | `list(string)` | `[]` | no |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
 | revision | The unique name for the revision. If this field is omitted, it will be automatically generated based on the Service name | `string` | `null` | no |
 | service\_account | Email address of the IAM service account associated with the revision of the service | `string` | `null` | no |
