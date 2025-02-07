@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.3](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.16.2...v0.16.3) (2025-02-07)
+
+
+### Bug Fixes
+
+* update cloud-run v2 with new description and alternate default ([#300](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/300)) ([02feeb9](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/02feeb9d8df6df4f780d23501e441387b36811e8))
+
 ## [0.16.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.16.1...v0.16.2) (2025-01-22)
 
 
