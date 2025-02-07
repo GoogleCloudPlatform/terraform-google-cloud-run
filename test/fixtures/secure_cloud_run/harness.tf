@@ -47,7 +47,7 @@ data "terraform_remote_state" "sfb-env-prod" {
 
 module "serverless_project" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 17.0"
+  version = "~> 18.0"
 
   name              = "ci-cloud-run"
   random_project_id = "true"
@@ -75,7 +75,7 @@ module "serverless_project" {
 
 module "kms_project" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 17.0"
+  version = "~> 18.0"
 
   name              = "ci-cloud-run-kms"
   random_project_id = "true"
