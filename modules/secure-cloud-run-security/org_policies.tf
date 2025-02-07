@@ -22,7 +22,7 @@ locals {
 
 module "cloudrun_allowed_ingress" {
   source  = "terraform-google-modules/org-policy/google"
-  version = "~> 5.1"
+  version = "~> 6.0"
 
   policy_for        = var.policy_for
   project_id        = local.project
@@ -36,7 +36,7 @@ module "cloudrun_allowed_ingress" {
 
 module "cloudrun_allowed_vpc_egress" {
   source  = "terraform-google-modules/org-policy/google"
-  version = "~> 5.1"
+  version = "~> 6.0"
 
   policy_for        = var.policy_for
   project_id        = local.project
