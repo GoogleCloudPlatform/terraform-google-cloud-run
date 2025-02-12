@@ -57,6 +57,15 @@ locals {
     startup_probe  = []
     liveness_probe = []
   }]
+
+  service_account_project_role_mappings = flatten([
+    for project_role in var.service_account_roles_in_projects : [
+      for role in distinct(project_role.roles) : {
+        project_id = project_role.project_id
+        role       = role
+      }
+    ]
+  ])
 }
 
 resource "google_service_account" "sa" {
@@ -75,6 +84,13 @@ resource "google_project_iam_member" "roles" {
   project = var.project_id
   role    = each.value
   member  = "serviceAccount:${local.service_account}"
+}
+
+resource "google_project_iam_member" "project_roles" {
+  for_each = { for item in local.service_account_project_role_mappings : "${item.project_id}-${item.role}" => item }
+  project  = each.value.project_id
+  role     = each.value.role
+  member   = "serviceAccount:${local.service_account}"
 }
 
 resource "google_cloud_run_v2_service" "main" {
