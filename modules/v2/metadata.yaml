@@ -172,6 +172,12 @@ spec:
               outputExpr: "{\"SERVICE_ENDPOINT\": service_uri}"
               inputPath: env_vars
           - source:
+              source: github.com/terraform-google-modules/terraform-google-pubsub
+              version: ">= 7.0.0"
+            spec:
+              outputExpr: "{\"TOPIC_ID\": id}"
+              inputPath: env_vars
+          - source:
               source: github.com/GoogleCloudPlatform/terraform-google-secret-manager//modules/simple-secret
               version: ">= 0.5.1"
             spec:
@@ -216,6 +222,11 @@ spec:
               version: ">= 17.1.0"
             spec:
               outputExpr: "[\"roles/aiplatform.user\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-pubsub
+              version: ">= 7.0.0"
+            spec:
+              outputExpr: "[\"roles/pubsub.publisher\", \"roles/pubsub.subscriber\"]"
       - name: members
         description: "Users/SAs to be given invoker access to the service. Grant invoker access by specifying the users or service accounts (SAs). Use allUsers for public access, allAuthenticatedUsers for access by logged-in Google users, or provide a list of specific users/SAs. See the complete list of available options: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service_iam#member\\/members-1"
         varType: list(string)
