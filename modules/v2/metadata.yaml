@@ -185,7 +185,7 @@ spec:
               inputPath: env_secret_vars
           - source:
               source: github.com/GoogleCloudPlatform/terraform-google-cloud-spanner
-              version: ">= 1.1.0"
+              version: ">= 1.1.1"
             spec:
               inputPath: env_vars
       - name: create_service_account
@@ -234,7 +234,7 @@ spec:
               outputExpr: "[\"roles/pubsub.publisher\", \"roles/pubsub.subscriber\"]"
           - source:
               source: github.com/GoogleCloudPlatform/terraform-google-cloud-spanner
-              version: ">= 1.1.0"
+              version: ">= 1.1.1"
             spec:
               outputExpr: "[\"roles/spanner.databaseAdmin\"]"
       - name: members
