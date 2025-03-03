@@ -189,6 +189,12 @@ spec:
             spec:
               outputExpr: env_vars
               inputPath: env_vars
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-bigquery
+              version: ^10.0
+            spec:
+              outputExpr: "{\"BIGQUERY_DATASET\" : env_vars.BIGQUERY_DATASET, \"BIGQUERY_TABLES\" : env_vars.BIGQUERY_TABLES, \"BIGQUERY_VIEWS\" : env_vars.BIGQUERY_VIEWS, \"BIGQUERY_MATERIALIZED_VIEWS\" : env_vars.BIGQUERY_MATERIALIZED_VIEWS, \"BIGQUERY_EXTERNAL_TABLES\" : env_vars.BIGQUERY_EXTERNAL_TABLES, \"BIGQUERY_ROUTINES\" : env_vars.BIGQUERY_ROUTINES}"
+              inputPath: env_vars
       - name: create_service_account
         description: Create a new service account for cloud run service
         varType: bool
@@ -238,6 +244,11 @@ spec:
               version: ">= 1.1.1"
             spec:
               outputExpr: "[\"roles/spanner.databaseAdmin\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-bigquery
+              version: ^10.0
+            spec:
+              outputExpr: "[\"roles/bigquery.dataEditor\"]"
       - name: members
         description: "Users/SAs to be given invoker access to the service. Grant invoker access by specifying the users or service accounts (SAs). Use allUsers for public access, allAuthenticatedUsers for access by logged-in Google users, or provide a list of specific users/SAs. See the complete list of available options: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service_iam#member\\/members-1"
         varType: list(string)
