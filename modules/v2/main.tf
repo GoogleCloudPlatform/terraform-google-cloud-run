@@ -15,6 +15,7 @@
  */
 
 data "google_service_account" "existing_sa" {
+  count      = local.create_service_account == false ? 1 : 0
   account_id = element(split("@", google_cloud_run_v2_service.main.template[0].service_account), 0)
   project    = element(split("@", element(split(".", google_cloud_run_v2_service.main.template[0].service_account), 0)), 1)
 }
@@ -32,10 +33,14 @@ locals {
   create_service_account = var.create_service_account ? var.service_account == null : false
 
   service_account_prefix = substr("${var.service_name}-${var.location}", 0, 27)
-  service_account_output = {
-    id     = data.google_service_account.existing_sa.account_id,
-    email  = data.google_service_account.existing_sa.email,
-    member = data.google_service_account.existing_sa.member
+  service_account_output = local.create_service_account ? {
+    id     = google_service_account.sa[0].account_id,
+    email  = google_service_account.sa[0].email,
+    member = google_service_account.sa[0].member
+    } : {
+    id     = data.google_service_account.existing_sa[0].account_id,
+    email  = data.google_service_account.existing_sa[0].email,
+    member = data.google_service_account.existing_sa[0].member
   }
 
   ingress_container = try(
