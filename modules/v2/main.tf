@@ -42,6 +42,10 @@ locals {
     email  = data.google_service_account.existing_sa[0].email,
     member = data.google_service_account.existing_sa[0].member
   }
+  service_account_project_roles = local.create_service_account ? distinct(concat(
+    var.service_account_project_roles,
+    var.enable_prometheus_sidecar ? ["roles/monitoring.metricWriter"] : []
+  )) : []
 
   ingress_container = try(
     [for container in var.containers : container if length(try(container.ports, {})) > 0][0],
@@ -77,10 +81,7 @@ resource "google_service_account" "sa" {
 }
 
 resource "google_project_iam_member" "roles" {
-  for_each = toset(distinct(concat(
-    var.service_account_project_roles,
-    var.enable_prometheus_sidecar ? ["roles/monitoring.metricWriter"] : []
-  )))
+  for_each = toset(local.service_account_project_roles)
 
   project = var.project_id
   role    = each.value
