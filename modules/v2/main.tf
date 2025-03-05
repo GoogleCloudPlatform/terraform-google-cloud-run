@@ -16,8 +16,7 @@
 
 data "google_service_account" "existing_sa" {
   count      = local.create_service_account == false ? 1 : 0
-  account_id = element(split("@", google_cloud_run_v2_service.main.template[0].service_account), 0)
-  project    = element(split("@", element(split(".", google_cloud_run_v2_service.main.template[0].service_account), 0)), 1)
+  account_id = google_cloud_run_v2_service.main.template[0].service_account
 }
 
 locals {
