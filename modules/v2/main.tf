@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+data "google_service_account" "existing_sa" {
+  count      = local.create_service_account == false ? 1 : 0
+  account_id = google_cloud_run_v2_service.main.template[0].service_account
+}
+
 locals {
   service_account = (
     var.service_account != null
@@ -31,7 +36,15 @@ locals {
     id     = google_service_account.sa[0].account_id,
     email  = google_service_account.sa[0].email,
     member = google_service_account.sa[0].member
-  } : {}
+    } : {
+    id     = data.google_service_account.existing_sa[0].account_id,
+    email  = data.google_service_account.existing_sa[0].email,
+    member = data.google_service_account.existing_sa[0].member
+  }
+  service_account_project_roles = local.create_service_account ? distinct(concat(
+    var.service_account_project_roles,
+    var.enable_prometheus_sidecar ? ["roles/monitoring.metricWriter"] : []
+  )) : []
 
   ingress_container = try(
     [for container in var.containers : container if length(try(container.ports, {})) > 0][0],
@@ -67,10 +80,7 @@ resource "google_service_account" "sa" {
 }
 
 resource "google_project_iam_member" "roles" {
-  for_each = toset(distinct(concat(
-    var.service_account_project_roles,
-    var.enable_prometheus_sidecar ? ["roles/monitoring.metricWriter"] : []
-  )))
+  for_each = toset(local.service_account_project_roles)
 
   project = var.project_id
   role    = each.value
