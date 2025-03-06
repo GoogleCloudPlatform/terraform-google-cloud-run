@@ -129,7 +129,7 @@ resource "google_artifact_registry_repository_iam_member" "member" {
 
 module "artifact_registry_kms" {
   source  = "terraform-google-modules/kms/google"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   project_id           = module.security_project.project_id
   location             = var.location

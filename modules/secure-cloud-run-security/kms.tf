@@ -16,7 +16,7 @@
 
 module "cloud_run_kms" {
   source  = "terraform-google-modules/kms/google"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   project_id           = var.kms_project_id
   location             = var.location
