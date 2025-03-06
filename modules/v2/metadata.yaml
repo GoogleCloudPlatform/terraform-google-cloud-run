@@ -201,6 +201,12 @@ spec:
             spec:
               outputExpr: "{\"BIGTABLE_INSTANCE_ID\" : instance_id, \"BIGTABLE_TABLE_IDS\" : table_ids}"
               inputPath: env_vars
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-regional-lb-http//modules/frontend
+              version: ">= 0.4.0"
+            spec:
+              outputExpr: "{\"ip_address_http\": ip_address_http, \"ip_address_https\": ip_address_https}"  
+              inputPath: env_vars  
       - name: create_service_account
         description: Create a new service account for cloud run service
         varType: bool
