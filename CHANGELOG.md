@@ -7,6 +7,17 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.16.4...v0.17.0) (2025-03-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** Update Terraform terraform-google-modules/kms/google to v4 ([#305](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/305))
+
+### Bug Fixes
+
+* **deps:** Update Terraform terraform-google-modules/kms/google to v4 ([#305](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/305)) ([df23a37](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/df23a372db0fc95d8eb4b017757ee5d2f756be31))
+
 ## [0.16.4](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.16.3...v0.16.4) (2025-03-05)
 
 
