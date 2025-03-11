@@ -102,8 +102,17 @@ resource "google_cloud_run_v2_job" "job" {
         content {
           connector = vpc_access.value["connector"]
           egress    = vpc_access.value["egress"]
+          dynamic "network_interfaces" {
+            for_each = vpc_access.value["network_interfaces"]
+            content {
+              network    = network_interfaces.value["network"]
+              subnetwork = network_interfaces.value["subnetwork"]
+              tags       = network_interfaces.value["tags"]
+            }
+          }
         }
       }
+    }
     }
   }
 }
