@@ -250,7 +250,7 @@ spec:
               source: github.com/terraform-google-modules/terraform-google-pubsub
               version: ">= 7.0.0"
             spec:
-              outputExpr: "[\"roles/pubsub.publisher\", \"roles/pubsub.subscriber\"]"
+              outputExpr: "[\"roles/pubsub.publisher\", \"roles/pubsub.subscriber\", \"roles/run.invoker\"]"
           - source:
               source: github.com/GoogleCloudPlatform/terraform-google-cloud-spanner
               version: ">= 1.1.1"
