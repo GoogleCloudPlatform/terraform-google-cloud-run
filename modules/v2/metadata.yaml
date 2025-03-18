@@ -175,7 +175,7 @@ spec:
               source: github.com/terraform-google-modules/terraform-google-pubsub
               version: ">= 7.0.0"
             spec:
-              outputExpr: "{\"TOPIC_ID\": id}"
+              outputExpr: env_vars
               inputPath: env_vars
           - source:
               source: github.com/GoogleCloudPlatform/terraform-google-secret-manager//modules/simple-secret
