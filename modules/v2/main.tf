@@ -351,6 +351,7 @@ resource "google_cloud_run_v2_service" "main" {
       tag      = traffic.value.tag
     }
   }
+  depends_on = [google_project_iam_member.roles]
 }
 
 resource "google_cloud_run_v2_service_iam_member" "authorize" {
