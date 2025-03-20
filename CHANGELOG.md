@@ -7,6 +7,14 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.17.1...v0.17.2) (2025-03-20)
+
+
+### Bug Fixes
+
+* Add dependency of iam member roles on cloud run service ([#325](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/325)) ([f1f967b](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/f1f967b3abe0173aa0de8805e707d848306e935e))
+* Revert "fix: update connection with pubsub" ([#323](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/323)) ([2b376c5](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/2b376c5afdb257e51c24a488f8b8fa8466dd09f9))
+
 ## [0.17.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.17.0...v0.17.1) (2025-03-18)
 
 
