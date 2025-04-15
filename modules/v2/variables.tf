@@ -146,7 +146,7 @@ variable "vpc_access" {
 
 variable "cloud_run_deletion_protection" {
   type        = bool
-  description = "This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services"
+  description = "This field prevents Terraform from destroying or recreating the Cloud Run jobs and services"
   default     = true
 }
 

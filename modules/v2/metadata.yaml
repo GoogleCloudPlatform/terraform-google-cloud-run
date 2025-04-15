@@ -290,7 +290,7 @@ spec:
               outputExpr: connector_ids
               inputPath: connector
       - name: cloud_run_deletion_protection
-        description: This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services
+        description: This field prevents Terraform from destroying or recreating the Cloud Run jobs and services
         varType: bool
         defaultValue: true
       - name: enable_prometheus_sidecar
