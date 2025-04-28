@@ -207,6 +207,12 @@ spec:
             spec:
               outputExpr: "{\"IP_ADDRESS_HTTP\": ip_address_http, \"IP_ADDRESS_HTTPS\": ip_address_https}"
               inputPath: env_vars
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-firestore
+              version: ">= 0.1.0"
+            spec:
+              outputExpr: "{\"FIRESTORE_DATABASE_ID\": database_id}"
+              inputPath: env_vars
       - name: create_service_account
         description: Create a new service account for cloud run service
         varType: bool
