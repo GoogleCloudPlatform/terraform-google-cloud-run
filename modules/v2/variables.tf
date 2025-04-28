@@ -130,6 +130,12 @@ variable "members" {
   default     = []
 }
 
+variable "invoker_iam_disabled" {
+    type = bool
+    default = false
+    description = "Disables IAM permission check for run.routes.invoke for callers of this service. For more information, visit https://cloud.google.com/run/docs/securing/managing-access#invoker_check. See https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#invoker_iam_disabled-1"
+}
+
 variable "vpc_access" {
   type = object({
     connector = optional(string)

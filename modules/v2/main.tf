@@ -97,6 +97,7 @@ resource "google_cloud_run_v2_service" "main" {
   labels      = var.service_labels
 
   deletion_protection = var.cloud_run_deletion_protection
+  invoker_iam_disabled = var.invoker_iam_disabled
 
   template {
     revision        = var.revision
