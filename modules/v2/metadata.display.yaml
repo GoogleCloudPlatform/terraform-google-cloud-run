@@ -106,6 +106,8 @@ spec:
         members:
           name: members
           title: Members
+          regexValidation: ^[a-z][a-z0-9-]*[a-z0-9]$
+          validation: Use lowercase letters, numbers, and hyphens. Start with a letter and end with letter/number. Must be 49 characters or fewer.
           level: 1
         project_id:
           name: project_id
