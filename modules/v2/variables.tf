@@ -140,13 +140,13 @@ variable "vpc_access" {
       tags       = optional(list(string))
     }))
   })
-  description = "VPC Access configuration to use for this Task. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc"
+  description = "VPC Access configuration to use for this Task, egress value should be either ALL_TRAFFIC or PRIVATE_RANGES_ONLY. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc"
   default     = null
 }
 
 variable "cloud_run_deletion_protection" {
   type        = bool
-  description = "This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services"
+  description = "This field prevents Terraform from destroying or recreating the Cloud Run jobs and services"
   default     = true
 }
 
