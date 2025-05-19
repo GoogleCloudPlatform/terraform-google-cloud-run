@@ -171,6 +171,29 @@ spec:
           name: vpc_access
           title: Vpc Access
           level: 1
+          properties:
+            egress:
+              name: egress
+              title: Egress
+              enumValueLabels:
+                - label: ALL_TRAFFIC
+                  value: ALL_TRAFFIC
+                - label: PRIVATE_RANGES_ONLY
+                  value: PRIVATE_RANGES_ONLY
+            connector:
+              name: connector
+              title: Connector
+            network_interfaces:
+              name: network_interfaces
+              title: Network Interfaces
+              properties:
+                network:
+                  name: network
+                  title: Network
+                  regexValidation: ^[\s\S]{0,512}$
+                subnetwork:
+                  name: subnetwork
+                  title: Subnetwork
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
