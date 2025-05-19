@@ -527,6 +527,7 @@ spec:
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
+          - roles/compute.viewer
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
