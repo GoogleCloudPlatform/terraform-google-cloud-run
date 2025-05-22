@@ -266,12 +266,16 @@ spec:
               version: ">= 0.1.0"
             spec:
               outputExpr: "[\"roles/bigtable.admin\"]"
+      - name: ingress
+        description: Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active.
+        varType: string
+        defaultValue: INGRESS_TRAFFIC_ALL
       - name: members
         description: "Users/SAs to be given invoker access to the service. Grant invoker access by specifying the users or service accounts (SAs). Use allUsers for public access, allAuthenticatedUsers for access by logged-in Google users, or provide a list of specific users/SAs. See the complete list of available options: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service_iam#member\\/members-1"
         varType: list(string)
         defaultValue: []
       - name: vpc_access
-        description: VPC Access configuration to use for this Task, egress value should be either ALL_TRAFFIC or PRIVATE_RANGES_ONLY. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc
+        description: "Configure this to enable your service to send traffic to a Virtual Private Cloud. Set egress to ALL_TRAFFIC or PRIVATE_RANGES_ONLY. Choose a connector or network_interfaces (for direct VPC egress). For details: https://cloud.google.com/run/docs/configuring/connecting-vpc"
         varType: |-
           object({
               connector = optional(string)
@@ -386,10 +390,6 @@ spec:
               version = optional(string, null)
             })
         defaultValue: {}
-      - name: ingress
-        description: Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active.
-        varType: string
-        defaultValue: INGRESS_TRAFFIC_ALL
       - name: launch_stage
         description: The launch stage as defined by Google Cloud Platform Launch Stages. Cloud Run supports ALPHA, BETA, and GA. If no value is specified, GA is assumed.
         varType: string
