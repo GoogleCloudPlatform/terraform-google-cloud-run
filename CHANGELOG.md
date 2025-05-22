@@ -7,6 +7,15 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.3](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.17.2...v0.17.3) (2025-05-22)
+
+
+### Bug Fixes
+
+* changing description for cloud_run_deletion_protection and egress variables ([#328](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/328)) ([fa659f8](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/fa659f83bacfd047e705225db500a971a643e101))
+* Update service account output to be present at plan time in all cases for v2 module ([#334](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/334)) ([e682900](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/e6829003fc8b9bf70d3dae229616991f86458dd9))
+* Update vpc_access description and add display metadata for vpc_access fields ([#335](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/335)) ([68c0174](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/68c0174d8726117b692a8fa01cc52bdf2598f342))
+
 ## [0.17.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.17.1...v0.17.2) (2025-03-20)
 
 
