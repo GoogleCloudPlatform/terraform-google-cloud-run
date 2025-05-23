@@ -171,37 +171,6 @@ spec:
           name: vpc_access
           title: Vpc Access
           level: 1
-          properties:
-            egress:
-              name: egress
-              title: Egress
-              subtext: Traffic VPC egress settings.
-              enumValueLabels:
-                - label: ALL_TRAFFIC
-                  value: ALL_TRAFFIC
-                - label: PRIVATE_RANGES_ONLY
-                  value: PRIVATE_RANGES_ONLY
-            connector:
-              name: connector
-              title: Connector
-              subtext: VPC Access connector name.
-              regexValidation: ^projects/(?:[a-z][a-z0-9-]*[a-z0-9]|[0-9]+)/locations/([a-z0-9-]+)/connectors/([a-z][a-z0-9-]*[a-z0-9])$
-              validation: Invalid connector name. It must be in the format projects/{project}/locations/{location}/connectors/{connector}
-            network_interfaces:
-              name: network_interfaces
-              title: Network Interfaces
-              subtext: Direct VPC egress settings. Currently only single network interface is supported.
-              toggleUsingVariables:
-                - variableName: vpc_access.connector
-              properties:
-                network:
-                  name: network
-                  title: Network
-                  subtext: The VPC network that the Cloud Run resource will be able to send traffic to.
-                subnetwork:
-                  name: subnetwork
-                  title: Subnetwork
-                  subtext: The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the subnetwork with the same name with the network will be used.
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
