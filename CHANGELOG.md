@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.4](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.17.3...v0.17.4) (2025-05-23)
+
+
+### Bug Fixes
+
+* Removing properties field from vpc_access in ui metadata ([#337](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/337)) ([39200cc](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/39200cc2eb13d50a48b6c8a2721a8b12d2c95271))
+
 ## [0.17.3](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.17.2...v0.17.3) (2025-05-22)
 
 
