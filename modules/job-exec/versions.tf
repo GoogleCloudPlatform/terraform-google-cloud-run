@@ -15,7 +15,7 @@
  */
 
 terraform {
-  required_version = ">= 0.13"
+  required_version = ">= 1.3"
 
   required_providers {
     terracurl = {
@@ -28,6 +28,6 @@ terraform {
     }
   }
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:job-exec/v0.17.2"
+    module_name = "blueprints/terraform/terraform-google-cloud-run:job-exec/v0.17.4"
   }
 }
