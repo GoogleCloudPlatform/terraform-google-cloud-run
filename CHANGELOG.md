@@ -7,6 +7,63 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.17.4](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.17.3...v0.17.4) (2025-05-23)
+
+
+### Bug Fixes
+
+* Removing properties field from vpc_access in ui metadata ([#337](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/337)) ([39200cc](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/39200cc2eb13d50a48b6c8a2721a8b12d2c95271))
+
+## [0.17.3](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.17.2...v0.17.3) (2025-05-22)
+
+
+### Bug Fixes
+
+* changing description for cloud_run_deletion_protection and egress variables ([#328](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/328)) ([fa659f8](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/fa659f83bacfd047e705225db500a971a643e101))
+* Update service account output to be present at plan time in all cases for v2 module ([#334](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/334)) ([e682900](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/e6829003fc8b9bf70d3dae229616991f86458dd9))
+* Update vpc_access description and add display metadata for vpc_access fields ([#335](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/335)) ([68c0174](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/68c0174d8726117b692a8fa01cc52bdf2598f342))
+
+## [0.17.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.17.1...v0.17.2) (2025-03-20)
+
+
+### Bug Fixes
+
+* Add dependency of iam member roles on cloud run service ([#325](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/325)) ([f1f967b](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/f1f967b3abe0173aa0de8805e707d848306e935e))
+* Revert "fix: update connection with pubsub" ([#323](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/323)) ([2b376c5](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/2b376c5afdb257e51c24a488f8b8fa8466dd09f9))
+
+## [0.17.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.17.0...v0.17.1) (2025-03-18)
+
+
+### Bug Fixes
+
+* update connection with pubsub ([#318](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/318)) ([f70c572](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/f70c572dcb6f759e93e6e0566d67ea5d9f96cded))
+
+## [0.17.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.16.4...v0.17.0) (2025-03-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** Update Terraform terraform-google-modules/kms/google to v4 ([#305](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/305))
+
+### Bug Fixes
+
+* **deps:** Update Terraform terraform-google-modules/kms/google to v4 ([#305](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/305)) ([df23a37](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/df23a372db0fc95d8eb4b017757ee5d2f756be31))
+* Use table_ids[0] instead of table_ids for big table ([#315](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/315)) ([c34bdfb](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/c34bdfb35bb61196afc9bb64955c9340ef628721))
+
+## [0.16.4](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.16.3...v0.16.4) (2025-03-05)
+
+
+### Bug Fixes
+
+* update service_account_id output variable ([#309](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/309)) ([0ac557a](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/0ac557acfddba9338ffe0235e1ebef908cf0ba80))
+
+## [0.16.3](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.16.2...v0.16.3) (2025-02-07)
+
+
+### Bug Fixes
+
+* update cloud-run v2 with new description and alternate default ([#300](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/300)) ([02feeb9](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/02feeb9d8df6df4f780d23501e441387b36811e8))
+
 ## [0.16.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.16.1...v0.16.2) (2025-01-22)
 
 

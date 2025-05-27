@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+data "google_compute_default_service_account" "default" {
+  count   = local.create_service_account == false ? 1 : 0
+  project = var.project_id
+}
+
 locals {
   service_account = (
     var.service_account != null
@@ -27,11 +32,25 @@ locals {
   create_service_account = var.create_service_account ? var.service_account == null : false
 
   service_account_prefix = substr("${var.service_name}-${var.location}", 0, 27)
+
   service_account_output = local.create_service_account ? {
     id     = google_service_account.sa[0].account_id,
     email  = google_service_account.sa[0].email,
     member = google_service_account.sa[0].member
-  } : {}
+    } : var.service_account == null ? {
+    id     = data.google_compute_default_service_account.default[0].name,
+    email  = data.google_compute_default_service_account.default[0].email,
+    member = data.google_compute_default_service_account.default[0].member
+    } : {
+    id     = split("@", var.service_account)[0],
+    email  = var.service_account,
+    member = "serviceAccount:${var.service_account}"
+  }
+
+  service_account_project_roles = local.create_service_account ? distinct(concat(
+    var.service_account_project_roles,
+    var.enable_prometheus_sidecar ? ["roles/monitoring.metricWriter"] : []
+  )) : []
 
   ingress_container = try(
     [for container in var.containers : container if length(try(container.ports, {})) > 0][0],
@@ -67,10 +86,7 @@ resource "google_service_account" "sa" {
 }
 
 resource "google_project_iam_member" "roles" {
-  for_each = toset(distinct(concat(
-    var.service_account_project_roles,
-    var.enable_prometheus_sidecar ? ["roles/monitoring.metricWriter"] : []
-  )))
+  for_each = toset(local.service_account_project_roles)
 
   project = var.project_id
   role    = each.value
@@ -341,6 +357,7 @@ resource "google_cloud_run_v2_service" "main" {
       tag      = traffic.value.tag
     }
   }
+  depends_on = [google_project_iam_member.roles]
 }
 
 resource "google_cloud_run_v2_service_iam_member" "authorize" {

@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
       sourceType: git
       dir: /modules/v2
-    version: 0.16.2
+    version: 0.17.4
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -172,11 +172,41 @@ spec:
               outputExpr: "{\"SERVICE_ENDPOINT\": service_uri}"
               inputPath: env_vars
           - source:
+              source: github.com/terraform-google-modules/terraform-google-pubsub
+              version: ">= 7.0.0"
+            spec:
+              outputExpr: "{\"TOPIC_ID\": id}"
+              inputPath: env_vars
+          - source:
               source: github.com/GoogleCloudPlatform/terraform-google-secret-manager//modules/simple-secret
               version: ">= 0.5.1"
             spec:
               outputExpr: "{\"SECRET\": env_vars.SECRET }"
               inputPath: env_secret_vars
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-cloud-spanner
+              version: ">= 1.1.1"
+            spec:
+              outputExpr: env_vars
+              inputPath: env_vars
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-bigquery
+              version: ^10.0
+            spec:
+              outputExpr: "{\"BIGQUERY_DATASET\" : env_vars.BIGQUERY_DATASET, \"BIGQUERY_TABLES\" : env_vars.BIGQUERY_TABLES, \"BIGQUERY_VIEWS\" : env_vars.BIGQUERY_VIEWS, \"BIGQUERY_MATERIALIZED_VIEWS\" : env_vars.BIGQUERY_MATERIALIZED_VIEWS, \"BIGQUERY_EXTERNAL_TABLES\" : env_vars.BIGQUERY_EXTERNAL_TABLES, \"BIGQUERY_ROUTINES\" : env_vars.BIGQUERY_ROUTINES}"
+              inputPath: env_vars
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-bigtable
+              version: ">= 0.1.0"
+            spec:
+              outputExpr: "{\"BIGTABLE_INSTANCE_ID\" : instance_id, \"BIGTABLE_TABLE_ID\" : table_ids[0]}"
+              inputPath: env_vars
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-regional-lb-http//modules/frontend
+              version: ">= 0.4.0"
+            spec:
+              outputExpr: "{\"IP_ADDRESS_HTTP\": ip_address_http, \"IP_ADDRESS_HTTPS\": ip_address_https}"
+              inputPath: env_vars
       - name: create_service_account
         description: Create a new service account for cloud run service
         varType: bool
@@ -216,12 +246,36 @@ spec:
               version: ">= 17.1.0"
             spec:
               outputExpr: "[\"roles/aiplatform.user\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-pubsub
+              version: ">= 7.0.0"
+            spec:
+              outputExpr: "[\"roles/pubsub.publisher\", \"roles/pubsub.subscriber\", \"roles/run.invoker\"]"
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-cloud-spanner
+              version: ">= 1.1.1"
+            spec:
+              outputExpr: "[\"roles/spanner.databaseAdmin\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-bigquery
+              version: ^10.0
+            spec:
+              outputExpr: "[\"roles/bigquery.dataEditor\"]"
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-bigtable
+              version: ">= 0.1.0"
+            spec:
+              outputExpr: "[\"roles/bigtable.admin\"]"
+      - name: ingress
+        description: Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active.
+        varType: string
+        defaultValue: INGRESS_TRAFFIC_ALL
       - name: members
-        description: Users/SAs to be given invoker access to the service
+        description: "Users/SAs to be given invoker access to the service. Grant invoker access by specifying the users or service accounts (SAs). Use allUsers for public access, allAuthenticatedUsers for access by logged-in Google users, or provide a list of specific users/SAs. See the complete list of available options: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service_iam#member\\/members-1"
         varType: list(string)
         defaultValue: []
       - name: vpc_access
-        description: VPC Access configuration to use for this Task. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc
+        description: "Configure this to enable your service to send traffic to a Virtual Private Cloud. Set egress to ALL_TRAFFIC or PRIVATE_RANGES_ONLY. Choose a connector or network_interfaces (for direct VPC egress). For details: https://cloud.google.com/run/docs/configuring/connecting-vpc"
         varType: |-
           object({
               connector = optional(string)
@@ -240,7 +294,7 @@ spec:
               outputExpr: connector_ids
               inputPath: connector
       - name: cloud_run_deletion_protection
-        description: This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services
+        description: This field prevents Terraform from destroying or recreating the Cloud Run jobs and services
         varType: bool
         defaultValue: true
       - name: enable_prometheus_sidecar
@@ -336,10 +390,6 @@ spec:
               version = optional(string, null)
             })
         defaultValue: {}
-      - name: ingress
-        description: Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active.
-        varType: string
-        defaultValue: INGRESS_TRAFFIC_ALL
       - name: launch_stage
         description: The launch stage as defined by Google Cloud Platform Launch Stages. Cloud Run supports ALPHA, BETA, and GA. If no value is specified, GA is assumed.
         varType: string
@@ -477,6 +527,7 @@ spec:
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
+          - roles/compute.viewer
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com

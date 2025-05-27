@@ -106,6 +106,8 @@ spec:
         members:
           name: members
           title: Members
+          regexValidation: ^(?:allUsers|allAuthenticatedUsers)$|^((?:user|group|serviceAccount):(?:[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|(?:domain:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|(?:projectOwner|projectEditor|projectViewer):[a-z][a-z0-9-]{0,28}[a-z0-9])$
+          validation: Must be allUsers, allAuthenticatedUsers, or a service account in the format serviceAccount:email@example.com. More info at  https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service_iam#member\\/members-1.
           level: 1
         project_id:
           name: project_id
@@ -172,6 +174,7 @@ spec:
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
+                egress: ALL_TRAFFIC
                 network_interfaces:
                   network: default
                   subnetwork: default
