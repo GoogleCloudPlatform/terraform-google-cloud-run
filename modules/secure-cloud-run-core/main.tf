@@ -22,6 +22,7 @@ locals {
     "run.googleapis.com/vpc-access-egress"    = var.vpc_egress_value,
     "run.googleapis.com/network-interfaces"   = var.network_interfaces
     "run.googleapis.com/cpu-throttling"       = var.cpu_throttling
+    "run.googleapis.com/startup-cpu-boost"    = var.cpu_boost
   }
 
   conditional_annotations = {

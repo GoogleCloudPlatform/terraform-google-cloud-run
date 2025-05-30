@@ -355,3 +355,7 @@ variable "cpu_throttling" {
   default     = true
 }
 
+variable "cpu_boost" {
+  description = "Enable cpu boost"
+  default     = true
+}
