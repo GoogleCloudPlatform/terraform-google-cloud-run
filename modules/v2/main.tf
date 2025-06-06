@@ -358,6 +358,10 @@ resource "google_cloud_run_v2_service" "main" {
     }
   }
   depends_on = [google_project_iam_member.roles]
+
+  lifecycle {
+    ignore_changes = var.lifecycle_ignore_changes
+  }
 }
 
 resource "google_cloud_run_v2_service_iam_member" "authorize" {

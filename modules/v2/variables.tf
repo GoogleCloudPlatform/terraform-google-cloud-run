@@ -301,6 +301,12 @@ variable "timeout" {
   default     = null
 }
 
+variable "lifecycle_ignore_changes" {
+  description = "A list of attribute paths to ignore in the resource lifecycle. Useful for attributes managed elsewhere or to prevent unintended updates."
+  type        = list(string)
+  default     = []
+}
+
 variable "service_account" {
   type        = string
   description = "Email address of the IAM service account associated with the revision of the service"
