@@ -387,7 +387,7 @@ resource "google_project_service_identity" "iap_p4sa" {
 }
 
 resource "time_sleep" "wait_5m" {
-  count    	= length(var.iap_members)>0 ? 1 : 0
+  count    	  = length(var.iap_members)>0 ? 1 : 0
   depends_on      = [google_project_service_identity.iap_p4sa]
   create_duration = "5m"
 }
