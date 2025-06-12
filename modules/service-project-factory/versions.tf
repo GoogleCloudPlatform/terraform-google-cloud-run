@@ -15,7 +15,7 @@
  */
 
 terraform {
-  required_version = ">= 0.13"
+  required_version = ">= 1.3"
 
   required_providers {
     google = {
@@ -37,10 +37,10 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:service-project-factory/v0.17.2"
+    module_name = "blueprints/terraform/terraform-google-cloud-run:service-project-factory/v0.17.4"
   }
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:service-project-factory/v0.17.2"
+    module_name = "blueprints/terraform/terraform-google-cloud-run:service-project-factory/v0.17.4"
   }
 }
