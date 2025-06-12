@@ -101,7 +101,7 @@ resource "google_cloud_run_v2_service" "main" {
   location    = var.location
   description = var.description
   labels      = var.service_labels
-  iap_enabled = length(var.iap_members)>0
+  iap_enabled = length(var.iap_members) > 0
   
   deletion_protection = var.cloud_run_deletion_protection
 
@@ -380,14 +380,14 @@ resource "google_iap_web_cloud_run_service_iam_member" "iap_access" {
 }
 
 resource "google_project_service_identity" "iap_p4sa" {
-  count    = length(var.iap_members)>0 ? 1 : 0
+  count    = length(var.iap_members) > 0 ? 1 : 0
   provider = google-beta
   project  = var.project_id
   service  = "iap.googleapis.com"
 }
 
 resource "google_cloud_run_v2_service_iam_member" "authorize_iap_p4sa" {
-  count    	= length(var.iap_members)>0 ? 1 : 0
+  count    	= length(var.iap_members) > 0 ? 1 : 0
   location 	= google_cloud_run_v2_service.main.location
   project  	= google_cloud_run_v2_service.main.project
   name     	= google_cloud_run_v2_service.main.name
