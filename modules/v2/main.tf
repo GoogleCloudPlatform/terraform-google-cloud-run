@@ -386,12 +386,6 @@ resource "google_project_service_identity" "iap_p4sa" {
   service  = "iap.googleapis.com"
 }
 
-resource "time_sleep" "wait_5m" {
-  count    	  = length(var.iap_members)>0 ? 1 : 0
-  depends_on      = [google_project_service_identity.iap_p4sa]
-  create_duration = "5m"
-}
-
 resource "google_cloud_run_v2_service_iam_member" "authorize_iap_p4sa" {
   count    	= length(var.iap_members)>0 ? 1 : 0
   location 	= google_cloud_run_v2_service.main.location
@@ -399,5 +393,4 @@ resource "google_cloud_run_v2_service_iam_member" "authorize_iap_p4sa" {
   name     	= google_cloud_run_v2_service.main.name
   role     	= "roles/run.invoker"
   member        = google_project_service_identity.iap_p4sa[count.index].member
-  depends_on    = [time_sleep.wait_5m]
 }

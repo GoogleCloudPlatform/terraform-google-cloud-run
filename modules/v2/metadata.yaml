@@ -469,6 +469,9 @@ spec:
         description: The sandbox environment to host this Revision.
         varType: string
         defaultValue: EXECUTION_ENVIRONMENT_GEN2
+      - name: iap_members
+        varType: list(string)
+        defaultValue: []
     outputs:
       - name: apphub_service_uri
         description: Service URI in CAIS style to be used by Apphub.
