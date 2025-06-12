@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ spec:
     version: 0.18.0
     actuationTool:
       flavor: Terraform
-      version: ">= 0.13"
+      version: ">= 1.3"
     description: {}
   content:
     examples:
@@ -50,16 +50,60 @@ spec:
         location: examples/v2_with_gmp
   interfaces:
     variables:
-      - name: decrypters
-        description: List of comma-separated owners for each key declared in set_decrypters_for.
+      - name: kms_project_id
+        description: The project where KMS will be created.
+        varType: string
+        required: true
+      - name: serverless_project_id
+        description: The project where Cloud Run is going to be deployed.
+        varType: string
+        required: true
+      - name: prevent_destroy
+        description: Set the prevent_destroy lifecycle attribute on keys..
+        varType: bool
+        defaultValue: true
+      - name: keyring_name
+        description: Keyring name.
+        varType: string
+        required: true
+      - name: key_rotation_period
+        description: Period of key rotation in seconds.
+        varType: string
+        defaultValue: 2592000s
+      - name: key_name
+        description: Key name.
+        varType: string
+        required: true
+      - name: key_protection_level
+        description: "The protection level to use when creating a version based on this template. Possible values: [\"SOFTWARE\", \"HSM\"]"
+        varType: string
+        defaultValue: HSM
+      - name: location
+        description: The location where resources are going to be deployed.
+        varType: string
+        required: true
+      - name: owners
+        description: List of comma-separated owners for each key declared in set_owners_for.
         varType: list(string)
         defaultValue: []
       - name: encrypters
         description: List of comma-separated owners for each key declared in set_encrypters_for.
         varType: list(string)
         defaultValue: []
+      - name: decrypters
+        description: List of comma-separated owners for each key declared in set_decrypters_for.
+        varType: list(string)
+        defaultValue: []
+      - name: policy_for
+        description: "Policy Root: set one of the following values to determine where the policy is applied. Possible values: [\"project\", \"folder\", \"organization\"]."
+        varType: string
+        defaultValue: project
       - name: folder_id
         description: The folder ID to apply the policy to.
+        varType: string
+        defaultValue: ""
+      - name: organization_id
+        description: The organization ID to apply the policy to.
         varType: string
         defaultValue: ""
       - name: groups
@@ -72,50 +116,6 @@ spec:
               group_cloud_run_user                    = optional(string, null)
             })
         defaultValue: {}
-      - name: key_name
-        description: Key name.
-        varType: string
-        required: true
-      - name: key_protection_level
-        description: "The protection level to use when creating a version based on this template. Possible values: [\"SOFTWARE\", \"HSM\"]"
-        varType: string
-        defaultValue: HSM
-      - name: key_rotation_period
-        description: Period of key rotation in seconds.
-        varType: string
-        defaultValue: 2592000s
-      - name: keyring_name
-        description: Keyring name.
-        varType: string
-        required: true
-      - name: kms_project_id
-        description: The project where KMS will be created.
-        varType: string
-        required: true
-      - name: location
-        description: The location where resources are going to be deployed.
-        varType: string
-        required: true
-      - name: organization_id
-        description: The organization ID to apply the policy to.
-        varType: string
-        defaultValue: ""
-      - name: owners
-        description: List of comma-separated owners for each key declared in set_owners_for.
-        varType: list(string)
-        defaultValue: []
-      - name: policy_for
-        description: "Policy Root: set one of the following values to determine where the policy is applied. Possible values: [\"project\", \"folder\", \"organization\"]."
-        varType: string
-        defaultValue: project
-      - name: prevent_destroy
-        description: Set the prevent_destroy lifecycle attribute on keys..
-        varType: bool
-        defaultValue: true
-      - name: serverless_project_id
-        description: The project where Cloud Run is going to be deployed.
-        varType: string
-        required: true
     outputs:
       - name: key_self_link
         description: Key self link.
@@ -127,12 +127,8 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/run.admin
-          - roles/iam.serviceAccountAdmin
-          - roles/artifactregistry.admin
-          - roles/iam.serviceAccountUser
-          - roles/serviceusage.serviceUsageViewer
-          - roles/cloudkms.admin
+          - roles/accesscontextmanager.policyAdmin
+          - roles/orgpolicy.policyAdmin
       - level: Project
         roles:
           - roles/resourcemanager.folderAdmin
@@ -140,8 +136,14 @@ spec:
           - roles/resourcemanager.projectDeleter
       - level: Project
         roles:
-          - roles/accesscontextmanager.policyAdmin
-          - roles/orgpolicy.policyAdmin
+          - roles/run.admin
+          - roles/iam.serviceAccountAdmin
+          - roles/artifactregistry.admin
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
+          - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
+          - roles/compute.viewer
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
@@ -153,3 +155,8 @@ spec:
       - cloudbilling.googleapis.com
       - monitoring.googleapis.com
       - compute.googleapis.com
+    providerVersions:
+      - source: hashicorp/google
+        version: ">= 6, < 7"
+      - source: hashicorp/google-beta
+        version: ">= 6, < 7"

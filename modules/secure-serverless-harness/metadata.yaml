@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ spec:
     version: 0.18.0
     actuationTool:
       flavor: Terraform
-      version: ">= 0.13"
+      version: ">= 1.3"
     description: {}
   content:
     examples:
@@ -50,53 +50,65 @@ spec:
         location: examples/v2_with_gmp
   interfaces:
     variables:
-      - name: access_context_manager_policy_id
-        description: The ID of the default Access Context Manager policy. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR_ORGANIZATION_ID --format="value(name)"`.
-        varType: number
-      - name: access_level_members
-        description: The list of additional members who will be in the access level.
-        varType: list(string)
-        required: true
-      - name: artifact_registry_repository_description
-        description: The description of the Artifact Registry Repository to be created.
-        varType: string
-        defaultValue: Secure Cloud Run Artifact Registry Repository
-      - name: artifact_registry_repository_format
-        description: The format of the Artifact Registry Repository to be created.
-        varType: string
-        defaultValue: DOCKER
-      - name: artifact_registry_repository_name
-        description: The name of the Artifact Registry Repository to be created.
+      - name: billing_account
+        description: The ID of the billing account to associate this project with.
         varType: string
         required: true
       - name: base_serverless_api
         description: This variable will enable Cloud Function or Cloud Run specific resources. Cloud Run API will be used for the terraform-google-cloud-run repository while Cloud Function API will be used in the terraform-google-cloud-functions repository. It supports only run.googleapis.com or cloudfunctions.googleapis.com
         varType: string
         required: true
-      - name: billing_account
-        description: The ID of the billing account to associate this project with.
+      - name: security_project_name
+        description: The name to give the security project.
         varType: string
         required: true
+      - name: security_project_extra_apis
+        description: The extra APIs to be enabled during security project creation.
+        varType: list(string)
+        defaultValue: []
+      - name: network_project_name
+        description: The name to give the shared vpc project.
+        varType: string
+        defaultValue: ""
+      - name: network_project_extra_apis
+        description: The extra APIs to be enabled during network project creation.
+        varType: list(string)
+        defaultValue: []
+      - name: serverless_project_names
+        description: The name to give the Cloud Serverless project.
+        varType: list(string)
+        required: true
+      - name: serverless_project_extra_apis
+        description: The extra APIs to be enabled during serverless projects creation.
+        varType: map(list(string))
+        defaultValue: {}
+      - name: org_id
+        description: The organization ID.
+        varType: string
+        required: true
+      - name: serverless_folder_suffix
+        description: The suffix to be concat in the Serverless folder name fldr-serverless-<SUFFIX>.
+        varType: string
+        defaultValue: ""
+      - name: parent_folder_id
+        description: The ID of a folder to host the infrastructure created in this module.
+        varType: string
+        defaultValue: ""
+      - name: access_context_manager_policy_id
+        description: The ID of the default Access Context Manager policy. Can be obtained by running `gcloud access-context-manager policies list --organization YOUR_ORGANIZATION_ID --format="value(name)"`.
+        varType: number
       - name: create_access_context_manager_access_policy
         description: Defines if Access Context Manager will be created by Terraform.
         varType: bool
         defaultValue: false
-      - name: decrypters
-        description: List of comma-separated owners for each key declared in set_decrypters_for.
-        varType: list(string)
-        defaultValue: []
-      - name: disable_services_on_destroy
-        description: Whether project services will be disabled when the resources are destroyed
+      - name: use_shared_vpc
+        description: Defines if the network created will be a single or shared vpc.
         varType: bool
         defaultValue: false
-      - name: dns_enable_inbound_forwarding
-        description: Toggle inbound query forwarding for VPC DNS.
-        varType: bool
-        defaultValue: true
-      - name: dns_enable_logging
-        description: Toggle DNS logging for VPC DNS.
-        varType: bool
-        defaultValue: true
+      - name: access_level_members
+        description: The list of additional members who will be in the access level.
+        varType: list(string)
+        required: true
       - name: egress_policies
         description: |-
           A list of all [egress policies](https://cloud.google.com/vpc-service-controls/docs/ingress-egress-rules#egress-rules-reference), each list object has a `from` and `to` value that describes egress_from and egress_to.
@@ -113,14 +125,6 @@ spec:
               to   = any
             }))
         defaultValue: []
-      - name: encrypters
-        description: List of comma-separated owners for each key declared in set_encrypters_for.
-        varType: list(string)
-        defaultValue: []
-      - name: folder_deletion_protection
-        description: Prevent Terraform from destroying or recreating the folder.
-        varType: string
-        defaultValue: true
       - name: ingress_policies
         description: |-
           A list of all [ingress policies](https://cloud.google.com/vpc-service-controls/docs/ingress-egress-rules#ingress-rules-reference), each list object has a `from` and `to` value that describes ingress_from and ingress_to.
@@ -137,6 +141,46 @@ spec:
               to   = any
             }))
         defaultValue: []
+      - name: region
+        description: The region in which the subnetwork will be created.
+        varType: string
+        required: true
+      - name: vpc_name
+        description: The name of the network.
+        varType: string
+        required: true
+      - name: subnet_ip
+        description: The CDIR IP range of the subnetwork.
+        varType: string
+        required: true
+      - name: private_service_connect_ip
+        description: The internal IP to be used for the private service connect.
+        varType: string
+        required: true
+      - name: service_account_project_roles
+        description: Common roles to apply to the Cloud Serverless service account in the serverless project.
+        varType: map(list(string))
+        defaultValue: {}
+      - name: artifact_registry_repository_name
+        description: The name of the Artifact Registry Repository to be created.
+        varType: string
+        required: true
+      - name: artifact_registry_repository_description
+        description: The description of the Artifact Registry Repository to be created.
+        varType: string
+        defaultValue: Secure Cloud Run Artifact Registry Repository
+      - name: artifact_registry_repository_format
+        description: The format of the Artifact Registry Repository to be created.
+        varType: string
+        defaultValue: DOCKER
+      - name: keyring_name
+        description: Keyring name.
+        varType: string
+        required: true
+      - name: key_rotation_period
+        description: Period of key rotation in seconds. Default value is equivalent to 30 days.
+        varType: string
+        defaultValue: 2592000s
       - name: key_name
         description: Key name.
         varType: string
@@ -145,98 +189,54 @@ spec:
         description: "The protection level to use when creating a version based on this template. Possible values: [\"SOFTWARE\", \"HSM\"]."
         varType: string
         defaultValue: HSM
-      - name: key_rotation_period
-        description: Period of key rotation in seconds. Default value is equivalent to 30 days.
-        varType: string
-        defaultValue: 2592000s
-      - name: keyring_name
-        description: Keyring name.
-        varType: string
-        required: true
       - name: location
         description: The location where resources are going to be deployed.
-        varType: string
-        required: true
-      - name: network_project_extra_apis
-        description: The extra APIs to be enabled during network project creation.
-        varType: list(string)
-        defaultValue: []
-      - name: network_project_name
-        description: The name to give the shared vpc project.
-        varType: string
-        defaultValue: ""
-      - name: org_id
-        description: The organization ID.
         varType: string
         required: true
       - name: owners
         description: List of comma-separated owners for each key declared in set_owners_for.
         varType: list(string)
         defaultValue: []
-      - name: parent_folder_id
-        description: The ID of a folder to host the infrastructure created in this module.
-        varType: string
-        defaultValue: ""
+      - name: encrypters
+        description: List of comma-separated owners for each key declared in set_encrypters_for.
+        varType: list(string)
+        defaultValue: []
+      - name: decrypters
+        description: List of comma-separated owners for each key declared in set_decrypters_for.
+        varType: list(string)
+        defaultValue: []
       - name: prevent_destroy
         description: Set the prevent_destroy lifecycle attribute on keys.
         varType: bool
         defaultValue: true
-      - name: private_service_connect_ip
-        description: The internal IP to be used for the private service connect.
-        varType: string
-        required: true
-      - name: project_deletion_policy
-        description: The deletion policy for the project created.
-        varType: string
-        defaultValue: PREVENT
-      - name: region
-        description: The region in which the subnetwork will be created.
-        varType: string
-        required: true
-      - name: security_project_extra_apis
-        description: The extra APIs to be enabled during security project creation.
-        varType: list(string)
-        defaultValue: []
-      - name: security_project_name
-        description: The name to give the security project.
-        varType: string
-        required: true
-      - name: serverless_folder_suffix
-        description: The suffix to be concat in the Serverless folder name fldr-serverless-<SUFFIX>.
-        varType: string
-        defaultValue: ""
-      - name: serverless_project_extra_apis
-        description: The extra APIs to be enabled during serverless projects creation.
-        varType: map(list(string))
-        defaultValue: {}
-      - name: serverless_project_names
-        description: The name to give the Cloud Serverless project.
-        varType: list(string)
-        required: true
-      - name: service_account_project_roles
-        description: Common roles to apply to the Cloud Serverless service account in the serverless project.
-        varType: map(list(string))
-        defaultValue: {}
-      - name: subnet_ip
-        description: The CDIR IP range of the subnetwork.
-        varType: string
-        required: true
-      - name: time_to_wait_service_identity_propagation
-        description: The time to wait for service identity propagation.
-        varType: string
-        defaultValue: 180s
+      - name: dns_enable_inbound_forwarding
+        description: Toggle inbound query forwarding for VPC DNS.
+        varType: bool
+        defaultValue: true
+      - name: disable_services_on_destroy
+        description: Whether project services will be disabled when the resources are destroyed
+        varType: bool
+        defaultValue: false
+      - name: dns_enable_logging
+        description: Toggle DNS logging for VPC DNS.
+        varType: bool
+        defaultValue: true
       - name: time_to_wait_vpc_sc_propagation
         description: The time to wait VPC-SC propagation when applying and destroying.
         varType: string
         defaultValue: 180s
-      - name: use_shared_vpc
-        description: Defines if the network created will be a single or shared vpc.
-        varType: bool
-        defaultValue: false
-      - name: vpc_name
-        description: The name of the network.
+      - name: time_to_wait_service_identity_propagation
+        description: The time to wait for service identity propagation.
         varType: string
-        required: true
+        defaultValue: 180s
+      - name: project_deletion_policy
+        description: The deletion policy for the project created.
+        varType: string
+        defaultValue: PREVENT
+      - name: folder_deletion_protection
+        description: Prevent Terraform from destroying or recreating the folder.
+        varType: string
+        defaultValue: true
     outputs:
       - name: access_context_manager_policy_id
         description: Access Context Manager ID.
@@ -276,12 +276,8 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/run.admin
-          - roles/iam.serviceAccountAdmin
-          - roles/artifactregistry.admin
-          - roles/iam.serviceAccountUser
-          - roles/serviceusage.serviceUsageViewer
-          - roles/cloudkms.admin
+          - roles/accesscontextmanager.policyAdmin
+          - roles/orgpolicy.policyAdmin
       - level: Project
         roles:
           - roles/resourcemanager.folderAdmin
@@ -289,8 +285,14 @@ spec:
           - roles/resourcemanager.projectDeleter
       - level: Project
         roles:
-          - roles/accesscontextmanager.policyAdmin
-          - roles/orgpolicy.policyAdmin
+          - roles/run.admin
+          - roles/iam.serviceAccountAdmin
+          - roles/artifactregistry.admin
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
+          - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
+          - roles/compute.viewer
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
@@ -302,3 +304,12 @@ spec:
       - cloudbilling.googleapis.com
       - monitoring.googleapis.com
       - compute.googleapis.com
+    providerVersions:
+      - source: hashicorp/google
+        version: ">= 6, < 7"
+      - source: hashicorp/google-beta
+        version: ">= 6, < 7"
+      - source: hashicorp/random
+        version: < 4.0
+      - source: hashicorp/time
+        version: < 1.0
