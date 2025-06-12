@@ -27,6 +27,6 @@ module "cloud_run_v2" {
       container_name  = "hello-world"
     }
   ]
-  iap_members     = ["user:test@test.test"]
+  iap_members                   = ["user:test@test.test"]
   cloud_run_deletion_protection = false
 }
