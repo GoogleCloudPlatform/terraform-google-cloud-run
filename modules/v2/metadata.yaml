@@ -472,6 +472,7 @@ spec:
         varType: string
         defaultValue: EXECUTION_ENVIRONMENT_GEN2
       - name: iap_members
+        description: Users/SAs to be given httpsResourceAccessor access to the service. IAP will be enabled when Users/SAs are entered
         varType: list(string)
         defaultValue: []
     outputs:
