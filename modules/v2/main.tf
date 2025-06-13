@@ -102,7 +102,6 @@ resource "google_cloud_run_v2_service" "main" {
   description = var.description
   labels      = var.service_labels
   iap_enabled = length(var.iap_members) > 0
-  
   deletion_protection = var.cloud_run_deletion_protection
 
   template {
