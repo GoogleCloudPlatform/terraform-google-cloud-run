@@ -96,12 +96,12 @@ resource "google_project_iam_member" "roles" {
 resource "google_cloud_run_v2_service" "main" {
   provider = google-beta
 
-  project     = var.project_id
-  name        = var.service_name
-  location    = var.location
-  description = var.description
-  labels      = var.service_labels
-  iap_enabled = length(var.iap_members) > 0
+  project             = var.project_id
+  name                = var.service_name
+  location            = var.location
+  description         = var.description
+  labels              = var.service_labels
+  iap_enabled         = length(var.iap_members) > 0
   deletion_protection = var.cloud_run_deletion_protection
 
   template {
