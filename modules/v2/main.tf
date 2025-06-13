@@ -387,10 +387,10 @@ resource "google_project_service_identity" "iap_p4sa" {
 }
 
 resource "google_cloud_run_v2_service_iam_member" "authorize_iap_p4sa" {
-  count    	= length(var.iap_members) > 0 ? 1 : 0
-  location 	= google_cloud_run_v2_service.main.location
-  project  	= google_cloud_run_v2_service.main.project
-  name     	= google_cloud_run_v2_service.main.name
-  role     	= "roles/run.invoker"
-  member        = google_project_service_identity.iap_p4sa[count.index].member
+  count    = length(var.iap_members) > 0 ? 1 : 0
+  location = google_cloud_run_v2_service.main.location
+  project  = google_cloud_run_v2_service.main.project
+  name     = google_cloud_run_v2_service.main.name
+  role     = "roles/run.invoker"
+  member   = google_project_service_identity.iap_p4sa[count.index].member
 }
