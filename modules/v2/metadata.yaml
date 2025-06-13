@@ -213,6 +213,12 @@ spec:
             spec:
               outputExpr: "{\"FIRESTORE_DATABASE_ID\": database_id}"
               inputPath: env_vars
+          - source:
+              source: https://github.com/GoogleCloudPlatform/terraform-google-alloy-db
+              version: ">= 5.0"
+            spec:
+              outputExpr: "{\"ALLOYDB_CLUSTER\" : cluster_id, \"ALLOYDB_PRIMARY_INSTANCE\" : primary_instance_id}"
+              inputPath: env_vars
       - name: create_service_account
         description: Create a new service account for cloud run service
         varType: bool
@@ -277,6 +283,11 @@ spec:
               version: ">= 0.1.0"
             spec:
               outputExpr: "[\"roles/datastore.user\"]"
+          - source:
+              source: https://github.com/GoogleCloudPlatform/terraform-google-alloy-db
+              version: ">= 5.0"
+            spec:
+              outputExpr: "[\"roles/alloydb.admin\"]"
       - name: ingress
         description: Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active.
         varType: string
