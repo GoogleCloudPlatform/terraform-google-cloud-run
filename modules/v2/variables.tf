@@ -337,7 +337,7 @@ variable "execution_environment" {
 }
 
 variable "iap_members" {
-  type	     = list(string)
+  type       = list(string)
   descrption = "Users/SAs to be given httpsResourceAccessor access to the service. IAP will be enabled when Users/SAs are entered"
   default    = []
 }
