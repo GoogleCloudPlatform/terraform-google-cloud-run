@@ -38,7 +38,10 @@ func TestV2WithIAP(t *testing.T) {
 
 		// Verify the Cloud Run Service deployed is in ready state.
 		readyCondition := utils.GetFirstMatchResult(t, runCmd.Get("status").Get("conditions").Array(), "type", "Ready")
+		annotations := runCmd.Get("metadata.annotations").Map()
 		assert.Equal("True", readyCondition.Get("status").String(), fmt.Sprintf("Should be in ready status"))
+		assert.Equal("true", annotations["run.googleapis.com/iap-enabled"].String(), fmt.Sprintf("IAP should be enabled"))
+		
 	})
 	runV2IAP.Test()
 }

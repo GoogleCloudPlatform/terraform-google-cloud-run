@@ -23,7 +23,8 @@ locals {
     "roles/serviceusage.serviceUsageViewer",
     "roles/cloudkms.admin",
     "roles/resourcemanager.projectIamAdmin",
-    "roles/compute.viewer"
+    "roles/compute.viewer",
+    "roles/iap.admin"
   ]
 
   folder_required_roles = [
