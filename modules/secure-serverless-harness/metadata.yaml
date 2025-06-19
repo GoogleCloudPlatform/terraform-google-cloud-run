@@ -295,6 +295,7 @@ spec:
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
           - roles/compute.viewer
+          - roles/iap.admin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
@@ -306,6 +307,7 @@ spec:
       - cloudbilling.googleapis.com
       - monitoring.googleapis.com
       - compute.googleapis.com
+      - iap.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"
