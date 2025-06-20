@@ -132,12 +132,15 @@ variable "volume_mounts" {
 }
 
 variable "vpc_access" {
+  description = "VPC access settings for Cloud Run Job. Supports either a VPC Connector or direct subnet attachment."
   type = list(object({
-    connector = string
-    egress    = string
+    connector  = optional(string)
+    egress     = optional(string, "PRIVATE_RANGES_ONLY")
+    network    = optional(string)
+    subnetwork = optional(string)
+    tags       = optional(list(string), [])
   }))
-  description = "VPC Access configuration to use for this Task."
-  default     = []
+  default = []
 }
 
 variable "limits" {
