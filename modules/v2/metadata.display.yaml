@@ -1,28 +1,14 @@
-# Copyright 2024 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: blueprints.cloud.google.com/v1alpha1
 kind: BlueprintMetadata
 metadata:
-  name: terraform-google-cloud-run-v-2-display
+  name: terraform-google-cloud-run-display
   annotations:
     config.kubernetes.io/local-config: "true"
 spec:
   info:
     title: Cloud Run v2 Service
     source:
-      repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
+      repo: https://github.com/yogitaupadhyay/terraform-google-cloud-run.git
       sourceType: git
       dir: /modules/v2
   ui:
@@ -37,62 +23,30 @@ spec:
         cloud_run_deletion_protection:
           name: cloud_run_deletion_protection
           title: Cloud Run Deletion Protection
-          level: 1
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value: false
         containers:
           name: containers
           title: Containers
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value:
-                - container_name: service-container
-                  container_image: us-docker.pkg.dev/cloudrun/container/hello
         create_service_account:
           name: create_service_account
           title: Create Service Account
-          level: 1
         custom_audiences:
           name: custom_audiences
           title: Custom Audiences
         description:
           name: description
           title: Description
-          level: 1
-          regexValidation: ^[\s\S]{0,512}$
-          validation: This field currently has a 512-character limit.
         enable_prometheus_sidecar:
           name: enable_prometheus_sidecar
           title: Enable Prometheus Sidecar
-          level: 1
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value: true
         encryption_key:
           name: encryption_key
           title: Encryption Key
-          level: 1
         execution_environment:
           name: execution_environment
           title: Execution Environment
-          level: 1
-          enumValueLabels:
-            - label: EXECUTION_ENVIRONMENT_GEN2
-              value: EXECUTION_ENVIRONMENT_GEN2
-            - label: EXECUTION_ENVIRONMENT_GEN1
-              value: EXECUTION_ENVIRONMENT_GEN1
         ingress:
           name: ingress
           title: Ingress
-          level: 1
-          enumValueLabels:
-            - label: INGRESS_TRAFFIC_ALL
-              value: INGRESS_TRAFFIC_ALL
-            - label: INGRESS_TRAFFIC_INTERNAL_ONLY
-              value: INGRESS_TRAFFIC_INTERNAL_ONLY
-            - label: INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER
-              value: INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER
         launch_stage:
           name: launch_stage
           title: Launch Stage
@@ -102,25 +56,21 @@ spec:
         max_instance_request_concurrency:
           name: max_instance_request_concurrency
           title: Max Instance Request Concurrency
-          level: 1
         members:
           name: members
           title: Members
-          level: 1
         project_id:
           name: project_id
           title: Project Id
         revision:
           name: revision
           title: Revision
-          level: 1
         service_account:
           name: service_account
           title: Service Account
         service_account_project_roles:
           name: service_account_project_roles
           title: Service Account Project Roles
-          level: 1
         service_annotations:
           name: service_annotations
           title: Service Annotations
@@ -130,21 +80,12 @@ spec:
         service_name:
           name: service_name
           title: Service Name
-          regexValidation: ^[a-z][a-z0-9-]{0,47}[a-z0-9]$
-          validation: Use lowercase letters, numbers, and hyphens. Start with a letter and end with letter/number. Must be 49 characters or fewer.
         service_scaling:
           name: service_scaling
           title: Service Scaling
-          level: 1
         session_affinity:
           name: session_affinity
           title: Session Affinity
-          level: 1
-          enumValueLabels:
-            - label: "true"
-              value: "true"
-            - label: "false"
-              value: "false"
         template_annotations:
           name: template_annotations
           title: Template Annotations
@@ -154,7 +95,6 @@ spec:
         template_scaling:
           name: template_scaling
           title: Template Scaling
-          level: 1
         timeout:
           name: timeout
           title: Timeout
@@ -164,19 +104,6 @@ spec:
         volumes:
           name: volumes
           title: Volumes
-          level: 1
         vpc_access:
           name: vpc_access
           title: Vpc Access
-          level: 1
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value:
-                egress: ALL_TRAFFIC
-                network_interfaces:
-                  network: default
-                  subnetwork: default
-    runtime:
-      outputs:
-        service_uri:
-          visibility: VISIBILITY_ROOT
