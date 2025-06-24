@@ -293,32 +293,63 @@ spec:
     outputs:
       - name: apphub_service_uri
         description: Service URI in CAIS style to be used by Apphub.
+        type:
+          - object
+          - location: string
+            service_id: string
+            service_uri: string
       - name: creator
         description: Email address of the authenticated creator.
+        type: string
       - name: effective_annotations
         description: All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services.
+        type:
+          - map
+          - string
       - name: last_modifier
         description: Email address of the last authenticated modifier.
+        type: string
       - name: latest_created_revision
         description: Name of the last created revision. See comments in reconciling for additional information on reconciliation process in Cloud Run.
+        type: string
       - name: latest_ready_revision
         description: Name of the latest revision that is serving traffic. See comments in reconciling for additional information on reconciliation process in Cloud Run.
+        type: string
       - name: location
         description: Location in which the Cloud Run service was created
+        type: string
       - name: observed_generation
         description: The generation of this Service currently serving traffic.
+        type: string
       - name: project_id
         description: Google Cloud project in which the service was created
+        type: string
       - name: service_account_id
         description: Service account id and email
+        type:
+          - object
+          - email: string
+            id: string
+            member: string
       - name: service_id
         description: Unique Identifier for the created service with format projects/{{project}}/locations/{{location}}/services/{{name}}
+        type: string
       - name: service_name
         description: Name of the created service
+        type: string
       - name: service_uri
         description: The main URI in which this Service is serving traffic.
+        type: string
       - name: traffic_statuses
         description: Detailed status information for corresponding traffic targets.
+        type:
+          - list
+          - - object
+            - percent: number
+              revision: string
+              tag: string
+              type: string
+              uri: string
   requirements:
     roles:
       - level: Project
