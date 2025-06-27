@@ -86,12 +86,27 @@ resource "google_cloud_run_v2_job" "job" {
       }
 
       dynamic "vpc_access" {
-        for_each = var.vpc_access
-        content {
-          connector = vpc_access.value["connector"]
-          egress    = vpc_access.value["egress"]
-        }
+  for_each = var.vpc_access
+  content {
+    dynamic "connector" {
+      for_each = lookup(vpc_access.value, "connector", null) != null ? [1] : []
+      content {
+        connector = vpc_access.value["connector"]
+        egress    = lookup(vpc_access.value, "egress", "PRIVATE_RANGES_ONLY")
       }
+    }
+
+    dynamic "network_interfaces" {
+      for_each = lookup(vpc_access.value, "network", null) != null && lookup(vpc_access.value, "subnetwork", null) != null ? [1] : []
+      content {
+        network    = vpc_access.value["network"]
+        subnetwork = vpc_access.value["subnetwork"]
+        tags       = lookup(vpc_access.value, "tags", [])
+      }
+    }
+  }
+}
+
     }
   }
 }
