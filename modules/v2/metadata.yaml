@@ -48,6 +48,8 @@ spec:
         location: examples/v2
       - name: v2_with_gmp
         location: examples/v2_with_gmp
+      - name: v2_with_iap
+        location: examples/v2_with_iap
   interfaces:
     variables:
       - name: project_id
@@ -469,6 +471,10 @@ spec:
         description: The sandbox environment to host this Revision.
         varType: string
         defaultValue: EXECUTION_ENVIRONMENT_GEN2
+      - name: iap_members
+        description: Users/SAs to be given httpsResourceAccessor access to the service. IAP will be enabled when Users/SAs are entered
+        varType: list(string)
+        defaultValue: []
     outputs:
       - name: apphub_service_uri
         description: Service URI in CAIS style to be used by Apphub.
@@ -550,6 +556,7 @@ spec:
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
           - roles/compute.viewer
+          - roles/iap.admin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
@@ -561,6 +568,7 @@ spec:
       - cloudbilling.googleapis.com
       - monitoring.googleapis.com
       - compute.googleapis.com
+      - iap.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"

@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ spec:
     version: 0.18.0
     actuationTool:
       flavor: Terraform
-      version: ">= 0.13"
+      version: ">= 1.3"
     description: {}
   content:
     examples:
@@ -48,19 +48,49 @@ spec:
         location: examples/v2
       - name: v2_with_gmp
         location: examples/v2_with_gmp
+      - name: v2_with_iap
+        location: examples/v2_with_iap
   interfaces:
     variables:
+      - name: project_id
+        description: The project ID to deploy to
+        varType: string
+        required: true
+      - name: name
+        description: The name of the Cloud Run job to create
+        varType: string
+        required: true
+      - name: location
+        description: Cloud Run job deployment location
+        varType: string
+        required: true
+      - name: image
+        description: GCR hosted image URL to deploy
+        varType: string
+        required: true
+      - name: exec
+        description: Whether to execute job after creation
+        varType: bool
+        defaultValue: false
+      - name: service_account_email
+        description: Service Account email needed for the job
+        varType: string
+        defaultValue: ""
       - name: argument
         description: Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments
         varType: list(string)
         defaultValue: []
-      - name: cloud_run_deletion_protection
-        description: This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services
-        varType: bool
-        defaultValue: true
       - name: container_command
         description: Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten
         varType: list(string)
+        defaultValue: []
+      - name: env_vars
+        description: Environment variables (cleartext)
+        varType: |-
+          list(object({
+              value = string
+              name  = string
+            }))
         defaultValue: []
       - name: env_secret_vars
         description: Environment variables (Secret Manager)
@@ -75,74 +105,23 @@ spec:
               }))
             }))
         defaultValue: []
-      - name: env_vars
-        description: Environment variables (cleartext)
-        varType: |-
-          list(object({
-              value = string
-              name  = string
-            }))
-        defaultValue: []
-      - name: exec
-        description: Whether to execute job after creation
-        varType: bool
-        defaultValue: false
-      - name: image
-        description: GCR hosted image URL to deploy
-        varType: string
-        required: true
-      - name: labels
-        description: A set of key/value label pairs to assign to the Cloud Run job.
-        varType: map(string)
-        defaultValue: {}
       - name: launch_stage
         description: The launch stage. (see https://cloud.google.com/products#product-launch-stages). Defaults to GA.
         varType: string
         defaultValue: ""
-      - name: limits
-        description: Resource limits to the container
-        varType: |-
-          object({
-              cpu    = optional(string)
-              memory = optional(string)
-            })
-      - name: location
-        description: Cloud Run job deployment location
-        varType: string
-        required: true
+      - name: labels
+        description: A set of key/value label pairs to assign to the Cloud Run job.
+        varType: map(string)
+        defaultValue: {}
       - name: max_retries
         description: Number of retries allowed per Task, before marking this Task failed.
         varType: number
-      - name: name
-        description: The name of the Cloud Run job to create
-        varType: string
-        required: true
       - name: parallelism
         description: Specifies the maximum desired number of tasks the execution should run at given time. Must be <= taskCount.
         varType: number
-      - name: project_id
-        description: The project ID to deploy to
-        varType: string
-        required: true
-      - name: service_account_email
-        description: Service Account email needed for the job
-        varType: string
-        defaultValue: ""
       - name: task_count
         description: Specifies the desired number of tasks the execution should run.
         varType: number
-      - name: timeout
-        description: Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers.
-        varType: string
-        defaultValue: 600s
-      - name: volume_mounts
-        description: Volume to mount into the container's filesystem.
-        varType: |-
-          list(object({
-              name       = string
-              mount_path = string
-            }))
-        defaultValue: []
       - name: volumes
         description: A list of Volumes to make available to containers.
         varType: |-
@@ -153,6 +132,14 @@ spec:
               })
             }))
         defaultValue: []
+      - name: volume_mounts
+        description: Volume to mount into the container's filesystem.
+        varType: |-
+          list(object({
+              name       = string
+              mount_path = string
+            }))
+        defaultValue: []
       - name: vpc_access
         description: VPC Access configuration to use for this Task.
         varType: |-
@@ -161,6 +148,21 @@ spec:
               egress    = string
             }))
         defaultValue: []
+      - name: limits
+        description: Resource limits to the container
+        varType: |-
+          object({
+              cpu    = optional(string)
+              memory = optional(string)
+            })
+      - name: timeout
+        description: Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers.
+        varType: string
+        defaultValue: 600s
+      - name: cloud_run_deletion_protection
+        description: This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services
+        varType: bool
+        defaultValue: true
     outputs:
       - name: id
         description: Cloud Run Job ID
@@ -168,13 +170,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/accesscontextmanager.policyAdmin
+          - roles/orgpolicy.policyAdmin
+      - level: Project
+        roles:
           - roles/resourcemanager.folderAdmin
           - roles/resourcemanager.projectCreator
           - roles/resourcemanager.projectDeleter
-      - level: Project
-        roles:
-          - roles/accesscontextmanager.policyAdmin
-          - roles/orgpolicy.policyAdmin
       - level: Project
         roles:
           - roles/run.admin
@@ -183,6 +185,9 @@ spec:
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
+          - roles/compute.viewer
+          - roles/iap.admin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
@@ -194,3 +199,9 @@ spec:
       - cloudbilling.googleapis.com
       - monitoring.googleapis.com
       - compute.googleapis.com
+      - iap.googleapis.com
+    providerVersions:
+      - source: devops-rob/terracurl
+        version: ~> 1.0
+      - source: hashicorp/google
+        version: ">= 6, < 7"
