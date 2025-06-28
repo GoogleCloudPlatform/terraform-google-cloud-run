@@ -55,7 +55,7 @@ Functional examples are included in the
 | timeout | Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers. | `string` | `"600s"` | no |
 | volume\_mounts | Volume to mount into the container's filesystem. | <pre>list(object({<br>    name       = string<br>    mount_path = string<br>  }))</pre> | `[]` | no |
 | volumes | A list of Volumes to make available to containers. | <pre>list(object({<br>    name = string<br>    cloud_sql_instance = object({<br>      instances = set(string)<br>    })<br>  }))</pre> | `[]` | no |
-| vpc\_access | VPC Access configuration to use for this Task. | <pre>list(object({<br>    connector = string<br>    egress    = string<br>  }))</pre> | `[]` | no |
+| vpc\_access | Configure this to enable your service to send traffic to a Virtual Private Cloud. Set egress to ALL\_TRAFFIC or PRIVATE\_RANGES\_ONLY. Choose a connector or network\_interfaces (for direct VPC egress). For details: https://cloud.google.com/run/docs/configuring/connecting-vpc | <pre>object({<br>    connector = optional(string)<br>    egress    = optional(string)<br>    network_interfaces = optional(object({<br>      network    = optional(string)<br>      subnetwork = optional(string)<br>      tags       = optional(list(string))<br>    }))<br>  })</pre> | `null` | no |
 
 ## Outputs
 
