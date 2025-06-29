@@ -79,8 +79,46 @@ resource "google_cloud_run_v2_job" "job" {
         for_each = var.volumes
         content {
           name = volumes.value["name"]
-          cloud_sql_instance {
-            instances = volumes.value.cloud_sql_instance["instances"]
+
+          dynamic "secret" {
+            for_each = volumes.value.secret[*]
+            content {
+              secret = secret.value["secret"]
+              items {
+                path    = secret.value.items["path"]
+                version = secret.value.items["version"]
+                mode    = secret.value.items["mode"]
+              }
+            }
+          }
+
+          dynamic "cloud_sql_instance" {
+            for_each = volumes.value.cloud_sql_instance[*]
+            content {
+              instances = cloud_sql_instance.value["instances"]
+            }
+          }
+          dynamic "empty_dir" {
+            for_each = volumes.value.empty_dir[*]
+            content {
+              medium     = empty_dir.value["medium"]
+              size_limit = empty_dir.value["size_limit"]
+            }
+          }
+          dynamic "gcs" {
+            for_each = volumes.value.gcs[*]
+            content {
+              bucket    = gcs.value["bucket"]
+              read_only = gcs.value["read_only"]
+            }
+          }
+          dynamic "nfs" {
+            for_each = volumes.value.nfs[*]
+            content {
+              server    = nfs.value["server"]
+              path      = nfs.value["path"]
+              read_only = nfs.value["read_only"]
+            }
           }
         }
       }
