@@ -55,8 +55,8 @@ variable "containers" {
       mount_path = string
     })), [])
     ports = optional(object({
-      name           = optional(string, "http1")
-      container_port = optional(number, 8080)
+      name           = optional(string)
+      container_port = optional(number)
     }), {})
     resources = optional(object({
       limits = optional(object({
