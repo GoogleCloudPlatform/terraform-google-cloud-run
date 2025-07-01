@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -64,6 +64,8 @@ spec:
         location: examples/v2
       - name: v2_with_gmp
         location: examples/v2_with_gmp
+      - name: v2_with_gpu
+        location: examples/v2_with_gpu
   interfaces:
     variables:
       - name: project_id
@@ -332,6 +334,8 @@ spec:
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
+          - roles/compute.viewer
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
