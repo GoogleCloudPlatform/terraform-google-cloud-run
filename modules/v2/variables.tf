@@ -59,10 +59,7 @@ variable "containers" {
       container_port = optional(number, 8080)
     }), {})
     resources = optional(object({
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string)
-      }))
+      limits = optional(map(string))
       cpu_idle          = optional(bool, true)
       startup_cpu_boost = optional(bool, false)
     }), {})
@@ -110,6 +107,20 @@ variable "containers" {
     }), null)
   }))
   description = "Map of container images for the service"
+}
+
+variable "node_selector" {
+  type = object({
+    accelerator = string
+  })
+  description = "Node Selector describes the hardware requirements of the resources."
+  default     = null
+}
+
+variable "gpu_zonal_redundancy_disabled" {
+  type        = bool
+  description = "True if GPU zonal redundancy is disabled on this revision."
+  default     = false
 }
 
 variable "create_service_account" {

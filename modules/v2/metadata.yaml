@@ -92,6 +92,7 @@ spec:
                 limits = optional(object({
                   cpu    = optional(string)
                   memory = optional(string)
+                  gpu    = optional(string)
                 }))
                 cpu_idle          = optional(bool, true)
                 startup_cpu_boost = optional(bool, false)
@@ -219,6 +220,15 @@ spec:
             spec:
               outputExpr: "{\"ALLOYDB_INSTANCE_HOST\" : primary_instance_ip, \"ALLOYDB_READ_REPLICAS\": env_vars.ALLOYDB_READ_REPLICAS}"
               inputPath: env_vars
+      - name: gpu
+        description: GPU configuration for the service
+        varType: |-
+          object({
+            accelerator = string
+          })
+      - name: gpu_zonal_redundancy_disabled
+        description: True if GPU zonal redundancy is disabled on this revision
+        varType: bool
       - name: create_service_account
         description: Create a new service account for cloud run service
         varType: bool
