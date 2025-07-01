@@ -167,7 +167,11 @@ resource "google_cloud_run_v2_service" "main" {
         }
 
         resources {
-          limits            = containers.value.resources.limits
+          limits = {
+            cpu              = containers.value.resources.limits.cpu
+            memory           = containers.value.resources.limits.memory
+            "nvidia.com/gpu" = containers.value.resources.limits.nvidia_gpu
+          }
           cpu_idle          = containers.value.resources.cpu_idle
           startup_cpu_boost = containers.value.resources.startup_cpu_boost
         }

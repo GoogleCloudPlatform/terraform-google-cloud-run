@@ -35,9 +35,9 @@ module "cloud_run_v2_gpu" {
     container_image = "us-docker.pkg.dev/cloudrun/container/hello"
     resources = {
       limits = {
-        "cpu"    = "4"
-        "memory" = "16Gi"
-        "nvidia.com/gpu" = "1"
+        cpu        = "4"
+        memory     = "16Gi"
+        nvidia_gpu = "1"
       }
       cpu_idle = false
     }
