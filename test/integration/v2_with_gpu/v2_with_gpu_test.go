@@ -37,22 +37,18 @@ func TestV2WithGPU(t *testing.T) {
 		run_cmd := gcloud.Run(t, "run services describe", gcloud.WithCommonArgs([]string{serviceName, "--project", projectID, "--region", serviceLocation, "--format", "json"}))
 
 		// Verify the Cloud Run Service deployed is in ready state.
-		readyCondition := utils.GetFirstMatchResult(t, run_cmd.Get("status").Get("conditions").Array(), "type", "Ready")
+		readyCondition := utils.GetFirstMatchResult(t, run_cmd.Get("status.conditions").Array(), "type", "Ready")
 		assert.Equal("True", readyCondition.Get("status").String(), fmt.Sprintf("Should be in ready status"))
 
 		// Verify GPU-specific configurations
 		// Check that the service has the correct GPU accelerator node selector
-		nodeSelector := run_cmd.Get("spec").Get("template").Get("spec").Get("nodeSelector")
-		accelerator := nodeSelector.Get("run.googleapis.com/accelerator").String()
+		accelerator := run_cmd.Get("spec.template.spec.nodeSelector.run\\.googleapis\\.com/accelerator").String()
 		assert.Equal("nvidia-l4", accelerator, "Should have nvidia-l4 accelerator configured")
 
 		// Check that the container has GPU resource limits
-		containers := run_cmd.Get("spec").Get("template").Get("spec").Get("containers").Array()
-		assert.Greater(len(containers), 0, "Should have at least one container")
-
-		firstContainer := containers[0]
-		gpuLimit := firstContainer.Get("resources").Get("limits").Get("nvidia.com/gpu").String()
+		gpuLimit := run_cmd.Get("spec.template.spec.containers.0.resources.limits.nvidia\\.com/gpu").String()
 		assert.Equal("1", gpuLimit, "Should have 1 GPU configured in resource limits")
 	})
 	runV2WithGPU.Test()
-} 
+}
+ 
