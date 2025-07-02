@@ -335,3 +335,9 @@ variable "execution_environment" {
     error_message = "Allowed values for ingress are \"EXECUTION_ENVIRONMENT_GEN1\", \"EXECUTION_ENVIRONMENT_GEN2\"."
   }
 }
+
+variable "iap_members" {
+  type        = list(string)
+  description = "Users/SAs to be given httpsResourceAccessor access to the service. IAP will be enabled when Users/SAs are entered"
+  default     = []
+}
