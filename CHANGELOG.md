@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.19.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.18.0...v0.19.0) (2025-07-03)
+
+
+### Features
+
+* Identity-Aware Proxy (IAP) integration in Cloud Run v2 modules ([#353](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/353)) ([110fba6](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/110fba63986e3d1806b32b5d0f637064f3f2807b))
+
 ## [0.18.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.17.5...v0.18.0) (2025-06-25)
 
 
