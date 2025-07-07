@@ -44,6 +44,13 @@ spec:
         containers:
           name: containers
           title: Containers
+          properties:
+            container_image:
+              name: container_image
+              title: Container Image
+              subtext: Url of the Docker container image.
+              regexValidation: ^((([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}(:[0-9]+)?/)?([a-z0-9]+([._-][a-z0-9]+)*/)*[a-z0-9]+([._-][a-z0-9]+)*(:(\w[\w.-]{0,127})|@sha256:[a-fA-F0-9]{64})?)$
+              validation: The image url is invalid.
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
