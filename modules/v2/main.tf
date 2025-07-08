@@ -96,12 +96,12 @@ resource "google_project_iam_member" "roles" {
 resource "google_cloud_run_v2_service" "main" {
   provider = google-beta
 
-  project     = var.project_id
-  name        = var.service_name
-  location    = var.location
-  description = var.description
-  labels      = var.service_labels
-
+  project             = var.project_id
+  name                = var.service_name
+  location            = var.location
+  description         = var.description
+  labels              = var.service_labels
+  iap_enabled         = length(var.iap_members) > 0
   deletion_protection = var.cloud_run_deletion_protection
 
   template {
@@ -379,4 +379,29 @@ resource "google_cloud_run_v2_service_iam_member" "authorize" {
   name     = google_cloud_run_v2_service.main.name
   role     = "roles/run.invoker"
   member   = each.value
+}
+
+resource "google_iap_web_cloud_run_service_iam_member" "iap_access" {
+  for_each               = toset(var.iap_members)
+  project                = google_cloud_run_v2_service.main.project
+  location               = google_cloud_run_v2_service.main.location
+  cloud_run_service_name = google_cloud_run_v2_service.main.name
+  role                   = "roles/iap.httpsResourceAccessor"
+  member                 = each.value
+}
+
+resource "google_project_service_identity" "iap_p4sa" {
+  count    = length(var.iap_members) > 0 ? 1 : 0
+  provider = google-beta
+  project  = var.project_id
+  service  = "iap.googleapis.com"
+}
+
+resource "google_cloud_run_v2_service_iam_member" "authorize_iap_p4sa" {
+  count    = length(var.iap_members) > 0 ? 1 : 0
+  location = google_cloud_run_v2_service.main.location
+  project  = google_cloud_run_v2_service.main.project
+  name     = google_cloud_run_v2_service.main.name
+  role     = "roles/run.invoker"
+  member   = google_project_service_identity.iap_p4sa[count.index].member
 }

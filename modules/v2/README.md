@@ -60,6 +60,7 @@ Functional examples are included in the
 | encryption\_key | A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. This is optional. | `string` | `null` | no |
 | execution\_environment | The sandbox environment to host this Revision. | `string` | `"EXECUTION_ENVIRONMENT_GEN2"` | no |
 | gpu\_zonal\_redundancy\_disabled | True if GPU zonal redundancy is disabled on this revision. | `bool` | `false` | no |
+| iap\_members | Users/SAs to be given httpsResourceAccessor access to the service. IAP will be enabled when Users/SAs are entered | `list(string)` | `[]` | no |
 | ingress | Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS\_TRAFFIC\_UNSPECIFIED if no revision is active. | `string` | `"INGRESS_TRAFFIC_ALL"` | no |
 | launch\_stage | The launch stage as defined by Google Cloud Platform Launch Stages. Cloud Run supports ALPHA, BETA, and GA. If no value is specified, GA is assumed. | `string` | `"GA"` | no |
 | location | Cloud Run service deployment location | `string` | n/a | yes |

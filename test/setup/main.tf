@@ -36,6 +36,7 @@ module "project" {
     "accesscontextmanager.googleapis.com",
     "cloudbilling.googleapis.com",
     "monitoring.googleapis.com",
-    "compute.googleapis.com"
+    "compute.googleapis.com",
+    "iap.googleapis.com"
   ]
 }
