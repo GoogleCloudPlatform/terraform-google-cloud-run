@@ -60,9 +60,9 @@ variable "containers" {
     }), {})
     resources = optional(object({
       limits = optional(object({
-        cpu                 = optional(string)
-        memory              = optional(string)
-        nvidia_gpu          = optional(string)
+        cpu        = optional(string)
+        memory     = optional(string)
+        nvidia_gpu = optional(string)
       }))
       cpu_idle          = optional(bool, true)
       startup_cpu_boost = optional(bool, false)
@@ -117,7 +117,7 @@ variable "node_selector" {
   type = object({
     accelerator = string
   })
-  description = "Node Selector describes the hardware requirements of the resources."
+  description = "Node Selector describes the hardware requirements of the GPU resource (https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector)."
   default     = null
 }
 

@@ -165,21 +165,6 @@ spec:
         description: This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services
         varType: bool
         defaultValue: true
-      - name: limits
-        description: Resource limits to the container
-        varType: |-
-          object({
-              cpu    = optional(string)
-              memory = optional(string)
-            })
-      - name: timeout
-        description: Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers.
-        varType: string
-        defaultValue: 600s
-      - name: cloud_run_deletion_protection
-        description: This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services
-        varType: bool
-        defaultValue: true
     outputs:
       - name: id
         description: Cloud Run Job ID
@@ -216,6 +201,7 @@ spec:
       - cloudbilling.googleapis.com
       - monitoring.googleapis.com
       - compute.googleapis.com
+      - iap.googleapis.com
     providerVersions:
       - source: devops-rob/terracurl
         version: ~> 1.0
