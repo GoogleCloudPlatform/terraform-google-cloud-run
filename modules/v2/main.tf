@@ -15,7 +15,7 @@
  */
 
 data "google_compute_default_service_account" "default" {
-  count   = local.create_service_account == false ? 1 : 0
+  count   = local.create_service_account == false && var.service_account == null ? 1 : 0
   project = var.project_id
 }
 
