@@ -144,6 +144,20 @@ steps:
 - id: v2-iap-teardown
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestV2WithIAP --stage teardown --verbose']
+- id: v2-gpu-init
+  waitFor:
+    - v2-iap-teardown
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestV2WithGPU --stage init --verbose']
+- id: v2-gpu-apply
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestV2WithGPU --stage apply --verbose']
+- id: v2-gpu-verify
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestV2WithGPU --stage verify --verbose']
+- id: v2-gpu-teardown
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestV2WithGPU --stage teardown --verbose']
 
 tags:
 - 'ci'
