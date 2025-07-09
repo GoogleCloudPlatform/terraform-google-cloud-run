@@ -37,6 +37,25 @@ locals {
     "roles/accesscontextmanager.policyAdmin",
     "roles/orgpolicy.policyAdmin"
   ]
+
+  per_module_roles = {
+    root = [
+      "roles/iam.serviceAccountAdmin",
+      "roles/iam.serviceAccountUser",
+    ],
+    job-exec = [
+      "roles/run.admin",
+      "roles/artifactregistry.admin",
+    ],
+    secure-cloud-run = [
+      "roles/run.admin",
+      "roles/artifactregistry.admin",
+    ],
+    secure-cloud-run-core= [
+      "roles/run.developer",
+      "roles/storage.objectViewer",
+    ],
+  }
 }
 
 resource "google_service_account" "int_test" {
