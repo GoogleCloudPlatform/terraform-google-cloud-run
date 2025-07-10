@@ -171,7 +171,7 @@ resource "google_cloud_run_v2_service" "main" {
           # where the provider attempts to remove default values set by the API.
           limits = try(containers.value.resources.limits, null) != null ? {
             cpu              = try(containers.value.resources.limits.cpu, null),
-            memory           = containers.value.resources.limits.memory,
+            memory           = try(containers.value.resources.limits.memory, null),
             "nvidia.com/gpu" = try(containers.value.resources.limits.nvidia_gpu, null)
           } : null
           cpu_idle          = containers.value.resources.cpu_idle
