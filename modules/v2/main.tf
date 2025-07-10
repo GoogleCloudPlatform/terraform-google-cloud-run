@@ -170,7 +170,7 @@ resource "google_cloud_run_v2_service" "main" {
           # Setting limits to null when no values are provided prevents a permanent diff
           # where the provider attempts to remove default values set by the API.
           limits = try(containers.value.resources.limits, null) != null ? {
-            cpu              = containers.value.resources.limits.cpu,
+            cpu              = try(containers.value.resources.limits.cpu, null),
             memory           = containers.value.resources.limits.memory,
             "nvidia.com/gpu" = try(containers.value.resources.limits.nvidia_gpu, null)
           } : null
