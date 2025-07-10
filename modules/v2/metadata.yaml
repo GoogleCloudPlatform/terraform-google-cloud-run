@@ -70,7 +70,7 @@ spec:
         description: Cloud Run service description. This field currently has a 512-character limit.
         varType: string
       - name: containers
-        description: Map of container images for the service
+        description: Container images for the service
         varType: |-
           list(object({
               container_name       = optional(string, null)
@@ -304,7 +304,7 @@ spec:
             spec:
               outputExpr: "[\"roles/alloydb.admin\"]"
       - name: ingress
-        description: Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active.
+        description: Restricts network access to your Cloud Run service
         varType: string
         defaultValue: INGRESS_TRAFFIC_ALL
       - name: members
@@ -400,7 +400,7 @@ spec:
             }))
         defaultValue: []
       - name: service_scaling
-        description: Scaling settings that apply to the whole service
+        description: Bounds the number of container instances for the service
         varType: |-
           object({
               min_instance_count = optional(number)
@@ -445,7 +445,7 @@ spec:
         description: The unique name for the revision. If this field is omitted, it will be automatically generated based on the Service name
         varType: string
       - name: template_scaling
-        description: Scaling settings for this Revision.
+        description: Maximum and minimum number of instances for this Revision
         varType: |-
           object({
               min_instance_count = optional(number)
