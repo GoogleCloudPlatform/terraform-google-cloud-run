@@ -110,7 +110,7 @@ variable "containers" {
       }), null)
     }), null)
   }))
-  description = "Map of container images for the service"
+  description = "Container images for the service"
 }
 
 variable "node_selector" {
@@ -141,7 +141,7 @@ variable "service_account_project_roles" {
 
 variable "ingress" {
   type        = string
-  description = "Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active."
+  description = "Restricts network access to your Cloud Run service"
   default     = "INGRESS_TRAFFIC_ALL"
 
   validation {
@@ -231,7 +231,7 @@ variable "service_scaling" {
   type = object({
     min_instance_count = optional(number)
   })
-  description = "Scaling settings that apply to the whole service"
+  description = "Bounds the number of container instances for the service"
   default     = null
 }
 
@@ -294,7 +294,7 @@ variable "template_scaling" {
     min_instance_count = optional(number)
     max_instance_count = optional(number)
   })
-  description = "Scaling settings for this Revision."
+  description = "Maximum and minimum number of instances for this Revision"
   default     = null
 }
 

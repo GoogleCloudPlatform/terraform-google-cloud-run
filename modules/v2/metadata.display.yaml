@@ -48,14 +48,164 @@ spec:
             container_image:
               name: container_image
               title: Container Image
-              subtext: Url of the Docker container image.
               regexValidation: ^((([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}(:[0-9]+)?/)?([a-z0-9]+([._-][a-z0-9]+)*/)*[a-z0-9]+([._-][a-z0-9]+)*(:(\w[\w.-]{0,127})|@sha256:[a-fA-F0-9]{64})?)$
-              validation: The image url is invalid.
+              validation: Must be a valid Docker image (lowercase repo, optional registry, tag, or SHA256 digest)
+            volume_mounts:
+              name: volume_mounts
+              title: Volume Mounts
+              subtext: Mount In-memory, Network File System, Secret and Cloud Storage bucket volumes to your container
+            resources:
+              name: resources
+              title: Resources
+              properties:
+                limits:
+                  name: limits
+                  title: Limits
+                  properties:
+                    cpu:
+                      name: cpu
+                      title: CPU
+                      subtext: Number of vCPUs allocated to each instance of this container
+                    memory:
+                      name: memory
+                      title: Memory
+                      subtext: Memory to allocate to each instance of this container
+            startup_probe:
+              name: startup_probe
+              title: Startup Probe
+              properties:
+                failure_threshold:
+                  name: failure_threshold
+                  title: Failure Threshold
+                  subtext: Number of times to retry the probe before marking the container as Unready
+                  min: 1
+                  max: 2147483647
+                  validation: Choose an integer value between 1 and 2147483647
+                initial_delay_seconds:
+                  name: initial_delay_seconds
+                  title: Initial Delay Seconds
+                  subtext: Number of seconds after the container has started before performing the first probe. Enter an integer value between 0 and 240
+                  min: 0
+                  max: 240
+                  validation: Enter an integer value between 0 and 240
+                timeout_seconds:
+                  name: timeout_seconds
+                  title: Timeout Seconds
+                  subtext: Number of seconds after which the probe times out. This value shouldn't exceed Period seconds. Enter an integer value between 1 and 240
+                  min: 1
+                  max: 240
+                  validation: Enter an integer value between 1 and 240
+                period_seconds:
+                  name: period_seconds
+                  title: Period Seconds
+                  subtext: Number of seconds to wait between starting a probe attempt. Enter an integer value between 1 and 240
+                  min: 1
+                  max: 240
+                  validation: Enter an integer value between 1 and 240
+                http_get:
+                  name: http_get
+                  title: Http Get
+                  properties:
+                    get:
+                      name: get
+                      title: Get
+                      subtext: "Path to access on the HTTP server. Ex: e.g./reddy"
+                    port:
+                      name: port
+                      title: Port
+                      subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
+                      min: 1
+                      max: 65535
+                      validation: Choose an integer value between 1 and 65535
+                    http_headers:
+                      name: http_headers
+                      title: Http Headers
+                      subtext: Custom headers to set in the request. HTTP allows repeated headers
+                tcp_socket:
+                  name: tcp_socket
+                  title: TCP Socket
+                  subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
+                grpc:
+                  name: grpc
+                  title: GRPC
+                  properties:
+                    port:
+                      name: port
+                      title: Port
+                      subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080.
+            liveness_probe:
+              name: liveness_probe
+              title: Liveness Probe
+              properties:
+                failure_threshold:
+                  name: failure_threshold
+                  title: Failure Threshold
+                  subtext: Number of seconds after the container has started before performing the first probe. Enter an integer value between 0 and 3600
+                initial_delay_seconds:
+                  name: initial_delay_seconds
+                  title: Initial Delay Seconds
+                  subtext: Number of times to retry the probe before marking the container as Unready
+                timeout_seconds:
+                  name: timeout_seconds
+                  title: Timeout Seconds
+                  subtext: Number of times to retry the probe before marking the container as Unready
+                period_seconds:
+                  name: period_seconds
+                  title: Period Seconds
+                  subtext: Number of seconds to wait between starting a probe attempt. Enter an integer value between 1 and 3600
+                http_get:
+                  name: http_get
+                  title: Http Get
+                  properties:
+                    path:
+                      name: path
+                      title: Path
+                      subtext: Path to access on HTTP server
+                    port:
+                      name: port
+                      title: Port
+                      subtext: Port to make connection for the Cloud Run instance. It will default to container port which is 8080
+                    http_headers:
+                      name: http_headers
+                      title: Http Headers
+                      subtext: Custom Headers to set in the request. HTTP allows repeated headers.
+            ports:
+              name: ports
+              title: Ports
+              properties:
+                name:
+                  name: name
+                  title: Name
+                  regexValidation: ^[a-z0-9.-]*$
+                  validation: Name may contain lowercase letters, numbers, hyphens or dots
+                container_port:
+                  name: container_port
+                  title: Container Port
+                  subtext: Requests will be sent to the container on this port
+                  min: 1
+                  max: 65535
+                  validation: Choose an integer value between 1 and 65535
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
                 - container_name: service-container
                   container_image: us-docker.pkg.dev/cloudrun/container/hello
+                  ports:
+                    container_port: 8080
+                  startup_probe:
+                    failure_threshold: 3
+                    initial_delay_seconds: 0
+                    period_seconds: 10
+                  liveness_probe:
+                    failure_threshold: 0
+                    initial_delay_seconds: 3
+                    timeout_seconds: 3
+                    period_seconds: 10
+                    http_get:
+                      path: Path (e.g./.ready)
+                      port: 8080
+                    grpc:
+                      port: 8080
         create_service_account:
           name: create_service_account
           title: Create Service Account
@@ -145,6 +295,10 @@ spec:
           name: service_scaling
           title: Service Scaling
           level: 1
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value:
+                min_intance_count: 0
         session_affinity:
           name: session_affinity
           title: Session Affinity
@@ -164,6 +318,16 @@ spec:
           name: template_scaling
           title: Template Scaling
           level: 1
+          properties:
+            min_instance_count:
+              name: min_instance_count
+              title: Min Instance Count
+              subtext: The service minimum instances is preferable for most use-cases. Only use this setting if you specifically require a per-revision setting
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value:
+                min_instance_count: 0
+                max_instance_count: 100
         timeout:
           name: timeout
           title: Timeout
@@ -173,7 +337,37 @@ spec:
         volumes:
           name: volumes
           title: Volumes
-          level: 1
+          subtext: After creating a volume, navigate to the Container’s section to mount it to a container
+          properties:
+            name:
+              name: name
+              title: Name
+              regexValidation: ^[a-zA-Z0-9_-]*$
+              validation: Volume name must only contain alphanumeric characters, hyphens and underscores
+            secret:
+              name: secret
+              title: Secret
+              properties:
+                items:
+                  name: items
+                  title: Items
+                  properties:
+                    path:
+                      name: path
+                      title: Path
+                      subtext: "Example format (parent secret): \"projects/project-number/secrets/secret-name\""
+            nfs:
+              name: nfs
+              title: NFS
+              properties:
+                server:
+                  name: server
+                  title: Server
+                  subtext: The IP address or domain of your NFS server
+                path:
+                  name: path
+                  title: Path
+                  subtext: The path to the NFS server directory you want to mount
         vpc_access:
           name: vpc_access
           title: Vpc Access
