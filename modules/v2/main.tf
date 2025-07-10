@@ -115,6 +115,14 @@ resource "google_cloud_run_v2_service" "main" {
     encryption_key                   = var.encryption_key
     max_instance_request_concurrency = var.max_instance_request_concurrency
     session_affinity                 = var.session_affinity
+    gpu_zonal_redundancy_disabled    = var.gpu_zonal_redundancy_disabled
+
+    dynamic "node_selector" {
+      for_each = var.node_selector != null ? [var.node_selector] : []
+      content {
+        accelerator = node_selector.value.accelerator
+      }
+    }
 
     dynamic "scaling" {
       for_each = var.template_scaling[*]
@@ -159,7 +167,13 @@ resource "google_cloud_run_v2_service" "main" {
         }
 
         resources {
-          limits            = containers.value.resources.limits
+          # Setting limits to null when no values are provided prevents a permanent diff
+          # where the provider attempts to remove default values set by the API.
+          limits = try(containers.value.resources.limits, null) != null ? {
+            cpu              = try(containers.value.resources.limits.cpu, null),
+            memory           = try(containers.value.resources.limits.memory, null),
+            "nvidia.com/gpu" = try(containers.value.resources.limits.nvidia_gpu, null)
+          } : null
           cpu_idle          = containers.value.resources.cpu_idle
           startup_cpu_boost = containers.value.resources.startup_cpu_boost
         }
