@@ -17,7 +17,7 @@
 locals {
   int_required_roles = concat([
     "roles/cloudkms.admin",
-  ],flatten(values(per_module_roles)))
+  ], flatten(values(per_module_roles)))
 
   folder_required_roles = [
     "roles/resourcemanager.folderAdmin",
@@ -43,11 +43,22 @@ locals {
     ],
     secure-cloud-run = [
       "roles/run.admin",
-      "roles/artifactregistry.admin",
+      "roles/compute.networkAdmin",
+      "roles/compute.loadBalancerAdmin",
+      "roles/iam.serviceAccountUser",
+      "roles/compute.securityAdmin",
+      "roles/compute.sslAdmin",
     ],
-    secure-cloud-run-core= [
-      "roles/run.developer",
-      "roles/storage.objectViewer",
+    secure-cloud-run-core = [
+      "roles/run.admin",
+      "roles/compute.networkAdmin",
+      "roles/compute.loadBalancerAdmin",
+      "roles/iam.serviceAccountUser",
+      "roles/compute.securityAdmin",
+      "roles/compute.sslAdmin",
+      "roles/artifactregistry.reader",
+      "roles/cloudbuild.builds.editor",
+      "roles/serviceusage.serviceUsageConsumer",
     ],
     secure-cloud-run-security = [
       "roles/run.developer",
