@@ -80,7 +80,7 @@ locals {
 
   int_required_roles = concat([
     "roles/cloudkms.admin",
-  ], flatten(values(per_module_roles)))
+  ], flatten(values(locals.per_module_roles)))
 }
 
 resource "google_service_account" "int_test" {
