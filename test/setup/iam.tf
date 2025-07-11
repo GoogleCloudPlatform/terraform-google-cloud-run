@@ -15,10 +15,6 @@
  */
 
 locals {
-  int_required_roles = concat([
-    "roles/cloudkms.admin",
-  ], flatten(values(per_module_roles)))
-
   folder_required_roles = [
     "roles/resourcemanager.folderAdmin",
     "roles/resourcemanager.projectCreator",
@@ -81,6 +77,10 @@ locals {
       "roles/storage.objectViewer",
     ],
   }
+
+  int_required_roles = concat([
+    "roles/cloudkms.admin",
+  ], flatten(values(per_module_roles)))
 }
 
 resource "google_service_account" "int_test" {
