@@ -62,7 +62,7 @@ locals {
     # Set default values for the sidecar container
     ports                = {}
     working_dir          = null
-    depends_on_container = [local.ingress_container.container_name]
+    depends_on_container = try(local.ingress_container.container_name, null) != null ? [local.ingress_container.container_name] : []
     container_args       = null
     container_command    = null
     env_vars             = {}
