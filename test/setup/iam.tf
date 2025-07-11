@@ -17,7 +17,6 @@
 locals {
   folder_required_roles = [
     "roles/resourcemanager.folderAdmin",
-    "roles/resourcemanager.projectCreator",
     "roles/resourcemanager.projectDeleter"
   ]
 
@@ -81,7 +80,6 @@ locals {
     ],
     service-project-factory = [
       "roles/run.developer",
-      "roles/resourcemanager.projectCreator",
       "roles/resourcemanager.projectDeleter",
       "roles/billing.user",
       "roles/compute.networkUser",

@@ -285,7 +285,6 @@ spec:
       - level: Project
         roles:
           - roles/resourcemanager.folderAdmin
-          - roles/resourcemanager.projectCreator
           - roles/resourcemanager.projectDeleter
     services:
       - cloudresourcemanager.googleapis.com
