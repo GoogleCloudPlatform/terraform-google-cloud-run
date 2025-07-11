@@ -43,7 +43,6 @@ locals {
       "roles/compute.loadBalancerAdmin",
       "roles/iam.serviceAccountUser",
       "roles/compute.securityAdmin",
-      "roles/compute.sslAdmin",
     ],
     secure-cloud-run-core = [
       "roles/run.admin",
@@ -51,7 +50,6 @@ locals {
       "roles/compute.loadBalancerAdmin",
       "roles/iam.serviceAccountUser",
       "roles/compute.securityAdmin",
-      "roles/compute.sslAdmin",
       "roles/artifactregistry.reader",
       "roles/cloudbuild.builds.editor",
       "roles/serviceusage.serviceUsageConsumer",
