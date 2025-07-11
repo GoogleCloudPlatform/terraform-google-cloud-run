@@ -15,17 +15,9 @@
  */
 
 locals {
-  int_required_roles = [
-    "roles/run.admin",
-    "roles/iam.serviceAccountAdmin",
-    "roles/artifactregistry.admin",
-    "roles/iam.serviceAccountUser",
-    "roles/serviceusage.serviceUsageViewer",
+  int_required_roles = concat([
     "roles/cloudkms.admin",
-    "roles/resourcemanager.projectIamAdmin",
-    "roles/compute.viewer",
-    "roles/iap.admin"
-  ]
+  ],flatten(values(per_module_roles))
 
   folder_required_roles = [
     "roles/resourcemanager.folderAdmin",
@@ -44,8 +36,10 @@ locals {
       "roles/iam.serviceAccountUser",
     ],
     job-exec = [
-      "roles/run.admin",
-      "roles/artifactregistry.admin",
+      "roles/run.developer",
+      "roles/run.invoker",
+      "roles/artifactregistry.reader",
+      "roles/iam.serviceAccountUser",
     ],
     secure-cloud-run = [
       "roles/run.admin",
