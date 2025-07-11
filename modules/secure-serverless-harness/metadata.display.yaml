@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -70,6 +70,9 @@ spec:
         encrypters:
           name: encrypters
           title: Encrypters
+        folder_deletion_protection:
+          name: folder_deletion_protection
+          title: Folder Deletion Protection
         ingress_policies:
           name: ingress_policies
           title: Ingress Policies
@@ -109,6 +112,9 @@ spec:
         private_service_connect_ip:
           name: private_service_connect_ip
           title: Private Service Connect Ip
+        project_deletion_policy:
+          name: project_deletion_policy
+          title: Project Deletion Policy
         region:
           name: region
           title: Region
@@ -133,6 +139,9 @@ spec:
         subnet_ip:
           name: subnet_ip
           title: Subnet Ip
+        time_to_wait_service_identity_propagation:
+          name: time_to_wait_service_identity_propagation
+          title: Time To Wait Service Identity Propagation
         time_to_wait_vpc_sc_propagation:
           name: time_to_wait_vpc_sc_propagation
           title: Time To Wait Vpc Sc Propagation
