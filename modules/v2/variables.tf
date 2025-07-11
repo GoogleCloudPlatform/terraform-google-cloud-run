@@ -117,7 +117,7 @@ variable "node_selector" {
   type = object({
     accelerator = string
   })
-  description = "Node Selector describes the hardware requirements of the GPU resource (https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector)."
+  description = "Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector)."
   default     = null
 }
 
@@ -152,7 +152,7 @@ variable "ingress" {
 
 variable "members" {
   type        = list(string)
-  description = "Users/SAs to be given invoker access to the service. Grant invoker access by specifying the users or service accounts (SAs). Use allUsers for public access, allAuthenticatedUsers for access by logged-in Google users, or provide a list of specific users/SAs. See the complete list of available options: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service_iam#member\\/members-1"
+  description = "Users/SAs to be given invoker access to the service. Grant invoker access by specifying the users or service accounts (SAs). Use allUsers for public access, allAuthenticatedUsers for access by logged-in Google users, or provide a list of specific users/SAs. [See the complete list of available options here](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service_iam#member\\/members-1)"
   default     = []
 }
 
@@ -166,7 +166,7 @@ variable "vpc_access" {
       tags       = optional(list(string))
     }))
   })
-  description = "Configure this to enable your service to send traffic to a Virtual Private Cloud. Set egress to ALL_TRAFFIC or PRIVATE_RANGES_ONLY. Choose a connector or network_interfaces (for direct VPC egress). For details: https://cloud.google.com/run/docs/configuring/connecting-vpc"
+  description = "Configure this to enable your service to send traffic to a Virtual Private Cloud. Set egress to ALL_TRAFFIC or PRIVATE_RANGES_ONLY. Choose a connector or network_interfaces (for direct VPC egress). [More info](https://cloud.google.com/run/docs/configuring/connecting-vpc)"
   default     = null
 }
 
@@ -237,13 +237,13 @@ variable "service_scaling" {
 
 variable "service_labels" {
   type        = map(string)
-  description = "Unstructured key value map that can be used to organize and categorize objects. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels"
+  description = "Unstructured key value map that can be used to organize and categorize objects. For more information, visit [create and update labels for projects](https://cloud.google.com/resource-manager/docs/creating-managing-labels) or [configure labels for services](https://cloud.google.com/run/docs/configuring/labels)"
   default     = {}
 }
 
 variable "service_annotations" {
   type        = map(string)
-  description = "Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. Refer https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#annotations"
+  description = "Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. [Refer](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#annotations)"
   default     = {}
 }
 
@@ -269,13 +269,13 @@ variable "launch_stage" {
 
 variable "custom_audiences" {
   type        = list(string)
-  description = "One or more custom audiences that you want this service to support. Specify each custom audience as the full URL in a string. Refer https://cloud.google.com/run/docs/configuring/custom-audiences"
+  description = "One or more custom audiences that you want this service to support. Specify each custom audience as the full URL in a string. [Refer](https://cloud.google.com/run/docs/configuring/custom-audiences)"
   default     = null
 }
 
 variable "binary_authorization" {
   type = object({
-    breakglass_justification = optional(bool) # If present, indicates to use Breakglass using this justification. If useDefault is False, then it must be empty. For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass
+    breakglass_justification = optional(bool) # If present, indicates to use Breakglass using this justification. If useDefault is False, then it must be empty. For more information on breakglass, [see](https://cloud.google.com/binary-authorization/docs/using-breakglass)
     use_default              = optional(bool) #If True, indicates to use the default project's binary authorization policy. If False, binary authorization will be disabled.
   })
   description = "Settings for the Binary Authorization feature."
@@ -300,13 +300,13 @@ variable "template_scaling" {
 
 variable "template_labels" {
   type        = map(string)
-  description = "Unstructured key value map that can be used to organize and categorize objects. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels"
+  description = "Unstructured key value map that can be used to organize and categorize objects. For more information, visit [create and update labels for projects](https://cloud.google.com/resource-manager/docs/creating-managing-labels) or [configure labels for services](https://cloud.google.com/run/docs/configuring/labels)"
   default     = {}
 }
 
 variable "template_annotations" {
   type        = map(string)
-  description = "Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. Refer https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#annotations"
+  description = "Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. [Refer](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#annotations)"
   default     = {}
 }
 
@@ -336,7 +336,7 @@ variable "max_instance_request_concurrency" {
 
 variable "session_affinity" {
   type        = string
-  description = "Enables session affinity. For more information, go to https://cloud.google.com/run/docs/configuring/session-affinity"
+  description = "Enables session affinity. For more information, [go to](https://cloud.google.com/run/docs/configuring/session-affinity)"
   default     = null
 }
 
