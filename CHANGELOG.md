@@ -7,6 +7,19 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.19.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.18.0...v0.19.0) (2025-07-11)
+
+
+### Features
+
+* Add GPU support for services. ([#352](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/352)) ([522aa12](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/522aa12ff90586c88b65f88f21212d74547f0146))
+* Identity-Aware Proxy (IAP) integration in Cloud Run v2 modules ([#353](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/353)) ([110fba6](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/110fba63986e3d1806b32b5d0f637064f3f2807b))
+
+
+### Bug Fixes
+
+* added field descriptions and validations ([#355](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/355)) ([db4f870](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/db4f8703d81dbf2bba2a655590656b1ce3804dd9))
+
 ## [0.18.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.17.5...v0.18.0) (2025-06-25)
 
 
