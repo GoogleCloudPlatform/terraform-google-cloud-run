@@ -17,7 +17,7 @@
 locals {
   int_required_roles = concat([
     "roles/cloudkms.admin",
-  ],flatten(values(per_module_roles))
+  ],flatten(values(per_module_roles)))
 
   folder_required_roles = [
     "roles/resourcemanager.folderAdmin",

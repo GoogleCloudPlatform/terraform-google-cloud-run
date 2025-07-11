@@ -328,17 +328,6 @@ spec:
           - roles/resourcemanager.folderAdmin
           - roles/resourcemanager.projectCreator
           - roles/resourcemanager.projectDeleter
-      - level: Project
-        roles:
-          - roles/run.admin
-          - roles/iam.serviceAccountAdmin
-          - roles/artifactregistry.admin
-          - roles/iam.serviceAccountUser
-          - roles/serviceusage.serviceUsageViewer
-          - roles/cloudkms.admin
-          - roles/resourcemanager.projectIamAdmin
-          - roles/compute.viewer
-          - roles/iap.admin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
