@@ -28,6 +28,7 @@ locals {
 
   per_module_roles = {
     root = [
+      "roles/run.admin",
       "roles/iam.serviceAccountAdmin",
       "roles/iam.serviceAccountUser",
     ],
@@ -41,8 +42,10 @@ locals {
       "roles/run.admin",
       "roles/compute.networkAdmin",
       "roles/compute.loadBalancerAdmin",
-      "roles/iam.serviceAccountUser",
       "roles/compute.securityAdmin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageConsumer",
+      "roles/logging.logWriter",
     ],
     secure-cloud-run-core = [
       "roles/run.admin",
@@ -55,28 +58,47 @@ locals {
       "roles/serviceusage.serviceUsageConsumer",
     ],
     secure-cloud-run-security = [
-      "roles/run.developer",
-      "roles/storage.objectViewer",
+      "roles/run.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+      "roles/logging.logWriter",
     ],
     secure-serverless-harness = [
       "roles/run.developer",
-      "roles/storage.objectViewer",
+      "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+      "roles/cloudkms.viewer",
+      "roles/serviceusage.serviceUsageConsumer",
+      "roles/logging.logWriter",
+      "roles/run.viewer",
     ],
     secure-severless-net = [
       "roles/run.developer",
-      "roles/storage.objectViewer",
+      "roles/compute.networkAdmin",
+      "roles/vpcaccess.admin",
+      "roles/servicenetworking.networksAdmin",
+      "roles/compute.securityAdmin",
+      "roles/accesscontextmanager.policyAdmin",
     ],
     service-project-factory = [
       "roles/run.developer",
-      "roles/storage.objectViewer",
+      "roles/resourcemanager.projectCreator",
+      "roles/resourcemanager.projectDeleter",
+      "roles/billing.user",
+      "roles/compute.networkUser",
+      "roles/resourcemanager.projectIamAdmin",
+      "roles/serviceusage.serviceUsageAdmin",
     ],
     v2 = [
-      "roles/run.developer",
-      "roles/storage.objectViewer",
+      "roles/run.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/run.invoker",
+      "roles/logging.logWriter",
+      "roles/serviceusage.serviceUsageConsumer",
     ],
   }
 
   int_required_roles = concat([
+    "roles/artifactregistry.admin",
     "roles/cloudkms.admin",
   ], flatten(values(local.per_module_roles)))
 }
