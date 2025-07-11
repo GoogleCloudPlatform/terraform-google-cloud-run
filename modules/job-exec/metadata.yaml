@@ -1,3 +1,17 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 apiVersion: blueprints.cloud.google.com/v1alpha1
 kind: BlueprintMetadata
 metadata:
@@ -163,8 +177,36 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/accesscontextmanager.policyAdmin
+          - roles/orgpolicy.policyAdmin
+      - level: Project
+        roles:
+          - roles/resourcemanager.folderAdmin
+          - roles/resourcemanager.projectCreator
+          - roles/resourcemanager.projectDeleter
+      - level: Project
+        roles:
           - roles/run.admin
+          - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
+          - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
+          - roles/compute.viewer
+          - roles/iap.admin
+    services:
+      - cloudresourcemanager.googleapis.com
+      - storage-api.googleapis.com
+      - serviceusage.googleapis.com
+      - run.googleapis.com
+      - cloudkms.googleapis.com
+      - iam.googleapis.com
+      - accesscontextmanager.googleapis.com
+      - cloudbilling.googleapis.com
+      - monitoring.googleapis.com
+      - compute.googleapis.com
+      - iap.googleapis.com
     providerVersions:
       - source: devops-rob/terracurl
         version: ~> 1.0
