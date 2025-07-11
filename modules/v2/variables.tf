@@ -353,6 +353,6 @@ variable "execution_environment" {
 
 variable "iap_members" {
   type        = list(string)
-  description = "Users/SAs to be given httpsResourceAccessor access to the service. IAP will be enabled when Users/SAs are entered"
+  description = "This field can only be used when launch stage is set to 'BETA'. Users/SAs to be given httpsResourceAccessor access to the service. IAP will be enabled when Users/SAs are entered. Use allUsers for public access, allAuthenticatedUsers for access by logged-in Google users, or provide a list of specific users/SAs. See the complete list of available options: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member/members-2"
   default     = []
 }
