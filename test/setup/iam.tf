@@ -15,18 +15,6 @@
  */
 
 locals {
-  int_required_roles = [
-    "roles/run.admin",
-    "roles/iam.serviceAccountAdmin",
-    "roles/artifactregistry.admin",
-    "roles/iam.serviceAccountUser",
-    "roles/serviceusage.serviceUsageViewer",
-    "roles/cloudkms.admin",
-    "roles/resourcemanager.projectIamAdmin",
-    "roles/compute.viewer",
-    "roles/iap.admin"
-  ]
-
   folder_required_roles = [
     "roles/resourcemanager.folderAdmin",
     "roles/resourcemanager.projectCreator",
@@ -37,6 +25,81 @@ locals {
     "roles/accesscontextmanager.policyAdmin",
     "roles/orgpolicy.policyAdmin"
   ]
+
+  per_module_roles = {
+    root = [
+      "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/iam.serviceAccountUser",
+    ],
+    job-exec = [
+      "roles/run.developer",
+      "roles/run.invoker",
+      "roles/artifactregistry.reader",
+      "roles/iam.serviceAccountUser",
+    ],
+    secure-cloud-run = [
+      "roles/run.admin",
+      "roles/compute.networkAdmin",
+      "roles/compute.loadBalancerAdmin",
+      "roles/compute.securityAdmin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageConsumer",
+      "roles/logging.logWriter",
+    ],
+    secure-cloud-run-core = [
+      "roles/run.admin",
+      "roles/compute.networkAdmin",
+      "roles/compute.loadBalancerAdmin",
+      "roles/iam.serviceAccountUser",
+      "roles/compute.securityAdmin",
+      "roles/artifactregistry.reader",
+      "roles/cloudbuild.builds.editor",
+      "roles/serviceusage.serviceUsageConsumer",
+    ],
+    secure-cloud-run-security = [
+      "roles/run.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+      "roles/logging.logWriter",
+    ],
+    secure-serverless-harness = [
+      "roles/run.developer",
+      "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+      "roles/cloudkms.viewer",
+      "roles/serviceusage.serviceUsageConsumer",
+      "roles/logging.logWriter",
+      "roles/run.viewer",
+    ],
+    secure-severless-net = [
+      "roles/run.developer",
+      "roles/compute.networkAdmin",
+      "roles/vpcaccess.admin",
+      "roles/servicenetworking.networksAdmin",
+      "roles/compute.securityAdmin",
+      "roles/accesscontextmanager.policyAdmin",
+    ],
+    service-project-factory = [
+      "roles/run.developer",
+      "roles/resourcemanager.projectDeleter",
+      "roles/billing.user",
+      "roles/compute.networkUser",
+      "roles/resourcemanager.projectIamAdmin",
+      "roles/serviceusage.serviceUsageAdmin",
+    ],
+    v2 = [
+      "roles/run.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/run.invoker",
+      "roles/logging.logWriter",
+      "roles/serviceusage.serviceUsageConsumer",
+    ],
+  }
+
+  int_required_roles = concat([
+    "roles/artifactregistry.admin",
+    "roles/cloudkms.admin",
+  ], flatten(values(local.per_module_roles)))
 }
 
 resource "google_service_account" "int_test" {
