@@ -307,8 +307,8 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/iam.serviceAccountUser
           - roles/iam.serviceAccountAdmin
+          - roles/iam.serviceAccountUser
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"

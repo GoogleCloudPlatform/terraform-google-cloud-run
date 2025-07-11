@@ -55,6 +55,26 @@ locals {
       "roles/run.developer",
       "roles/storage.objectViewer",
     ],
+    secure-cloud-run-security = [
+      "roles/run.developer",
+      "roles/storage.objectViewer",
+    ],
+    secure-serverless-harness = [
+      "roles/run.developer",
+      "roles/storage.objectViewer",
+    ],
+    secure-severless-net = [
+      "roles/run.developer",
+      "roles/storage.objectViewer",
+    ],
+    service-project-factory = [
+      "roles/run.developer",
+      "roles/storage.objectViewer",
+    ],
+    v2 = [
+      "roles/run.developer",
+      "roles/storage.objectViewer",
+    ],
   }
 }
 
