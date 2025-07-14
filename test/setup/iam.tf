@@ -82,7 +82,6 @@ locals {
     service-project-factory = [
       "roles/run.developer",
       "roles/resourcemanager.projectDeleter",
-      "roles/billing.user",
       "roles/compute.networkUser",
       "roles/resourcemanager.projectIamAdmin",
       "roles/serviceusage.serviceUsageAdmin",
