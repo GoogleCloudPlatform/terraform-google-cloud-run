@@ -485,7 +485,7 @@ spec:
         varType: string
         defaultValue: EXECUTION_ENVIRONMENT_GEN2
       - name: iap_members
-        description: "This field can only be used when launch stage is set to 'BETA'. Users/SAs to be given httpsResourceAccessor access to the service. IAP will be enabled when Users/SAs are entered. Use allUsers for public access, allAuthenticatedUsers for access by logged-in Google users, or provide a list of specific users/SAs. See the complete list of available options: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member\\/members-2"
+        description: This field can only be used when launch stage is set to 'BETA'. Users/SAs to be given httpsResourceAccessor access to the service. IAP will be enabled when Users/SAs are entered. Use allUsers for public access, allAuthenticatedUsers for access by logged-in Google users, or provide a list of specific users/SAs. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member\/members-2)
         varType: list(string)
         defaultValue: []
     outputs:
