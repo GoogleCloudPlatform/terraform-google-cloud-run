@@ -239,6 +239,12 @@ spec:
               value: EXECUTION_ENVIRONMENT_GEN2
             - label: EXECUTION_ENVIRONMENT_GEN1
               value: EXECUTION_ENVIRONMENT_GEN1
+        iap_members:
+          name: iap_members
+          title: Iap Members
+          level: 1
+          regexValidation: ^(?:allUsers|allAuthenticatedUsers)$|^((?:user|group|serviceAccount):(?:[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|(?:domain:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|(?:projectOwner|projectEditor|projectViewer):[a-z][a-z0-9-]{0,28}[a-z0-9])$
+          validation: Must be allUsers, allAuthenticatedUsers, or a service account in the format serviceAccount:email@example.com. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member\/members-2).
         ingress:
           name: ingress
           title: Ingress
