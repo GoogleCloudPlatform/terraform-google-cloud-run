@@ -117,6 +117,18 @@ spec:
   requirements:
     roles:
       - level: Project
+        roles:
+          - roles/accesscontextmanager.policyAdmin
+          - roles/run.developer
+          - roles/compute.networkAdmin
+          - roles/vpcaccess.admin
+          - roles/servicenetworking.networksAdmin
+          - roles/compute.securityAdmin
+    services:
+      - accesscontextmanager.googleapis.com
+      - compute.googleapis.com
+      - run.googleapis.com
+      - servicenetworking.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"

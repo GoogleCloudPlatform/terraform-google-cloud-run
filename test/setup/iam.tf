@@ -71,7 +71,7 @@ locals {
       "roles/logging.logWriter",
       "roles/run.viewer",
     ],
-    secure-severless-net = [
+    secure-serverless-net = [
       "roles/run.developer",
       "roles/compute.networkAdmin",
       "roles/vpcaccess.admin",

@@ -48,7 +48,7 @@ locals {
       "run.googleapis.com",
       "serviceusage.googleapis.com"
     ],
-    secure-severless-net = [
+    secure-serverless-net = [
       "run.googleapis.com",
       "compute.googleapis.com",
       "servicenetworking.googleapis.com",

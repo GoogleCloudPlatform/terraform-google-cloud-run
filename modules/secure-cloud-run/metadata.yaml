@@ -248,13 +248,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/serviceusage.serviceUsageConsumer
-          - roles/logging.logWriter
-          - roles/run.admin
           - roles/compute.networkAdmin
           - roles/compute.loadBalancerAdmin
           - roles/compute.securityAdmin
           - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageConsumer
+          - roles/logging.logWriter
+          - roles/run.admin
     services:
       - cloudkms.googleapis.com
       - compute.googleapis.com
