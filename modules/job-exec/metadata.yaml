@@ -181,6 +181,8 @@ spec:
           - roles/run.invoker
           - roles/artifactregistry.reader
           - roles/iam.serviceAccountUser
+    services:
+      - run.googleapis.com
     providerVersions:
       - source: devops-rob/terracurl
         version: ~> 1.0

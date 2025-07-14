@@ -135,6 +135,10 @@ spec:
           - roles/iam.serviceAccountUser
           - roles/cloudkms.cryptoKeyEncrypterDecrypter
           - roles/logging.logWriter
+    services:
+      - cloudkms.googleapis.com
+      - iam.googleapis.com
+      - run.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"

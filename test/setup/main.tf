@@ -14,6 +14,60 @@
  * limitations under the License.
  */
 
+locals {
+  per_module_services = {
+    root = [
+      "cloudresourcemanager.googleapis.com",
+      "serviceusage.googleapis.com",
+      "iam.googleapis.com",
+      "cloudbilling.googleapis.com",
+      "accesscontextmanager.googleapis.com"
+    ],
+    job-exec = [
+      "run.googleapis.com",
+    ],
+    secure-cloud-run = [
+      "compute.googleapis.com",
+      "run.googleapis.com",
+      "cloudkms.googleapis.com",
+      "iam.googleapis.com"
+    ],
+    secure-cloud-run-core = [
+      "compute.googleapis.com",
+      "run.googleapis.com"
+    ],
+    secure-cloud-run-security = [
+      "run.googleapis.com",
+      "cloudkms.googleapis.com",
+      "iam.googleapis.com"
+    ],
+    secure-serverless-harness = [
+      "artifactregistry.googleapis.com",
+      "cloudkms.googleapis.com",
+      "iam.googleapis.com",
+      "run.googleapis.com",
+      "serviceusage.googleapis.com"
+    ],
+    secure-severless-net = [
+      "run.googleapis.com",
+      "compute.googleapis.com",
+      "servicenetworking.googleapis.com",
+      "accesscontextmanager.googleapis.com"
+    ],
+    service-project-factory = [
+      "cloudresourcemanager.googleapis.com",
+      "serviceusage.googleapis.com",
+      "cloudbilling.googleapis.com",
+      "compute.googleapis.com"
+    ],
+    v2 = [
+      "run.googleapis.com",
+      "iam.googleapis.com",
+      "serviceusage.googleapis.com",
+    ],
+  }
+}
+
 module "project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 17.0"
@@ -26,17 +80,6 @@ module "project" {
   default_service_account = "keep"
   deletion_policy         = "DELETE"
 
-  activate_apis = [
-    "cloudresourcemanager.googleapis.com",
-    "storage-api.googleapis.com",
-    "serviceusage.googleapis.com",
-    "run.googleapis.com",
-    "cloudkms.googleapis.com",
-    "iam.googleapis.com",
-    "accesscontextmanager.googleapis.com",
-    "cloudbilling.googleapis.com",
-    "monitoring.googleapis.com",
-    "compute.googleapis.com",
-    "iap.googleapis.com"
-  ]
+  activate_apis = concat([
+  ], flatten(values(local.per_module_services)))
 }

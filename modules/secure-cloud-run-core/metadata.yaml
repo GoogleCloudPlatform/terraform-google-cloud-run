@@ -304,14 +304,17 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/compute.networkAdmin
-          - roles/compute.loadBalancerAdmin
-          - roles/iam.serviceAccountUser
           - roles/compute.securityAdmin
           - roles/artifactregistry.reader
           - roles/cloudbuild.builds.editor
           - roles/serviceusage.serviceUsageConsumer
           - roles/run.admin
+          - roles/compute.networkAdmin
+          - roles/compute.loadBalancerAdmin
+          - roles/iam.serviceAccountUser
+    services:
+      - compute.googleapis.com
+      - run.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"

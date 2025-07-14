@@ -568,6 +568,10 @@ spec:
           - roles/run.invoker
           - roles/logging.logWriter
           - roles/serviceusage.serviceUsageConsumer
+    services:
+      - iam.googleapis.com
+      - run.googleapis.com
+      - serviceusage.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"

@@ -324,6 +324,12 @@ spec:
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/iam.serviceAccountUser
+    services:
+      - accesscontextmanager.googleapis.com
+      - cloudbilling.googleapis.com
+      - cloudresourcemanager.googleapis.com
+      - iam.googleapis.com
+      - serviceusage.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"

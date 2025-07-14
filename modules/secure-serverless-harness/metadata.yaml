@@ -286,6 +286,12 @@ spec:
           - roles/serviceusage.serviceUsageConsumer
           - roles/logging.logWriter
           - roles/run.viewer
+    services:
+      - artifactregistry.googleapis.com
+      - cloudkms.googleapis.com
+      - iam.googleapis.com
+      - run.googleapis.com
+      - serviceusage.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"
