@@ -563,13 +563,14 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/serviceusage.serviceUsageConsumer
           - roles/run.admin
           - roles/iam.serviceAccountUser
           - roles/run.invoker
           - roles/logging.logWriter
-          - roles/serviceusage.serviceUsageConsumer
     services:
       - iam.googleapis.com
+      - iap.googleapis.com
       - run.googleapis.com
       - serviceusage.googleapis.com
     providerVersions:

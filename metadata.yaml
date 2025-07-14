@@ -321,9 +321,9 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/iam.serviceAccountUser
+          - roles/run.admin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com

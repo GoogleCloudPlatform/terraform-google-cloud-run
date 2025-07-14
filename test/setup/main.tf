@@ -63,6 +63,7 @@ locals {
     v2 = [
       "run.googleapis.com",
       "iam.googleapis.com",
+      "iap.googleapis.com",
       "serviceusage.googleapis.com",
     ],
   }
