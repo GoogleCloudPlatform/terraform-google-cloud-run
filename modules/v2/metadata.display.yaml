@@ -114,9 +114,6 @@ spec:
                       name: port
                       title: Port
                       subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
-                      min: 1
-                      max: 65535
-                      validation: Choose an integer value between 1 and 65535
                     http_headers:
                       name: http_headers
                       title: Http Headers
@@ -196,6 +193,9 @@ spec:
                     failure_threshold: 3
                     initial_delay_seconds: 0
                     period_seconds: 10
+                    http_get:
+                      path: Path (e.g./.ready)
+                      port: '8080'
                   liveness_probe:
                     failure_threshold: 0
                     initial_delay_seconds: 3
@@ -203,9 +203,7 @@ spec:
                     period_seconds: 10
                     http_get:
                       path: Path (e.g./.ready)
-                      port: 8080
-                    grpc:
-                      port: 8080
+                      port: '8080'
         create_service_account:
           name: create_service_account
           title: Create Service Account
