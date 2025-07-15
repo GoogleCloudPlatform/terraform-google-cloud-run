@@ -30,13 +30,13 @@ locals {
     root = [
       "roles/run.admin",
       "roles/iam.serviceAccountAdmin",
-      "roles/iam.serviceAccountUser",
+      "roles/iam.serviceAccountUser"
     ],
     job-exec = [
       "roles/run.developer",
       "roles/run.invoker",
       "roles/artifactregistry.reader",
-      "roles/iam.serviceAccountUser",
+      "roles/iam.serviceAccountUser"
     ],
     secure-cloud-run = [
       "roles/run.admin",
@@ -45,7 +45,7 @@ locals {
       "roles/compute.securityAdmin",
       "roles/iam.serviceAccountUser",
       "roles/serviceusage.serviceUsageConsumer",
-      "roles/logging.logWriter",
+      "roles/logging.logWriter"
     ],
     secure-cloud-run-core = [
       "roles/run.admin",
@@ -55,13 +55,13 @@ locals {
       "roles/compute.securityAdmin",
       "roles/artifactregistry.reader",
       "roles/cloudbuild.builds.editor",
-      "roles/serviceusage.serviceUsageConsumer",
+      "roles/serviceusage.serviceUsageConsumer"
     ],
     secure-cloud-run-security = [
       "roles/run.admin",
       "roles/iam.serviceAccountUser",
       "roles/cloudkms.cryptoKeyEncrypterDecrypter",
-      "roles/logging.logWriter",
+      "roles/logging.logWriter"
     ],
     secure-serverless-harness = [
       "roles/run.developer",
@@ -69,7 +69,7 @@ locals {
       "roles/cloudkms.viewer",
       "roles/serviceusage.serviceUsageConsumer",
       "roles/logging.logWriter",
-      "roles/run.viewer",
+      "roles/run.viewer"
     ],
     secure-serverless-net = [
       "roles/run.developer",
@@ -77,7 +77,7 @@ locals {
       "roles/vpcaccess.admin",
       "roles/servicenetworking.networksAdmin",
       "roles/compute.securityAdmin",
-      "roles/accesscontextmanager.policyAdmin",
+      "roles/accesscontextmanager.policyAdmin"
     ],
     service-project-factory = [
       "roles/run.developer",
@@ -85,6 +85,7 @@ locals {
       "roles/compute.networkUser",
       "roles/resourcemanager.projectIamAdmin",
       "roles/serviceusage.serviceUsageAdmin",
+      "roles/eventarc.serviceAgent"
     ],
     v2 = [
       "roles/run.admin",

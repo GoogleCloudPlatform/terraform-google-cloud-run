@@ -24,7 +24,7 @@ locals {
       "accesscontextmanager.googleapis.com"
     ],
     job-exec = [
-      "run.googleapis.com",
+      "run.googleapis.com"
     ],
     secure-cloud-run = [
       "compute.googleapis.com",
@@ -58,7 +58,8 @@ locals {
       "cloudresourcemanager.googleapis.com",
       "serviceusage.googleapis.com",
       "cloudbilling.googleapis.com",
-      "compute.googleapis.com"
+      "compute.googleapis.com",
+      "eventarc.googleapis.com"
     ],
     v2 = [
       "cloudresourcemanager.googleapis.com",

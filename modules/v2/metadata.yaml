@@ -563,13 +563,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/iap.admin
-          - roles/run.admin
-          - roles/iam.serviceAccountAdmin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/resourcemanager.projectIamAdmin
           - roles/compute.viewer
+          - roles/iap.admin
+          - roles/run.admin
+          - roles/iam.serviceAccountAdmin
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
