@@ -304,7 +304,7 @@ spec:
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
-                min_intance_count: 0
+                min_instance_count: 0
         session_affinity:
           name: session_affinity
           title: Session Affinity
