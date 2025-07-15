@@ -131,10 +131,10 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/run.admin
           - roles/iam.serviceAccountUser
           - roles/cloudkms.cryptoKeyEncrypterDecrypter
           - roles/logging.logWriter
+          - roles/run.admin
     services:
       - cloudkms.googleapis.com
       - iam.googleapis.com

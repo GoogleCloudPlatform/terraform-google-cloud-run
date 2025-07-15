@@ -177,10 +177,10 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/artifactregistry.reader
-          - roles/iam.serviceAccountUser
           - roles/run.developer
           - roles/run.invoker
+          - roles/artifactregistry.reader
+          - roles/iam.serviceAccountUser
     services:
       - run.googleapis.com
     providerVersions:

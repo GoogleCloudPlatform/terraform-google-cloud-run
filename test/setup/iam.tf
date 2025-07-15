@@ -88,10 +88,12 @@ locals {
     ],
     v2 = [
       "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
       "roles/iam.serviceAccountUser",
-      "roles/run.invoker",
-      "roles/logging.logWriter",
-      "roles/serviceusage.serviceUsageConsumer",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/resourcemanager.projectIamAdmin",
+      "roles/compute.viewer",
+      "roles/iap.admin"
     ],
   }
 

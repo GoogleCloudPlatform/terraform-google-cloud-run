@@ -563,16 +563,22 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/serviceusage.serviceUsageConsumer
+          - roles/compute.viewer
+          - roles/iap.admin
           - roles/run.admin
+          - roles/iam.serviceAccountAdmin
           - roles/iam.serviceAccountUser
-          - roles/run.invoker
-          - roles/logging.logWriter
+          - roles/serviceusage.serviceUsageViewer
+          - roles/resourcemanager.projectIamAdmin
     services:
+      - cloudresourcemanager.googleapis.com
+      - compute.googleapis.com
       - iam.googleapis.com
       - iap.googleapis.com
+      - monitoring.googleapis.com
       - run.googleapis.com
       - serviceusage.googleapis.com
+      - storage-api.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"

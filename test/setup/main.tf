@@ -61,10 +61,14 @@ locals {
       "compute.googleapis.com"
     ],
     v2 = [
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
       "run.googleapis.com",
       "iam.googleapis.com",
-      "iap.googleapis.com",
-      "serviceusage.googleapis.com",
+      "monitoring.googleapis.com",
+      "compute.googleapis.com",
+      "iap.googleapis.com"
     ],
   }
 }
