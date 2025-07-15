@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
       sourceType: git
       dir: /modules/secure-cloud-run-security
-    version: 0.19.0
+    version: 0.20.0
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"

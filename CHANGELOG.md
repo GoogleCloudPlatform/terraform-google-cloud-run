@@ -7,6 +7,19 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.20.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.19.0...v0.20.0) (2025-07-15)
+
+
+### Features
+
+* Add support for mounting gcs bucket in cloud run job ([#326](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/326)) ([1d470f1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/1d470f14059a00fc4fa09e62cbe013a91d6be93c))
+
+
+### Bug Fixes
+
+* fixed liveness_probe and startup_probe alt defaults ([#370](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/370)) ([ec886b5](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/ec886b56536aa21565a168a2f0ee6cd7697b8e4d))
+* typo in min_instance ([#367](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/367)) ([9f0bd11](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/9f0bd1150382cab4c9bf24019abc85b8e597a2da))
+
 ## [0.19.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.18.0...v0.19.0) (2025-07-14)
 
 
