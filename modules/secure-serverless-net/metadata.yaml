@@ -118,12 +118,12 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/vpcaccess.admin
           - roles/servicenetworking.networksAdmin
           - roles/compute.securityAdmin
           - roles/accesscontextmanager.policyAdmin
           - roles/run.developer
           - roles/compute.networkAdmin
+          - roles/vpcaccess.admin
     services:
       - accesscontextmanager.googleapis.com
       - compute.googleapis.com

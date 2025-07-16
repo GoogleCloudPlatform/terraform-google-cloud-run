@@ -280,12 +280,12 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/run.viewer
           - roles/run.developer
           - roles/cloudkms.cryptoKeyEncrypterDecrypter
           - roles/cloudkms.viewer
           - roles/serviceusage.serviceUsageConsumer
           - roles/logging.logWriter
+          - roles/run.viewer
     services:
       - artifactregistry.googleapis.com
       - cloudkms.googleapis.com

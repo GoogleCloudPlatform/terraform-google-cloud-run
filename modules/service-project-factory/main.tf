@@ -90,7 +90,7 @@ resource "google_project_iam_member" "gcs_pubsub_publishing" {
 }
 
 resource "time_sleep" "wait_1m" {
-  depdens_on      = [google_project_service_identity.eventarc_sa]
+  depends_on      = [google_project_service_identity.eventarc_sa]
   create_duration = "1m"
 }
 
