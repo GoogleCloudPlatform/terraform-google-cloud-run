@@ -304,6 +304,7 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/artifactregistry.reader
           - roles/cloudbuild.builds.editor
           - roles/serviceusage.serviceUsageConsumer
           - roles/run.admin
@@ -311,7 +312,6 @@ spec:
           - roles/compute.loadBalancerAdmin
           - roles/iam.serviceAccountUser
           - roles/compute.securityAdmin
-          - roles/artifactregistry.reader
     services:
       - compute.googleapis.com
       - run.googleapis.com
