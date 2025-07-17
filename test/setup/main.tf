@@ -17,59 +17,85 @@
 locals {
   per_module_services = {
     root = [
-      "cloudresourcemanager.googleapis.com",
-      "serviceusage.googleapis.com",
-      "iam.googleapis.com",
-      "cloudbilling.googleapis.com",
-      "accesscontextmanager.googleapis.com"
+      "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin"
     ],
     job-exec = [
-      "run.googleapis.com"
+      "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin"
     ],
     secure-cloud-run = [
-      "compute.googleapis.com",
-      "run.googleapis.com",
-      "cloudkms.googleapis.com",
-      "iam.googleapis.com"
+      "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin"
     ],
     secure-cloud-run-core = [
-      "compute.googleapis.com",
-      "run.googleapis.com"
+      "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin"
     ],
     secure-cloud-run-security = [
-      "run.googleapis.com",
-      "cloudkms.googleapis.com",
-      "iam.googleapis.com"
+      "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin"
     ],
     secure-serverless-harness = [
-      "artifactregistry.googleapis.com",
-      "cloudkms.googleapis.com",
-      "iam.googleapis.com",
-      "run.googleapis.com",
-      "serviceusage.googleapis.com"
+      "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin"
     ],
     secure-serverless-net = [
-      "run.googleapis.com",
-      "compute.googleapis.com",
-      "servicenetworking.googleapis.com",
-      "accesscontextmanager.googleapis.com"
+      "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin"
     ],
     service-project-factory = [
-      "cloudresourcemanager.googleapis.com",
-      "serviceusage.googleapis.com",
-      "cloudbilling.googleapis.com",
-      "compute.googleapis.com",
-      "eventarc.googleapis.com"
+      "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin"
     ],
     v2 = [
-      "cloudresourcemanager.googleapis.com",
-      "storage-api.googleapis.com",
-      "serviceusage.googleapis.com",
-      "run.googleapis.com",
-      "iam.googleapis.com",
-      "monitoring.googleapis.com",
-      "compute.googleapis.com",
-      "iap.googleapis.com"
+      "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/resourcemanager.projectIamAdmin",
+      "roles/compute.viewer",
+      "roles/iap.admin"
     ],
   }
 }

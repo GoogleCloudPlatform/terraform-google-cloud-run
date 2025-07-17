@@ -131,19 +131,21 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/run.admin
-          - roles/iam.serviceAccountAdmin
+          - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
-          - roles/logging.logWriter
-          - roles/artifactregistry.admin
-          - roles/iam.serviceAccountUser
           - roles/resourcemanager.projectIamAdmin
-          - roles/cloudkms.cryptoKeyEncrypterDecrypter
+          - roles/run.admin
+          - roles/iam.serviceAccountAdmin
+          - roles/artifactregistry.admin
     services:
-      - cloudkms.googleapis.com
-      - iam.googleapis.com
-      - run.googleapis.com
+      - roles/artifactregistry.admin
+      - roles/cloudkms.admin
+      - roles/iam.serviceAccountAdmin
+      - roles/iam.serviceAccountUser
+      - roles/resourcemanager.projectIamAdmin
+      - roles/run.admin
+      - roles/serviceusage.serviceUsageViewer
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"

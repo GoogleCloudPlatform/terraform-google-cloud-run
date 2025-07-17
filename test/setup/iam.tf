@@ -16,14 +16,7 @@
 
 locals {
   folder_required_roles = [
-    "roles/run.admin",
-    "roles/iam.serviceAccountAdmin",
-    "roles/artifactregistry.admin",
-    "roles/iam.serviceAccountUser",
-    "roles/serviceusage.serviceUsageViewer",
-    "roles/cloudkms.admin",
     "roles/resourcemanager.folderAdmin",
-    "roles/resourcemanager.projectIamAdmin",
     "roles/resourcemanager.projectCreator",
     "roles/resourcemanager.projectDeleter"
   ]
@@ -36,24 +29,21 @@ locals {
   per_module_roles = {
     root = [
       "roles/run.admin",
+      "roles/iam.serviceaccountadmin",
+      "roles/artifactregistry.admin",
+      "roles/iam.serviceaccountuser",
+      "roles/serviceusage.serviceusageviewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectiamadmin"
+    ],
+    job-exec = [
+      "roles/run.admin",
       "roles/iam.serviceAccountAdmin",
       "roles/artifactregistry.admin",
       "roles/iam.serviceAccountUser",
       "roles/serviceusage.serviceUsageViewer",
       "roles/cloudkms.admin",
       "roles/resourcemanager.projectIamAdmin"
-    ],
-    job-exec = [
-      "roles/run.admin",
-      "roles/run.developer",
-      "roles/run.invoker",
-      "roles/iam.serviceAccountAdmin",
-      "roles/iam.serviceAccountUser",
-      "roles/serviceusage.serviceUsageViewer",
-      "roles/cloudkms.admin",
-      "roles/resourcemanager.projectIamAdmin",
-      "roles/artifactregistry.admin",
-      "roles/artifactregistry.reader"
     ],
     secure-cloud-run = [
       "roles/run.admin",
@@ -65,15 +55,13 @@ locals {
       "roles/resourcemanager.projectIamAdmin"
     ],
     secure-cloud-run-core = [
-      "roles/logging.logWriter",
       "roles/run.admin",
-      "roles/compute.networkAdmin",
-      "roles/compute.loadBalancerAdmin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
       "roles/iam.serviceAccountUser",
-      "roles/compute.securityAdmin",
-      "roles/artifactregistry.reader",
-      "roles/cloudbuild.builds.editor",
-      "roles/serviceusage.serviceUsageConsumer"
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin"
     ],
     secure-cloud-run-security = [
       "roles/run.admin",
@@ -82,23 +70,16 @@ locals {
       "roles/iam.serviceAccountUser",
       "roles/serviceusage.serviceUsageViewer",
       "roles/cloudkms.admin",
-      "roles/resourcemanager.projectIamAdmin",
-      "roles/cloudkms.cryptoKeyEncrypterDecrypter",
-      "roles/logging.logWriter"
+      "roles/resourcemanager.projectIamAdmin"
     ],
     secure-serverless-harness = [
       "roles/run.admin",
-      "roles/run.viewer",
       "roles/iam.serviceAccountAdmin",
-      "roles/iam.serviceAccountUser",
       "roles/artifactregistry.admin",
+      "roles/iam.serviceAccountUser",
       "roles/serviceusage.serviceUsageViewer",
-      "roles/serviceusage.serviceUsageConsumer",
       "roles/cloudkms.admin",
-      "roles/cloudkms.cryptoKeyEncrypterDecrypter",
-      "roles/cloudkms.viewer",
-      "roles/resourcemanager.projectIamAdmin",
-      "roles/logging.logWriter"
+      "roles/resourcemanager.projectIamAdmin"
     ],
     secure-serverless-net = [
       "roles/run.admin",
@@ -107,26 +88,16 @@ locals {
       "roles/iam.serviceAccountUser",
       "roles/serviceusage.serviceUsageViewer",
       "roles/cloudkms.admin",
-      "roles/resourcemanager.projectIamAdmin",
-      "roles/compute.networkAdmin",
-      "roles/compute.securityAdmin",
-      "roles/vpcaccess.admin",
-      "roles/servicenetworking.networksAdmin",
-      "roles/accesscontextmanager.policyAdmin"
+      "roles/resourcemanager.projectIamAdmin"
     ],
     service-project-factory = [
       "roles/run.admin",
-      "roles/run.developer",
       "roles/iam.serviceAccountAdmin",
       "roles/artifactregistry.admin",
       "roles/iam.serviceAccountUser",
-      "roles/serviceusage.serviceUsageAdmin",
       "roles/serviceusage.serviceUsageViewer",
       "roles/cloudkms.admin",
-      "roles/resourcemanager.projectIamAdmin",
-      "roles/resourcemanager.projectDeleter",
-      "roles/compute.networkUser",
-      "roles/eventarc.serviceAgent"
+      "roles/resourcemanager.projectIamAdmin"
     ],
     v2 = [
       "roles/run.admin",
@@ -139,10 +110,7 @@ locals {
     ],
   }
 
-  int_required_roles = concat([
-    "roles/artifactregistry.admin",
-    "roles/cloudkms.admin",
-  ], flatten(values(local.per_module_roles)))
+  int_required_roles = flatten(values(local.per_module_roles))
 }
 
 resource "google_service_account" "int_test" {

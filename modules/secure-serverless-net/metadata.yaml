@@ -118,23 +118,21 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/run.admin
-          - roles/iam.serviceAccountUser
-          - roles/serviceusage.serviceUsageViewer
+          - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
-          - roles/compute.securityAdmin
-          - roles/vpcaccess.admin
-          - roles/servicenetworking.networksAdmin
-          - roles/accesscontextmanager.policyAdmin
+          - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
-          - roles/cloudkms.admin
-          - roles/compute.networkAdmin
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
     services:
-      - accesscontextmanager.googleapis.com
-      - compute.googleapis.com
-      - run.googleapis.com
-      - servicenetworking.googleapis.com
+      - roles/artifactregistry.admin
+      - roles/cloudkms.admin
+      - roles/iam.serviceAccountAdmin
+      - roles/iam.serviceAccountUser
+      - roles/resourcemanager.projectIamAdmin
+      - roles/run.admin
+      - roles/serviceusage.serviceUsageViewer
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"

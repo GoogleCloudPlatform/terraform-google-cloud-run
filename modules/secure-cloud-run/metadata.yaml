@@ -256,10 +256,13 @@ spec:
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
     services:
-      - cloudkms.googleapis.com
-      - compute.googleapis.com
-      - iam.googleapis.com
-      - run.googleapis.com
+      - roles/artifactregistry.admin
+      - roles/cloudkms.admin
+      - roles/iam.serviceAccountAdmin
+      - roles/iam.serviceAccountUser
+      - roles/resourcemanager.projectIamAdmin
+      - roles/run.admin
+      - roles/serviceusage.serviceUsageViewer
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"
