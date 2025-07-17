@@ -118,12 +118,18 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/servicenetworking.networksAdmin
+          - roles/run.admin
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
+          - roles/resourcemanager.projectIamAdmin
           - roles/compute.securityAdmin
-          - roles/accesscontextmanager.policyAdmin
-          - roles/run.developer
-          - roles/compute.networkAdmin
           - roles/vpcaccess.admin
+          - roles/servicenetworking.networksAdmin
+          - roles/accesscontextmanager.policyAdmin
+          - roles/iam.serviceAccountAdmin
+          - roles/artifactregistry.admin
+          - roles/cloudkms.admin
+          - roles/compute.networkAdmin
     services:
       - accesscontextmanager.googleapis.com
       - compute.googleapis.com

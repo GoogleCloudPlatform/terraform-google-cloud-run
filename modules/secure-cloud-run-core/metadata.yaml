@@ -304,13 +304,14 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/compute.securityAdmin
-          - roles/artifactregistry.reader
-          - roles/cloudbuild.builds.editor
           - roles/serviceusage.serviceUsageConsumer
+          - roles/logging.logWriter
           - roles/run.admin
           - roles/compute.networkAdmin
           - roles/compute.loadBalancerAdmin
+          - roles/compute.securityAdmin
+          - roles/artifactregistry.reader
+          - roles/cloudbuild.builds.editor
           - roles/iam.serviceAccountUser
     services:
       - compute.googleapis.com

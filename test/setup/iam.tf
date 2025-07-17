@@ -16,7 +16,14 @@
 
 locals {
   folder_required_roles = [
+    "roles/run.admin",
+    "roles/iam.serviceAccountAdmin",
+    "roles/artifactregistry.admin",
+    "roles/iam.serviceAccountUser",
+    "roles/serviceusage.serviceUsageViewer",
+    "roles/cloudkms.admin",
     "roles/resourcemanager.folderAdmin",
+    "roles/resourcemanager.projectIamAdmin",
     "roles/resourcemanager.projectCreator",
     "roles/resourcemanager.projectDeleter"
   ]
@@ -30,24 +37,35 @@ locals {
     root = [
       "roles/run.admin",
       "roles/iam.serviceAccountAdmin",
-      "roles/iam.serviceAccountUser"
+      "roles/artifactregistry.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin"
     ],
     job-exec = [
+      "roles/run.admin",
       "roles/run.developer",
       "roles/run.invoker",
-      "roles/artifactregistry.reader",
-      "roles/iam.serviceAccountUser"
+      "roles/iam.serviceAccountAdmin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin",
+      "roles/artifactregistry.admin",
+      "roles/artifactregistry.reader"
     ],
     secure-cloud-run = [
       "roles/run.admin",
-      "roles/compute.networkAdmin",
-      "roles/compute.loadBalancerAdmin",
-      "roles/compute.securityAdmin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
       "roles/iam.serviceAccountUser",
-      "roles/serviceusage.serviceUsageConsumer",
-      "roles/logging.logWriter"
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin"
     ],
     secure-cloud-run-core = [
+      "roles/logging.logWriter",
       "roles/run.admin",
       "roles/compute.networkAdmin",
       "roles/compute.loadBalancerAdmin",
@@ -59,32 +77,55 @@ locals {
     ],
     secure-cloud-run-security = [
       "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
       "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin",
       "roles/cloudkms.cryptoKeyEncrypterDecrypter",
       "roles/logging.logWriter"
     ],
     secure-serverless-harness = [
-      "roles/run.developer",
+      "roles/run.admin",
+      "roles/run.viewer",
+      "roles/iam.serviceAccountAdmin",
+      "roles/iam.serviceAccountUser",
+      "roles/artifactregistry.admin",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/serviceusage.serviceUsageConsumer",
+      "roles/cloudkms.admin",
       "roles/cloudkms.cryptoKeyEncrypterDecrypter",
       "roles/cloudkms.viewer",
-      "roles/serviceusage.serviceUsageConsumer",
-      "roles/logging.logWriter",
-      "roles/run.viewer"
+      "roles/resourcemanager.projectIamAdmin",
+      "roles/logging.logWriter"
     ],
     secure-serverless-net = [
-      "roles/run.developer",
+      "roles/run.admin",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin",
       "roles/compute.networkAdmin",
+      "roles/compute.securityAdmin",
       "roles/vpcaccess.admin",
       "roles/servicenetworking.networksAdmin",
-      "roles/compute.securityAdmin",
       "roles/accesscontextmanager.policyAdmin"
     ],
     service-project-factory = [
+      "roles/run.admin",
       "roles/run.developer",
+      "roles/iam.serviceAccountAdmin",
+      "roles/artifactregistry.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/serviceusage.serviceUsageAdmin",
+      "roles/serviceusage.serviceUsageViewer",
+      "roles/cloudkms.admin",
+      "roles/resourcemanager.projectIamAdmin",
       "roles/resourcemanager.projectDeleter",
       "roles/compute.networkUser",
-      "roles/resourcemanager.projectIamAdmin",
-      "roles/serviceusage.serviceUsageAdmin",
       "roles/eventarc.serviceAgent"
     ],
     v2 = [
