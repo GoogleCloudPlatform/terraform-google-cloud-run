@@ -321,21 +321,25 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/cloudkms.admin
           - roles/resourcemanager.projectiamadmin
           - roles/run.admin
           - roles/iam.serviceaccountadmin
           - roles/artifactregistry.admin
           - roles/iam.serviceaccountuser
           - roles/serviceusage.serviceusageviewer
+          - roles/cloudkms.admin
     services:
-      - roles/artifactregistry.admin
-      - roles/cloudkms.admin
-      - roles/iam.serviceAccountAdmin
-      - roles/iam.serviceAccountUser
-      - roles/resourcemanager.projectIamAdmin
-      - roles/run.admin
-      - roles/serviceusage.serviceUsageViewer
+      - accesscontextmanager.googleapis.com
+      - cloudbilling.googleapis.com
+      - cloudkms.googleapis.com
+      - cloudresourcemanager.googleapis.com
+      - compute.googleapis.com
+      - iam.googleapis.com
+      - iap.googleapis.com
+      - monitoring.googleapis.com
+      - run.googleapis.com
+      - serviceusage.googleapis.com
+      - storage-api.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"
