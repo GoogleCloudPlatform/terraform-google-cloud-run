@@ -29,9 +29,9 @@ locals {
   per_module_roles = {
     root = [
       "roles/run.admin",
-      "roles/iam.serviceaccountadmin",
+      "roles/iam.serviceAccountAdmin",
       "roles/artifactregistry.admin",
-      "roles/iam.serviceaccountuser",
+      "roles/iam.serviceAccountUser",
       "roles/serviceusage.serviceusageviewer",
       "roles/cloudkms.admin",
       "roles/resourcemanager.projectiamadmin"
