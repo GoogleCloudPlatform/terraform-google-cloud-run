@@ -322,9 +322,9 @@ spec:
       - level: Project
         roles:
           - roles/iam.serviceAccountUser
-          - roles/serviceusage.serviceusageviewer
+          - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
-          - roles/resourcemanager.projectiamadmin
+          - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin

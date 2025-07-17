@@ -32,9 +32,9 @@ locals {
       "roles/iam.serviceAccountAdmin",
       "roles/artifactregistry.admin",
       "roles/iam.serviceAccountUser",
-      "roles/serviceusage.serviceusageviewer",
+      "roles/serviceusage.serviceUsageViewer",
       "roles/cloudkms.admin",
-      "roles/resourcemanager.projectiamadmin"
+      "roles/resourcemanager.projectIamAdmin"
     ],
     job-exec = [
       "roles/run.admin",

@@ -304,13 +304,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/run.admin
+          - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
-          - roles/run.admin
-          - roles/iam.serviceAccountAdmin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
