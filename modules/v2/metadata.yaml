@@ -322,6 +322,10 @@ spec:
         description: Users/SAs to be given invoker access to the service. Grant invoker access by specifying the users or service accounts (SAs). Use allUsers for public access, allAuthenticatedUsers for access by logged-in Google users, or provide a list of specific users/SAs. [See the complete list of available options here](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service_iam#member\/members-1)
         varType: list(string)
         defaultValue: []
+      - name: iap_members
+        description: Valid only when launch stage is set to 'BETA'. IAP is enabled automatically when users or service accounts (SAs) are provided. Use allUsers for public access, allAuthenticatedUsers for any Google-authenticated user, or specify individual users/SAs. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member\/members-2)
+        varType: list(string)
+        defaultValue: []
       - name: vpc_access
         description: Configure this to enable your service to send traffic to a Virtual Private Cloud. Set egress to ALL_TRAFFIC or PRIVATE_RANGES_ONLY. Choose a connector or network_interfaces (for direct VPC egress). [More info](https://cloud.google.com/run/docs/configuring/connecting-vpc)
         varType: |-
@@ -495,10 +499,6 @@ spec:
         description: The sandbox environment to host this Revision.
         varType: string
         defaultValue: EXECUTION_ENVIRONMENT_GEN2
-      - name: iap_members
-        description: Valid only when launch stage is set to 'BETA'. IAP is enabled automatically when users or service accounts (SAs) are provided. Use allUsers for public access, allAuthenticatedUsers for any Google-authenticated user, or specify individual users/SAs. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member\/members-2)
-        varType: list(string)
-        defaultValue: []
     outputs:
       - name: apphub_service_uri
         description: Service URI in CAIS style to be used by Apphub.
@@ -563,13 +563,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/iam.serviceAccountUser
-          - roles/serviceusage.serviceUsageViewer
           - roles/resourcemanager.projectIamAdmin
           - roles/compute.viewer
           - roles/iap.admin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
