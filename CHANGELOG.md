@@ -7,6 +7,42 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.20.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.20.0...v0.20.1) (2025-07-16)
+
+
+### Bug Fixes
+
+* remove alternate defaults for liveness and startup probe ([#371](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/371)) ([26d1d07](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/26d1d0726f515e0e136777d53f555d6a73eca952))
+
+## [0.20.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.19.0...v0.20.0) (2025-07-15)
+
+
+### Features
+
+* Add support for mounting gcs bucket in cloud run job ([#326](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/326)) ([1d470f1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/1d470f14059a00fc4fa09e62cbe013a91d6be93c))
+
+
+### Bug Fixes
+
+* fixed liveness_probe and startup_probe alt defaults ([#370](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/370)) ([ec886b5](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/ec886b56536aa21565a168a2f0ee6cd7697b8e4d))
+* typo in min_instance ([#367](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/367)) ([9f0bd11](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/9f0bd1150382cab4c9bf24019abc85b8e597a2da))
+
+## [0.19.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.18.0...v0.19.0) (2025-07-14)
+
+
+### Features
+
+* Add connections for Memorystore in metadata.yaml ([#356](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/356)) ([7cf3156](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/7cf3156c460f0b8cc5a811bfeecf5753f2c7ea08))
+* Add GPU support for services. ([#352](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/352)) ([522aa12](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/522aa12ff90586c88b65f88f21212d74547f0146))
+* Identity-Aware Proxy (IAP) integration in Cloud Run v2 modules ([#353](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/353)) ([110fba6](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/110fba63986e3d1806b32b5d0f637064f3f2807b))
+
+
+### Bug Fixes
+
+* added field descriptions and validations ([#355](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/355)) ([db4f870](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/db4f8703d81dbf2bba2a655590656b1ce3804dd9))
+* trigger google_compute_default_service_account datasource only if the service account name is not provided ([#361](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/361)) ([403cacd](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/403cacd83d1ef3058319f1caa8f246606e6727fe))
+* update metadata and fix issue of service container name not being present ([#364](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/364)) ([ae97b62](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/ae97b626dd6a7928e0ef36cae8fa12fe842e6973))
+
 ## [0.18.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.17.5...v0.18.0) (2025-06-25)
 
 

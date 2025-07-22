@@ -114,9 +114,6 @@ spec:
                       name: port
                       title: Port
                       subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
-                      min: 1
-                      max: 65535
-                      validation: Choose an integer value between 1 and 65535
                     http_headers:
                       name: http_headers
                       title: Http Headers
@@ -192,20 +189,6 @@ spec:
                   container_image: us-docker.pkg.dev/cloudrun/container/hello
                   ports:
                     container_port: 8080
-                  startup_probe:
-                    failure_threshold: 3
-                    initial_delay_seconds: 0
-                    period_seconds: 10
-                  liveness_probe:
-                    failure_threshold: 0
-                    initial_delay_seconds: 3
-                    timeout_seconds: 3
-                    period_seconds: 10
-                    http_get:
-                      path: Path (e.g./.ready)
-                      port: 8080
-                    grpc:
-                      port: 8080
         create_service_account:
           name: create_service_account
           title: Create Service Account
@@ -239,6 +222,12 @@ spec:
               value: EXECUTION_ENVIRONMENT_GEN2
             - label: EXECUTION_ENVIRONMENT_GEN1
               value: EXECUTION_ENVIRONMENT_GEN1
+        iap_members:
+          name: iap_members
+          title: Iap Members
+          level: 1
+          regexValidation: ^(?:allUsers|allAuthenticatedUsers)$|^((?:user|group|serviceAccount):(?:[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|(?:domain:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|(?:projectOwner|projectEditor|projectViewer):[a-z][a-z0-9-]{0,28}[a-z0-9])$
+          validation: Must be allUsers, allAuthenticatedUsers, or a service account in the format serviceAccount:email@example.com. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member\/members-2).
         ingress:
           name: ingress
           title: Ingress
@@ -298,7 +287,7 @@ spec:
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
-                min_intance_count: 0
+                min_instance_count: 0
         session_affinity:
           name: session_affinity
           title: Session Affinity

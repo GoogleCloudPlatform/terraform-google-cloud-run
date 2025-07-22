@@ -14,6 +14,125 @@
  * limitations under the License.
  */
 
+locals {
+  per_module_services = {
+    root = [
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "run.googleapis.com",
+      "cloudkms.googleapis.com",
+      "iam.googleapis.com",
+      "accesscontextmanager.googleapis.com",
+      "cloudbilling.googleapis.com",
+      "monitoring.googleapis.com",
+      "compute.googleapis.com",
+      "iap.googleapis.com"
+    ],
+    job-exec = [
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "run.googleapis.com",
+      "cloudkms.googleapis.com",
+      "iam.googleapis.com",
+      "accesscontextmanager.googleapis.com",
+      "cloudbilling.googleapis.com",
+      "monitoring.googleapis.com",
+      "compute.googleapis.com",
+      "iap.googleapis.com"
+    ],
+    secure-cloud-run = [
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "run.googleapis.com",
+      "cloudkms.googleapis.com",
+      "iam.googleapis.com",
+      "accesscontextmanager.googleapis.com",
+      "cloudbilling.googleapis.com",
+      "monitoring.googleapis.com",
+      "compute.googleapis.com",
+      "iap.googleapis.com"
+    ],
+    secure-cloud-run-core = [
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "run.googleapis.com",
+      "cloudkms.googleapis.com",
+      "iam.googleapis.com",
+      "accesscontextmanager.googleapis.com",
+      "cloudbilling.googleapis.com",
+      "monitoring.googleapis.com",
+      "compute.googleapis.com",
+      "iap.googleapis.com"
+    ],
+    secure-cloud-run-security = [
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "run.googleapis.com",
+      "cloudkms.googleapis.com",
+      "iam.googleapis.com",
+      "accesscontextmanager.googleapis.com",
+      "cloudbilling.googleapis.com",
+      "monitoring.googleapis.com",
+      "compute.googleapis.com",
+      "iap.googleapis.com"
+    ],
+    secure-serverless-harness = [
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "run.googleapis.com",
+      "cloudkms.googleapis.com",
+      "iam.googleapis.com",
+      "accesscontextmanager.googleapis.com",
+      "cloudbilling.googleapis.com",
+      "monitoring.googleapis.com",
+      "compute.googleapis.com",
+      "iap.googleapis.com"
+    ],
+    secure-serverless-net = [
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "run.googleapis.com",
+      "cloudkms.googleapis.com",
+      "iam.googleapis.com",
+      "accesscontextmanager.googleapis.com",
+      "cloudbilling.googleapis.com",
+      "monitoring.googleapis.com",
+      "compute.googleapis.com",
+      "iap.googleapis.com"
+    ],
+    service-project-factory = [
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "run.googleapis.com",
+      "cloudkms.googleapis.com",
+      "iam.googleapis.com",
+      "accesscontextmanager.googleapis.com",
+      "cloudbilling.googleapis.com",
+      "monitoring.googleapis.com",
+      "compute.googleapis.com",
+      "iap.googleapis.com"
+    ],
+    v2 = [
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "run.googleapis.com",
+      "iam.googleapis.com",
+      "monitoring.googleapis.com",
+      "compute.googleapis.com",
+      "iap.googleapis.com"
+    ],
+  }
+}
+
 module "project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 17.0"
@@ -26,17 +145,5 @@ module "project" {
   default_service_account = "keep"
   deletion_policy         = "DELETE"
 
-  activate_apis = [
-    "cloudresourcemanager.googleapis.com",
-    "storage-api.googleapis.com",
-    "serviceusage.googleapis.com",
-    "run.googleapis.com",
-    "cloudkms.googleapis.com",
-    "iam.googleapis.com",
-    "accesscontextmanager.googleapis.com",
-    "cloudbilling.googleapis.com",
-    "monitoring.googleapis.com",
-    "compute.googleapis.com",
-    "iap.googleapis.com"
-  ]
+  activate_apis = flatten(values(local.per_module_services))
 }
