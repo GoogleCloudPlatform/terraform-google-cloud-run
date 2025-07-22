@@ -7,6 +7,18 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.21.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.20.1...v0.21.0) (2025-07-22)
+
+
+### Features
+
+* Update connections for Memorystore ([#376](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/376)) ([3d10376](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/3d10376eecbe3e3a0a3803141232986e28d69a9b))
+
+
+### Bug Fixes
+
+* per module configs for cloud run ([#358](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/358)) ([adef355](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/adef3551fcef63f535d490a04785afcac6775f4a))
+
 ## [0.20.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.20.0...v0.20.1) (2025-07-16)
 
 
