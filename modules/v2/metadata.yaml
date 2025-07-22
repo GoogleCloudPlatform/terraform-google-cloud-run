@@ -147,6 +147,12 @@ spec:
         required: true
         connections:
           - source:
+              source: github.com/terraform-google-modules/terraform-google-memorystore//modules/redis-cluster
+              version: ">= 12.0"
+            spec:
+              outputExpr: "{\"REDIS_CLUSTER_HOST\": env_vars.REDIS_CLUSTER_HOST, \"REDIS_CLUSTER_PORT\": env_vars.REDIS_CLUSTER_PORT}"
+              inputPath: env_vars
+          - source:
               source: github.com/terraform-google-modules/terraform-google-memorystore
               version: ">= 12.0"
             spec:
@@ -263,6 +269,11 @@ spec:
               version: ">= 12.0"
             spec:
               outputExpr: "[\"roles/redis.editor\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-memorystore//modules/redis-cluster
+              version: ">= 12.0"
+            spec:
+              outputExpr: "[\"roles/redis.dbConnectionUser\"]"
           - source:
               source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
               version: ">= 0.13"
