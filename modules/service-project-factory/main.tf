@@ -89,8 +89,14 @@ resource "google_project_iam_member" "gcs_pubsub_publishing" {
   member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
 }
 
+resource "time_sleep" "wait_1m" {
+  depends_on      = [google_project_service_identity.eventarc_sa]
+  create_duration = "1m"
+}
+
 resource "google_project_iam_member" "eventarc_service_agent" {
-  project = module.serverless_project.project_id
-  role    = "roles/eventarc.serviceAgent"
-  member  = "serviceAccount:${google_project_service_identity.eventarc_sa.email}"
+  project    = module.serverless_project.project_id
+  role       = "roles/eventarc.serviceAgent"
+  member     = "serviceAccount:${google_project_service_identity.eventarc_sa.email}"
+  depends_on = [time_sleep.wait_1m]
 }

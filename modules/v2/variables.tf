@@ -60,8 +60,9 @@ variable "containers" {
     }), {})
     resources = optional(object({
       limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string)
+        cpu        = optional(string)
+        memory     = optional(string)
+        nvidia_gpu = optional(string)
       }))
       cpu_idle          = optional(bool, true)
       startup_cpu_boost = optional(bool, false)
@@ -98,7 +99,7 @@ variable "containers" {
         http_headers = optional(list(object({
           name  = string
           value = string
-        })), null)
+        })), [])
       }), null)
       tcp_socket = optional(object({
         port = optional(number)
@@ -109,7 +110,21 @@ variable "containers" {
       }), null)
     }), null)
   }))
-  description = "Map of container images for the service"
+  description = "Container images for the service"
+}
+
+variable "node_selector" {
+  type = object({
+    accelerator = string
+  })
+  description = "Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector)."
+  default     = null
+}
+
+variable "gpu_zonal_redundancy_disabled" {
+  type        = bool
+  description = "True if GPU zonal redundancy is disabled on this revision."
+  default     = false
 }
 
 variable "create_service_account" {
@@ -126,7 +141,7 @@ variable "service_account_project_roles" {
 
 variable "ingress" {
   type        = string
-  description = "Provides the ingress settings for this Service. On output, returns the currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active."
+  description = "Restricts network access to your Cloud Run service"
   default     = "INGRESS_TRAFFIC_ALL"
 
   validation {
@@ -137,7 +152,7 @@ variable "ingress" {
 
 variable "members" {
   type        = list(string)
-  description = "Users/SAs to be given invoker access to the service. Grant invoker access by specifying the users or service accounts (SAs). Use allUsers for public access, allAuthenticatedUsers for access by logged-in Google users, or provide a list of specific users/SAs. See the complete list of available options: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service_iam#member\\/members-1"
+  description = "Users/SAs to be given invoker access to the service. Grant invoker access by specifying the users or service accounts (SAs). Use allUsers for public access, allAuthenticatedUsers for access by logged-in Google users, or provide a list of specific users/SAs. [See the complete list of available options here](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service_iam#member\\/members-1)"
   default     = []
 }
 
@@ -151,7 +166,7 @@ variable "vpc_access" {
       tags       = optional(list(string))
     }))
   })
-  description = "Configure this to enable your service to send traffic to a Virtual Private Cloud. Set egress to ALL_TRAFFIC or PRIVATE_RANGES_ONLY. Choose a connector or network_interfaces (for direct VPC egress). For details: https://cloud.google.com/run/docs/configuring/connecting-vpc"
+  description = "Configure this to enable your service to send traffic to a Virtual Private Cloud. Set egress to ALL_TRAFFIC or PRIVATE_RANGES_ONLY. Choose a connector or network_interfaces (for direct VPC egress). [More info](https://cloud.google.com/run/docs/configuring/connecting-vpc)"
   default     = null
 }
 
@@ -216,19 +231,19 @@ variable "service_scaling" {
   type = object({
     min_instance_count = optional(number)
   })
-  description = "Scaling settings that apply to the whole service"
+  description = "Bounds the number of container instances for the service"
   default     = null
 }
 
 variable "service_labels" {
   type        = map(string)
-  description = "Unstructured key value map that can be used to organize and categorize objects. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels"
+  description = "Unstructured key value map that can be used to organize and categorize objects. For more information, visit [create and update labels for projects](https://cloud.google.com/resource-manager/docs/creating-managing-labels) or [configure labels for services](https://cloud.google.com/run/docs/configuring/labels)"
   default     = {}
 }
 
 variable "service_annotations" {
   type        = map(string)
-  description = "Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. Refer https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#annotations"
+  description = "Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. [Refer](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#annotations)"
   default     = {}
 }
 
@@ -254,13 +269,13 @@ variable "launch_stage" {
 
 variable "custom_audiences" {
   type        = list(string)
-  description = "One or more custom audiences that you want this service to support. Specify each custom audience as the full URL in a string. Refer https://cloud.google.com/run/docs/configuring/custom-audiences"
+  description = "One or more custom audiences that you want this service to support. Specify each custom audience as the full URL in a string. [Refer](https://cloud.google.com/run/docs/configuring/custom-audiences)"
   default     = null
 }
 
 variable "binary_authorization" {
   type = object({
-    breakglass_justification = optional(bool) # If present, indicates to use Breakglass using this justification. If useDefault is False, then it must be empty. For more information on breakglass, see https://cloud.google.com/binary-authorization/docs/using-breakglass
+    breakglass_justification = optional(bool) # If present, indicates to use Breakglass using this justification. If useDefault is False, then it must be empty. For more information on breakglass, [see](https://cloud.google.com/binary-authorization/docs/using-breakglass)
     use_default              = optional(bool) #If True, indicates to use the default project's binary authorization policy. If False, binary authorization will be disabled.
   })
   description = "Settings for the Binary Authorization feature."
@@ -279,19 +294,19 @@ variable "template_scaling" {
     min_instance_count = optional(number)
     max_instance_count = optional(number)
   })
-  description = "Scaling settings for this Revision."
+  description = "Maximum and minimum number of instances for this Revision"
   default     = null
 }
 
 variable "template_labels" {
   type        = map(string)
-  description = "Unstructured key value map that can be used to organize and categorize objects. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels"
+  description = "Unstructured key value map that can be used to organize and categorize objects. For more information, visit [create and update labels for projects](https://cloud.google.com/resource-manager/docs/creating-managing-labels) or [configure labels for services](https://cloud.google.com/run/docs/configuring/labels)"
   default     = {}
 }
 
 variable "template_annotations" {
   type        = map(string)
-  description = "Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. Refer https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#annotations"
+  description = "Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. [Refer](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#annotations)"
   default     = {}
 }
 
@@ -321,7 +336,7 @@ variable "max_instance_request_concurrency" {
 
 variable "session_affinity" {
   type        = string
-  description = "Enables session affinity. For more information, go to https://cloud.google.com/run/docs/configuring/session-affinity"
+  description = "Enables session affinity. For more information, [go to](https://cloud.google.com/run/docs/configuring/session-affinity)"
   default     = null
 }
 
@@ -334,4 +349,10 @@ variable "execution_environment" {
     condition     = contains(["EXECUTION_ENVIRONMENT_GEN1", "EXECUTION_ENVIRONMENT_GEN2"], var.execution_environment)
     error_message = "Allowed values for ingress are \"EXECUTION_ENVIRONMENT_GEN1\", \"EXECUTION_ENVIRONMENT_GEN2\"."
   }
+}
+
+variable "iap_members" {
+  type        = list(string)
+  description = "Valid only when launch stage is set to 'BETA'. IAP is enabled automatically when users or service accounts (SAs) are provided. Use allUsers for public access, allAuthenticatedUsers for any Google-authenticated user, or specify individual users/SAs. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member\\/members-2)"
+  default     = []
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,21 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 1.3"
+module "cloud_run_v2" {
+  source  = "GoogleCloudPlatform/cloud-run/google//modules/v2"
+  version = "~> 0.16"
 
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 6, < 7"
+  service_name = "ci-cloud-run-v2-iap"
+  project_id   = var.project_id
+  location     = "us-central1"
+  containers = [
+    {
+      container_image = "us-docker.pkg.dev/cloudrun/container/hello"
+      container_name  = "hello-world"
     }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 6, < 7"
-    }
-  }
+  ]
 
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-cloud-run-security/v0.20.1"
-  }
-
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-cloud-run-security/v0.20.1"
-  }
+  launch_stage                  = "BETA"
+  iap_members                   = ["user:test@test.test"]
+  cloud_run_deletion_protection = false
 }

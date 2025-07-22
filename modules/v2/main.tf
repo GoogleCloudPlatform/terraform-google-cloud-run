@@ -15,7 +15,7 @@
  */
 
 data "google_compute_default_service_account" "default" {
-  count   = local.create_service_account == false ? 1 : 0
+  count   = local.create_service_account == false && var.service_account == null ? 1 : 0
   project = var.project_id
 }
 
@@ -62,7 +62,7 @@ locals {
     # Set default values for the sidecar container
     ports                = {}
     working_dir          = null
-    depends_on_container = [local.ingress_container.container_name]
+    depends_on_container = try(local.ingress_container.container_name, null) != null ? [local.ingress_container.container_name] : []
     container_args       = null
     container_command    = null
     env_vars             = {}
@@ -96,12 +96,12 @@ resource "google_project_iam_member" "roles" {
 resource "google_cloud_run_v2_service" "main" {
   provider = google-beta
 
-  project     = var.project_id
-  name        = var.service_name
-  location    = var.location
-  description = var.description
-  labels      = var.service_labels
-
+  project             = var.project_id
+  name                = var.service_name
+  location            = var.location
+  description         = var.description
+  labels              = var.service_labels
+  iap_enabled         = length(var.iap_members) > 0
   deletion_protection = var.cloud_run_deletion_protection
 
   template {
@@ -115,6 +115,14 @@ resource "google_cloud_run_v2_service" "main" {
     encryption_key                   = var.encryption_key
     max_instance_request_concurrency = var.max_instance_request_concurrency
     session_affinity                 = var.session_affinity
+    gpu_zonal_redundancy_disabled    = var.gpu_zonal_redundancy_disabled
+
+    dynamic "node_selector" {
+      for_each = var.node_selector != null ? [var.node_selector] : []
+      content {
+        accelerator = node_selector.value.accelerator
+      }
+    }
 
     dynamic "scaling" {
       for_each = var.template_scaling[*]
@@ -159,7 +167,13 @@ resource "google_cloud_run_v2_service" "main" {
         }
 
         resources {
-          limits            = containers.value.resources.limits
+          # Setting limits to null when no values are provided prevents a permanent diff
+          # where the provider attempts to remove default values set by the API.
+          limits = try(containers.value.resources.limits, null) != null ? {
+            cpu              = try(containers.value.resources.limits.cpu, null),
+            memory           = try(containers.value.resources.limits.memory, null),
+            "nvidia.com/gpu" = try(containers.value.resources.limits.nvidia_gpu, null)
+          } : null
           cpu_idle          = containers.value.resources.cpu_idle
           startup_cpu_boost = containers.value.resources.startup_cpu_boost
         }
@@ -367,4 +381,29 @@ resource "google_cloud_run_v2_service_iam_member" "authorize" {
   name     = google_cloud_run_v2_service.main.name
   role     = "roles/run.invoker"
   member   = each.value
+}
+
+resource "google_iap_web_cloud_run_service_iam_member" "iap_access" {
+  for_each               = toset(var.iap_members)
+  project                = google_cloud_run_v2_service.main.project
+  location               = google_cloud_run_v2_service.main.location
+  cloud_run_service_name = google_cloud_run_v2_service.main.name
+  role                   = "roles/iap.httpsResourceAccessor"
+  member                 = each.value
+}
+
+resource "google_project_service_identity" "iap_p4sa" {
+  count    = length(var.iap_members) > 0 ? 1 : 0
+  provider = google-beta
+  project  = var.project_id
+  service  = "iap.googleapis.com"
+}
+
+resource "google_cloud_run_v2_service_iam_member" "authorize_iap_p4sa" {
+  count    = length(var.iap_members) > 0 ? 1 : 0
+  location = google_cloud_run_v2_service.main.location
+  project  = google_cloud_run_v2_service.main.project
+  name     = google_cloud_run_v2_service.main.name
+  role     = "roles/run.invoker"
+  member   = google_project_service_identity.iap_p4sa[count.index].member
 }

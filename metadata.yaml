@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ spec:
     source:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
       sourceType: git
-    version: 0.17.5
+    version: 0.20.1
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -64,6 +64,10 @@ spec:
         location: examples/v2
       - name: v2_with_gmp
         location: examples/v2_with_gmp
+      - name: v2_with_gpu
+        location: examples/v2_with_gpu
+      - name: v2_with_iap
+        location: examples/v2_with_iap
   interfaces:
     variables:
       - name: project_id
@@ -317,32 +321,25 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/accesscontextmanager.policyAdmin
-          - roles/orgpolicy.policyAdmin
-      - level: Project
-        roles:
-          - roles/resourcemanager.folderAdmin
-          - roles/resourcemanager.projectCreator
-          - roles/resourcemanager.projectDeleter
-      - level: Project
-        roles:
-          - roles/run.admin
-          - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
+          - roles/run.admin
+          - roles/iam.serviceAccountAdmin
     services:
-      - cloudresourcemanager.googleapis.com
-      - storage-api.googleapis.com
-      - serviceusage.googleapis.com
-      - run.googleapis.com
-      - cloudkms.googleapis.com
-      - iam.googleapis.com
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
-      - monitoring.googleapis.com
+      - cloudkms.googleapis.com
+      - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
+      - iam.googleapis.com
+      - iap.googleapis.com
+      - monitoring.googleapis.com
+      - run.googleapis.com
+      - serviceusage.googleapis.com
+      - storage-api.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6, < 7"
