@@ -42,8 +42,7 @@ module "cloud_run_core" {
 }
 ```
 
-Functional examples are included in the
-[examples](/examples/) directory.
+Functional examples are included in the [examples](/examples/) directory.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
