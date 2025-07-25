@@ -73,7 +73,7 @@ spec:
                     nvidia_gpu:
                       name: nvidia_gpu
                       title: Nvidia GPU
-                      subtext: Number of GPUs to allocate to each instance of this container. Requires a minimum of 4 vCPUs and 16Gi of memory Maximum instance count for this template is 3. A node selector must be provided for GPU allocation.
+                      subtext: Number of GPUs to allocate to each instance of this container. Requires a minimum of 4 vCPUs and 16Gi of memory. A node selector must be provided for GPU allocation.
             startup_probe:
               name: startup_probe
               title: Startup Probe
