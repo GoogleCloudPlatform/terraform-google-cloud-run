@@ -147,12 +147,12 @@ spec:
               mount_path = string
             }))
         defaultValue: []
-      - name: vpc_access
-        description: VPC Access configuration to use for this Task.
+      - name: volume_mounts
+        description: Volume to mount into the container's filesystem.
         varType: |-
           list(object({
-              connector = string
-              egress    = string
+              name       = string
+              mount_path = string
             }))
         defaultValue: []
       - name: limits
@@ -184,6 +184,8 @@ spec:
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
+          - roles/compute.viewer
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
