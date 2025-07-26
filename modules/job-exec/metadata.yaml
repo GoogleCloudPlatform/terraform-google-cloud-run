@@ -78,6 +78,12 @@ spec:
         description: Service Account email needed for the job
         varType: string
         defaultValue: ""
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-service-accounts//modules/simple-sa
+              version: ">= 4.4"
+            spec:
+              outputExpr: email
       - name: argument
         description: Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments
         varType: list(string)
@@ -115,6 +121,12 @@ spec:
         description: A set of key/value label pairs to assign to the Cloud Run job.
         varType: map(string)
         defaultValue: {}
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-project-factory//modules/project_services
+              version: ">= 17.1.0"
+            spec:
+              outputExpr: '{"vertex-ai": "true"}'
       - name: max_retries
         description: Number of retries allowed per Task, before marking this Task failed.
         varType: number
@@ -139,6 +151,25 @@ spec:
               }))
             }))
         defaultValue: []
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/postgresql
+              version: ">= 23.0"
+            spec:
+              outputExpr: instance_connection_name
+              inputPath: cloud_sql_instance.instances
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/mysql
+              version: ">= 23.0"
+            spec:
+              outputExpr: instance_connection_name
+              inputPath: cloud_sql_instance.instances
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-cloud-storage//modules/simple_bucket
+              version: ">= 8.0"
+            spec:
+              outputExpr: name
+              inputPath: gcs.bucket
       - name: volume_mounts
         description: Volume to mount into the container's filesystem.
         varType: |-
@@ -155,6 +186,12 @@ spec:
               egress    = string
             }))
         defaultValue: []
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-network//modules/vpc-serverless-connector-beta
+              version: ">= 9.1"
+            spec:
+              outputExpr: "[{\"connector\": connector_ids[0]}]"
       - name: limits
         description: Resource limits to the container
         varType: |-
@@ -173,6 +210,7 @@ spec:
     outputs:
       - name: id
         description: Cloud Run Job ID
+        type: string
   requirements:
     roles:
       - level: Project
