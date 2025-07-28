@@ -125,17 +125,35 @@ spec:
         description: Specifies the desired number of tasks the execution should run.
         varType: number
       - name: volumes
-        description: A list of Volumes to make available to containers.
+        description: Volumes needed for environment variables (when using secret)
         varType: |-
           list(object({
               name = string
+              secret = optional(object({
+                secret       = string
+                default_mode = optional(string)
+                items = optional(object({
+                  path    = string
+                  version = optional(string)
+                  mode    = optional(string)
+                }))
+              }))
               cloud_sql_instance = optional(object({
                 instances = set(string)
+              }))
+              empty_dir = optional(object({
+                medium     = optional(string)
+                size_limit = optional(string)
               }))
               gcs = optional(object({
                 bucket        = string
                 read_only     = optional(bool)
                 mount_options = optional(list(string))
+              }))
+              nfs = optional(object({
+                server    = string
+                path      = string
+                read_only = optional(string)
               }))
             }))
         defaultValue: []
@@ -148,13 +166,17 @@ spec:
             }))
         defaultValue: []
       - name: vpc_access
-        description: VPC Access configuration to use for this Task.
+        description: "Configure this to enable your service to send traffic to a Virtual Private Cloud. Set egress to ALL_TRAFFIC or PRIVATE_RANGES_ONLY. Choose a connector or network_interfaces (for direct VPC egress). For details: https://cloud.google.com/run/docs/configuring/connecting-vpc"
         varType: |-
-          list(object({
-              connector = string
-              egress    = string
-            }))
-        defaultValue: []
+          object({
+              connector = optional(string)
+              egress    = optional(string)
+              network_interfaces = optional(object({
+                network    = optional(string)
+                subnetwork = optional(string)
+                tags       = optional(list(string))
+              }))
+            })
       - name: limits
         description: Resource limits to the container
         varType: |-
@@ -177,13 +199,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
+          - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
-          - roles/iam.serviceAccountUser
-          - roles/serviceusage.serviceUsageViewer
-          - roles/cloudkms.admin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
