@@ -114,16 +114,34 @@ variable "task_count" {
 variable "volumes" {
   type = list(object({
     name = string
+    secret = optional(object({
+      secret       = string
+      default_mode = optional(string)
+      items = optional(object({
+        path    = string
+        version = optional(string)
+        mode    = optional(string)
+      }))
+    }))
     cloud_sql_instance = optional(object({
       instances = set(string)
+    }))
+    empty_dir = optional(object({
+      medium     = optional(string)
+      size_limit = optional(string)
     }))
     gcs = optional(object({
       bucket        = string
       read_only     = optional(bool)
       mount_options = optional(list(string))
     }))
+    nfs = optional(object({
+      server    = string
+      path      = string
+      read_only = optional(string)
+    }))
   }))
-  description = "A list of Volumes to make available to containers."
+  description = "Volumes needed for environment variables (when using secret)"
   default     = []
 }
 
@@ -137,12 +155,17 @@ variable "volume_mounts" {
 }
 
 variable "vpc_access" {
-  type = list(object({
-    connector = string
-    egress    = string
-  }))
-  description = "VPC Access configuration to use for this Task."
-  default     = []
+  type = object({
+    connector = optional(string)
+    egress    = optional(string)
+    network_interfaces = optional(object({
+      network    = optional(string)
+      subnetwork = optional(string)
+      tags       = optional(list(string))
+    }))
+  })
+  description = "Configure this to enable your service to send traffic to a Virtual Private Cloud. Set egress to ALL_TRAFFIC or PRIVATE_RANGES_ONLY. Choose a connector or network_interfaces (for direct VPC egress). For details: https://cloud.google.com/run/docs/configuring/connecting-vpc"
+  default     = null
 }
 
 variable "limits" {
