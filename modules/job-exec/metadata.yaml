@@ -121,12 +121,6 @@ spec:
         description: A set of key/value label pairs to assign to the Cloud Run job.
         varType: map(string)
         defaultValue: {}
-        connections:
-          - source:
-              source: github.com/terraform-google-modules/terraform-google-project-factory//modules/project_services
-              version: ">= 17.1.0"
-            spec:
-              outputExpr: '{"vertex-ai": "true"}'
       - name: max_retries
         description: Number of retries allowed per Task, before marking this Task failed.
         varType: number
@@ -168,7 +162,7 @@ spec:
               source: github.com/terraform-google-modules/terraform-google-cloud-storage//modules/simple_bucket
               version: ">= 8.0"
             spec:
-              outputExpr: name
+              outputExpr: "{\"name\": \"gcs-bucket-vol\", \"gcs\": { \"bucket\": name}}"
               inputPath: gcs.bucket
       - name: volume_mounts
         description: Volume to mount into the container's filesystem.
@@ -186,12 +180,6 @@ spec:
               egress    = string
             }))
         defaultValue: []
-        connections:
-          - source:
-              source: github.com/terraform-google-modules/terraform-google-network//modules/vpc-serverless-connector-beta
-              version: ">= 9.1"
-            spec:
-              outputExpr: "[{\"connector\": connector_ids[0]}]"
       - name: limits
         description: Resource limits to the container
         varType: |-

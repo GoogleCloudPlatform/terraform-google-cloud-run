@@ -46,6 +46,8 @@ spec:
         image:
           name: image
           title: Image
+          regexValidation: ^((([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}(:[0-9]+)?/)?([a-z0-9]+([._-][a-z0-9]+)*/)*[a-z0-9]+([._-][a-z0-9]+)*(:(\w[\w.-]{0,127})|@sha256:[a-fA-F0-9]{64})?)$
+          validation: Must be a valid Docker image (lowercase repo, optional registry, tag, or SHA256 digest)
         labels:
           name: labels
           title: Labels
@@ -64,6 +66,8 @@ spec:
         name:
           name: name
           title: Name
+          regexValidation: ^[a-z][a-z0-9-]{0,47}[a-z0-9]$
+          validation: Use lowercase letters, numbers, and hyphens. Start with a letter and end with letter/number. Must be 49 characters or fewer.
         parallelism:
           name: parallelism
           title: Parallelism
@@ -88,3 +92,7 @@ spec:
         vpc_access:
           name: vpc_access
           title: Vpc Access
+    runtime:
+      outputs:
+        id:
+          visibility: VISIBILITY_ROOT
