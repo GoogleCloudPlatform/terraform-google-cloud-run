@@ -92,10 +92,6 @@ spec:
         description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account
         varType: list(string)
         defaultValue: []
-      - name: enable_prometheus_sidecar
-        description: Enable Prometheus sidecar in Cloud Run instance.
-        varType: bool
-        defaultValue: false
       - name: argument
         description: Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments
         varType: list(string)
@@ -211,8 +207,13 @@ spec:
       - name: id
         description: Cloud Run Job ID
         type: string
-      - name: service_account
-        description: Service account created for the job.
+      - name: service_account_id
+        description: Service account id and email
+        type:
+          - object
+          - email: string
+            id: string
+            member: string
   requirements:
     roles:
       - level: Project

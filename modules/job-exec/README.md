@@ -39,7 +39,6 @@ Functional examples are included in the
 | cloud\_run\_deletion\_protection | This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services | `bool` | `true` | no |
 | container\_command | Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten | `list(string)` | `[]` | no |
 | create\_service\_account | Create service account for the job. If false, service\_account\_email must be provided. | `bool` | `false` | no |
-| enable\_prometheus\_sidecar | Enable Prometheus sidecar in Cloud Run instance. | `bool` | `false` | no |
 | env\_secret\_vars | Environment variables (Secret Manager) | <pre>list(object({<br>    name = string<br>    value_source = set(object({<br>      secret_key_ref = object({<br>        secret  = string<br>        version = optional(string, "latest")<br>      })<br>    }))<br>  }))</pre> | `[]` | no |
 | env\_vars | Environment variables (cleartext) | <pre>list(object({<br>    value = string<br>    name  = string<br>  }))</pre> | `[]` | no |
 | exec | Whether to execute job after creation | `bool` | `false` | no |
@@ -65,6 +64,6 @@ Functional examples are included in the
 | Name | Description |
 |------|-------------|
 | id | Cloud Run Job ID |
-| service\_account | Service account created for the job. |
+| service\_account\_id | Service account id and email |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -47,10 +47,7 @@ locals {
     member = "serviceAccount:${var.service_account_email}"
   }
 
-  service_account_project_roles = local.create_service_account ? distinct(concat(
-    var.service_account_project_roles,
-    var.enable_prometheus_sidecar ? ["roles/monitoring.metricWriter"] : []
-  )) : []
+  service_account_project_roles = local.create_service_account ? var.service_account_project_roles : []
 }
 
 resource "google_service_account" "sa" {

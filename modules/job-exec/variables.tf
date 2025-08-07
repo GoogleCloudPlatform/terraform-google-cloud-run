@@ -58,12 +58,6 @@ variable "service_account_project_roles" {
   default     = []
 }
 
-variable "enable_prometheus_sidecar" {
-  type        = bool
-  description = "Enable Prometheus sidecar in Cloud Run instance."
-  default     = false
-}
-
 variable "argument" {
   type        = list(string)
   description = "Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments"
