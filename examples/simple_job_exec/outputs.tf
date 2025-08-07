@@ -18,3 +18,8 @@ output "id" {
   description = "Cloud Run Job ID"
   value       = module.job.id
 }
+
+output "service_account_id" {
+  description = "Service account id and email"
+  value       = module.job.service_account_id
+}
