@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- data "google_compute_default_service_account" "default" {
+data "google_compute_default_service_account" "default" {
   count   = local.create_service_account == false && var.service_account_email == null ? 1 : 0
   project = var.project_id
 }
