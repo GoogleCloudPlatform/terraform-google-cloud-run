@@ -34,6 +34,10 @@ spec:
         container_command:
           name: container_command
           title: Container Command
+        create_service_account:
+          name: create_service_account
+          title: Create Service Account
+          level: 1
         env_secret_vars:
           name: env_secret_vars
           title: Env Secret Vars

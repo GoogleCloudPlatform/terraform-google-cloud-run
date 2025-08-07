@@ -40,10 +40,28 @@ variable "exec" {
   default     = false
 }
 
+variable "create_service_account" {
+  description = "Create service account for the job. If false, service_account_email must be provided."
+  type        = bool
+  default     = false
+}
+
 variable "service_account_email" {
   type        = string
   description = "Service Account email needed for the job"
   default     = ""
+}
+
+variable "service_account_project_roles" {
+  type        = list(string)
+  description = "Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account"
+  default     = []
+}
+
+variable "enable_prometheus_sidecar" {
+  type        = bool
+  description = "Enable Prometheus sidecar in Cloud Run instance."
+  default     = false
 }
 
 variable "argument" {

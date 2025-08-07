@@ -74,6 +74,10 @@ spec:
         description: Whether to execute job after creation
         varType: bool
         defaultValue: false
+      - name: create_service_account
+        description: Create service account for the job. If false, service_account_email must be provided.
+        varType: bool
+        defaultValue: false
       - name: service_account_email
         description: Service Account email needed for the job
         varType: string
@@ -84,6 +88,14 @@ spec:
               version: ">= 4.4"
             spec:
               outputExpr: email
+      - name: service_account_project_roles
+        description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account
+        varType: list(string)
+        defaultValue: []
+      - name: enable_prometheus_sidecar
+        description: Enable Prometheus sidecar in Cloud Run instance.
+        varType: bool
+        defaultValue: false
       - name: argument
         description: Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments
         varType: list(string)
@@ -199,17 +211,19 @@ spec:
       - name: id
         description: Cloud Run Job ID
         type: string
+      - name: service_account
+        description: Service account created for the job.
   requirements:
     roles:
       - level: Project
         roles:
-          - roles/resourcemanager.projectIamAdmin
-          - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
+          - roles/run.admin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
