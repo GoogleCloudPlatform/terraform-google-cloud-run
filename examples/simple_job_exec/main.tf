@@ -24,11 +24,11 @@ module "job" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/job-exec"
   version = "~> 0.16"
 
-  project_id = var.project_id
-  name       = "simple-job"
-  location   = "us-central1"
-  image      = "us-docker.pkg.dev/cloudrun/container/job"
-  exec       = true
+  project_id             = var.project_id
+  name                   = "simple-job"
+  location               = "us-central1"
+  image                  = "us-docker.pkg.dev/cloudrun/container/job"
+  exec                   = true
   create_service_account = false
   service_account_email  = google_service_account.sa.email
 
