@@ -75,7 +75,7 @@ spec:
         varType: bool
         defaultValue: false
       - name: create_service_account
-        description: Create service account for the job. Otherwise, use the default Compute Engine default service account.
+        description: Create service account for the job. Otherwise, use the default Compute Engine default service account
         varType: bool
         defaultValue: false
       - name: service_account_email
@@ -89,7 +89,7 @@ spec:
             spec:
               outputExpr: email
       - name: service_account_project_roles
-        description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account
+        description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account_email
         varType: list(string)
         defaultValue: []
       - name: argument

@@ -41,7 +41,7 @@ variable "exec" {
 }
 
 variable "create_service_account" {
-  description = "Create service account for the job. Otherwise, use the default Compute Engine default service account."
+  description = "Create service account for the job. Otherwise, use the default Compute Engine default service account"
   type        = bool
   default     = false
 }
@@ -54,7 +54,7 @@ variable "service_account_email" {
 
 variable "service_account_project_roles" {
   type        = list(string)
-  description = "Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account"
+  description = "Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account_email"
   default     = []
 }
 
