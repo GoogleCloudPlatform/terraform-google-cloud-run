@@ -41,7 +41,7 @@ variable "exec" {
 }
 
 variable "create_service_account" {
-  description = "Create service account for the job. If false, service_account_email must be provided."
+  description = "Create service account for the job. Otherwise, use the default Compute Engine default service account."
   type        = bool
   default     = false
 }
