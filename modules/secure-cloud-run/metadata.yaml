@@ -34,6 +34,8 @@ spec:
     examples:
       - name: cloud_run_vpc_connector
         location: examples/cloud_run_vpc_connector
+      - name: job_service_account_creation
+        location: examples/job_service_account_creation
       - name: secure_cloud_run
         location: examples/secure_cloud_run
       - name: secure_cloud_run_standalone
@@ -52,8 +54,6 @@ spec:
         location: examples/v2_with_gpu
       - name: v2_with_iap
         location: examples/v2_with_iap
-      - name: job_service_account_creation
-        location: examples/job_service_account_creation
   interfaces:
     variables:
       - name: location
@@ -128,7 +128,7 @@ spec:
         varType: string
         defaultValue: 2592000s
       - name: key_protection_level
-        description: "The protection level to use when creating a version based on this template. Possible values: ["SOFTWARE", "HSM"]"
+        description: "The protection level to use when creating a version based on this template. Possible values: [\"SOFTWARE\", \"HSM\"]"
         varType: string
         defaultValue: HSM
       - name: ip_cidr_range
@@ -153,7 +153,7 @@ spec:
         varType: bool
         defaultValue: true
       - name: policy_for
-        description: "Policy Root: set one of the following values to determine where the policy is applied. Possible values: ["project", "folder", "organization"]."
+        description: "Policy Root: set one of the following values to determine where the policy is applied. Possible values: [\"project\", \"folder\", \"organization\"]."
         varType: string
         defaultValue: project
       - name: folder_id
@@ -202,12 +202,7 @@ spec:
             }))
         defaultValue: []
       - name: groups
-        description: "  Groups which will have roles assigned.
-  The Serverless Administrators email group which the following roles will be added: Cloud Run Admin, Compute Network Viewer and Compute Network User.
-  The Serverless Security Administrators email group which the following roles will be added: Cloud Run Viewer, Cloud KMS Viewer and Artifact Registry Reader.
-  The Cloud Run Developer email group which the following roles will be added: Cloud Run Developer, Artifact Registry Writer and Cloud KMS CryptoKey Encrypter.
-  The Cloud Run User email group which the following roles will be added: Cloud Run Invoker.
-"
+        description: "  Groups which will have roles assigned.\n  The Serverless Administrators email group which the following roles will be added: Cloud Run Admin, Compute Network Viewer and Compute Network User.\n  The Serverless Security Administrators email group which the following roles will be added: Cloud Run Viewer, Cloud KMS Viewer and Artifact Registry Reader.\n  The Cloud Run Developer email group which the following roles will be added: Cloud Run Developer, Artifact Registry Writer and Cloud KMS CryptoKey Encrypter.\n  The Cloud Run User email group which the following roles will be added: Cloud Run Invoker.\n"
         varType: |-
           object({
               group_serverless_administrator          = optional(string, null)
