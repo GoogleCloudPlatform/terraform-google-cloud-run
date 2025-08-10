@@ -1,6 +1,0 @@
-project_id="ci-cloud-run-3e28"
-name="job-name"
-location="us-central1"
-image="us-docker.pkg.dev/cloudrun/container/job:latest"
-cloud_run_deletion_protection="false"
-service_account_email="ci-cloud-run-job-sa@ci-cloud-run-3e28.iam.gserviceaccount.com"

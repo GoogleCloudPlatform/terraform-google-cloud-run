@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-resource "google_service_account" "sa" {
-  project      = var.project_id
-  account_id   = "ci-cloud-run-job-sa"
-  display_name = "Service account for ci-cloud-run-job"
-}
-
 module "job" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/job-exec"
   version = "~> 0.16"
 
-  project_id             = var.project_id
-  name                   = "simple-job"
-  location               = "us-central1"
-  image                  = "us-docker.pkg.dev/cloudrun/container/job"
-  exec                   = true
-  create_service_account = false
-  service_account_email  = google_service_account.sa.email
+  project_id = var.project_id
+  name       = "simple-job"
+  location   = "us-central1"
+  image      = "us-docker.pkg.dev/cloudrun/container/job"
+  exec       = true
 
   cloud_run_deletion_protection = var.cloud_run_deletion_protection
 }

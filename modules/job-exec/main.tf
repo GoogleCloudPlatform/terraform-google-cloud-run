@@ -15,37 +15,37 @@
  */
 
 data "google_compute_default_service_account" "default" {
-  count   = local.create_service_account == false && var.service_account_email == null ? 1 : 0
+  count   = !var.create_service_account && var.service_account_email == "" ? 1 : 0
   project = var.project_id
 }
 
 locals {
   service_account = (
-    var.service_account_email != null
+    var.service_account_email != ""
     ? var.service_account_email
     : (
       var.create_service_account
       ? google_service_account.sa[0].email
-      : null
+      : data.google_compute_default_service_account.default[0].email
     )
   )
 
-  create_service_account = var.create_service_account ? var.service_account_email == null : false
+  create_service_account = var.create_service_account && var.service_account_email == ""
 
   service_account_prefix = substr(var.name, 0, 27)
-  service_account_output = local.create_service_account ? {
+  service_account_output = var.create_service_account ? {
     id     = google_service_account.sa[0].account_id,
     email  = google_service_account.sa[0].email,
     member = google_service_account.sa[0].member
-    } : var.service_account_email == null ? {
-    id     = data.google_compute_default_service_account.default[0].name,
-    email  = data.google_compute_default_service_account.default[0].email,
-    member = data.google_compute_default_service_account.default[0].member
-    } : {
-    id     = split("@", var.service_account_email)[0],
-    email  = var.service_account_email,
-    member = "serviceAccount:${var.service_account_email}"
-  }
+    } : (var.service_account_email != "" ? {
+      id     = split("@", var.service_account_email)[0],
+      email  = var.service_account_email,
+      member = "serviceAccount:${var.service_account_email}"
+      } : {
+      id     = data.google_compute_default_service_account.default[0].name,
+      email  = data.google_compute_default_service_account.default[0].email,
+      member = data.google_compute_default_service_account.default[0].member
+  })
 
   service_account_project_roles = local.create_service_account ? var.service_account_project_roles : []
 }
@@ -180,5 +180,13 @@ resource "terracurl_request" "exec" {
   destroy_headers = {
     Authorization = "Bearer ${data.google_client_config.default.access_token}"
     Content-Type  = "application/json",
+  }
+  lifecycle {
+    # The access_token used in headers is short-lived and will be different on each run.
+    # Ignoring changes to headers prevents terraform from generating a new plan on every run, which would cause tests to fail.
+    ignore_changes = [
+      headers,
+      destroy_headers,
+    ]
   }
 }

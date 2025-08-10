@@ -158,6 +158,20 @@ steps:
 - id: v2-gpu-teardown
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestV2WithGPU --stage teardown --verbose']
+- id: job-sa-creation-init
+  waitFor:
+    - v2-gpu-teardown
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestJobServiceAccountCreation --stage init --verbose']
+- id: job-sa-creation-apply
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestJobServiceAccountCreation --stage apply --verbose']
+- id: job-sa-creation-verify
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestJobServiceAccountCreation --stage verify --verbose']
+- id: job-sa-creation-teardown
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestJobServiceAccountCreation --stage teardown --verbose']
 
 tags:
 - 'ci'
