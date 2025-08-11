@@ -30,10 +30,10 @@ locals {
     )
   )
 
-  create_service_account = var.create_service_account && var.service_account_email == ""
+  create_service_account = var.create_service_account ? var.service_account_email == "" : false
 
   service_account_prefix = substr(var.name, 0, 27)
-  service_account_output = var.create_service_account ? {
+  service_account_output = local.create_service_account ? {
     id     = google_service_account.sa[0].account_id,
     email  = google_service_account.sa[0].email,
     member = google_service_account.sa[0].member
@@ -180,13 +180,5 @@ resource "terracurl_request" "exec" {
   destroy_headers = {
     Authorization = "Bearer ${data.google_client_config.default.access_token}"
     Content-Type  = "application/json",
-  }
-  lifecycle {
-    # The access_token used in headers is short-lived and will be different on each run.
-    # Ignoring changes to headers prevents terraform from generating a new plan on every run, which would cause tests to fail.
-    ignore_changes = [
-      headers,
-      destroy_headers,
-    ]
   }
 }
