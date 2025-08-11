@@ -69,7 +69,11 @@ spec:
                     memory:
                       name: memory
                       title: Memory
-                      subtext: Memory to allocate to each instance of this container
+                      subtext: Memory to allocate to each instance of this container (e.g., 256Mi, 4Gi).
+                    nvidia_gpu:
+                      name: nvidia_gpu
+                      title: Nvidia GPU
+                      subtext: Number of GPUs to allocate to each instance of this container. Requires a minimum of 4 vCPUs and 16Gi of memory Maximum instance count for this template is 3. A node selector must be provided for GPU allocation.
             startup_probe:
               name: startup_probe
               title: Startup Probe
@@ -316,7 +320,6 @@ spec:
             - type: ALTERNATE_TYPE_DC
               value:
                 min_instance_count: 0
-                max_instance_count: 100
         timeout:
           name: timeout
           title: Timeout
@@ -399,6 +402,16 @@ spec:
                 network_interfaces:
                   network: default
                   subnetwork: default
+        node_selector:
+          name: node_selector
+          title: Node Selector
+          level: 1
+        gpu_zonal_redundancy_disabled:
+          name: gpu_zonal_redundancy_disabled
+          title: GPU Zonal Redundancy disabled
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: false
     runtime:
       outputs:
         service_uri:
