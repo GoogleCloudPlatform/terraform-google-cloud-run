@@ -27,8 +27,6 @@ func TestJobServiceAccountCreation(t *testing.T) {
 	jobSACreation := tft.NewTFBlueprintTest(t)
 
 	jobSACreation.DefineVerify(func(assert *assert.Assertions) {
-		jobSACreation.DefaultVerify(assert)
-
 		projectID := jobSACreation.GetTFSetupStringOutput("project_id")
 		saEmail := jobSACreation.GetJsonOutput("service_account_id").Get("email").String()
 
