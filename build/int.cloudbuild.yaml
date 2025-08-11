@@ -71,7 +71,7 @@ steps:
   - verify
 - id: create all
   waitFor:
-    - prepare
+    - destroy
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials && cft test run TestCloudRunWithCMEK --test-dir test/integration --stage init --verbose']
 - id: converge cloud-run-with-cmek
