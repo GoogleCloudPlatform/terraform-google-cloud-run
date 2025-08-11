@@ -34,6 +34,8 @@ spec:
     examples:
       - name: cloud_run_vpc_connector
         location: examples/cloud_run_vpc_connector
+      - name: job_service_account_creation
+        location: examples/job_service_account_creation
       - name: secure_cloud_run
         location: examples/secure_cloud_run
       - name: secure_cloud_run_standalone
