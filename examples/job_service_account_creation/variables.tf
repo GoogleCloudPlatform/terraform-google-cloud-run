@@ -1,5 +1,5 @@
 /**
- * Copyright 2023 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-output "id" {
-  description = "Cloud Run Job ID"
-  value       = google_cloud_run_v2_job.job.id
+variable "project_id" {
+  description = "The project ID to deploy to"
+  type        = string
 }
 
-output "service_account_id" {
-  description = "Service account id and email"
-  value       = local.service_account_output
+variable "cloud_run_deletion_protection" {
+  type        = bool
+  description = "This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services"
+  default     = false
 }
