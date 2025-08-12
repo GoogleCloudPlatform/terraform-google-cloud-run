@@ -181,3 +181,12 @@ variable "cloud_run_deletion_protection" {
   description = "This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services"
   default     = true
 }
+
+variable "client" {
+  type = object({
+    name    = optional(string, null)
+    version = optional(string, null)
+  })
+  description = "Arbitrary identifier for the API client and version identifier"
+  default     = {}
+}
