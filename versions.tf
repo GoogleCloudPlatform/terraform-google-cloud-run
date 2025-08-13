@@ -29,10 +29,10 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run/v0.20.1"
+    module_name = "blueprints/terraform/terraform-google-cloud-run/v0.21.0"
   }
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run/v0.20.1"
+    module_name = "blueprints/terraform/terraform-google-cloud-run/v0.21.0"
   }
 }
