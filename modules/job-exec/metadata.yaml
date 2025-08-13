@@ -173,7 +173,6 @@ spec:
               version: ">= 8.0"
             spec:
               outputExpr: "{\"name\": \"gcs-bucket-vol\", \"gcs\": { \"bucket\": name}}"
-              inputPath: gcs.bucket
       - name: volume_mounts
         description: Volume to mount into the container's filesystem.
         varType: |-
