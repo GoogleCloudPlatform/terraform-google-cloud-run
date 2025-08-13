@@ -127,7 +127,7 @@ variable "volumes" {
   type = list(object({
     name = string
     cloud_sql_instance = optional(object({
-      instances = set(string)
+      instances = list(string)
     }))
     gcs = optional(object({
       bucket        = string

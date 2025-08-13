@@ -146,7 +146,7 @@ spec:
           list(object({
               name = string
               cloud_sql_instance = optional(object({
-                instances = set(string)
+                instances = list(string)
               }))
               gcs = optional(object({
                 bucket        = string
@@ -219,13 +219,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/serviceusage.serviceUsageViewer
-          - roles/cloudkms.admin
-          - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
+          - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
