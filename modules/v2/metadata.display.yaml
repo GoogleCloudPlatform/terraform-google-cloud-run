@@ -50,10 +50,31 @@ spec:
               title: Container Image
               regexValidation: ^((([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}(:[0-9]+)?/)?([a-z0-9]+([._-][a-z0-9]+)*/)*[a-z0-9]+([._-][a-z0-9]+)*(:(\w[\w.-]{0,127})|@sha256:[a-fA-F0-9]{64})?)$
               validation: Must be a valid Docker image (lowercase repo, optional registry, tag, or SHA256 digest)
+            container_name:
+              name: container_name
+              title: Container Name
+              regexValidation: ^[a-z0-9][a-z0-9_.-]{0,62}$
+              validation: Container name must start and end with a lowercase alphanumeric character, contain only lowercase alphanumeric characters, hyphens or periods and must be less than 64 characters.
+            working_dir:
+              name: working_dir
+              title: Working Dir
+              regexValidation: ^(/[^/ ]+)*\/?$
+              validation: Must be an absolute path (e.g., /app/src).
             volume_mounts:
               name: volume_mounts
               title: Volume Mounts
               subtext: Mount In-memory, Network File System, Secret and Cloud Storage bucket volumes to your container
+              properties:
+                name:
+                  name: name
+                  title: Name
+                  regexValidation: ^[a-z0-9][a-z0-9_.-]{0,253}[a-z0-9]$
+                  validation: Volume mount name must only contain alphanumeric characters, hyphens and underscores.
+                mount_path:
+                  name: mount_path
+                  title: Mount Path
+                  regexValidation: ^(/[^/ ]+)*\/?$
+                  validation: Mount path must be an absolute path (e.g., /mnt/data).
             resources:
               name: resources
               title: Resources
@@ -66,14 +87,26 @@ spec:
                       name: cpu
                       title: CPU
                       subtext: Number of vCPUs allocated to each instance of this container
+                      enumValueLabels:
+                      - label: "1"
+                        value: "1"
+                      - label: "2"
+                        value: "2"
+                      - label: "3"
+                        value: "3"
+                      - label: "4"
+                        value: "4"
                     memory:
                       name: memory
                       title: Memory
-                      subtext: Memory to allocate to each instance of this container (e.g., 256Mi, 4Gi).
+                      subtext: Memory to allocate to each instance of this container
+                      regexValidation: ^([5-9][0-9][0-9]Mi|[1-2]?[0-9]Gi|3[0-2]Gi|[1-9][0-9]Mi|[1-9]Gi|[1-9]M|[1-2]G)$
+                      validation: Must be a valid memory size with unit, such as Mi, Gi, M, or G
                     nvidia_gpu:
                       name: nvidia_gpu
                       title: Nvidia GPU
-                      subtext: Number of GPUs to allocate to each instance of this container. Requires a minimum of 4 vCPUs and 16Gi of memory Maximum instance count for this template is 3. A node selector must be provided for GPU allocation.
+                      regexValidation: ^[0-9]+$
+                      validation: Must be a whole number representing the number of GPUs.
             startup_probe:
               name: startup_probe
               title: Startup Probe
@@ -110,10 +143,12 @@ spec:
                   name: http_get
                   title: Http Get
                   properties:
-                    get:
-                      name: get
-                      title: Get
+                    path:
+                      name: path
+                      title: Path
                       subtext: "Path to access on the HTTP server. Ex: e.g./reddy"
+                      regexValidation: ^(/[^/ ]+)*/?$
+                      validation: Path must be a valid URL path (e.g., /health).
                     port:
                       name: port
                       title: Port
@@ -122,6 +157,17 @@ spec:
                       name: http_headers
                       title: Http Headers
                       subtext: Custom headers to set in the request. HTTP allows repeated headers
+                      properties:
+                        name:
+                          name: name
+                          title: Name
+                          regexValidation: ^[A-Za-z][A-Za-z0-9-]{0,62}$
+                          validation: "Must be a valid HTTP header name: start with a letter, contain only letters [A–Z, a–z], digits [0–9], or hyphens [-], and be at most 63 characters long"
+                        value:
+                          name: value
+                          title: Value
+                          regexValidation: ^.*$
+                          validation: Must be a valid string
                 tcp_socket:
                   name: tcp_socket
                   title: TCP Socket
@@ -133,7 +179,7 @@ spec:
                     port:
                       name: port
                       title: Port
-                      subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080.
+                      subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
             liveness_probe:
               name: liveness_probe
               title: Liveness Probe
@@ -162,6 +208,8 @@ spec:
                       name: path
                       title: Path
                       subtext: Path to access on HTTP server
+                      regexValidation: ^(/[^/ ]+)*/?$
+                      validation: Path must be a valid URL path (e.g., /health).
                     port:
                       name: port
                       title: Port
@@ -170,6 +218,17 @@ spec:
                       name: http_headers
                       title: Http Headers
                       subtext: Custom Headers to set in the request. HTTP allows repeated headers.
+                      properties:
+                        name:
+                          name: name
+                          title: Name
+                          regexValidation: ^[A-Za-z][A-Za-z0-9-]{0,62}$
+                          validation: "Must be a valid HTTP header name: start with a letter, contain only letters [A–Z, a–z], digits [0–9], or hyphens [-], and be at most 63 characters long"
+                        value:
+                          name: value
+                          title: Value
+                          regexValidation: ^.*$
+                          validation: Header value can be any string
             ports:
               name: ports
               title: Ports
@@ -200,6 +259,8 @@ spec:
         custom_audiences:
           name: custom_audiences
           title: Custom Audiences
+          regexValidation: ^https?://(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[A-Za-z]{2,}(?:/[^\s]*)?$
+          validation: Custom audience must be a valid URL starting with 'http://' or 'https://'
         description:
           name: description
           title: Description
@@ -217,6 +278,8 @@ spec:
           name: encryption_key
           title: Encryption Key
           level: 1
+          regexValidation: ^projects/[A-Za-z0-9\-\_]+/locations/[A-Za-z0-9\-\_]+/keyRings/[A-Za-z0-9\-\_]+/cryptoKeys/[A-Za-z0-9\-\_]+$
+          validation: Encryption key must be in the format projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{key}.
         execution_environment:
           name: execution_environment
           title: Execution Environment
@@ -246,6 +309,21 @@ spec:
         launch_stage:
           name: launch_stage
           title: Launch Stage
+          enumValueLabels:
+            - label: UNIMPLEMENTED
+              value: UNIMPLEMENTED
+            - label: PRELAUNCH
+              value: PRELAUNCH
+            - label: EARLY_ACCESS
+              value: EARLY_ACCESS
+            - label: ALPHA
+              value: ALPHA
+            - label: BETA
+              value: BETA
+            - label: GA
+              value: GA
+            - label: DEPRECATED
+              value: DEPRECATED
         location:
           name: location
           title: Location
@@ -253,6 +331,8 @@ spec:
           name: max_instance_request_concurrency
           title: Max Instance Request Concurrency
           level: 1
+          regexValidation: ^([1-9][0-9]{0,2}|1000)$
+          validation: Max instance request concurrency must be an integer between 1 and 1000.
         members:
           name: members
           title: Members
@@ -266,13 +346,19 @@ spec:
           name: revision
           title: Revision
           level: 1
+          regexValidation: ^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$
+          validation: Revision name must use only lowercase letters, numbers and '-'. Must begin with a letter and cannot end with a '-'
         service_account:
           name: service_account
           title: Service Account
+          regexValidation: ^[a-z][a-z0-9-]{4,29}@[a-z][a-z0-9-]{4,29}\.iam\.gserviceaccount\.com$
+          validation: Service account email must be in the format {account-id}@{project-id}.iam.gserviceaccount.com.
         service_account_project_roles:
           name: service_account_project_roles
           title: Service Account Project Roles
           level: 1
+          regexValidation: ^(?:[a-z][a-z0-9-]{4,29}/)?roles/[a-zA-Z0-9_.]+$
+          validation: Role must be in the format roles/{role_name}.
         service_annotations:
           name: service_annotations
           title: Service Annotations
@@ -323,9 +409,30 @@ spec:
         timeout:
           name: timeout
           title: Timeout
+          regexValidation: ^[0-9]+(?:\.[0-9]{1,9})?s$
+          validation: Timeout must be a duration in seconds, ending with 's' (e.g., 300s or 1.5s).
         traffic:
           name: traffic
           title: Traffic
+          properties:
+            type:
+              name: type
+              title: Type
+              enumValueLabels:
+                - label: TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST
+                  value: TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST
+                - label: TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION
+                  value: TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION
+            revision:
+              name: revision
+              title: Revision
+              regexValidation: ^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$
+              validation: Revision name must use only lowercase letters, numbers and '-'. Must begin with a letter and cannot end with a '-'
+            tag:
+              name: tag
+              title: Tag
+              regexValidation: ^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$
+              validation: Tag must start and end with a lowercase alphanumeric character, and contain only lowercase alphanumeric characters or hyphens.
         volumes:
           name: volumes
           title: Volumes
@@ -340,6 +447,16 @@ spec:
               name: secret
               title: Secret
               properties:
+                secret:
+                  name: secret
+                  title: Secret
+                  regexValidation: ^([a-zA-Z0-9-_]{1,255}|projects\/([a-z][a-z0-9-]{4,28}[a-z0-9]|[0-9]{6,})\/secrets\/[a-zA-Z0-9-_]{1,255})$
+                  validation: Secret name must be either the secret name or the full Secret Manager resource path.
+                default_mode:
+                  name: default_mode
+                  title: Default Mode
+                  regexValidation: ^(0[0-7]{3})$
+                  validation: Must be a value between 0000 and 0777 (octal).
                 items:
                   name: items
                   title: Items
@@ -348,6 +465,45 @@ spec:
                       name: path
                       title: Path
                       subtext: "Example format (parent secret): \"projects/project-number/secrets/secret-name\""
+                      regexValidation: ^(?:[A-Za-z0-9_-]|\.[A-Za-z0-9_-])+(?:/(?:[A-Za-z0-9_-]|\.[A-Za-z0-9_-])+)*$
+                      validation: Path must be a valid relative file path.
+                    version:
+                      name: version
+                      title: Version
+                      regexValidation: ^(latest|[1-9][0-9]*)$
+                      validation: Version must be 'latest' or a version number.
+                    mode:
+                      name: mode
+                      title: Mode
+                      regexValidation: ^(0|0[1-7]{1,3})?$
+                      validation: Must be a value between 01 and 0777 (octal)
+            empty_dir:
+              name: empty_dir
+              title: Empty Dir
+              properties:
+                medium:
+                  name: medium
+                  title: Medium
+                  enumValueLabels:
+                    - label: MEMORY
+                      value: MEMORY
+            gcs:
+              name: gcs
+              title: GCS
+              properties:
+                bucket:
+                  name: bucket
+                  title: Bucket
+                  regexValidation: ^[a-z0-9](?:[a-z0-9.-]{1,61}[a-z0-9])$
+                  validation: Bucket name must be lowercase, start and end with an alphanumeric character, and contain only alphanumeric characters, dashes, and dots.
+                read_only:
+                  name: read_only
+                  title: Read Only
+                  enumValueLabels:
+                    - label: "true"
+                      value: "true"
+                    - label: "false"
+                      value: "false"
             nfs:
               name: nfs
               title: NFS
@@ -356,10 +512,22 @@ spec:
                   name: server
                   title: Server
                   subtext: The IP address or domain of your NFS server
+                  regexValidation: ^(([a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?\.)*[a-zA-Z]{2,}|((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))$
+                  validation: Must be a valid IP address or domain name.
                 path:
                   name: path
                   title: Path
                   subtext: The path to the NFS server directory you want to mount
+                  regexValidation: ^(/[^/ ]+)*/?$
+                  validation: Path must be an absolute path (e.g., /exports/data).
+                read_only:
+                  name: read_only
+                  title: Read Only
+                  enumValueLabels:
+                    - label: "true"
+                      value: "true"
+                    - label: "false"
+                      value: "false"
         vpc_access:
           name: vpc_access
           title: Vpc Access
@@ -391,10 +559,14 @@ spec:
                   name: network
                   title: Network
                   subtext: The VPC network that the Cloud Run resource will be able to send traffic to.
+                  regexValidation: ^(projects\/[a-z0-9\-]+\/global\/networks\/[a-zA-Z0-9\-_]+|[a-zA-Z0-9\-_]+)$
+                  validation: Network must be a valid network name or a full resource path.
                 subnetwork:
                   name: subnetwork
                   title: Subnetwork
                   subtext: The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the subnetwork with the same name with the network will be used.
+                  regexValidation: ^(projects\/[a-z0-9\-]+\/regions\/[a-z0-9\-]+\/subnetworks\/[a-zA-Z0-9\-_]+|[a-zA-Z0-9\-_]+)$
+                  validation: Subnetwork must be a valid subnetwork name or a full resource path.
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
