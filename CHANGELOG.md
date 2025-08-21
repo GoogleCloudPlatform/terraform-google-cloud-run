@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.21.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.1...v0.21.2) (2025-08-21)
+
+
+### Bug Fixes
+
+* fixed escape character issue in regular expressions ([#391](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/391)) ([dc15ecd](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/dc15ecd52e184f498d11944a754ee8b790447e1b))
+
 ## [0.21.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.0...v0.21.1) (2025-08-21)
 
 

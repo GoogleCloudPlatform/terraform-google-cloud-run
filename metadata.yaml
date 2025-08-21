@@ -24,7 +24,7 @@ spec:
     source:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
       sourceType: git
-    version: 0.21.1
+    version: 0.21.2
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
