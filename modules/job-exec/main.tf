@@ -14,6 +14,57 @@
  * limitations under the License.
  */
 
+data "google_compute_default_service_account" "default" {
+  count   = !var.create_service_account && var.service_account_email == "" ? 1 : 0
+  project = var.project_id
+}
+
+locals {
+  service_account = (
+    var.service_account_email != ""
+    ? var.service_account_email
+    : (
+      var.create_service_account
+      ? google_service_account.sa[0].email
+      : data.google_compute_default_service_account.default[0].email
+    )
+  )
+
+  create_service_account = var.create_service_account ? var.service_account_email == "" : false
+
+  service_account_prefix = substr(var.name, 0, 27)
+  service_account_output = local.create_service_account ? {
+    id     = google_service_account.sa[0].account_id,
+    email  = google_service_account.sa[0].email,
+    member = google_service_account.sa[0].member
+    } : (var.service_account_email != "" ? {
+      id     = split("@", var.service_account_email)[0],
+      email  = var.service_account_email,
+      member = "serviceAccount:${var.service_account_email}"
+      } : {
+      id     = data.google_compute_default_service_account.default[0].name,
+      email  = data.google_compute_default_service_account.default[0].email,
+      member = data.google_compute_default_service_account.default[0].member
+  })
+
+  service_account_project_roles = local.create_service_account ? var.service_account_project_roles : []
+}
+
+resource "google_service_account" "sa" {
+  count        = local.create_service_account ? 1 : 0
+  project      = var.project_id
+  account_id   = "${local.service_account_prefix}-sa"
+  display_name = "Service account for ${var.name} in ${var.location}"
+}
+
+resource "google_project_iam_member" "roles" {
+  for_each = toset(local.service_account_project_roles)
+
+  project = var.project_id
+  role    = each.value
+  member  = "serviceAccount:${local.service_account}"
+}
+
 resource "google_cloud_run_v2_job" "job" {
   name         = var.name
   project      = var.project_id
@@ -30,7 +81,7 @@ resource "google_cloud_run_v2_job" "job" {
 
     template {
       max_retries     = var.max_retries
-      service_account = var.service_account_email
+      service_account = local.service_account
       timeout         = var.timeout
 
       containers {
