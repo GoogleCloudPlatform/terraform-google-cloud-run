@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
       sourceType: git
       dir: /modules/job-exec
-    version: 0.20.1
+    version: 0.21.2
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -34,6 +34,8 @@ spec:
     examples:
       - name: cloud_run_vpc_connector
         location: examples/cloud_run_vpc_connector
+      - name: job_service_account_creation
+        location: examples/job_service_account_creation
       - name: secure_cloud_run
         location: examples/secure_cloud_run
       - name: secure_cloud_run_standalone
@@ -74,6 +76,10 @@ spec:
         description: Whether to execute job after creation
         varType: bool
         defaultValue: false
+      - name: create_service_account
+        description: Create service account for the job. Otherwise, use the default Compute Engine default service account
+        varType: bool
+        defaultValue: false
       - name: service_account_email
         description: Service Account email needed for the job
         varType: string
@@ -84,6 +90,10 @@ spec:
               version: ">= 4.4"
             spec:
               outputExpr: email
+      - name: service_account_project_roles
+        description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account_email
+        varType: list(string)
+        defaultValue: []
       - name: argument
         description: Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments
         varType: list(string)
@@ -136,7 +146,7 @@ spec:
           list(object({
               name = string
               cloud_sql_instance = optional(object({
-                instances = set(string)
+                instances = list(string)
               }))
               gcs = optional(object({
                 bucket        = string
@@ -163,7 +173,6 @@ spec:
               version: ">= 8.0"
             spec:
               outputExpr: "{\"name\": \"gcs-bucket-vol\", \"gcs\": { \"bucket\": name}}"
-              inputPath: gcs.bucket
       - name: volume_mounts
         description: Volume to mount into the container's filesystem.
         varType: |-
@@ -199,17 +208,24 @@ spec:
       - name: id
         description: Cloud Run Job ID
         type: string
+      - name: service_account_id
+        description: Service account id and email
+        type:
+          - object
+          - email: string
+            id: string
+            member: string
   requirements:
     roles:
       - level: Project
         roles:
-          - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com

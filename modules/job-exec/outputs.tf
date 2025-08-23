@@ -18,3 +18,8 @@ output "id" {
   description = "Cloud Run Job ID"
   value       = google_cloud_run_v2_job.job.id
 }
+
+output "service_account_id" {
+  description = "Service account id and email"
+  value       = local.service_account_output
+}

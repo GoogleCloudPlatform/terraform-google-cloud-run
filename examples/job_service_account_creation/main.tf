@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,17 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 1.3"
+module "job" {
+  source  = "GoogleCloudPlatform/cloud-run/google//modules/job-exec"
+  version = "~> 0.16"
 
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 6, < 7"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 6, < 7"
-    }
-  }
+  project_id                    = var.project_id
+  name                          = "job-sa-creation"
+  location                      = "us-central1"
+  image                         = "us-docker.pkg.dev/cloudrun/container/job"
+  exec                          = true
+  create_service_account        = true
+  service_account_project_roles = ["roles/run.invoker"]
 
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:v2/v0.21.2"
-  }
-
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:v2/v0.21.2"
-  }
+  cloud_run_deletion_protection = var.cloud_run_deletion_protection
 }
