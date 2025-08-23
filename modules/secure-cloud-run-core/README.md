@@ -14,7 +14,8 @@ The resources/services/activations/deletions that this module will create/trigge
 ```hcl
 module "cloud_run_core" {
   source = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-run-core"
-  version = "~> 0.3.0"
+  # Locked to 0.20, allows minor updates – check for latest version
+  version = "~> 0.20"
 
   service_name          = <SERVICE NAME>
   location              = <SERVICE LOCATION>

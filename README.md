@@ -35,7 +35,8 @@ Basic usage of this module is as follows:
 ```hcl
 module "cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google"
-  version = "~> 0.10.0"
+  # Locked to 0.20, allows minor updates – check for latest version
+  version = "~> 0.20"
 
   # Required variables
   service_name           = "<SERVICE NAME>"
