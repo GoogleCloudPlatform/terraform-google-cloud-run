@@ -24,7 +24,8 @@ Basic usage of this module is as follows:
 ```hcl
 module "secure_cloud_run_harness" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-serverless-harness"
-  version = "~> 0.9.1"
+  # Locked to 0.20, allows minor updates – check for latest version
+  version = "~> 0.20"
 
   # Required variables
   billing_account                   = "<BILLING ACCOUNT>"

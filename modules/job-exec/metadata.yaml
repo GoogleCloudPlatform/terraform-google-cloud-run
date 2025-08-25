@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
       sourceType: git
       dir: /modules/job-exec
-    version: 0.20.1
+    version: 0.21.2
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -146,7 +146,7 @@ spec:
           list(object({
               name = string
               cloud_sql_instance = optional(object({
-                instances = set(string)
+                instances = list(string)
               }))
               gcs = optional(object({
                 bucket        = string
@@ -173,7 +173,6 @@ spec:
               version: ">= 8.0"
             spec:
               outputExpr: "{\"name\": \"gcs-bucket-vol\", \"gcs\": { \"bucket\": name}}"
-              inputPath: gcs.bucket
       - name: volume_mounts
         description: Volume to mount into the container's filesystem.
         varType: |-
@@ -220,13 +219,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/serviceusage.serviceUsageViewer
-          - roles/cloudkms.admin
-          - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
+          - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
