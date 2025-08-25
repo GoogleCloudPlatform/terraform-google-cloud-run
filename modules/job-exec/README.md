@@ -37,6 +37,7 @@ Functional examples are included in the
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | argument | Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments | `list(string)` | `[]` | no |
+| client | Arbitrary identifier for the API client and version identifier | <pre>object({<br/>    name    = optional(string, null)<br/>    version = optional(string, null)<br/>  })</pre> | `{}` | no |
 | cloud\_run\_deletion\_protection | This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services | `bool` | `true` | no |
 | container\_command | Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten | `list(string)` | `[]` | no |
 | create\_service\_account | Create service account for the job. Otherwise, use the default Compute Engine default service account | `bool` | `false` | no |
