@@ -148,7 +148,3 @@ resource "google_billing_account_iam_member" "int_billing_admin" {
   role               = "roles/billing.user"
   member             = "serviceAccount:${google_service_account.int_test.email}"
 }
-
-resource "google_service_account_key" "int_test" {
-  service_account_id = google_service_account.int_test.id
-}
