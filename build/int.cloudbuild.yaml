@@ -39,7 +39,7 @@ steps:
 # TODO: Fix standalone test and re-enable
 # - id: create standalone
 #   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-#   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials && cft test run TestSecureCloudRunStandalone --test-dir /workspace/test/integration --verbose']
+#   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials_if_found && cft test run TestSecureCloudRunStandalone --test-dir /workspace/test/integration --verbose']
 #   env:
 #   - 'TF_VAR_org_id=$_ORG_ID'
 #   - 'TF_VAR_parent_folder_id=$_FOLDER_ID'
@@ -73,22 +73,22 @@ steps:
   waitFor:
     - destroy
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials && cft test run TestCloudRunWithCMEK --test-dir test/integration --stage init --verbose']
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials_if_found && cft test run TestCloudRunWithCMEK --test-dir test/integration --stage init --verbose']
 - id: converge cloud-run-with-cmek
   waitFor:
     - create all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials && cft test run TestCloudRunWithCMEK --test-dir test/integration --stage apply --verbose']
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials_if_found && cft test run TestCloudRunWithCMEK --test-dir test/integration --stage apply --verbose']
 - id: verify cloud-run-with-cmek
   waitFor:
     - converge cloud-run-with-cmek
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials && cft test run TestCloudRunWithCMEK --test-dir test/integration --stage verify --verbose']
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials_if_found && cft test run TestCloudRunWithCMEK --test-dir test/integration --stage verify --verbose']
 - id: destroy cloud-run-with-cmek
   waitFor:
     - verify cloud-run-with-cmek
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials && cft test run TestCloudRunWithCMEK --test-dir test/integration --stage destroy --verbose']
+  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials_if_found && cft test run TestCloudRunWithCMEK --test-dir test/integration --stage destroy --verbose']
 - id: simple-job-exec-init
   waitFor:
     - destroy cloud-run-with-cmek
