@@ -90,6 +90,6 @@ output "apphub_service_uri" {
 
 
 output "build_name" {
-  description = "The Cloud Build name of the latest successful deployment of the function."
+  description = "The Cloud Build name of the latest successful deployment of the Service."
   value       = try(google_cloud_run_v2_service.main.build_config[0].name, null)
 }
