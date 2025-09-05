@@ -87,3 +87,9 @@ output "apphub_service_uri" {
   }
   description = "Service URI in CAIS style to be used by Apphub."
 }
+
+
+output "build_name" {
+  description = "The Cloud Build name of the latest successful deployment of the function."
+  value       = try(google_cloud_run_v2_service.main.build_config[0].name, null)
+}
