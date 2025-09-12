@@ -567,6 +567,11 @@ spec:
                   subtext: The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the subnetwork with the same name with the network will be used.
                   regexValidation: ^(projects\/[a-z0-9\-]+\/regions\/[a-z0-9\-]+\/subnetworks\/[a-zA-Z0-9\-_]+|[a-zA-Z0-9\-_]+)$
                   validation: Subnetwork must be a valid subnetwork name or a full resource path.
+                tags:
+                  name: tags
+                  title: Tags
+                  regexValidation: "^[a-z][a-z0-9-]*$"
+                  validation: Must start with a lowercase letter and contain only lowercase letters, numbers, and hyphens
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
