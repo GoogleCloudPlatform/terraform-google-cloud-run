@@ -340,6 +340,20 @@ resource "google_cloud_run_v2_service" "main" {
     }
   } // template
 
+  dynamic "build_config" {
+    for_each = var.build_config != null ? [var.build_config] : []
+    content {
+      source_location          = try(build_config.value.source_location, null)
+      function_target          = try(build_config.value.function_target, null)
+      image_uri                = try(build_config.value.image_uri, null)
+      base_image               = try(build_config.value.base_image, null)
+      enable_automatic_updates = try(build_config.value.enable_automatic_updates, null)
+      worker_pool              = try(build_config.value.worker_pool, null)
+      service_account          = try(build_config.value.service_account, null)
+      environment_variables    = try(build_config.value.environment_variables, null)
+    }
+  } //build_config
+
   annotations      = var.service_annotations
   client           = var.client.name
   client_version   = var.client.version
