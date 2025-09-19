@@ -15,7 +15,7 @@ The resources/services/activations/deletions that this module will create/trigge
 module "cloud_run_core" {
   source = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-run-core"
   # Locked to 0.20, allows minor updates – check for latest version
-  version = "~> 0.20"
+  version = "~> 0.21"
 
   service_name          = <SERVICE NAME>
   location              = <SERVICE LOCATION>
