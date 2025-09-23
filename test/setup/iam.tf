@@ -109,38 +109,53 @@ locals {
       "roles/iap.admin"
     ],
   }
-
-  int_required_roles = tolist(toset(flatten(values(local.per_module_roles))))
 }
 
 resource "google_service_account" "int_test" {
-  project      = module.project.project_id
+  for_each = module.project
+
+  project      = each.value.project_id
   account_id   = "ci-account"
   display_name = "ci-account"
 }
 
-resource "google_organization_iam_member" "org_member" {
-  count = length(local.org_required_roles)
-
-  org_id = var.org_id
-  role   = local.org_required_roles[count.index]
-  member = "serviceAccount:${google_service_account.int_test.email}"
-}
-
-resource "google_folder_iam_member" "folder_member" {
-  count = length(local.folder_required_roles)
-
-  folder = "folders/${var.folder_id}"
-  role   = local.folder_required_roles[count.index]
-  member = "serviceAccount:${google_service_account.int_test.email}"
-}
+// TODO: reenable somehow if needed
+///resource "google_organization_iam_member" "org_member" {
+///  count = length(local.org_required_roles)
+///
+///  org_id = var.org_id
+///  role   = local.org_required_roles[count.index]
+///  member = "serviceAccount:${google_service_account.int_test.email}"
+///}
+///
+///resource "google_folder_iam_member" "folder_member" {
+///  count = length(local.folder_required_roles)
+///
+///  folder = "folders/${var.folder_id}"
+///  role   = local.folder_required_roles[count.index]
+///  member = "serviceAccount:${google_service_account.int_test.email}"
+///}
 
 resource "google_project_iam_member" "int_test" {
-  count = length(local.int_required_roles)
+  // For each pair (moduleName, role), make a map entry from
+  //   "moduleName.role" => {key, serviceAccount, role}
+  // to apply below. Structure from https://discuss.hashicorp.com/t/foreach-loop-with-nested-list/54610.
+  for_each = {
+    for combination in flatten([
+      for moduleName, proj in module.project : [
+        for role in local.per_module_test_roles[moduleName]: {
+          key             = "${moduleName}.${role}"
+          service_account = google_service_account.int_test[moduleName]
+          role            = role
+        }
+      ]
+    ]) :
+    combination.key => combination
+  }
 
-  project = module.project.project_id
-  role    = local.int_required_roles[count.index]
-  member  = "serviceAccount:${google_service_account.int_test.email}"
+  project = each.value.service_account.project
+  role    = each.value.role
+  member  = "serviceAccount:${each.value.service_account.email}"
 }
 
 resource "google_billing_account_iam_member" "int_billing_admin" {
@@ -150,5 +165,7 @@ resource "google_billing_account_iam_member" "int_billing_admin" {
 }
 
 resource "google_service_account_key" "int_test" {
-  service_account_id = google_service_account.int_test.id
+  for_each = module.project
+
+  service_account_id = google_service_account.int_test[each.key].id
 }
