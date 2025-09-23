@@ -54,7 +54,7 @@ steps:
   waitFor:
     - prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSimple --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestSimpleCloudRun --verbose']
 - id: create cloud-run-with-cmek
   waitFor:
     - simple-cloud-run
