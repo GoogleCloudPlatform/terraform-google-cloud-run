@@ -158,11 +158,12 @@ resource "google_project_iam_member" "int_test" {
   member  = "serviceAccount:${each.value.service_account.email}"
 }
 
-resource "google_billing_account_iam_member" "int_billing_admin" {
-  billing_account_id = var.billing_account
-  role               = "roles/billing.user"
-  member             = "serviceAccount:${google_service_account.int_test.email}"
-}
+// TODO: reenable somehow if needed
+///resource "google_billing_account_iam_member" "int_billing_admin" {
+///  billing_account_id = var.billing_account
+///  role               = "roles/billing.user"
+///  member             = "serviceAccount:${google_service_account.int_test.email}"
+///}
 
 resource "google_service_account_key" "int_test" {
   for_each = module.project
