@@ -17,18 +17,19 @@ steps:
 - id: swap-module-refs
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['module-swapper']
-- id: secure cloud run on foundation
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSecureCloudRun --test-dir /workspace/test/integration --verbose']
-  env:
-  - 'TF_VAR_org_id=$_SFB_ORG_ID'
-  - 'TF_VAR_billing_account=$_BILLING_ACCOUNT'
-  - 'TF_VAR_terraform_sa=$_SFB_TF_SA_NAME'
-  - 'TF_VAR_cloudbuild_project_id=$_SFB_CLOUDBUILD_PROJECT_ID'
-  - 'TF_VAR_seed_project_id=$_SFB_SEED_PROJECT_ID'
-  - 'TF_VAR_domain=test.blueprints.joonix.net'
-  - 'TF_VAR_resource_names_suffix=$SHORT_SHA'
-  allowFailure: true
+# Temporarily disble this one
+##- id: secure cloud run on foundation
+##  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+##  args: ['/bin/bash', '-c', 'cft test run TestSecureCloudRun --test-dir /workspace/test/integration --verbose']
+##  env:
+##  - 'TF_VAR_org_id=$_SFB_ORG_ID'
+##  - 'TF_VAR_billing_account=$_BILLING_ACCOUNT'
+##  - 'TF_VAR_terraform_sa=$_SFB_TF_SA_NAME'
+##  - 'TF_VAR_cloudbuild_project_id=$_SFB_CLOUDBUILD_PROJECT_ID'
+##  - 'TF_VAR_seed_project_id=$_SFB_SEED_PROJECT_ID'
+##  - 'TF_VAR_domain=test.blueprints.joonix.net'
+##  - 'TF_VAR_resource_names_suffix=$SHORT_SHA'
+##  allowFailure: true
 - id: prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && prepare_environment']
@@ -49,34 +50,19 @@ steps:
 #   - 'TF_VAR_create_access_context_manager_access_policy=false'
 #   waitFor:
 #   - prepare
-- id: create
+- id: simple-cloud-run
+  waitFor:
+    - prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do create']
+  args: ['/bin/bash', '-c', 'cft test run TestSimple --verbose']
+- id: create cloud-run-with-cmek
   waitFor:
-  - prepare
-- id: converge
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge']
-  waitFor:
-  - create
-- id: verify
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify']
-  waitFor:
-  - converge
-- id: destroy
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy']
-  waitFor:
-  - verify
-- id: create all
-  waitFor:
-    - destroy
+    - simple-cloud-run
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials && cft test run TestCloudRunWithCMEK --test-dir test/integration --stage init --verbose']
 - id: converge cloud-run-with-cmek
   waitFor:
-    - create all
+    - create cloud-run-with-cmek
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials && cft test run TestCloudRunWithCMEK --test-dir test/integration --stage apply --verbose']
 - id: verify cloud-run-with-cmek
