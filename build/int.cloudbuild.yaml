@@ -49,34 +49,34 @@ steps:
 #   - 'TF_VAR_create_access_context_manager_access_policy=false'
 #   waitFor:
 #   - prepare
-- id: create
+- id: create simple-cloud-run
+  waitFor:
+    - prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do create']
+  args: ['/bin/bash', '-c', 'cft test run TestSimple --stage init --verbose']
+- id: converge simple-cloud-run
   waitFor:
-  - prepare
-- id: converge
+    - create simple-cloud-run
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge']
+  args: ['/bin/bash', '-c', 'cft test run TestSimple --stage apply --verbose']
+- id: verify simple-cloud-run
   waitFor:
-  - create
-- id: verify
+    - converge simple-cloud-run
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify']
+  args: ['/bin/bash', '-c', 'cft test run TestSimple --stage verify --verbose']
+- id: destroy simple-cloud-run
   waitFor:
-  - converge
-- id: destroy
+    - verify simple-cloud-run
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy']
+  args: ['/bin/bash', '-c', 'cft test run TestSimple --stage destroy --verbose']
+- id: create cloud-run-with-cmek
   waitFor:
-  - verify
-- id: create all
-  waitFor:
-    - destroy
+    - destroy simple-cloud-run
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials && cft test run TestCloudRunWithCMEK --test-dir test/integration --stage init --verbose']
 - id: converge cloud-run-with-cmek
   waitFor:
-    - create all
+    - create cloud-run-with-cmek
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && source_test_env && init_credentials && cft test run TestCloudRunWithCMEK --test-dir test/integration --stage apply --verbose']
 - id: verify cloud-run-with-cmek
