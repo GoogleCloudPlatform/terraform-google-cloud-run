@@ -24,3 +24,18 @@ variable "cloud_run_deletion_protection" {
   description = "This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services"
   default     = true
 }
+
+variable "build_config" {
+  description = "Optional Cloud Build configuration for Cloud Run. This block enables building a container image from source using Cloud Build instead of specifying a prebuilt container image."
+  type = object({
+    source_location          = optional(string)
+    function_target          = optional(string)
+    image_uri                = optional(string)
+    base_image               = optional(string)
+    enable_automatic_updates = optional(bool)
+    worker_pool              = optional(string)
+    environment_variables    = optional(map(string))
+    service_account          = optional(string)
+  })
+  default = null
+}
