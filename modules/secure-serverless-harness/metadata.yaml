@@ -125,11 +125,7 @@ spec:
           `ID_TYPE` = `null` or `IDENTITY_TYPE_UNSPECIFIED` (only allow identities from list); `ANY_IDENTITY`; `ANY_USER_ACCOUNT`; `ANY_SERVICE_ACCOUNT`
           `SRV_NAME` = "`*`" (allow all services) or [Specific Services](https://cloud.google.com/vpc-service-controls/docs/supported-products#supported_products)
           `OP_TYPE` = [methods](https://cloud.google.com/vpc-service-controls/docs/supported-method-restrictions) or [permissions](https://cloud.google.com/vpc-service-controls/docs/supported-method-restrictions).
-        varType: |-
-          list(object({
-              from = any
-              to   = any
-            }))
+        varType: "list(object({\r\n    from = any\r\n    to   = any\r\n  }))"
         defaultValue: []
       - name: ingress_policies
         description: |-
@@ -141,11 +137,7 @@ spec:
           `ID_TYPE` = `null` or `IDENTITY_TYPE_UNSPECIFIED` (only allow identities from list); `ANY_IDENTITY`; `ANY_USER_ACCOUNT`; `ANY_SERVICE_ACCOUNT`
           `SRV_NAME` = "`*`" (allow all services) or [Specific Services](https://cloud.google.com/vpc-service-controls/docs/supported-products#supported_products)
           `OP_TYPE` = [methods](https://cloud.google.com/vpc-service-controls/docs/supported-method-restrictions) or [permissions](https://cloud.google.com/vpc-service-controls/docs/supported-method-restrictions).
-        varType: |-
-          list(object({
-              from = any
-              to   = any
-            }))
+        varType: "list(object({\r\n    from = any\r\n    to   = any\r\n  }))"
         defaultValue: []
       - name: region
         description: The region in which the subnetwork will be created.
@@ -282,13 +274,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/iam.serviceAccountAdmin
+          - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
-          - roles/iam.serviceAccountAdmin
-          - roles/artifactregistry.admin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
