@@ -24,7 +24,6 @@ import (
 )
 
 func TestSimpleCloudRun(t *testing.T) {
-
 	cloudRun := tft.NewTFBlueprintTest(t)
 
 	cloudRun.DefineVerify(
@@ -41,7 +40,7 @@ func TestSimpleCloudRun(t *testing.T) {
 
 			gcOps := gcloud.WithCommonArgs([]string{"--project", projectID, "--region", location, "--format", "json"})
 
-			op := gcloud.Run(t, fmt.Sprintf("run services list --filter=%q", serviceName), gcOps).Array()[0]
+			op := gcloud.Run(t, fmt.Sprintf("run services list --filter=metadata.name=%q", serviceName), gcOps).Array()[0]
 
 			assert.Equal(serviceStatus, op.Get("status").Get("conditions").Array()[0].Get("type").String(), "should have the right service status")
 		})
