@@ -109,6 +109,20 @@ locals {
       "roles/iap.admin"
     ],
   }
+
+  // A list of items like:
+  // { module_name = "x", role = "role1"}
+  // { module_name = "x", role = "role2"}
+  // { module_name = "y", role = "role3"}
+  module_role_combinations = flatten(
+    [for module_name, _ in module.project :
+      [for role in local.per_module_roles[moduleName]: {
+          module_name = module_name
+          role        = role
+        }
+      ]
+    ]
+  )
 }
 
 resource "google_service_account" "int_test" {
@@ -137,20 +151,12 @@ resource "google_service_account" "int_test" {
 ///}
 
 resource "google_project_iam_member" "int_test" {
-  // For each pair (moduleName, role), make a map entry from
-  //   "moduleName.role" => {key, serviceAccount, role}
-  // to apply below. Structure from https://discuss.hashicorp.com/t/foreach-loop-with-nested-list/54610.
   for_each = {
-    for combination in flatten([
-      for moduleName, proj in module.project : [
-        for role in local.per_module_test_roles[moduleName]: {
-          key             = "${moduleName}.${role}"
-          service_account = google_service_account.int_test[moduleName]
-          role            = role
-        }
-      ]
-    ]) :
-    combination.key => combination
+    for combination in locals.module_role_combinations :
+      "${combination.module_name}.${combination.role}" => {
+        service_account = google_service_account.int_test[combination.module_name]
+        role            = combination.role
+      }
   }
 
   project = each.value.service_account.project
