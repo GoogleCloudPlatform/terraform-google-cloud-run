@@ -120,11 +120,7 @@ spec:
         defaultValue: []
       - name: env_vars
         description: Environment variables (cleartext)
-        varType: |-
-          list(object({
-              value = string
-              name  = string
-            }))
+        varType: "list(object({\r\n    value = string\r\n    name  = string\r\n  }))"
         defaultValue: []
         connections:
           - source:
@@ -134,16 +130,7 @@ spec:
               outputExpr: "{ \"name\": service_name,\"value\": service_uri}"
       - name: env_secret_vars
         description: Environment variables (Secret Manager)
-        varType: |-
-          list(object({
-              name = string
-              value_source = set(object({
-                secret_key_ref = object({
-                  secret  = string
-                  version = optional(string, "latest")
-                })
-              }))
-            }))
+        varType: "list(object({\r\n    name = string\r\n    value_source = set(object({\r\n      secret_key_ref = object({\r\n        secret  = string\r\n        version = optional(string, \"latest\")\r\n      })\r\n    }))\r\n  }))"
         defaultValue: []
       - name: launch_stage
         description: The launch stage. (see https://cloud.google.com/products#product-launch-stages). Defaults to GA.
@@ -164,18 +151,7 @@ spec:
         varType: number
       - name: volumes
         description: A list of Volumes to make available to containers.
-        varType: |-
-          list(object({
-              name = string
-              cloud_sql_instance = optional(object({
-                instances = list(string)
-              }))
-              gcs = optional(object({
-                bucket        = string
-                read_only     = optional(bool)
-                mount_options = optional(list(string))
-              }))
-            }))
+        varType: "list(object({\r\n    name = string\r\n    cloud_sql_instance = optional(object({\r\n      instances = list(string)\r\n    }))\r\n    gcs = optional(object({\r\n      bucket        = string\r\n      read_only     = optional(bool)\r\n      mount_options = optional(list(string))\r\n    }))\r\n  }))"
         defaultValue: []
         connections:
           - source:
@@ -197,11 +173,7 @@ spec:
               outputExpr: "{\"name\": \"gcs-bucket-vol\", \"gcs\": { \"bucket\": name}}"
       - name: volume_mounts
         description: Volume to mount into the container's filesystem.
-        varType: |-
-          list(object({
-              name       = string
-              mount_path = string
-            }))
+        varType: "list(object({\r\n    name       = string\r\n    mount_path = string\r\n  }))"
         defaultValue: []
         connections:
           - source:
@@ -221,19 +193,11 @@ spec:
               outputExpr: "{\"name\": \"cloudsql\", \"mount_path\": \"/cloudsql\"}"
       - name: vpc_access
         description: VPC Access configuration to use for this Task.
-        varType: |-
-          list(object({
-              connector = string
-              egress    = string
-            }))
+        varType: "list(object({\r\n    connector = string\r\n    egress    = string\r\n  }))"
         defaultValue: []
       - name: limits
         description: Resource limits to the container
-        varType: |-
-          object({
-              cpu    = optional(string)
-              memory = optional(string)
-            })
+        varType: "object({\r\n    cpu    = optional(string)\r\n    memory = optional(string)\r\n  })"
       - name: timeout
         description: Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers.
         varType: string
@@ -257,13 +221,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
+          - roles/run.admin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com

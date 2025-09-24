@@ -358,7 +358,7 @@ variable "execution_environment" {
 }
 
 variable "build_config" {
-  description = "Optional Cloud Build configuration for Cloud Run. This block enables building a container image from source using Cloud Build instead of specifying a prebuilt container image."
+  description = "Optional Cloud Build Configuration for building a Cloud Run function."
   type = object({
     source_location          = optional(string)
     function_target          = optional(string)
