@@ -21,8 +21,8 @@ resource "google_service_account" "sa" {
 }
 
 module "cloud_run_v2" {
-  source  = "GoogleCloudPlatform/cloud-run/google//modules/v2"
-  version = "~> 0.16"
+  source = "../../modules/v2"
+  # version = "~> 0.16"
 
   service_name           = "ci-cloud-run-v2"
   project_id             = var.project_id
@@ -38,4 +38,34 @@ module "cloud_run_v2" {
       container_name  = "hello-world"
     }
   ]
+  build_config = {
+    source_location          = "gs://cloudrun-open-test"
+    function_target          = "helloHttp"
+    image_uri                = "us-docker.pkg.dev/cloudrun/container/hello"
+    base_image               = "us-central1-docker.pkg.dev/serverless-runtimes/google-22-full/runtimes/nodejs22"
+    enable_automatic_updates = true
+    environment_variables = {
+      FOO_KEY = "FOO_VALUE"
+      BAR_KEY = "BAR_VALUE"
+    }
+    service_account = google_service_account.cloudbuild_service_account.id
+  }
+}
+
+
+resource "google_service_account" "cloudbuild_service_account" {
+  project    = "coastal-mercury-471819-s6"
+  account_id = "build-sa"
+}
+
+resource "google_project_iam_member" "act_as" {
+  project = "coastal-mercury-471819-s6"
+  role    = "roles/iam.serviceAccountUser"
+  member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
+}
+
+resource "google_project_iam_member" "logs_writer" {
+  project = "coastal-mercury-471819-s6"
+  role    = "roles/logging.logWriter"
+  member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
 }
