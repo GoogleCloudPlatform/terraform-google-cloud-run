@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#       http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -116,8 +116,7 @@ spec:
                   title: Failure Threshold
                   subtext: Number of times to retry the probe before marking the container as Unready
                   min: 1
-                  max: 2147483647
-                  validation: Choose an integer value between 1 and 2147483647
+                  validation: Choose an integer value greater than or equal to 1
                 initial_delay_seconds:
                   name: initial_delay_seconds
                   title: Initial Delay Seconds
@@ -172,6 +171,13 @@ spec:
                   name: tcp_socket
                   title: TCP Socket
                   subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
+                  properties:
+                    port:
+                      name: port
+                      title: Port
+                      min: 1
+                      max: 65535
+                      validation: Port number must be between 1 and 65535.
                 grpc:
                   name: grpc
                   title: GRPC
@@ -180,6 +186,9 @@ spec:
                       name: port
                       title: Port
                       subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
+                      min: 1
+                      max: 65535
+                      validation: Port number must be between 1 and 65535.
             liveness_probe:
               name: liveness_probe
               title: Liveness Probe
@@ -188,18 +197,29 @@ spec:
                   name: failure_threshold
                   title: Failure Threshold
                   subtext: Number of seconds after the container has started before performing the first probe. Enter an integer value between 0 and 3600
+                  min: 1
+                  validation: Choose an integer value between 1 and 2147483647
                 initial_delay_seconds:
                   name: initial_delay_seconds
                   title: Initial Delay Seconds
                   subtext: Number of times to retry the probe before marking the container as Unready
+                  min: 0
+                  max: 3600
+                  validation: Enter an integer value between 0 and 3600
                 timeout_seconds:
                   name: timeout_seconds
                   title: Timeout Seconds
                   subtext: Number of times to retry the probe before marking the container as Unready
+                  min: 1
+                  max: 3600
+                  validation: Enter an integer value between 1 and 3600
                 period_seconds:
                   name: period_seconds
                   title: Period Seconds
                   subtext: Number of seconds to wait between starting a probe attempt. Enter an integer value between 1 and 3600
+                  min: 1
+                  max: 3600
+                  validation: Enter an integer value between 1 and 3600
                 http_get:
                   name: http_get
                   title: Http Get
@@ -229,6 +249,28 @@ spec:
                           title: Value
                           regexValidation: ^.*$
                           validation: Header value can be any string
+                tcp_socket:
+                  name: tcp_socket
+                  title: TCP Socket
+                  subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
+                  properties:
+                    port:
+                      name: port
+                      title: Port
+                      min: 1
+                      max: 65535
+                      validation: Port number must be between 1 and 65535.
+                grpc:
+                  name: grpc
+                  title: GRPC
+                  properties:
+                    port:
+                      name: port
+                      title: Port
+                      subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
+                      min: 1
+                      max: 65535
+                      validation: Port number must be between 1 and 65535.
             ports:
               name: ports
               title: Ports
@@ -374,6 +416,11 @@ spec:
           name: service_scaling
           title: Service Scaling
           level: 1
+          properties:
+            min_instance_count:
+              name: min_instance_count
+              title: Min Instance Count
+              subtext: The service minimum instances is preferable for most use-cases. Only use this setting if you specifically require a per-revision setting
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
@@ -402,6 +449,10 @@ spec:
               name: min_instance_count
               title: Min Instance Count
               subtext: The service minimum instances is preferable for most use-cases. Only use this setting if you specifically require a per-revision setting
+            max_instance_count:
+              name: max_instance_count
+              title: Max Instance Count
+              min: 1
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
@@ -423,6 +474,12 @@ spec:
                   value: TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST
                 - label: TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION
                   value: TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION
+            percent:
+              name: percent
+              title: Percent
+              min: 0
+              max: 100
+              validation: Percent must be an integer between 0 and 100.
             revision:
               name: revision
               title: Revision
@@ -477,6 +534,13 @@ spec:
                       title: Mode
                       regexValidation: ^(0|0[1-7]{1,3})?$
                       validation: Must be a value between 01 and 0777 (octal)
+            cloud_sql_instance:
+              name: cloud_sql_instance
+              title: Cloud SQL Instance
+              properties:
+                instances:
+                  name: instances
+                  title: Instances
             empty_dir:
               name: empty_dir
               title: Empty Dir
