@@ -115,16 +115,12 @@ spec:
                   name: failure_threshold
                   title: Failure Threshold
                   subtext: Number of times to retry the probe before marking the container as Unready
-                  # Primary reference for failure_threshold min/max: https://cloud.google.com/run/docs/configuring/healthchecks#configuration
-                  # Secondary reference for failure_threshold min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#failure_threshold
                   min: 1
-                  validation: Choose an integer value between 1 and 2147483647
+                  validation: Choose an integer value greater than or equal to 1
                 initial_delay_seconds:
                   name: initial_delay_seconds
                   title: Initial Delay Seconds
                   subtext: Number of seconds after the container has started before performing the first probe. Enter an integer value between 0 and 240
-                  # Primary reference for initial_delay_seconds min/max: https://cloud.google.com/run/docs/configuring/healthchecks#configuration
-                  # Secondary reference for initial_delay_seconds min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#initial_delay_seconds
                   min: 0
                   max: 240
                   validation: Enter an integer value between 0 and 240
@@ -132,8 +128,6 @@ spec:
                   name: timeout_seconds
                   title: Timeout Seconds
                   subtext: Number of seconds after which the probe times out. This value shouldn't exceed Period seconds. Enter an integer value between 1 and 240
-                  # Primary reference for timeout_seconds min/max: https://cloud.google.com/run/docs/configuring/healthchecks#configuration
-                  # Secondary reference for timeout_seconds min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#timeout_seconds
                   min: 1
                   max: 240
                   validation: Enter an integer value between 1 and 240
@@ -141,8 +135,6 @@ spec:
                   name: period_seconds
                   title: Period Seconds
                   subtext: Number of seconds to wait between starting a probe attempt. Enter an integer value between 1 and 240
-                  # Primary reference for period_seconds min/max: https://cloud.google.com/run/docs/configuring/healthchecks#configuration
-                  # Secondary reference for period_seconds min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#period_seconds
                   min: 1
                   max: 240
                   validation: Enter an integer value between 1 and 240
@@ -180,10 +172,6 @@ spec:
                   title: TCP Socket
                   subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
                   properties:
-                    # The port field in tcp_socket is part of the `object({ port = optional(number) })` in variables.tf
-                    # This maps to the port on the container.
-                    # Primary reference for port min/max: https://cloud.google.com/run/docs/reference/rest/v2/Container#TCPSocketAction
-                    # Secondary reference for port min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_tcp_socket
                     port:
                       name: port
                       title: Port
@@ -198,8 +186,6 @@ spec:
                       name: port
                       title: Port
                       subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
-                      # Primary reference for port min/max: https://cloud.google.com/run/docs/reference/rest/v2/Container#GRPCAction
-                      # Secondary reference for port min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_grpc
                       min: 1
                       max: 65535
                       validation: Port number must be between 1 and 65535.
@@ -211,16 +197,12 @@ spec:
                   name: failure_threshold
                   title: Failure Threshold
                   subtext: Number of seconds after the container has started before performing the first probe. Enter an integer value between 0 and 3600
-                  # Primary reference for failure_threshold min/max: https://cloud.google.com/run/docs/configuring/healthchecks#configuration
-                  # Secondary reference for failure_threshold min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#failure_threshold-1
                   min: 1
                   validation: Choose an integer value between 1 and 2147483647
                 initial_delay_seconds:
                   name: initial_delay_seconds
                   title: Initial Delay Seconds
                   subtext: Number of times to retry the probe before marking the container as Unready
-                  # Primary reference for initial_delay_seconds min/max: https://cloud.google.com/run/docs/configuring/healthchecks#configuration
-                  # Secondary reference for initial_delay_seconds min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#initial_delay_seconds-1
                   min: 0
                   max: 3600
                   validation: Enter an integer value between 0 and 3600
@@ -228,8 +210,6 @@ spec:
                   name: timeout_seconds
                   title: Timeout Seconds
                   subtext: Number of times to retry the probe before marking the container as Unready
-                  # Primary reference for timeout_seconds min/max: https://cloud.google.com/run/docs/configuring/healthchecks#configuration
-                  # Secondary reference for timeout_seconds min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#timeout_seconds-1
                   min: 1
                   max: 3600
                   validation: Enter an integer value between 1 and 3600
@@ -237,8 +217,6 @@ spec:
                   name: period_seconds
                   title: Period Seconds
                   subtext: Number of seconds to wait between starting a probe attempt. Enter an integer value between 1 and 3600
-                  # Primary reference for period_seconds min/max: https://cloud.google.com/run/docs/configuring/healthchecks#configuration
-                  # Secondary reference for period_seconds min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#period_seconds-1
                   min: 1
                   max: 3600
                   validation: Enter an integer value between 1 and 3600
@@ -276,10 +254,6 @@ spec:
                   title: TCP Socket
                   subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
                   properties:
-                    # The port field in tcp_socket is part of the `object({ port = optional(number) })` in variables.tf
-                    # This maps to the port on the container.
-                    # Primary reference for port min/max: https://cloud.google.com/run/docs/reference/rest/v2/Container#TCPSocketAction
-                    # Secondary reference for port min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_tcp_socket-1
                     port:
                       name: port
                       title: Port
@@ -294,8 +268,6 @@ spec:
                       name: port
                       title: Port
                       subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
-                      # Primary reference for port min/max: https://cloud.google.com/run/docs/reference/rest/v2/Container#GRPCAction
-                      # Secondary reference for port min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_grpc-1
                       min: 1
                       max: 65535
                       validation: Port number must be between 1 and 65535.
@@ -312,8 +284,6 @@ spec:
                   name: container_port
                   title: Container Port
                   subtext: Requests will be sent to the container on this port
-                  # Primary reference for container_port min/max: https://cloud.google.com/run/docs/reference/rest/v2/Container#ContainerPort
-                  # Secondary reference for container_port min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#container_port
                   min: 1
                   max: 65535
                   validation: Choose an integer value between 1 and 65535
@@ -451,9 +421,6 @@ spec:
               name: min_instance_count
               title: Min Instance Count
               subtext: The service minimum instances is preferable for most use-cases. Only use this setting if you specifically require a per-revision setting
-              # Primary reference for min_instance_count min: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#min_instance_count
-              # Secondary reference for min_instance_count min: https://cloud.google.com/run/docs/configuring/min-instances#gcloud
-              min: 0
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
@@ -482,14 +449,9 @@ spec:
               name: min_instance_count
               title: Min Instance Count
               subtext: The service minimum instances is preferable for most use-cases. Only use this setting if you specifically require a per-revision setting
-              # Primary reference for min_instance_count min: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#min_instance_count-1
-              # Secondary reference for min_instance_count min: https://cloud.google.com/run/docs/configuring/min-instances#gcloud
-              min: 0
             max_instance_count:
               name: max_instance_count
               title: Max Instance Count
-              # Primary reference for max_instance_count min: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#max_instance_count
-              # Secondary reference for max_instance_count min: https://cloud.google.com/run/docs/configuring/max-instances#gcloud
               min: 1
           altDefaults:
             - type: ALTERNATE_TYPE_DC
@@ -515,8 +477,6 @@ spec:
             percent:
               name: percent
               title: Percent
-              # Primary reference for percent min/max: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#percent
-              # Secondary reference for percent min/max: https://cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration#gcloud
               min: 0
               max: 100
               validation: Percent must be an integer between 0 and 100.
@@ -581,7 +541,6 @@ spec:
                 instances:
                   name: instances
                   title: Instances
-                  # The type is list(string) in variables.tf, no min/max applicable.
             empty_dir:
               name: empty_dir
               title: Empty Dir
