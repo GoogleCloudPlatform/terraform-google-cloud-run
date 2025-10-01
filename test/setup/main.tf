@@ -134,6 +134,8 @@ locals {
 }
 
 module "project" {
+  for_each = local.per_module_services
+
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 17.0"
 
@@ -145,5 +147,5 @@ module "project" {
   default_service_account = "keep"
   deletion_policy         = "DELETE"
 
-  activate_apis = flatten(values(local.per_module_services))
+  activate_apis = each.value
 }

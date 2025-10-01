@@ -14,16 +14,26 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  value = module.project.project_id
+// project_ids_per_module is resolved to `project_id` by the tft test framework.
+output "project_ids_per_module" {
+  value = {
+    for module_name, v in module.project : module_name => v.project_id
+  }
 }
 
-output "sa_email" {
-  value = google_service_account.int_test.email
+// `sa_emails_per_module` is resolved to `sa_email` by the tft test framework.
+output "sa_emails_per_module" {
+  value = {
+    for module_name, v in google_service_account_key.int_test : module_name => v.email
+  }
+  sensitive = true
 }
 
-output "sa_key" {
-  value     = google_service_account_key.int_test.private_key
+// `sa_keys_per_module` is resolved to `sa_key` by the tft test framework.
+output "sa_keys_per_module" {
+  value = {
+    for module_name, v in google_service_account_key.int_test : module_name => v.private_key
+  }
   sensitive = true
 }
 
