@@ -94,13 +94,7 @@ spec:
         defaultValue: true
       - name: traffic_split
         description: Managing traffic routing to the service
-        varType: |-
-          list(object({
-              latest_revision = bool
-              percent         = number
-              revision_name   = string
-              tag             = string
-            }))
+        varType: "list(object({\r\n    latest_revision = bool\r\n    percent         = number\r\n    revision_name   = string\r\n    tag             = string\r\n  }))"
         defaultValue:
           - latest_revision: true
             percent: 100
@@ -143,14 +137,7 @@ spec:
         defaultValue: ""
       - name: volumes
         description: "[Beta] Volumes needed for environment variables (when using secret)"
-        varType: |-
-          list(object({
-              name = string
-              secret = set(object({
-                secret_name = string
-                items       = map(string)
-              }))
-            }))
+        varType: "list(object({\r\n    name = string\r\n    secret = set(object({\r\n      secret_name = string\r\n      items       = map(string)\r\n    }))\r\n  }))"
         defaultValue: []
       - name: limits
         description: Resource limits to the container
@@ -161,11 +148,7 @@ spec:
         defaultValue: {}
       - name: ports
         description: Port which the container listens to (http1 or h2c)
-        varType: |-
-          object({
-              name = string
-              port = number
-            })
+        varType: "object({\r\n    name = string\r\n    port = number\r\n  })"
         defaultValue:
           name: http1
           port: 8080
@@ -178,79 +161,22 @@ spec:
         varType: list(string)
         defaultValue: []
       - name: startup_probe
-        description: |
-          Startup probe of application within the container.
-          All other probes are disabled if a startup probe is provided, until it succeeds.
-          Container will not be added to service endpoints if the probe fails.
-          More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
-        varType: |-
-          object({
-              failure_threshold     = optional(number, null)
-              initial_delay_seconds = optional(number, null)
-              timeout_seconds       = optional(number, null)
-              period_seconds        = optional(number, null)
-              http_get = optional(object({
-                path = optional(string)
-                http_headers = optional(list(object({
-                  name  = string
-                  value = string
-                })), null)
-              }), null)
-              tcp_socket = optional(object({
-                port = optional(number)
-              }), null)
-              grpc = optional(object({
-                port    = optional(number)
-                service = optional(string)
-              }), null)
-            })
+        description: "Startup probe of application within the container.\r\nAll other probes are disabled if a startup probe is provided, until it succeeds.\r\nContainer will not be added to service endpoints if the probe fails.\r\nMore info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes\r\n"
+        varType: "object({\r\n    failure_threshold     = optional(number, null)\r\n    initial_delay_seconds = optional(number, null)\r\n    timeout_seconds       = optional(number, null)\r\n    period_seconds        = optional(number, null)\r\n    http_get = optional(object({\r\n      path = optional(string)\r\n      http_headers = optional(list(object({\r\n        name  = string\r\n        value = string\r\n      })), null)\r\n    }), null)\r\n    tcp_socket = optional(object({\r\n      port = optional(number)\r\n    }), null)\r\n    grpc = optional(object({\r\n      port    = optional(number)\r\n      service = optional(string)\r\n    }), null)\r\n  })"
       - name: liveness_probe
-        description: |
-          Periodic probe of container liveness. Container will be restarted if the probe fails.
-          More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
-        varType: |-
-          object({
-              failure_threshold     = optional(number, null)
-              initial_delay_seconds = optional(number, null)
-              timeout_seconds       = optional(number, null)
-              period_seconds        = optional(number, null)
-              http_get = optional(object({
-                path = optional(string)
-                http_headers = optional(list(object({
-                  name  = string
-                  value = string
-                })), null)
-              }), null)
-              grpc = optional(object({
-                port    = optional(number)
-                service = optional(string)
-              }), null)
-            })
+        description: "Periodic probe of container liveness. Container will be restarted if the probe fails.\r\nMore info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes\r\n"
+        varType: "object({\r\n    failure_threshold     = optional(number, null)\r\n    initial_delay_seconds = optional(number, null)\r\n    timeout_seconds       = optional(number, null)\r\n    period_seconds        = optional(number, null)\r\n    http_get = optional(object({\r\n      path = optional(string)\r\n      http_headers = optional(list(object({\r\n        name  = string\r\n        value = string\r\n      })), null)\r\n    }), null)\r\n    grpc = optional(object({\r\n      port    = optional(number)\r\n      service = optional(string)\r\n    }), null)\r\n  })"
       - name: env_vars
         description: Environment variables (cleartext)
-        varType: |-
-          list(object({
-              value = string
-              name  = string
-            }))
+        varType: "list(object({\r\n    value = string\r\n    name  = string\r\n  }))"
         defaultValue: []
       - name: env_secret_vars
         description: "[Beta] Environment variables (Secret Manager)"
-        varType: |-
-          list(object({
-              name = string
-              value_from = set(object({
-                secret_key_ref = map(string)
-              }))
-            }))
+        varType: "list(object({\r\n    name = string\r\n    value_from = set(object({\r\n      secret_key_ref = map(string)\r\n    }))\r\n  }))"
         defaultValue: []
       - name: volume_mounts
         description: "[Beta] Volume Mounts to be attached to the container (when using secret)"
-        varType: |-
-          list(object({
-              mount_path = string
-              name       = string
-            }))
+        varType: "list(object({\r\n    mount_path = string\r\n    name       = string\r\n  }))"
         defaultValue: []
       - name: verified_domain_name
         description: List of Custom Domain Name
@@ -323,13 +249,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/cloudkms.admin
-          - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
+          - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com

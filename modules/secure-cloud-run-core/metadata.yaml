@@ -90,14 +90,7 @@ spec:
         required: true
       - name: default_rules
         description: Default rule for Cloud Armor.
-        varType: |-
-          map(object({
-              action         = string
-              priority       = string
-              versioned_expr = string
-              src_ip_ranges  = list(string)
-              description    = string
-            }))
+        varType: "map(object({\r\n    action         = string\r\n    priority       = string\r\n    versioned_expr = string\r\n    src_ip_ranges  = list(string)\r\n    description    = string\r\n  }))"
         defaultValue:
           default_rule:
             action: allow
@@ -108,12 +101,7 @@ spec:
             versioned_expr: SRC_IPS_V1
       - name: owasp_rules
         description: These are additional Cloud Armor rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation (requires Cloud Armor default_rule).
-        varType: |-
-          map(object({
-              action     = string
-              priority   = string
-              expression = string
-            }))
+        varType: "map(object({\r\n    action     = string\r\n    priority   = string\r\n    expression = string\r\n  }))"
         defaultValue:
           rule_canary:
             action: deny(403)
@@ -153,11 +141,7 @@ spec:
         defaultValue: tf-cr-lb
       - name: env_vars
         description: Environment variables.
-        varType: |-
-          list(object({
-              value = string
-              name  = string
-            }))
+        varType: "list(object({\r\n    value = string\r\n    name  = string\r\n  }))"
         defaultValue: []
       - name: members
         description: Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users.
@@ -169,13 +153,7 @@ spec:
         defaultValue: true
       - name: traffic_split
         description: Managing traffic routing to the service.
-        varType: |-
-          list(object({
-              latest_revision = bool
-              percent         = number
-              revision_name   = string
-              tag             = string
-            }))
+        varType: "list(object({\r\n    latest_revision = bool\r\n    percent         = number\r\n    revision_name   = string\r\n    tag             = string\r\n  }))"
         defaultValue:
           - latest_revision: true
             percent: 100
@@ -198,14 +176,7 @@ spec:
         defaultValue: 120
       - name: volumes
         description: "[Beta] Volumes needed for environment variables (when using secret)."
-        varType: |-
-          list(object({
-              name = string
-              secret = set(object({
-                secret_name = string
-                items       = map(string)
-              }))
-            }))
+        varType: "list(object({\r\n    name = string\r\n    secret = set(object({\r\n      secret_name = string\r\n      items       = map(string)\r\n    }))\r\n  }))"
         defaultValue: []
       - name: limits
         description: Resource limits to the container.
@@ -216,11 +187,7 @@ spec:
         defaultValue: {}
       - name: ports
         description: Port which the container listens to (http1 or h2c).
-        varType: |-
-          object({
-              name = string
-              port = number
-            })
+        varType: "object({\r\n    name = string\r\n    port = number\r\n  })"
         defaultValue:
           name: http1
           port: 8080
@@ -234,11 +201,7 @@ spec:
         defaultValue: []
       - name: volume_mounts
         description: "[Beta] Volume Mounts to be attached to the container (when using secret)."
-        varType: |-
-          list(object({
-              mount_path = string
-              name       = string
-            }))
+        varType: "list(object({\r\n    mount_path = string\r\n    name       = string\r\n  }))"
         defaultValue: []
       - name: verified_domain_name
         description: List of custom Domain Name.
@@ -281,11 +244,7 @@ spec:
         defaultValue: private-ranges-only
       - name: ssl_certificates
         description: A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links in the pattern `projects/<PROJECT-ID>/global/sslCertificates/<CERT-NAME>` to be used by Load Balancer.
-        varType: |-
-          object({
-              ssl_certificates_self_links       = list(string)
-              generate_certificates_for_domains = list(string)
-            })
+        varType: "object({\r\n    ssl_certificates_self_links       = list(string)\r\n    generate_certificates_for_domains = list(string)\r\n  })"
         required: true
     outputs:
       - name: domain_map_id
@@ -306,13 +265,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/cloudkms.admin
-          - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
+          - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
