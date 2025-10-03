@@ -110,13 +110,24 @@ locals {
     ],
   }
 
+  extra_roles_for_tests = {
+    root = [
+      // For "examples/cloud_run_vpc_connector".
+      "roles/iam.networkAdmin",
+      "roles/vpcaccess.admin",
+    ],
+    job-exec = [
+      "roles/compute.viewer",
+    ]
+  }
+
   // A list of items like:
   // { module_name = "x", role = "role1"}
   // { module_name = "x", role = "role2"}
   // { module_name = "y", role = "role3"}
   module_role_combinations = flatten(
     [for module_name, _ in module.project :
-      [for role in local.per_module_roles[moduleName]: {
+      [for role in setunion(local.per_module_roles[module_name], lookup(local.extra_roles_for_tests, module_name, [])): {
           module_name = module_name
           role        = role
         }
@@ -133,26 +144,9 @@ resource "google_service_account" "int_test" {
   display_name = "ci-account"
 }
 
-// TODO: reenable somehow if needed
-///resource "google_organization_iam_member" "org_member" {
-///  count = length(local.org_required_roles)
-///
-///  org_id = var.org_id
-///  role   = local.org_required_roles[count.index]
-///  member = "serviceAccount:${google_service_account.int_test.email}"
-///}
-///
-///resource "google_folder_iam_member" "folder_member" {
-///  count = length(local.folder_required_roles)
-///
-///  folder = "folders/${var.folder_id}"
-///  role   = local.folder_required_roles[count.index]
-///  member = "serviceAccount:${google_service_account.int_test.email}"
-///}
-
 resource "google_project_iam_member" "int_test" {
   for_each = {
-    for combination in locals.module_role_combinations :
+    for combination in local.module_role_combinations :
       "${combination.module_name}.${combination.role}" => {
         service_account = google_service_account.int_test[combination.module_name]
         role            = combination.role
@@ -163,13 +157,6 @@ resource "google_project_iam_member" "int_test" {
   role    = each.value.role
   member  = "serviceAccount:${each.value.service_account.email}"
 }
-
-// TODO: reenable somehow if needed
-///resource "google_billing_account_iam_member" "int_billing_admin" {
-///  billing_account_id = var.billing_account
-///  role               = "roles/billing.user"
-///  member             = "serviceAccount:${google_service_account.int_test.email}"
-///}
 
 resource "google_service_account_key" "int_test" {
   for_each = module.project

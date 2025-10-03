@@ -21,14 +21,6 @@ output "project_ids_per_module" {
   }
 }
 
-// `sa_emails_per_module` is resolved to `sa_email` by the tft test framework.
-output "sa_emails_per_module" {
-  value = {
-    for module_name, v in google_service_account_key.int_test : module_name => v.email
-  }
-  sensitive = true
-}
-
 // `sa_keys_per_module` is resolved to `sa_key` by the tft test framework.
 output "sa_keys_per_module" {
   value = {
