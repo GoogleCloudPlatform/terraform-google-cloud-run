@@ -15,8 +15,8 @@
  */
 
 module "cloud_run_v2" {
-  source  = "GoogleCloudPlatform/cloud-run/google//modules/v2"
-  version = "~> 0.16"
+  source = "../../modules/v2"
+  # [restore-marker]   version = "~> 0.16"
 
   service_name = "ci-cloud-run-v2-gmp"
   project_id   = var.project_id

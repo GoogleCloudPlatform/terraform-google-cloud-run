@@ -15,8 +15,8 @@
  */
 
 module "job" {
-  source  = "GoogleCloudPlatform/cloud-run/google//modules/job-exec"
-  version = "~> 0.16"
+  source = "../../modules/job-exec"
+  # [restore-marker]   version = "~> 0.16"
 
   project_id                    = var.project_id
   name                          = "job-sa-creation"

@@ -21,7 +21,7 @@ resource "google_service_account" "sa" {
 }
 
 module "cloud_run_v2_gpu" {
-  source = "GoogleCloudPlatform/cloud-run/google//modules/v2"
+  source = "../../modules/v2"
 
   service_name           = "ci-cloud-run-v2-gpu"
   project_id             = var.project_id

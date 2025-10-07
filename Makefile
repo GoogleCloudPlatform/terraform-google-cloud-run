@@ -91,6 +91,7 @@ docker_test_integration:
 	docker run --rm -it \
 		-e SERVICE_ACCOUNT_JSON \
 		-e TF_VAR_project_id \
+		-v /usr/local/google/home/martijnvs/cft-forks/cloud-foundation-toolkit:/localgithub/mycft \
 		-v "$(CURDIR)":/workspace \
 		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
 		cft test run all

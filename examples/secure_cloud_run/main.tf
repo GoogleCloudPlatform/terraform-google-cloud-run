@@ -21,8 +21,8 @@ locals {
 }
 
 module "secure_cloud_run" {
-  source  = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-run"
-  version = "~> 0.16"
+  source = "../../modules/secure-cloud-run"
+  # [restore-marker]   version = "~> 0.16"
 
   connector_name              = "con-run"
   subnet_name                 = "vpc-subnet"

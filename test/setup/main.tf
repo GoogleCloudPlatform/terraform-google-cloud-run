@@ -138,7 +138,7 @@ locals {
     ],
   }
   per_module_test_services = {
-    for module, services in local.per_module_services:
+    for module, services in local.per_module_services :
     module => setunion(services, lookup(local.extra_services_for_tests, module, []))
   }
 }
