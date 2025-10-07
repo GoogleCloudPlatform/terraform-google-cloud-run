@@ -127,9 +127,9 @@ locals {
   // { module_name = "y", role = "role3"}
   module_role_combinations = flatten(
     [for module_name, _ in module.project :
-      [for role in setunion(local.per_module_roles[module_name], lookup(local.extra_roles_for_tests, module_name, [])): {
-          module_name = module_name
-          role        = role
+      [for role in setunion(local.per_module_roles[module_name], lookup(local.extra_roles_for_tests, module_name, [])) : {
+        module_name = module_name
+        role        = role
         }
       ]
     ]
@@ -147,10 +147,10 @@ resource "google_service_account" "int_test" {
 resource "google_project_iam_member" "int_test" {
   for_each = {
     for combination in local.module_role_combinations :
-      "${combination.module_name}.${combination.role}" => {
-        service_account = google_service_account.int_test[combination.module_name]
-        role            = combination.role
-      }
+    "${combination.module_name}.${combination.role}" => {
+      service_account = google_service_account.int_test[combination.module_name]
+      role            = combination.role
+    }
   }
 
   project = each.value.service_account.project
