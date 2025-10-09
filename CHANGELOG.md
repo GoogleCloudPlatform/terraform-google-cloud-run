@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.21.5](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.4...v0.21.5) (2025-10-07)
+
+
+### Bug Fixes
+
+* remove alpha-documentai.googleapis.com from the list of VPC_SC restricted service ([#407](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/407)) ([8d27ae6](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/8d27ae67249216d28a5822fbfb70444f9f27a1a0))
+
 ## [0.21.4](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.3...v0.21.4) (2025-09-30)
 
 
