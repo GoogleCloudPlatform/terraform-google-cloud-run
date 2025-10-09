@@ -37,10 +37,10 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-serverless-harness/v0.21.4"
+    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-serverless-harness/v0.21.5"
   }
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-serverless-harness/v0.21.4"
+    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-serverless-harness/v0.21.5"
   }
 }
