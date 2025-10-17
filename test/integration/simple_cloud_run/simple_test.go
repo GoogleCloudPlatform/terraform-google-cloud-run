@@ -28,6 +28,8 @@ func TestSimpleCloudRun(t *testing.T) {
 
 	cloudRun.DefineVerify(
 		func(assert *assert.Assertions) {
+			cloudRun.DefaultVerify(assert)
+
 			projectID := cloudRun.GetStringOutput("project_id")
 			location := cloudRun.GetStringOutput("service_location")
 			serviceName := cloudRun.GetStringOutput("service_name")
