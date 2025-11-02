@@ -250,6 +250,18 @@ spec:
             spec:
               outputExpr: "{\"WORKFLOW_ID\": id}"
               inputPath: env_vars
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/postgresql
+              version: ">= 23.0"
+            spec:
+              outputExpr: "{\"name\": \"cloudsql\", \"mount_path\": \"/cloudsql\"}"
+              inputPath: volume_mounts
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/mysql
+              version: ">= 23.0"
+            spec:
+              outputExpr: "{\"name\": \"cloudsql\", \"mount_path\": \"/cloudsql\"}"
+              inputPath: volume_mounts
       - name: node_selector
         description: Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector).
         varType: |-
