@@ -199,6 +199,7 @@ spec:
                   title: Failure Threshold
                   subtext: Minimum consecutive failures for the probe to be considered failed after having succeeded. Minimum value is 1.
                   min: 1
+                  max: 2147483647
                   validation: Choose an integer value between 1 and 2147483647
                 initial_delay_seconds:
                   name: initial_delay_seconds
