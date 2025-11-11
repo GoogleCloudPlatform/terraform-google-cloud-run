@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
       sourceType: git
       dir: /modules/secure-serverless-net
-    version: 0.21.5
+    version: 0.21.6
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"

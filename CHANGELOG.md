@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.21.6](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.5...v0.21.6) (2025-11-10)
+
+
+### Bug Fixes
+
+* Fixing failure threshold subtext and max limit ([#411](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/411)) ([c4d7b0b](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/c4d7b0b0a4276d74bbbe3c6c5c9cc185c59de1ea))
+
 ## [0.21.5](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.4...v0.21.5) (2025-10-07)
 
 
