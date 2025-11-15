@@ -131,19 +131,32 @@ locals {
       "iap.googleapis.com"
     ],
   }
+  extra_services_for_tests = {
+    root = [
+      // For "examples/cloud_run_vpc_connector".
+      "vpcaccess.googleapis.com",
+    ],
+  }
+  per_module_test_services = {
+    for module, services in local.per_module_services :
+    module => setunion(services, lookup(local.extra_services_for_tests, module, []))
+  }
 }
 
 module "project" {
+  for_each = local.per_module_test_services
+
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 17.0"
 
-  name                    = "ci-cloud-run"
-  random_project_id       = "true"
-  org_id                  = var.org_id
-  folder_id               = var.folder_id
-  billing_account         = var.billing_account
-  default_service_account = "keep"
-  deletion_policy         = "DELETE"
+  name                     = "ci-cloud-run"
+  random_project_id        = "true"
+  random_project_id_length = 8
+  org_id                   = var.org_id
+  folder_id                = var.folder_id
+  billing_account          = var.billing_account
+  default_service_account  = "keep"
+  deletion_policy          = "DELETE"
 
-  activate_apis = flatten(values(local.per_module_services))
+  activate_apis = each.value
 }
