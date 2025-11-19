@@ -16,7 +16,7 @@
 
 module "vpc" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 10.0"
+  version = "~> 13.0"
 
   project_id   = var.project_id
   network_name = "cloud-run-vpc"
@@ -36,7 +36,7 @@ module "vpc" {
 
 module "serverless_connector" {
   source  = "terraform-google-modules/network/google//modules/vpc-serverless-connector-beta"
-  version = "~> 10.0"
+  version = "~> 13.0"
 
   project_id = var.project_id
   vpc_connectors = [{
