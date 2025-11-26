@@ -578,7 +578,6 @@ spec:
           - roles/resourcemanager.projectIamAdmin
           - roles/compute.viewer
           - roles/iap.admin
-          - roles/aiplatform.user
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
