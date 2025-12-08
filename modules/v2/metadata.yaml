@@ -232,6 +232,12 @@ spec:
             spec:
               outputExpr: "{\"ALLOYDB_INSTANCE_HOST\" : primary_instance_ip, \"ALLOYDB_READ_REPLICAS\": env_vars.ALLOYDB_READ_REPLICAS}"
               inputPath: env_vars
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-artifact-registry
+              version: ">= 0.5.0"
+            spec:
+              outputExpr: "{\"ARTIFACT_REGISTRY_REPOSITORY_ID\": artifact_id}"
+              inputPath: env_vars
       - name: node_selector
         description: Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector).
         varType: |-
@@ -316,6 +322,11 @@ spec:
               version: ">= 5.0.1"
             spec:
               outputExpr: "[\"roles/alloydb.admin\"]"
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-artifact-registry
+              version: ">= 0.5.0"
+            spec:
+              outputExpr: "[\"roles/artifactregistry.admin\"]"
       - name: ingress
         description: Restricts network access to your Cloud Run service
         varType: string
