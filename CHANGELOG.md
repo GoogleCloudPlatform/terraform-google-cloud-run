@@ -7,6 +7,14 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.22.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.6...v0.22.0) (2025-12-09)
+
+
+### Features
+
+* add connection with artifact registry ([#419](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/419)) ([1f4eb53](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/1f4eb53a7bf78b21db45f8a2a3d479966f9d74fc))
+* Add connection with vertex ai feature online store ([#418](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/418)) ([57f6e2f](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/57f6e2fd9568960434f729237e9316055e07df7b))
+
 ## [0.21.6](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.5...v0.21.6) (2025-11-10)
 
 
