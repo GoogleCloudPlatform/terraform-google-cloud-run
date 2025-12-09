@@ -237,7 +237,7 @@ spec:
               version: ">= 2.3.1"
             spec:
               outputExpr: "{\"VERTEX_AI_FEATURE_ONLINE_STORE_ID\": feature_online_store_id}"
-              inputPath: env_vars              
+              inputPath: env_vars
       - name: node_selector
         description: Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector).
         varType: |-
