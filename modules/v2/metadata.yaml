@@ -238,6 +238,12 @@ spec:
             spec:
               outputExpr: "{\"VERTEX_AI_FEATURE_ONLINE_STORE_ID\": feature_online_store_id}"
               inputPath: env_vars
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-artifact-registry
+              version: ">= 0.5.0"
+            spec:
+              outputExpr: "{\"ARTIFACT_REGISTRY_REPOSITORY_ID\": artifact_id}"
+              inputPath: env_vars
       - name: node_selector
         description: Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector).
         varType: |-
@@ -327,6 +333,11 @@ spec:
               version: ">= 2.3.1"
             spec:
               outputExpr: "[\"roles/aiplatform.user\"]"
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-artifact-registry
+              version: ">= 0.5.0"
+            spec:
+              outputExpr: "[\"roles/artifactregistry.admin\"]"
       - name: ingress
         description: Restricts network access to your Cloud Run service
         varType: string
