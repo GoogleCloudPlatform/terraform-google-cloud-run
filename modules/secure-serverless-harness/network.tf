@@ -24,7 +24,7 @@ locals {
 module "network" {
   for_each                               = local.network_projects
   source                                 = "terraform-google-modules/network/google"
-  version                                = "~> 10.0"
+  version                                = "~> 13.0"
   project_id                             = each.value
   network_name                           = local.network_name
   shared_vpc_host                        = var.use_shared_vpc
