@@ -93,4 +93,4 @@ docker_test_integration:
 		-e TF_VAR_project_id \
 		-v "$(CURDIR)":/workspace \
 		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
-		/usr/local/bin/test_integration.sh
+		cft test run all
