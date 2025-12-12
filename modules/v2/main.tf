@@ -372,6 +372,14 @@ resource "google_cloud_run_v2_service" "main" {
     }
   }
   depends_on = [google_project_iam_member.roles]
+
+  lifecycle {
+    ignore_changes = [
+      client,
+      client_version,
+      template[0].labels
+    ]
+  }
 }
 
 resource "google_cloud_run_v2_service_iam_member" "authorize" {
