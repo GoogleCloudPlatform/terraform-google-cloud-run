@@ -414,8 +414,7 @@ spec:
               source: github.com/terraform-google-modules/terraform-google-sql-db//modules/postgresql
               version: ">= 23.0"
             spec:
-              outputExpr: instance_connection_name
-              inputPath: cloud_sql_instance.instances
+              outputExpr: "{ \"name\": \"cloudsql\", \"cloud_sql_intstance\": { \"instances\": instance_connection_name}}"
           - source:
               source: github.com/terraform-google-modules/terraform-google-sql-db//modules/mysql
               version: ">= 23.0"
