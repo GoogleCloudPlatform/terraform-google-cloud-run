@@ -348,7 +348,7 @@ spec:
               source: github.com/GoogleCloudPlatform/terraform-google-cloud-filestore
               version: ">= 0.1.0"
             spec:
-              outputExpr: "[\"roles/file.editor\"]"              
+              outputExpr: "[\"roles/file.editor\"]"
       - name: ingress
         description: Restricts network access to your Cloud Run service
         varType: string
