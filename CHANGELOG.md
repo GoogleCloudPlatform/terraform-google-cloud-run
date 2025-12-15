@@ -7,6 +7,18 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.23.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.22.0...v0.23.0) (2025-12-15)
+
+
+### Features
+
+* Add Filestore to metadata.yaml ([#421](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/421)) ([90af9b7](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/90af9b7caed5a5220899938f86f4c012673c5380))
+
+
+### Bug Fixes
+
+* Update filestore source in metadata.yaml ([#423](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/423)) ([53f6b1e](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/53f6b1ea13a66a699568e4626c3a8d1752fb5bf6))
+
 ## [0.22.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.6...v0.22.0) (2025-12-09)
 
 
