@@ -244,6 +244,12 @@ spec:
             spec:
               outputExpr: "{\"ARTIFACT_REGISTRY_REPOSITORY_ID\": artifact_id}"
               inputPath: env_vars
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-cloud-filestore
+              version: ">= 0.1.0"
+            spec:
+              outputExpr: "{\"FILESTORE_MOUNT_POINT\": mount_point}"
+              inputPath: env_vars
       - name: node_selector
         description: Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector).
         varType: |-
@@ -338,6 +344,11 @@ spec:
               version: ">= 0.5.0"
             spec:
               outputExpr: "[\"roles/artifactregistry.admin\"]"
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-cloud-filestore
+              version: ">= 0.1.0"
+            spec:
+              outputExpr: "[\"roles/file.editor\"]"
       - name: ingress
         description: Restricts network access to your Cloud Run service
         varType: string
