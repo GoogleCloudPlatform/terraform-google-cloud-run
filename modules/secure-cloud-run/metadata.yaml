@@ -190,6 +190,12 @@ spec:
         description: List of Custom Domain Name
         varType: list(string)
         defaultValue: []
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-cloud-dns
+              version: ">=6.1.0"
+            spec:
+              outputExpr: domain
       - name: volumes
         description: "[Beta] Volumes needed for environment variables (when using secret)."
         varType: |-

@@ -256,6 +256,12 @@ spec:
         description: List of Custom Domain Name
         varType: list(string)
         defaultValue: []
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-cloud-dns
+              version: ">=6.1.0"
+            spec:
+              outputExpr: domain
       - name: force_override
         description: Option to force override existing mapping
         varType: bool
