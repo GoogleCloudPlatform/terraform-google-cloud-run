@@ -34,6 +34,13 @@ spec:
         container_command:
           name: container_command
           title: Container Command
+        create_service_account:
+          name: create_service_account
+          title: Create Service Account
+          level: 1
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: true
         env_secret_vars:
           name: env_secret_vars
           title: Env Secret Vars
@@ -46,6 +53,8 @@ spec:
         image:
           name: image
           title: Image
+          regexValidation: ^((([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}(:[0-9]+)?/)?([a-z0-9]+([._-][a-z0-9]+)*/)*[a-z0-9]+([._-][a-z0-9]+)*(:(\w[\w.-]{0,127})|@sha256:[a-fA-F0-9]{64})?)$
+          validation: Must be a valid Docker image (lowercase repo, optional registry, tag, or SHA256 digest)
         labels:
           name: labels
           title: Labels
@@ -64,6 +73,8 @@ spec:
         name:
           name: name
           title: Name
+          regexValidation: ^[a-z][a-z0-9-]{0,47}[a-z0-9]$
+          validation: Use lowercase letters, numbers, and hyphens. Start with a letter and end with letter/number. Must be 49 characters or fewer.
         parallelism:
           name: parallelism
           title: Parallelism
@@ -73,6 +84,10 @@ spec:
         service_account_email:
           name: service_account_email
           title: Service Account Email
+        service_account_project_roles:
+          name: service_account_project_roles
+          title: Service Account Project Roles
+          level: 1
         task_count:
           name: task_count
           title: Task Count
@@ -88,3 +103,7 @@ spec:
         vpc_access:
           name: vpc_access
           title: Vpc Access
+    runtime:
+      outputs:
+        id:
+          visibility: VISIBILITY_ROOT

@@ -7,6 +7,72 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.22.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.6...v0.22.0) (2025-12-09)
+
+
+### Features
+
+* add connection with artifact registry ([#419](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/419)) ([1f4eb53](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/1f4eb53a7bf78b21db45f8a2a3d479966f9d74fc))
+* Add connection with vertex ai feature online store ([#418](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/418)) ([57f6e2f](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/57f6e2fd9568960434f729237e9316055e07df7b))
+
+## [0.21.6](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.5...v0.21.6) (2025-11-10)
+
+
+### Bug Fixes
+
+* Fixing failure threshold subtext and max limit ([#411](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/411)) ([c4d7b0b](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/c4d7b0b0a4276d74bbbe3c6c5c9cc185c59de1ea))
+
+## [0.21.5](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.4...v0.21.5) (2025-10-07)
+
+
+### Bug Fixes
+
+* remove alpha-documentai.googleapis.com from the list of VPC_SC restricted service ([#407](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/407)) ([8d27ae6](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/8d27ae67249216d28a5822fbfb70444f9f27a1a0))
+
+## [0.21.4](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.3...v0.21.4) (2025-09-30)
+
+
+### Bug Fixes
+
+* Adding Min Max Validation for v2 ([#405](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/405)) ([3e3f4ba](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/3e3f4ba723cd4397180a3373cf14a2124362bfa7))
+
+## [0.21.3](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.2...v0.21.3) (2025-09-12)
+
+
+### Bug Fixes
+
+* added missing validations ([#399](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/399)) ([7124eab](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/7124eabb321b1326cefe64583536223a086a79f9))
+
+## [0.21.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.1...v0.21.2) (2025-08-21)
+
+
+### Bug Fixes
+
+* fixed escape character issue in regular expressions ([#391](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/391)) ([dc15ecd](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/dc15ecd52e184f498d11944a754ee8b790447e1b))
+
+## [0.21.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.0...v0.21.1) (2025-08-21)
+
+
+### Bug Fixes
+
+* added missing validations ([#385](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/385)) ([3394bad](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/3394badc134959574b35b00807195f15a0a1c3a1))
+
+## [0.21.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.20.1...v0.21.0) (2025-08-13)
+
+
+### Features
+
+* Add dynamic service account creation to jobs. ([#384](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/384)) ([0903f22](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/0903f22ef8a49855f7d2b34e8ed1cf6ac3b5b2d3))
+* Make Cloud Run jobs ADC compliant. ([#378](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/378)) ([2004e37](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/2004e37a22b6a34c8e98be169af04ad375370bd9))
+* Update connections for Memorystore ([#376](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/376)) ([3d10376](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/3d10376eecbe3e3a0a3803141232986e28d69a9b))
+
+
+### Bug Fixes
+
+* per module configs for cloud run ([#358](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/358)) ([adef355](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/adef3551fcef63f535d490a04785afcac6775f4a))
+* renaming apphub service id in modules/v2 ([#382](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/382)) ([ee25d7e](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/ee25d7e57e17b85119c0bce6f5c5d0e3be199ac1))
+* updated type of cloud_sql_instance.instances from set to list ([#387](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/387)) ([9347afd](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/9347afdae09bb3b0023295c65971fa64ea7032c2))
+
 ## [0.20.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.20.0...v0.20.1) (2025-07-16)
 
 

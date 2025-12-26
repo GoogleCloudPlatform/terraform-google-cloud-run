@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
       sourceType: git
       dir: /modules/job-exec
-    version: 0.20.1
+    version: 0.22.0
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -34,6 +34,8 @@ spec:
     examples:
       - name: cloud_run_vpc_connector
         location: examples/cloud_run_vpc_connector
+      - name: job_service_account_creation
+        location: examples/job_service_account_creation
       - name: secure_cloud_run
         location: examples/secure_cloud_run
       - name: secure_cloud_run_standalone
@@ -74,10 +76,24 @@ spec:
         description: Whether to execute job after creation
         varType: bool
         defaultValue: false
+      - name: create_service_account
+        description: Create service account for the job. Otherwise, use the default Compute Engine default service account
+        varType: bool
+        defaultValue: false
       - name: service_account_email
         description: Service Account email needed for the job
         varType: string
         defaultValue: ""
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-service-accounts//modules/simple-sa
+              version: ">= 4.4"
+            spec:
+              outputExpr: email
+      - name: service_account_project_roles
+        description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account_email
+        varType: list(string)
+        defaultValue: []
       - name: argument
         description: Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments
         varType: list(string)
@@ -130,7 +146,7 @@ spec:
           list(object({
               name = string
               cloud_sql_instance = optional(object({
-                instances = set(string)
+                instances = list(string)
               }))
               gcs = optional(object({
                 bucket        = string
@@ -139,6 +155,24 @@ spec:
               }))
             }))
         defaultValue: []
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/postgresql
+              version: ">= 23.0"
+            spec:
+              outputExpr: instance_connection_name
+              inputPath: cloud_sql_instance.instances
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/mysql
+              version: ">= 23.0"
+            spec:
+              outputExpr: instance_connection_name
+              inputPath: cloud_sql_instance.instances
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-cloud-storage//modules/simple_bucket
+              version: ">= 8.0"
+            spec:
+              outputExpr: "{\"name\": \"gcs-bucket-vol\", \"gcs\": { \"bucket\": name}}"
       - name: volume_mounts
         description: Volume to mount into the container's filesystem.
         varType: |-
@@ -173,17 +207,16 @@ spec:
     outputs:
       - name: id
         description: Cloud Run Job ID
+        type: string
+      - name: service_account_id
+        description: Service account id and email
+        type:
+          - object
+          - email: string
+            id: string
+            member: string
   requirements:
     roles:
-      - level: Project
-        roles:
-          - roles/accesscontextmanager.policyAdmin
-          - roles/orgpolicy.policyAdmin
-      - level: Project
-        roles:
-          - roles/resourcemanager.folderAdmin
-          - roles/resourcemanager.projectCreator
-          - roles/resourcemanager.projectDeleter
       - level: Project
         roles:
           - roles/run.admin
@@ -193,20 +226,18 @@ spec:
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
-          - roles/compute.viewer
-          - roles/iap.admin
     services:
-      - cloudresourcemanager.googleapis.com
-      - storage-api.googleapis.com
-      - serviceusage.googleapis.com
-      - run.googleapis.com
-      - cloudkms.googleapis.com
-      - iam.googleapis.com
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
-      - monitoring.googleapis.com
+      - cloudkms.googleapis.com
+      - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
+      - iam.googleapis.com
       - iap.googleapis.com
+      - monitoring.googleapis.com
+      - run.googleapis.com
+      - serviceusage.googleapis.com
+      - storage-api.googleapis.com
     providerVersions:
       - source: devops-rob/terracurl
         version: ~> 1.0

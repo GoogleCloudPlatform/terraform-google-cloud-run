@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,12 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 1.3"
+output "id" {
+  description = "Cloud Run Job ID"
+  value       = module.job.id
+}
 
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 6, < 7"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 6, < 7"
-    }
-  }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-cloud-run/v0.22.0"
-  }
-
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:secure-cloud-run/v0.22.0"
-  }
+output "service_account_id" {
+  description = "Service account id and email"
+  value       = module.job.service_account_id
 }

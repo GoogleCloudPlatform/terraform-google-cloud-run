@@ -17,7 +17,8 @@ Basic usage of this module is as follows:
 ```hcl
 module "cloud_run_core" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/v2"
-  version = "~> 0.11.0"
+  # Locked to 0.20, allows minor updates – check for latest version
+  version = "~> 0.22"
 
   project_id      = var.project_id
   service_name    = "hello-world-gpu"
