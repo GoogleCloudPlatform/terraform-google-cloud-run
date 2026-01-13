@@ -104,6 +104,13 @@ resource "google_cloud_run_v2_service" "main" {
   iap_enabled         = length(var.iap_members) > 0
   deletion_protection = var.cloud_run_deletion_protection
 
+  lifecycle {
+    ignore_changes = [
+      scaling,
+      template[0].scaling,
+    ]
+  }
+
   template {
     revision        = var.revision
     labels          = var.template_labels
