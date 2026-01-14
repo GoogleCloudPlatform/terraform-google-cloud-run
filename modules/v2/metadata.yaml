@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -266,7 +266,7 @@ spec:
               source: github.com/terraform-google-modules/terraform-google-cloud-storage//modules/simple_bucket
               version: ">= 8.0"
             spec:
-              outputExpr: "{\"name\": name, \"mount_path\": \"/${name}\"}"
+              outputExpr: "{\"name\": name, \"mount_path\": \"/gcs-bucket-vol\"}"
               inputPath: volume_mounts
       - name: node_selector
         description: Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector).
