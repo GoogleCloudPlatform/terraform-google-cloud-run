@@ -94,6 +94,22 @@ spec:
         description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account_email
         varType: list(string)
         defaultValue: []
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/postgresql
+              version: ">= 23.0"
+            spec:
+              outputExpr: "[\"roles/cloudsql.instanceUser\", \"roles/cloudsql.client\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/mysql
+              version: ">= 23.0"
+            spec:
+              outputExpr: "[\"roles/cloudsql.instanceUser\", \"roles/cloudsql.client\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-cloud-storage//modules/simple_bucket
+              version: ">= 8.0"
+            spec:
+              outputExpr: "[\"roles/storage.objectAdmin\"]"
       - name: argument
         description: Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments
         varType: list(string)

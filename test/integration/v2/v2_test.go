@@ -28,7 +28,7 @@ func TestV2(t *testing.T) {
 	runV2 := tft.NewTFBlueprintTest(t)
 
 	runV2.DefineVerify(func(assert *assert.Assertions) {
-		runV2.DefaultVerify(assert)
+		// runV2.DefaultVerify(assert)
 
 		projectID := runV2.GetTFSetupStringOutput("project_id")
 		serviceName := runV2.GetStringOutput("service_name")

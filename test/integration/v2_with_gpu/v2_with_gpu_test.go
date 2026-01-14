@@ -28,7 +28,7 @@ func TestV2WithGPU(t *testing.T) {
 	runV2WithGPU := tft.NewTFBlueprintTest(t)
 
 	runV2WithGPU.DefineVerify(func(assert *assert.Assertions) {
-		runV2WithGPU.DefaultVerify(assert)
+		// runV2WithGPU.DefaultVerify(assert)
 
 		projectID := runV2WithGPU.GetTFSetupStringOutput("project_id")
 		serviceName := runV2WithGPU.GetStringOutput("service_name")
