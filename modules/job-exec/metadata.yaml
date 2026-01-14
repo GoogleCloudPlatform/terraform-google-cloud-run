@@ -110,6 +110,11 @@ spec:
               version: ">= 8.0"
             spec:
               outputExpr: "[\"roles/storage.objectAdmin\"]"
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
+              version: ">= 0.13"
+            spec:
+              outputExpr: "[\"roles/run.invoker\"]"
       - name: argument
         description: Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments
         varType: list(string)
@@ -194,7 +199,7 @@ spec:
               source: github.com/terraform-google-modules/terraform-google-cloud-storage//modules/simple_bucket
               version: ">= 8.0"
             spec:
-              outputExpr: "{\"name\": \"gcs-bucket-vol\", \"gcs\": { \"bucket\": name}}"
+              outputExpr: "{\"name\": name, \"gcs\": { \"bucket\": name}}"
       - name: volume_mounts
         description: Volume to mount into the container's filesystem.
         varType: |-
@@ -208,7 +213,7 @@ spec:
               source: github.com/terraform-google-modules/terraform-google-cloud-storage//modules/simple_bucket
               version: ">= 8.0"
             spec:
-              outputExpr: "{\"name\": \"gcs-bucket-vol\", \"mount_path\": \"/gcs-bucket-vol\"}"
+              outputExpr: "{\"name\": name, \"mount_path\": \"/${name}\"}"
           - source:
               source: github.com/terraform-google-modules/terraform-google-sql-db//modules/postgresql
               version: ">= 23.0"
