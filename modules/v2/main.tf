@@ -358,7 +358,8 @@ resource "google_cloud_run_v2_service" "main" {
   dynamic "scaling" {
     for_each = var.service_scaling[*]
     content {
-      min_instance_count = scaling.value.min_instance_count
+      min_instance_count    = try(scaling.value.min_instance_count, 0)
+      manual_instance_count = 0
     }
   }
 
