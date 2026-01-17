@@ -18,6 +18,7 @@ This example assumes that below mentioned prerequisites are in place before cons
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| build\_config | Optional Cloud Build configuration for Cloud Run. This block enables building a container image from source using Cloud Build instead of specifying a prebuilt container image. | <pre>object({<br>    source_location          = optional(string)<br>    function_target          = optional(string)<br>    image_uri                = optional(string)<br>    base_image               = optional(string)<br>    enable_automatic_updates = optional(bool)<br>    worker_pool              = optional(string)<br>    environment_variables    = optional(map(string))<br>    service_account          = optional(string)<br>  })</pre> | `null` | no |
 | cloud\_run\_deletion\_protection | This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services | `bool` | `true` | no |
 | project\_id | The project ID to deploy to | `string` | n/a | yes |
 
