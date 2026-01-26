@@ -54,12 +54,13 @@ module "network_project" {
   version = "~> 18.0"
   count   = var.use_shared_vpc ? 1 : 0
 
-  random_project_id = "true"
-  activate_apis     = local.network_apis
-  name              = var.network_project_name
-  org_id            = var.org_id
-  billing_account   = var.billing_account
-  folder_id         = google_folder.fld_serverless.name
+  random_project_id        = "true"
+  random_project_id_length = 4
+  activate_apis            = local.network_apis
+  name                     = var.network_project_name
+  org_id                   = var.org_id
+  billing_account          = var.billing_account
+  folder_id                = google_folder.fld_serverless.name
 
   disable_services_on_destroy = var.disable_services_on_destroy
   deletion_policy             = var.project_deletion_policy
@@ -71,12 +72,13 @@ module "security_project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 18.0"
 
-  random_project_id = "true"
-  activate_apis     = local.kms_apis
-  name              = var.security_project_name
-  org_id            = var.org_id
-  billing_account   = var.billing_account
-  folder_id         = google_folder.fld_serverless.name
+  random_project_id        = "true"
+  random_project_id_length = 4
+  activate_apis            = local.kms_apis
+  name                     = var.security_project_name
+  org_id                   = var.org_id
+  billing_account          = var.billing_account
+  folder_id                = google_folder.fld_serverless.name
 
   disable_services_on_destroy = var.disable_services_on_destroy
   deletion_policy             = var.project_deletion_policy
