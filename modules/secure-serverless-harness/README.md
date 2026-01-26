@@ -25,7 +25,7 @@ Basic usage of this module is as follows:
 module "secure_cloud_run_harness" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-serverless-harness"
   # Locked to 0.20, allows minor updates – check for latest version
-  version = "~> 0.23"
+  version = "~> 0.24"
 
   # Required variables
   billing_account                   = "<BILLING ACCOUNT>"
