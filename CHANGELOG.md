@@ -7,6 +7,21 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.23.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.22.0...v0.23.0) (2026-01-14)
+
+
+### Features
+
+* add connection with workflows and kms ([#429](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/429)) ([7c77d62](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/7c77d622104652378c3f0a151930716031d0bfe6))
+* Add Filestore to metadata.yaml ([#421](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/421)) ([90af9b7](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/90af9b7caed5a5220899938f86f4c012673c5380))
+* update connection metadata for cloud-run/v2 and job-exec ([#410](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/410)) ([b17c813](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/b17c8136a6f0dae930624c1b6135375fc04a982f))
+
+
+### Bug Fixes
+
+* Update filestore source in metadata.yaml ([#423](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/423)) ([53f6b1e](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/53f6b1ea13a66a699568e4626c3a8d1752fb5bf6))
+* update test to ignore default verify becuase of noop plan diff ([#432](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/432)) ([1080468](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/108046867525901beb1a776694efe67a8c4ba80b))
+
 ## [0.22.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.6...v0.22.0) (2025-12-09)
 
 
