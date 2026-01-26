@@ -19,6 +19,7 @@ module "serverless_project" {
   version = "~> 17.0"
 
   random_project_id           = "true"
+  random_project_id_length    = 4
   activate_apis               = var.activate_apis
   name                        = var.project_name
   org_id                      = var.org_id
