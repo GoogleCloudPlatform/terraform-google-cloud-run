@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -243,6 +243,18 @@ spec:
               version: ">= 0.5.0"
             spec:
               outputExpr: "{\"ARTIFACT_REGISTRY_REPOSITORY_ID\": artifact_id}"
+              inputPath: env_vars
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-cloud-dns
+              version: ">= 7.0.0"
+            spec:
+              outputExpr: "{\"DNS_MANAGED_ZONE_ID\": name}"
+              inputPath: env_vars
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-cloud-dns//modules/dns_response_policy
+              version: ">= 7.0.0"
+            spec:
+              outputExpr: "{\"DNS_RESPONSE_POLICY\": response_policy_id}"
               inputPath: env_vars
       - name: node_selector
         description: Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector).
@@ -598,13 +610,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/run.admin
-          - roles/iam.serviceAccountAdmin
-          - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/resourcemanager.projectIamAdmin
           - roles/compute.viewer
           - roles/iap.admin
+          - roles/run.admin
+          - roles/iam.serviceAccountAdmin
+          - roles/iam.serviceAccountUser
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
