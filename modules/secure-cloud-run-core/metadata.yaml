@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -306,13 +306,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/artifactregistry.admin
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
-          - roles/artifactregistry.admin
-          - roles/iam.serviceAccountUser
-          - roles/serviceusage.serviceUsageViewer
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
@@ -327,9 +327,9 @@ spec:
       - storage-api.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6, < 7"
+        version: ">= 6, < 8"
       - source: hashicorp/google-beta
-        version: ">= 6, < 7"
+        version: ">= 6, < 8"
       - source: hashicorp/random
         version: < 4.0
       - source: hashicorp/time
