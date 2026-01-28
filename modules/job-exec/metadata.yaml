@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
       sourceType: git
       dir: /modules/job-exec
-    version: 0.22.0
+    version: 0.23.0
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -94,6 +94,22 @@ spec:
         description: Roles to grant to the newly created cloud run SA in specified project. Should be used with create_service_account set to true and no input for service_account_email
         varType: list(string)
         defaultValue: []
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/postgresql
+              version: ">= 23.0"
+            spec:
+              outputExpr: "[\"roles/cloudsql.instanceUser\", \"roles/cloudsql.client\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/mysql
+              version: ">= 23.0"
+            spec:
+              outputExpr: "[\"roles/cloudsql.instanceUser\", \"roles/cloudsql.client\"]"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-cloud-storage//modules/simple_bucket
+              version: ">= 8.0"
+            spec:
+              outputExpr: "[\"roles/storage.objectAdmin\"]"
       - name: argument
         description: Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments
         varType: list(string)
@@ -110,6 +126,12 @@ spec:
               name  = string
             }))
         defaultValue: []
+        connections:
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
+              version: ">= 0.13"
+            spec:
+              outputExpr: "{ \"name\": service_name,\"value\": service_uri}"
       - name: env_secret_vars
         description: Environment variables (Secret Manager)
         varType: |-
@@ -181,6 +203,22 @@ spec:
               mount_path = string
             }))
         defaultValue: []
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-cloud-storage//modules/simple_bucket
+              version: ">= 8.0"
+            spec:
+              outputExpr: "{\"name\": \"gcs-bucket-vol\", \"mount_path\": \"/gcs-bucket-vol\"}"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/postgresql
+              version: ">= 23.0"
+            spec:
+              outputExpr: "{\"name\": \"cloudsql\", \"mount_path\": \"/cloudsql\"}"
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-sql-db//modules/mysql
+              version: ">= 23.0"
+            spec:
+              outputExpr: "{\"name\": \"cloudsql\", \"mount_path\": \"/cloudsql\"}"
       - name: vpc_access
         description: VPC Access configuration to use for this Task.
         varType: |-
