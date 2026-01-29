@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-
+variable "project_id" {
+  description = "The project where cloud run is going to be deployed."
+  type        = string
+}
 
 variable "location" {
   description = "The location where resources are going to be deployed."
   type        = string
 }
 
-variable "project_id" {
-  description = "The project where cloud run is going to be deployed."
+variable "region" {
+  description = "Location for load balancer and Cloud Run resources (usually same as location)."
   type        = string
 }
 
@@ -41,19 +44,171 @@ variable "cloud_run_sa" {
   type        = string
 }
 
-variable "vpc_connector_id" {
-  description = "VPC Connector id in the format projects/PROJECT/locations/LOCATION/connectors/NAME."
+variable "execution_environment" {
+  description = "The execution environment (e.g., EXECUTION_ENVIRONMENT_GEN2, EXECUTION_ENVIRONMENT_GEN1)."
   type        = string
+  default     = "EXECUTION_ENVIRONMENT_GEN2"
+}
+
+variable "env_vars" {
+  type = list(object({
+    value = string
+    name  = string
+  }))
+  description = "Environment variables."
+  default     = []
+}
+
+variable "ports" {
+  description = "Port which the container listens to."
+  type = object({
+    name = string
+    port = number
+  })
+  default = {
+    name = "http1"
+    port = 8080
+  }
+}
+
+variable "argument" {
+  description = "Arguments passed to the ENTRYPOINT command."
+  type        = list(string)
+  default     = []
+}
+
+variable "container_command" {
+  description = "Container entrypoint command."
+  type        = list(string)
+  default     = []
+}
+
+variable "limits" {
+  description = "Resource limits (memory, cpu, nvidia.com/gpu)."
+  type        = map(string)
+  default     = null
+}
+
+variable "requests" {
+  description = "Resource requests (memory, cpu). Note: Child module must be patched to support this field."
+  type        = map(string)
+  default     = {}
+}
+
+variable "container_concurrency" {
+  description = "Concurrent request limits to the service."
+  type        = number
+  default     = null
+}
+
+variable "timeout_seconds" {
+  description = "Timeout for each request in seconds."
+  type        = number
+  default     = 120
+}
+
+variable "startup_probe" {
+  description = "Configuration for the startup probe."
+  type = object({
+    failure_threshold     = optional(number)
+    initial_delay_seconds = optional(number)
+    timeout_seconds       = optional(number)
+    period_seconds        = optional(number)
+    http_get = optional(object({
+      path = optional(string)
+      port = optional(number)
+      http_headers = optional(list(object({
+        name  = string
+        value = string
+      })))
+    }))
+    tcp_socket = optional(object({
+      port = number
+    }))
+    grpc = optional(object({
+      port    = optional(number)
+      service = optional(string)
+    }))
+  })
+  default = null
+}
+
+variable "liveness_probe" {
+  description = "Configuration for the liveness probe."
+  type = object({
+    failure_threshold     = optional(number)
+    initial_delay_seconds = optional(number)
+    timeout_seconds       = optional(number)
+    period_seconds        = optional(number)
+    http_get = optional(object({
+      path = optional(string)
+      port = optional(number)
+      http_headers = optional(list(object({
+        name  = string
+        value = string
+      })))
+    }))
+    tcp_socket = optional(object({
+      port = number
+    }))
+    grpc = optional(object({
+      port    = optional(number)
+      service = optional(string)
+    }))
+  })
+  default = null
+}
+
+variable "ingress" {
+  description = "Ingress traffic sources allowed to call the service."
+  type        = string
+  default     = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
+}
+
+variable "vpc_connector_id" {
+  description = "VPC Connector id. If provided, Direct VPC Egress settings are ignored."
+  type        = string
+  default     = null
+}
+
+variable "vpc_egress_value" {
+  description = "Sets VPC Egress firewall rule (e.g. PRIVATE_RANGES_ONLY, ALL_TRAFFIC)."
+  type        = string
+  default     = "PRIVATE_RANGES_ONLY"
+}
+
+variable "vpc_network_interface" {
+  description = "List of network interfaces for Direct VPC Egress (Cloud Run v2)."
+  type = object({
+    network    = optional(string)
+    subnetwork = optional(string)
+    tags       = optional(list(string))
+  })
+  default = null
 }
 
 variable "encryption_key" {
-  description = "CMEK encryption key self-link expected in the format projects/PROJECT/locations/LOCATION/keyRings/KEY-RING/cryptoKeys/CRYPTO-KEY."
+  description = "CMEK encryption key self-link."
   type        = string
+  default     = null
 }
 
-variable "region" {
-  description = "Location for load balancer and Cloud Run resources."
+variable "lb_name" {
+  description = "Name for load balancer and associated resources."
   type        = string
+  default     = "tf-cr-lb"
+}
+
+variable "create_cloud_armor_policies" {
+  type        = bool
+  description = "When true, create Cloud Armor policies. When false, provide existing name."
+  default     = true
+}
+
+variable "cloud_armor_policies_name" {
+  type        = string
+  description = "Existing Cloud Armor policy name if create_cloud_armor_policies is false."
+  default     = null
 }
 
 variable "default_rules" {
@@ -77,7 +232,7 @@ variable "default_rules" {
 }
 
 variable "owasp_rules" {
-  description = "These are additional Cloud Armor rules for SQLi, XSS, LFI, RCE, RFI, Scannerdetection, Protocolattack and Sessionfixation (requires Cloud Armor default_rule)."
+  description = "Additional Cloud Armor rules (SQLi, XSS, etc)."
   default = {
     rule_sqli = {
       action     = "deny(403)"
@@ -127,73 +282,26 @@ variable "owasp_rules" {
   }))
 }
 
-variable "lb_name" {
-  description = "Name for load balancer and associated resources."
-  type        = string
-  default     = "tf-cr-lb"
+variable "ssl_certificates" {
+  type = object({
+    ssl_certificates_self_links       = list(string)
+    generate_certificates_for_domains = list(string)
+  })
+  validation {
+    condition = (!(length(var.ssl_certificates.ssl_certificates_self_links) == 0 && length(var.ssl_certificates.generate_certificates_for_domains) == 0) ||
+    !(length(var.ssl_certificates.ssl_certificates_self_links) > 0 && length(var.ssl_certificates.generate_certificates_for_domains) > 0))
+    error_message = "You must provide a SSL Certificate self-link or at least one domain to a SSL Certificate be generated."
+  }
+  description = "A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links."
 }
 
-variable "env_vars" {
+variable "volume_mounts" {
   type = list(object({
-    value = string
-    name  = string
+    mount_path = string
+    name       = string
   }))
-  description = "Environment variables."
+  description = "Volume Mounts to be attached to the container."
   default     = []
-}
-
-variable "members" {
-  type        = list(string)
-  description = "Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users."
-  default     = []
-}
-
-variable "generate_revision_name" {
-  description = "Option to enable revision name generation."
-  type        = bool
-  default     = true
-}
-
-variable "traffic_split" {
-  description = "Managing traffic routing to the service."
-  type = list(object({
-    latest_revision = bool
-    percent         = number
-    revision_name   = string
-    tag             = string
-  }))
-  default = [{
-    latest_revision = true
-    percent         = 100
-    revision_name   = "v1-0-0"
-    tag             = null
-  }]
-}
-
-variable "service_labels" {
-  description = "A set of key/value label pairs to assign to the service."
-  type        = map(string)
-  default     = {}
-}
-
-// Metadata
-variable "template_labels" {
-  description = "A set of key/value label pairs to assign to the container metadata."
-  type        = map(string)
-  default     = {}
-}
-
-// template spec
-variable "container_concurrency" {
-  description = "Concurrent request limits to the service."
-  type        = number
-  default     = null
-}
-
-variable "timeout_seconds" {
-  description = "Timeout for each request."
-  type        = number
-  default     = 120
 }
 
 variable "volumes" {
@@ -208,58 +316,66 @@ variable "volumes" {
   default = []
 }
 
-# template spec container
-# resources
-# cpu = (core count * 1000)m
-# memory = (size) in Mi/Gi
-variable "limits" {
-  description = "Resource limits to the container."
-  type        = map(string)
-  default     = null
+variable "generate_revision_name" {
+  description = "Option to enable revision name generation."
+  type        = bool
+  default     = true
 }
-variable "requests" {
-  description = "Resource requests to the container."
+
+variable "min_scale_instances" {
+  description = "Minimum number of container instances."
+  type        = number
+  default     = 0
+}
+
+variable "max_scale_instances" {
+  description = "Maximum number of container instances."
+  type        = number
+  default     = 100
+}
+
+variable "traffic_split" {
+  description = "Managing traffic routing to the service."
+  type = list(object({
+    latest_revision = optional(bool)
+    percent         = number
+    revision_name   = optional(string)
+    tag             = optional(string)
+  }))
+  default = [{
+    latest_revision = true
+    percent         = 100
+  }]
+}
+
+variable "members" {
+  type        = list(string)
+  description = "Users/SAs to be given invoker access."
+  default     = []
+}
+
+variable "iap_members" {
+  type        = list(string)
+  description = "Users/SAs to be given IAP access (if IAP is enabled)."
+  default     = []
+}
+
+variable "service_labels" {
+  description = "Labels to assign to the service."
   type        = map(string)
   default     = {}
 }
 
-variable "ports" {
-  description = "Port which the container listens to (http1 or h2c)."
-  type = object({
-    name = string
-    port = number
-  })
-  default = {
-    name = "http1"
-    port = 8080
-  }
+variable "template_labels" {
+  description = "Labels to assign to the container metadata."
+  type        = map(string)
+  default     = {}
 }
 
-variable "argument" {
-  description = "Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments."
-  type        = list(string)
-  default     = []
-}
-
-variable "container_command" {
-  description = "Leave blank to use the ENTRYPOINT command defined in the container image, include these only if image entrypoint should be overwritten."
-  type        = list(string)
-  default     = []
-}
-
-variable "volume_mounts" {
-  type = list(object({
-    mount_path = string
-    name       = string
-  }))
-  description = "[Beta] Volume Mounts to be attached to the container (when using secret)."
-  default     = []
-}
-
-// Domain Mapping
 variable "verified_domain_name" {
   description = "List of custom Domain Name."
   type        = list(string)
+  default     = []
 }
 
 variable "force_override" {
@@ -275,7 +391,7 @@ variable "certificate_mode" {
 }
 
 variable "domain_map_labels" {
-  description = "A set of key/value label pairs to assign to the Domain mapping."
+  description = "Labels to assign to the Domain mapping."
   type        = map(string)
   default     = {}
 }
@@ -286,45 +402,39 @@ variable "domain_map_annotations" {
   default     = {}
 }
 
-variable "create_cloud_armor_policies" {
+variable "cloud_run_deletion_protection" {
   type        = bool
-  description = "When `true`, the terraform will create the Cloud Armor policies. When `false`, the user must provide their own Cloud Armor name in `cloud_armor_policies_name`."
-  default     = true
+  description = "This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services"
+  default     = false
 }
 
-variable "cloud_armor_policies_name" {
-  type        = string
-  description = "Cloud Armor policy name already created in the project. If `create_cloud_armor_policies` is `false`, this variable must be provided, If `create_cloud_armor_policies` is `true`, this variable will be ignored."
+variable "enable_prometheus_sidecar" {
+  type        = bool
+  description = "Enable Prometheus sidecar in Cloud Run instance."
+  default     = false
+}
+
+variable "gpu_zonal_redundancy_disabled" {
+  type        = bool
+  description = "True if GPU zonal redundancy is disabled on this revision."
+  default     = false
+}
+
+variable "node_selector" {
+  type = object({
+    accelerator = string
+  })
+  description = "Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector)."
   default     = null
 }
 
-variable "max_scale_instances" {
-  description = "Sets the maximum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling)."
-  type        = number
-  default     = 2
-}
-
-variable "min_scale_instances" {
-  description = "Sets the minimum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling)."
-  type        = number
-  default     = 1
-}
-
-variable "vpc_egress_value" {
-  description = "Sets VPC Egress firewall rule. Supported values are all-traffic, all (deprecated), and private-ranges-only. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic."
+variable "launch_stage" {
   type        = string
-  default     = "private-ranges-only"
-}
+  description = "The launch stage as defined by Google Cloud Platform Launch Stages. Cloud Run supports ALPHA, BETA, and GA. If no value is specified, GA is assumed."
+  default     = "GA"
 
-variable "ssl_certificates" {
-  type = object({
-    ssl_certificates_self_links       = list(string)
-    generate_certificates_for_domains = list(string)
-  })
   validation {
-    condition = (!(length(var.ssl_certificates.ssl_certificates_self_links) == 0 && length(var.ssl_certificates.generate_certificates_for_domains) == 0) ||
-    !(length(var.ssl_certificates.ssl_certificates_self_links) > 0 && length(var.ssl_certificates.generate_certificates_for_domains) > 0))
-    error_message = "You must provide a SSL Certificate self-link or at least one domain to a SSL Certificate be generated."
+    condition     = contains(["UNIMPLEMENTED", "PRELAUNCH", "EARLY_ACCESS", "ALPHA", "BETA", "GA", "DEPRECATED"], var.launch_stage)
+    error_message = "Allowed values for launch_stage are \"UNIMPLEMENTED\", \"PRELAUNCH\", or \"EARLY_ACCESS\", or \"DEPRECATED\", or \"ALPHA\", or \"BETA\", or \"GA\"."
   }
-  description = "A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links in the pattern `projects/<PROJECT-ID>/global/sslCertificates/<CERT-NAME>` to be used by Load Balancer."
 }

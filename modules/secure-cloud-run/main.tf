@@ -127,24 +127,34 @@ resource "google_project_iam_member" "serverless_service_agent" {
 module "cloud_run_core" {
   source = "../secure-cloud-run-core"
 
-  service_name                = var.service_name
-  location                    = var.location
-  project_id                  = var.serverless_project_id
-  image                       = var.image
-  cloud_run_sa                = var.cloud_run_sa
-  vpc_connector_id            = module.cloud_run_network.connector_id
-  encryption_key              = module.cloud_run_security.key_self_link
-  env_vars                    = var.env_vars
-  members                     = var.members
-  region                      = var.region
-  verified_domain_name        = var.verified_domain_name
-  create_cloud_armor_policies = var.create_cloud_armor_policies
-  cloud_armor_policies_name   = var.cloud_armor_policies_name
-  vpc_egress_value            = var.vpc_egress_value
-  min_scale_instances         = var.min_scale_instances
-  max_scale_instances         = var.max_scale_instances
-  volumes                     = var.volumes
-  ssl_certificates            = var.ssl_certificates
+  service_name                  = var.service_name
+  location                      = var.location
+  project_id                    = var.serverless_project_id
+  image                         = var.image
+  cloud_run_sa                  = var.cloud_run_sa
+  vpc_connector_id              = module.cloud_run_network.connector_id
+  encryption_key                = module.cloud_run_security.key_self_link
+  env_vars                      = var.env_vars
+  members                       = var.members
+  region                        = var.region
+  verified_domain_name          = var.verified_domain_name
+  create_cloud_armor_policies   = var.create_cloud_armor_policies
+  cloud_armor_policies_name     = var.cloud_armor_policies_name
+  vpc_egress_value              = var.vpc_egress_value
+  min_scale_instances           = var.min_scale_instances
+  max_scale_instances           = var.max_scale_instances
+  volumes                       = var.volumes
+  ssl_certificates              = var.ssl_certificates
+  vpc_network_interface         = var.vpc_network_interface
+  iap_members                   = var.iap_members
+  launch_stage                  = var.launch_stage
+  node_selector                 = var.node_selector
+  gpu_zonal_redundancy_disabled = var.gpu_zonal_redundancy_disabled
+  enable_prometheus_sidecar     = var.enable_prometheus_sidecar
+  cloud_run_deletion_protection = var.cloud_run_deletion_protection
+  argument                      = var.argument
+  ports                         = var.ports
+
 
   depends_on = [
     module.serverless_project_apis,

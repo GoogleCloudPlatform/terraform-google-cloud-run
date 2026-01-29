@@ -15,7 +15,7 @@
  */
 
 output "connector_id" {
-  value       = google_vpc_access_connector.serverless_connector.id
+  value       = var.connector_name != null ? google_vpc_access_connector.serverless_connector[0].id : null
   description = "VPC serverless connector ID."
 }
 
