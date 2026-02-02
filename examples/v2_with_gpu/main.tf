@@ -25,7 +25,7 @@ module "cloud_run_v2_gpu" {
 
   service_name           = "ci-cloud-run-v2-gpu"
   project_id             = var.project_id
-  location               = "us-central1"
+  location               = "europe-west1"
   create_service_account = false
   service_account        = google_service_account.sa.email
 
@@ -45,5 +45,5 @@ module "cloud_run_v2_gpu" {
   node_selector = {
     "accelerator" = "nvidia-l4"
   }
-  gpu_zonal_redundancy_disabled = false
+  gpu_zonal_redundancy_disabled = true
 }
