@@ -7,6 +7,24 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.24.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.23.0...v0.24.0) (2026-02-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v18 ([#291](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/291))
+
+### Features
+
+* **deps:** Update Terraform Google Provider to v7 (major) ([#395](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/395)) ([acd42c6](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/acd42c6faf4a7f2158ab51c416d14a61c81cd7ec))
+
+
+### Bug Fixes
+
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v18 ([#291](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/291)) ([14b4d5f](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/14b4d5f4199c3e91c8203dc24e132c47b1833a79))
+* update cloud run gpu test ([#440](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/440)) ([2c9e2ab](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/2c9e2ab2afe334be3a67ee9fe56b8835f06ea5d5))
+* update test example to not disable gpu zonal redundancy ([46e0ef2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/46e0ef28dbaccf9c2c5ac1995ceeb939560706a7))
+
 ## [0.23.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.22.0...v0.23.0) (2026-01-14)
 
 
