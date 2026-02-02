@@ -45,5 +45,5 @@ module "cloud_run_v2_gpu" {
   node_selector = {
     "accelerator" = "nvidia-l4"
   }
-  gpu_zonal_redundancy_disabled = false
+  gpu_zonal_redundancy_disabled = true
 }
