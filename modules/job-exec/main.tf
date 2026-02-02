@@ -66,11 +66,13 @@ resource "google_project_iam_member" "roles" {
 }
 
 resource "google_cloud_run_v2_job" "job" {
-  name         = var.name
-  project      = var.project_id
-  location     = var.location
-  launch_stage = var.launch_stage
-  labels       = var.labels
+  name           = var.name
+  project        = var.project_id
+  location       = var.location
+  launch_stage   = var.launch_stage
+  labels         = var.labels
+  client         = var.client.name
+  client_version = var.client.version
 
   deletion_protection = var.cloud_run_deletion_protection
 
