@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,6 +40,8 @@ spec:
         location: examples/secure_cloud_run
       - name: secure_cloud_run_standalone
         location: examples/secure_cloud_run_standalone
+      - name: secure_cloud_run_standalone_direc t_egress
+        location: examples/secure_cloud_run_standalone_direc t_egress
       - name: simple_cloud_run
         location: examples/simple_cloud_run
       - name: simple_cloud_run_with_cmek
@@ -568,6 +570,26 @@ spec:
         description: The sandbox environment to host this Revision.
         varType: string
         defaultValue: EXECUTION_ENVIRONMENT_GEN2
+      - name: verified_domain_name
+        description: List of custom Domain Name.
+        varType: list(string)
+        defaultValue: []
+      - name: certificate_mode
+        description: The mode of the certificate (NONE or AUTOMATIC).
+        varType: string
+        defaultValue: NONE
+      - name: force_override
+        description: Option to force override existing mapping.
+        varType: bool
+        defaultValue: false
+      - name: domain_map_labels
+        description: A set of key/value label pairs to assign to the Domain mapping.
+        varType: map(string)
+        defaultValue: {}
+      - name: domain_map_annotations
+        description: Annotations to the domain map.
+        varType: map(string)
+        defaultValue: {}
     outputs:
       - name: apphub_service_uri
         description: Service URI in CAIS style to be used by Apphub.
@@ -579,6 +601,10 @@ spec:
       - name: creator
         description: Email address of the authenticated creator.
         type: string
+      - name: domain_map_id
+        description: Unique Identifier for the created domain map
+      - name: domain_map_status
+        description: Status of Domain mapping
       - name: effective_annotations
         description: All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services.
         type:
@@ -602,6 +628,8 @@ spec:
       - name: project_id
         description: Google Cloud project in which the service was created
         type: string
+      - name: revision
+        description: Deployed revision for the service (Full Resource Name)
       - name: service_account_id
         description: Service account id and email
         type:
@@ -610,14 +638,18 @@ spec:
             id: string
             member: string
       - name: service_id
-        description: Unique Identifier for the created service with format projects/{{project}}/locations/{{location}}/services/{{name}}
+        description: Unique Identifier for the created service
         type: string
       - name: service_name
         description: Name of the created service
         type: string
+      - name: service_status
+        description: Status of the created service
       - name: service_uri
         description: The main URI in which this Service is serving traffic.
         type: string
+      - name: service_url
+        description: The URL on which the deployed service is available
       - name: traffic_statuses
         description: Detailed status information for corresponding traffic targets.
         type:
@@ -632,13 +664,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/resourcemanager.projectIamAdmin
+          - roles/compute.viewer
+          - roles/iap.admin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
-          - roles/resourcemanager.projectIamAdmin
-          - roles/compute.viewer
-          - roles/iap.admin
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
@@ -650,6 +682,6 @@ spec:
       - storage-api.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6, < 7"
+        version: ">= 6, < 8"
       - source: hashicorp/google-beta
-        version: ">= 6, < 7"
+        version: ">= 6, < 8"

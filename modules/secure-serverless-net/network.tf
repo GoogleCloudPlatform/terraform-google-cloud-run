@@ -17,6 +17,7 @@
 locals {
   subnet_name = var.create_subnet ? "${var.subnet_name}${local.suffix}" : var.subnet_name
 }
+
 resource "google_compute_subnetwork" "vpc_subnetwork" {
   count = var.create_subnet ? 1 : 0
 
@@ -35,6 +36,8 @@ resource "google_compute_subnetwork" "vpc_subnetwork" {
 }
 
 resource "google_vpc_access_connector" "serverless_connector" {
+  count = var.connector_name != null ? 1 : 0
+
   name          = "${var.connector_name}${local.suffix}"
   region        = var.location
   project       = var.connector_on_host_project ? var.vpc_project_id : var.serverless_project_id
