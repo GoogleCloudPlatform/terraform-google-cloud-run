@@ -25,7 +25,7 @@ module "cloud_run_v2_gpu" {
 
   service_name           = "ci-cloud-run-v2-gpu"
   project_id             = var.project_id
-  location               = "us-central1"
+  location               = "europe-west1"
   create_service_account = false
   service_account        = google_service_account.sa.email
 

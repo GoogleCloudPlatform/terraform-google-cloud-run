@@ -7,6 +7,39 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.24.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.23.0...v0.24.0) (2026-02-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v18 ([#291](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/291))
+
+### Features
+
+* **deps:** Update Terraform Google Provider to v7 (major) ([#395](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/395)) ([acd42c6](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/acd42c6faf4a7f2158ab51c416d14a61c81cd7ec))
+
+
+### Bug Fixes
+
+* **deps:** Update Terraform terraform-google-modules/project-factory/google to v18 ([#291](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/291)) ([14b4d5f](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/14b4d5f4199c3e91c8203dc24e132c47b1833a79))
+* update cloud run gpu test ([#440](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/440)) ([2c9e2ab](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/2c9e2ab2afe334be3a67ee9fe56b8835f06ea5d5))
+* update test example to not disable gpu zonal redundancy ([46e0ef2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/46e0ef28dbaccf9c2c5ac1995ceeb939560706a7))
+
+## [0.23.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.22.0...v0.23.0) (2026-01-14)
+
+
+### Features
+
+* add connection with workflows and kms ([#429](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/429)) ([7c77d62](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/7c77d622104652378c3f0a151930716031d0bfe6))
+* Add Filestore to metadata.yaml ([#421](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/421)) ([90af9b7](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/90af9b7caed5a5220899938f86f4c012673c5380))
+* update connection metadata for cloud-run/v2 and job-exec ([#410](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/410)) ([b17c813](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/b17c8136a6f0dae930624c1b6135375fc04a982f))
+
+
+### Bug Fixes
+
+* Update filestore source in metadata.yaml ([#423](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/423)) ([53f6b1e](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/53f6b1ea13a66a699568e4626c3a8d1752fb5bf6))
+* update test to ignore default verify becuase of noop plan diff ([#432](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/432)) ([1080468](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/108046867525901beb1a776694efe67a8c4ba80b))
+
 ## [0.22.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.21.6...v0.22.0) (2025-12-09)
 
 
