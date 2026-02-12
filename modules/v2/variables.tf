@@ -357,3 +357,32 @@ variable "execution_environment" {
   }
 }
 
+variable "verified_domain_name" {
+  description = "List of custom Domain Name."
+  type        = list(string)
+  default     = []
+}
+
+variable "certificate_mode" {
+  description = "The mode of the certificate (NONE or AUTOMATIC)."
+  type        = string
+  default     = "NONE"
+}
+
+variable "force_override" {
+  description = "Option to force override existing mapping."
+  type        = bool
+  default     = false
+}
+
+variable "domain_map_labels" {
+  description = "A set of key/value label pairs to assign to the Domain mapping."
+  type        = map(string)
+  default     = {}
+}
+
+variable "domain_map_annotations" {
+  description = "Annotations to the domain map."
+  type        = map(string)
+  default     = {}
+}
