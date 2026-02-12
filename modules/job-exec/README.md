@@ -18,7 +18,7 @@ Basic usage of this module is as follows:
 module "job-exec" {
   source = "GoogleCloudPlatform/cloud-run/google//modules/job-exec"
   # Locked to 0.20, allows minor updates – check for latest version
-  version = "~> 0.24"
+  version = "~> 0.25"
 
   project_id = var.project_id
   name       = "simple-job"
