@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -643,13 +643,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/resourcemanager.projectIamAdmin
           - roles/compute.viewer
           - roles/iap.admin
+          - roles/run.admin
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
@@ -661,6 +661,6 @@ spec:
       - storage-api.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6, < 7"
+        version: ">= 6, < 8"
       - source: hashicorp/google-beta
-        version: ">= 6, < 7"
+        version: ">= 6, < 8"
