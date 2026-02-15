@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/GoogleCloudPlatform/terraform-google-cloud-run.git
       sourceType: git
       dir: /modules/v2
-    version: 0.24.0
+    version: 0.25.0
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -262,6 +262,12 @@ spec:
             spec:
               outputExpr: "{\"name\": \"cloudsql\", \"mount_path\": \"/cloudsql\"}"
               inputPath: volume_mounts
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-document-ai
+              version: ">= 0.0.1"
+            spec:
+              outputExpr: "{\"DOCUMENT_AI_PROCESSOR_ID\": processor_id}"
+              inputPath: env_vars
       - name: node_selector
         description: Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector).
         varType: |-
@@ -371,6 +377,11 @@ spec:
               version: ">= 4.1.1"
             spec:
               outputExpr: "[\"roles/cloudkms.cryptoKeyEncrypterDecrypter\"]"
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-document-ai
+              version: ">= 0.0.1"
+            spec:
+              outputExpr: "[\"roles/documentai.admin\"]"
       - name: ingress
         description: Restricts network access to your Cloud Run service
         varType: string
