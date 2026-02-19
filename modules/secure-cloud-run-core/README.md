@@ -71,7 +71,6 @@ module "cloud_run_core" {
 | ports | Port which the container listens to. | <pre>object({<br>    name = string<br>    port = number<br>  })</pre> | <pre>{<br>  "name": "http1",<br>  "port": 8080<br>}</pre> | no |
 | project\_id | The project where cloud run is going to be deployed. | `string` | n/a | yes |
 | region | Location for load balancer and Cloud Run resources (usually same as location). | `string` | n/a | yes |
-| requests | Resource requests (memory, cpu). Note: Child module must be patched to support this field. | `map(string)` | `{}` | no |
 | service\_labels | Labels to assign to the service. | `map(string)` | `{}` | no |
 | service\_name | The name of the Cloud Run service to create. | `string` | n/a | yes |
 | ssl\_certificates | A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links. | <pre>object({<br>    ssl_certificates_self_links       = list(string)<br>    generate_certificates_for_domains = list(string)<br>  })</pre> | n/a | yes |

@@ -40,8 +40,8 @@ spec:
         location: examples/secure_cloud_run
       - name: secure_cloud_run_standalone
         location: examples/secure_cloud_run_standalone
-      - name: secure_cloud_run_standalone_direc t_egress
-        location: examples/secure_cloud_run_standalone_direc t_egress
+      - name: secure_cloud_run_standalone_direct_egress
+        location: examples/secure_cloud_run_standalone_direct_egress
       - name: simple_cloud_run
         location: examples/simple_cloud_run
       - name: simple_cloud_run_with_cmek
@@ -115,10 +115,6 @@ spec:
       - name: limits
         description: Resource limits (memory, cpu, nvidia.com/gpu).
         varType: map(string)
-      - name: requests
-        description: "Resource requests (memory, cpu). Note: Child module must be patched to support this field."
-        varType: map(string)
-        defaultValue: {}
       - name: container_concurrency
         description: Concurrent request limits to the service.
         varType: number
@@ -394,13 +390,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/artifactregistry.admin
-          - roles/iam.serviceAccountUser
-          - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
+          - roles/artifactregistry.admin
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
