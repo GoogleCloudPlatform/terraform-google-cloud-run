@@ -14,29 +14,9 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  value       = google_cloud_run_v2_service.main.project
-  description = "Google Cloud project in which the service was created"
-}
-
 output "service_uri" {
   value       = google_cloud_run_v2_service.main.uri
   description = "The main URI in which this Service is serving traffic."
-}
-
-output "service_id" {
-  value       = google_cloud_run_v2_service.main.id
-  description = "Unique Identifier for the created service with format projects/{{project}}/locations/{{location}}/services/{{name}}"
-}
-
-output "service_name" {
-  value       = google_cloud_run_v2_service.main.name
-  description = "Name of the created service"
-}
-
-output "location" {
-  value       = google_cloud_run_v2_service.main.location
-  description = "Location in which the Cloud Run service was created"
 }
 
 output "creator" {
@@ -79,11 +59,55 @@ output "service_account_id" {
   value       = local.service_account_output
 }
 
+output "service_name" {
+  value       = google_cloud_run_v2_service.main.name
+  description = "Name of the created service"
+}
+
+output "revision" {
+  value       = google_cloud_run_v2_service.main.latest_ready_revision
+  description = "Deployed revision for the service (Full Resource Name)"
+}
+
+output "service_url" {
+  value       = google_cloud_run_v2_service.main.uri
+  description = "The URL on which the deployed service is available"
+}
+
+output "project_id" {
+  value       = google_cloud_run_v2_service.main.project
+  description = "Google Cloud project in which the service was created"
+}
+
+output "location" {
+  value       = google_cloud_run_v2_service.main.location
+  description = "Location in which the Cloud Run service was created"
+}
+
+output "service_id" {
+  value       = google_cloud_run_v2_service.main.id
+  description = "Unique Identifier for the created service"
+}
+
+output "service_status" {
+  value       = try(google_cloud_run_v2_service.main.terminal_condition[0].type, null)
+  description = "Status of the created service"
+}
+
 output "apphub_service_uri" {
   value = {
     service_uri = "//run.googleapis.com/${google_cloud_run_v2_service.main.id}"
     service_id  = substr("${var.service_name}-${md5("google-cloud-run-v2-${var.location}-${var.project_id}")}", 0, 63)
-    location    = var.location
   }
   description = "Service URI in CAIS style to be used by Apphub."
+}
+
+output "domain_map_id" {
+  value       = values(google_cloud_run_domain_mapping.domain_map)[*].id
+  description = "Unique Identifier for the created domain map"
+}
+
+output "domain_map_status" {
+  value       = values(google_cloud_run_domain_mapping.domain_map)[*].status
+  description = "Status of Domain mapping"
 }

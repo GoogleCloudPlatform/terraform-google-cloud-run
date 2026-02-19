@@ -15,7 +15,7 @@
  */
 
 data "google_compute_default_service_account" "default" {
-  count   = local.create_service_account == false && var.service_account == null ? 1 : 0
+  count   = var.create_service_account ? 0 : 1
   project = var.project_id
 }
 
@@ -24,9 +24,9 @@ locals {
     var.service_account != null
     ? var.service_account
     : (
-      var.create_service_account
+      local.create_service_account
       ? google_service_account.sa[0].email
-      : null
+      : data.google_compute_default_service_account.default[0].email
     )
   )
   create_service_account = var.create_service_account ? var.service_account == null : false
@@ -57,9 +57,8 @@ locals {
     null
   )
   prometheus_sidecar_container = [{
-    container_name  = "collector"
-    container_image = "us-docker.pkg.dev/cloud-ops-agents-artifacts/cloud-run-gmp-sidecar/cloud-run-gmp-sidecar:1.1.1"
-    # Set default values for the sidecar container
+    container_name       = "collector"
+    container_image      = "us-docker.pkg.dev/cloud-ops-agents-artifacts/cloud-run-gmp-sidecar/cloud-run-gmp-sidecar:1.2.0"
     ports                = {}
     working_dir          = null
     depends_on_container = try(local.ingress_container.container_name, null) != null ? [local.ingress_container.container_name] : []
@@ -406,4 +405,30 @@ resource "google_cloud_run_v2_service_iam_member" "authorize_iap_p4sa" {
   name     = google_cloud_run_v2_service.main.name
   role     = "roles/run.invoker"
   member   = google_project_service_identity.iap_p4sa[count.index].member
+}
+
+resource "google_cloud_run_domain_mapping" "domain_map" {
+  for_each = toset(var.verified_domain_name)
+  provider = google-beta
+  location = google_cloud_run_v2_service.main.location
+  name     = each.value
+  project  = google_cloud_run_v2_service.main.project
+
+  metadata {
+    labels      = var.domain_map_labels
+    annotations = var.domain_map_annotations
+    namespace   = var.project_id
+  }
+
+  spec {
+    route_name       = google_cloud_run_v2_service.main.name
+    force_override   = var.force_override
+    certificate_mode = var.certificate_mode
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata[0].annotations["run.googleapis.com/operation-id"],
+    ]
+  }
 }

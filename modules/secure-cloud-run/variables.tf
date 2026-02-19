@@ -188,9 +188,9 @@ variable "min_scale_instances" {
 }
 
 variable "vpc_egress_value" {
-  description = "Sets VPC Egress firewall rule. Supported values are all-traffic, all (deprecated), and private-ranges-only. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic."
+  description = "Sets VPC Egress firewall rule. Supported values are ALL_TRAFFIC, ALL (deprecated), and PRIVATE_RANGES_ONLY. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic."
   type        = string
-  default     = "private-ranges-only"
+  default     = "PRIVATE_RANGES_ONLY"
 }
 
 variable "create_cloud_armor_policies" {
@@ -254,3 +254,75 @@ variable "ssl_certificates" {
   }
   description = "A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links in the pattern `projects/<PROJECT-ID>/global/sslCertificates/<CERT-NAME>` to be used by Load Balancer."
 }
+
+variable "vpc_network_interface" {
+  description = "List of network interfaces for Direct VPC Egress (Cloud Run v2)."
+  type = object({
+    network    = optional(string)
+    subnetwork = optional(string)
+    tags       = optional(list(string))
+  })
+  default = null
+}
+
+variable "cloud_run_deletion_protection" {
+  type        = bool
+  description = "This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services"
+  default     = false
+}
+
+variable "enable_prometheus_sidecar" {
+  type        = bool
+  description = "Enable Prometheus sidecar in Cloud Run instance."
+  default     = false
+}
+
+variable "gpu_zonal_redundancy_disabled" {
+  type        = bool
+  description = "True if GPU zonal redundancy is disabled on this revision."
+  default     = false
+}
+
+variable "node_selector" {
+  type = object({
+    accelerator = string
+  })
+  description = "Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector)."
+  default     = null
+}
+
+variable "launch_stage" {
+  type        = string
+  description = "The launch stage as defined by Google Cloud Platform Launch Stages. Cloud Run supports ALPHA, BETA, and GA. If no value is specified, GA is assumed."
+  default     = "GA"
+
+  validation {
+    condition     = contains(["UNIMPLEMENTED", "PRELAUNCH", "EARLY_ACCESS", "ALPHA", "BETA", "GA", "DEPRECATED"], var.launch_stage)
+    error_message = "Allowed values for launch_stage are \"UNIMPLEMENTED\", \"PRELAUNCH\", or \"EARLY_ACCESS\", or \"DEPRECATED\", or \"ALPHA\", or \"BETA\", or \"GA\"."
+  }
+}
+
+variable "iap_members" {
+  type        = list(string)
+  description = "Valid only when launch stage is set to 'BETA'. IAP is enabled automatically when users or service accounts (SAs) are provided. Use allUsers for public access, allAuthenticatedUsers for any Google-authenticated user, or specify individual users/SAs. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member\\/members-2)"
+  default     = []
+}
+
+variable "argument" {
+  description = "Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments."
+  type        = list(string)
+  default     = []
+}
+
+variable "ports" {
+  description = "Port which the container listens to."
+  type = object({
+    name = string
+    port = number
+  })
+  default = {
+    name = "http1"
+    port = 8080
+  }
+}
+
