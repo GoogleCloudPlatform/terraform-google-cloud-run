@@ -89,12 +89,6 @@ variable "limits" {
   default     = null
 }
 
-variable "requests" {
-  description = "Resource requests (memory, cpu). Note: Child module must be patched to support this field."
-  type        = map(string)
-  default     = {}
-}
-
 variable "container_concurrency" {
   description = "Concurrent request limits to the service."
   type        = number
