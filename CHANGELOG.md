@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.25.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.24.0...v0.25.0) (2026-02-12)
+
+
+### Features
+
+* adding cloud-run connection with document-ai ([#442](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/442)) ([7cd424a](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/7cd424a6ef1eb08281ebe15c1769bfd01eb4a915))
+
 ## [0.24.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.23.0...v0.24.0) (2026-02-02)
 
 
