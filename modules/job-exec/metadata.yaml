@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -220,11 +220,16 @@ spec:
             spec:
               outputExpr: "{\"name\": \"cloudsql\", \"mount_path\": \"/cloudsql\"}"
       - name: vpc_access
-        description: VPC Access configuration to use for this Task.
+        description: Configure this to enable your service to send traffic to a Virtual Private Cloud. Set egress to ALL_TRAFFIC or PRIVATE_RANGES_ONLY. Choose a connector or network_interfaces (for direct VPC egress). [More info](https://cloud.google.com/run/docs/configuring/connecting-vpc)
         varType: |-
           list(object({
-              connector = string
-              egress    = string
+              connector = optional(string)
+              egress    = optional(string)
+              network_interfaces = optional(object({
+                network    = optional(string)
+                subnetwork = optional(string)
+                tags       = optional(list(string))
+              }))
             }))
         defaultValue: []
       - name: limits
@@ -257,13 +262,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/run.admin
-          - roles/iam.serviceAccountAdmin
-          - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
+          - roles/run.admin
+          - roles/iam.serviceAccountAdmin
+          - roles/artifactregistry.admin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
@@ -280,4 +285,4 @@ spec:
       - source: devops-rob/terracurl
         version: ~> 1.0
       - source: hashicorp/google
-        version: ">= 6, < 7"
+        version: ">= 6, < 8"

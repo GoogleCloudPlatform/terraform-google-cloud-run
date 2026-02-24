@@ -150,10 +150,15 @@ variable "volume_mounts" {
 
 variable "vpc_access" {
   type = list(object({
-    connector = string
-    egress    = string
+    connector = optional(string)
+    egress    = optional(string)
+    network_interfaces = optional(object({
+      network    = optional(string)
+      subnetwork = optional(string)
+      tags       = optional(list(string))
+    }))
   }))
-  description = "VPC Access configuration to use for this Task."
+  description = "Configure this to enable your service to send traffic to a Virtual Private Cloud. Set egress to ALL_TRAFFIC or PRIVATE_RANGES_ONLY. Choose a connector or network_interfaces (for direct VPC egress). [More info](https://cloud.google.com/run/docs/configuring/connecting-vpc)"
   default     = []
 }
 
