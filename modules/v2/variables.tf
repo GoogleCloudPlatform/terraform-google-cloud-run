@@ -357,3 +357,17 @@ variable "execution_environment" {
   }
 }
 
+variable "build_config" {
+  description = "Optional Cloud Build Configuration for building a Cloud Run function."
+  type = object({
+    source_location          = optional(string)
+    function_target          = optional(string)
+    image_uri                = optional(string)
+    base_image               = optional(string)
+    enable_automatic_updates = optional(bool)
+    worker_pool              = optional(string)
+    environment_variables    = optional(map(string))
+    service_account          = optional(string)
+  })
+  default = null
+}
