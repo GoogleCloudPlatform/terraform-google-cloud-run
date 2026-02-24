@@ -49,12 +49,13 @@ module "serverless_project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 18.0"
 
-  name              = "ci-cloud-run"
-  random_project_id = "true"
-  org_id            = var.org_id
-  folder_id         = local.folder_id
-  billing_account   = var.billing_account
-  deletion_policy   = "DELETE"
+  name                     = "ci-cloud-run"
+  random_project_id        = "true"
+  random_project_id_length = 4
+  org_id                   = var.org_id
+  folder_id                = local.folder_id
+  billing_account          = var.billing_account
+  deletion_policy          = "DELETE"
 
   svpc_host_project_id               = data.terraform_remote_state.sfb-network-prod.outputs.restricted_host_project_id
   vpc_service_control_attach_enabled = true
@@ -77,12 +78,13 @@ module "kms_project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 18.0"
 
-  name              = "ci-cloud-run-kms"
-  random_project_id = "true"
-  org_id            = var.org_id
-  folder_id         = local.folder_id
-  billing_account   = var.billing_account
-  deletion_policy   = "DELETE"
+  name                     = "ci-cloud-run-kms"
+  random_project_id        = "true"
+  random_project_id_length = 4
+  org_id                   = var.org_id
+  folder_id                = local.folder_id
+  billing_account          = var.billing_account
+  deletion_policy          = "DELETE"
 
   svpc_host_project_id               = data.terraform_remote_state.sfb-network-prod.outputs.restricted_host_project_id
   vpc_service_control_attach_enabled = true
