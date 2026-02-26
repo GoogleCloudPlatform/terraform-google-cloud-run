@@ -78,18 +78,23 @@ module "secure_cloud_run" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| argument | Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments. | `list(string)` | `[]` | no |
 | artifact\_registry\_repository\_location | Artifact Registry Repository location to grant serverless identity viewer role. | `string` | `null` | no |
 | artifact\_registry\_repository\_name | Artifact Registry Repository name to grant serverless identity viewer role | `string` | `null` | no |
 | artifact\_registry\_repository\_project\_id | Artifact Registry Repository Project ID to grant serverless identity viewer role. | `string` | `null` | no |
 | cloud\_armor\_policies\_name | Cloud Armor policy name already created in the project. If `create_cloud_armor_policies` is `false`, this variable must be provided, If `create_cloud_armor_policies` is `true`, this variable will be ignored. | `string` | `null` | no |
+| cloud\_run\_deletion\_protection | This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services | `bool` | `false` | no |
 | cloud\_run\_sa | Service account to be used on Cloud Run. | `string` | n/a | yes |
 | connector\_name | The name for the connector to be created. | `string` | `"serverless-vpc-connector"` | no |
 | create\_cloud\_armor\_policies | When `true`, the terraform will create the Cloud Armor policies. When `false`, the user must provide their own Cloud Armor name in `cloud_armor_policies_name`. | `bool` | `true` | no |
 | create\_subnet | The subnet will be created with the subnet\_name variable if true. When false, it will use the subnet\_name for the subnet. | `bool` | `true` | no |
+| enable\_prometheus\_sidecar | Enable Prometheus sidecar in Cloud Run instance. | `bool` | `false` | no |
 | env\_vars | Environment variables (cleartext) | <pre>list(object({<br>    value = string<br>    name  = string<br>  }))</pre> | `[]` | no |
 | folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
+| gpu\_zonal\_redundancy\_disabled | True if GPU zonal redundancy is disabled on this revision. | `bool` | `false` | no |
 | grant\_artifact\_register\_reader | When true it will grant permission to read an image from your artifact registry. When true, you must provide `artifact_registry_repository_project_id`, `artifact_registry_repository_location` and `artifact_registry_repository_name`. | `bool` | `false` | no |
 | groups | Groups which will have roles assigned.<br>  The Serverless Administrators email group which the following roles will be added: Cloud Run Admin, Compute Network Viewer and Compute Network User.<br>  The Serverless Security Administrators email group which the following roles will be added: Cloud Run Viewer, Cloud KMS Viewer and Artifact Registry Reader.<br>  The Cloud Run Developer email group which the following roles will be added: Cloud Run Developer, Artifact Registry Writer and Cloud KMS CryptoKey Encrypter.<br>  The Cloud Run User email group which the following roles will be added: Cloud Run Invoker. | <pre>object({<br>    group_serverless_administrator          = optional(string, null)<br>    group_serverless_security_administrator = optional(string, null)<br>    group_cloud_run_developer               = optional(string, null)<br>    group_cloud_run_user                    = optional(string, null)<br>  })</pre> | `{}` | no |
+| iap\_members | Valid only when launch stage is set to 'BETA'. IAP is enabled automatically when users or service accounts (SAs) are provided. Use allUsers for public access, allAuthenticatedUsers for any Google-authenticated user, or specify individual users/SAs. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member/members-2) | `list(string)` | `[]` | no |
 | image | Image url to be deployed on Cloud Run. | `string` | n/a | yes |
 | ip\_cidr\_range | The range of internal addresses that are owned by the subnetwork and which is going to be used by VPC Connector. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported. | `string` | n/a | yes |
 | key\_name | The name of KMS Key to be created and used in Cloud Run. | `string` | `"cloud-run-kms-key"` | no |
@@ -97,12 +102,15 @@ module "secure_cloud_run" {
 | key\_rotation\_period | Period of key rotation in seconds. | `string` | `"2592000s"` | no |
 | keyring\_name | Keyring name. | `string` | `"cloud-run-kms-keyring"` | no |
 | kms\_project\_id | The project where KMS will be created. | `string` | n/a | yes |
+| launch\_stage | The launch stage as defined by Google Cloud Platform Launch Stages. Cloud Run supports ALPHA, BETA, and GA. If no value is specified, GA is assumed. | `string` | `"GA"` | no |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
 | max\_scale\_instances | Sets the maximum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling). | `number` | `2` | no |
 | members | Users/SAs to be given invoker access to the service with the prefix `serviceAccount:' for SAs and `user:` for users.` | `list(string)` | `[]` | no |
 | min\_scale\_instances | Sets the minimum number of container instances needed to handle all incoming requests or events from each revison from Cloud Run. For more information, access this [documentation](https://cloud.google.com/run/docs/about-instance-autoscaling). | `number` | `1` | no |
+| node\_selector | Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector). | <pre>object({<br>    accelerator = string<br>  })</pre> | `null` | no |
 | organization\_id | The organization ID to apply the policy to. | `string` | `""` | no |
 | policy\_for | Policy Root: set one of the following values to determine where the policy is applied. Possible values: ["project", "folder", "organization"]. | `string` | `"project"` | no |
+| ports | Port which the container listens to. | <pre>object({<br>    name = string<br>    port = number<br>  })</pre> | <pre>{<br>  "name": "http1",<br>  "port": 8080<br>}</pre> | no |
 | prevent\_destroy | Set the `prevent_destroy` lifecycle attribute on the Cloud KMS key. | `bool` | `true` | no |
 | region | Location for load balancer and Cloud Run resources. | `string` | n/a | yes |
 | resource\_names\_suffix | A suffix to concat in the end of the network resources names being created. | `string` | `null` | no |
@@ -113,7 +121,8 @@ module "secure_cloud_run" {
 | subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | `null` | no |
 | verified\_domain\_name | List of Custom Domain Name | `list(string)` | `[]` | no |
 | volumes | [Beta] Volumes needed for environment variables (when using secret). | <pre>list(object({<br>    name = string<br>    secret = set(object({<br>      secret_name = string<br>      items       = map(string)<br>    }))<br>  }))</pre> | `[]` | no |
-| vpc\_egress\_value | Sets VPC Egress firewall rule. Supported values are all-traffic, all (deprecated), and private-ranges-only. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic. | `string` | `"private-ranges-only"` | no |
+| vpc\_egress\_value | Sets VPC Egress firewall rule. Supported values are ALL\_TRAFFIC, ALL (deprecated), and PRIVATE\_RANGES\_ONLY. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic. | `string` | `"PRIVATE_RANGES_ONLY"` | no |
+| vpc\_network\_interface | List of network interfaces for Direct VPC Egress (Cloud Run v2). | <pre>object({<br>    network    = optional(string)<br>    subnetwork = optional(string)<br>    tags       = optional(list(string))<br>  })</pre> | `null` | no |
 | vpc\_project\_id | The host project for the shared vpc. | `string` | n/a | yes |
 
 ## Outputs

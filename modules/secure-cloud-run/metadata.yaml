@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,6 +40,8 @@ spec:
         location: examples/secure_cloud_run
       - name: secure_cloud_run_standalone
         location: examples/secure_cloud_run_standalone
+      - name: secure_cloud_run_standalone_direct_egress
+        location: examples/secure_cloud_run_standalone_direct_egress
       - name: simple_cloud_run
         location: examples/simple_cloud_run
       - name: simple_cloud_run_with_cmek
@@ -176,9 +178,9 @@ spec:
         varType: number
         defaultValue: 1
       - name: vpc_egress_value
-        description: Sets VPC Egress firewall rule. Supported values are all-traffic, all (deprecated), and private-ranges-only. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic.
+        description: Sets VPC Egress firewall rule. Supported values are ALL_TRAFFIC, ALL (deprecated), and PRIVATE_RANGES_ONLY. all-traffic and all provide the same functionality. all is deprecated but will continue to be supported. Prefer all-traffic.
         varType: string
-        defaultValue: private-ranges-only
+        defaultValue: PRIVATE_RANGES_ONLY
       - name: create_cloud_armor_policies
         description: When `true`, the terraform will create the Cloud Armor policies. When `false`, the user must provide their own Cloud Armor name in `cloud_armor_policies_name`.
         varType: bool
@@ -219,6 +221,54 @@ spec:
               generate_certificates_for_domains = list(string)
             })
         required: true
+      - name: vpc_network_interface
+        description: List of network interfaces for Direct VPC Egress (Cloud Run v2).
+        varType: |-
+          object({
+              network    = optional(string)
+              subnetwork = optional(string)
+              tags       = optional(list(string))
+            })
+      - name: cloud_run_deletion_protection
+        description: This field prevents Terraform from destroying or recreating the Cloud Run v2 Jobs and Services
+        varType: bool
+        defaultValue: false
+      - name: enable_prometheus_sidecar
+        description: Enable Prometheus sidecar in Cloud Run instance.
+        varType: bool
+        defaultValue: false
+      - name: gpu_zonal_redundancy_disabled
+        description: True if GPU zonal redundancy is disabled on this revision.
+        varType: bool
+        defaultValue: false
+      - name: node_selector
+        description: Node Selector describes the hardware requirements of the GPU resource. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#nested_template_node_selector).
+        varType: |-
+          object({
+              accelerator = string
+            })
+      - name: launch_stage
+        description: The launch stage as defined by Google Cloud Platform Launch Stages. Cloud Run supports ALPHA, BETA, and GA. If no value is specified, GA is assumed.
+        varType: string
+        defaultValue: GA
+      - name: iap_members
+        description: Valid only when launch stage is set to 'BETA'. IAP is enabled automatically when users or service accounts (SAs) are provided. Use allUsers for public access, allAuthenticatedUsers for any Google-authenticated user, or specify individual users/SAs. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member\/members-2)
+        varType: list(string)
+        defaultValue: []
+      - name: argument
+        description: Arguments passed to the ENTRYPOINT command, include these only if image entrypoint needs arguments.
+        varType: list(string)
+        defaultValue: []
+      - name: ports
+        description: Port which the container listens to.
+        varType: |-
+          object({
+              name = string
+              port = number
+            })
+        defaultValue:
+          name: http1
+          port: 8080
     outputs:
       - name: cloud_services_sa
         description: Service Account for Cloud Run Service.
@@ -250,13 +300,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com
@@ -271,6 +321,6 @@ spec:
       - storage-api.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6, < 7"
+        version: ">= 6, < 8"
       - source: hashicorp/google-beta
-        version: ">= 6, < 7"
+        version: ">= 6, < 8"

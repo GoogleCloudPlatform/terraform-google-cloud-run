@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,73 +15,155 @@
  */
 
 locals {
-  annotations_for_template = {
-    "autoscaling.knative.dev/maxScale"        = var.max_scale_instances,
-    "autoscaling.knative.dev/minScale"        = var.min_scale_instances,
-    "run.googleapis.com/vpc-access-connector" = var.vpc_connector_id,
-    "run.googleapis.com/vpc-access-egress"    = var.vpc_egress_value
+  env_vars_map = { for item in var.env_vars : item.name => item.value }
+
+  main_container = {
+    container_name    = var.service_name
+    container_image   = var.image
+    container_command = var.container_command
+    container_args    = var.argument
+    working_dir       = null
+
+    ports = {
+      name           = var.ports.name
+      container_port = var.ports.port
+    }
+
+    resources = {
+      limits            = var.limits
+      cpu_idle          = true
+      startup_cpu_boost = false
+    }
+
+    env_vars        = local.env_vars_map
+    env_secret_vars = {}
+
+    startup_probe  = var.startup_probe
+    liveness_probe = var.liveness_probe
+
+    depends_on_container = []
+    volume_mounts        = var.volume_mounts
   }
 
-  conditional_annotations = {
-    secret = length(local.secrets_alias) == 0 ? {} : { "run.googleapis.com/secrets" = join(", ", toset(local.secrets_alias)) }
-  }
+  traffic_config = [
+    for t in var.traffic_split : {
+      percent  = t.percent
+      type     = null
+      revision = lookup(t, "latest_revision", true) ? null : lookup(t, "revision_name", null)
+      tag      = lookup(t, "tag", null)
+    }
+  ]
 
-  secrets = distinct(flatten([
-    for secret in var.volumes : [
-      for secret_name in secret.secret : [
-        {
-          "name" : secret.name,
-          "secret_name" : secret_name.secret_name,
-          "path" : secret_name.items.path
+  volumes_config = [
+    for v in var.volumes : {
+      name = v.name
+
+      secret = length(v.secret) > 0 ? {
+        secret       = v.secret[0].secret
+        default_mode = try(tostring(v.secret[0].default_mode), null)
+        items = length(try(v.secret[0].items, [])) > 0 ? {
+          path    = v.secret[0].items[0].path
+          version = v.secret[0].items[0].version
+          mode    = try(tostring(v.secret[0].items[0].mode), null)
+        } : null
+      } : null
+
+      cloud_sql_instance = length(v.cloud_sql_instance) > 0 ? {
+        instances = v.cloud_sql_instance[0].instances
+      } : null
+
+      gcs = length(v.gcs) > 0 ? {
+        bucket    = v.gcs[0].bucket
+        read_only = try(tostring(v.gcs[0].read_only), null)
+      } : null
+
+      nfs = length(v.nfs) > 0 ? {
+        server    = v.nfs[0].server
+        path      = v.nfs[0].path
+        read_only = try(tostring(v.nfs[0].read_only), null)
+      } : null
+
+      empty_dir = length(v.empty_dir) > 0 ? {
+        medium     = v.empty_dir[0].medium
+        size_limit = v.empty_dir[0].size_limit
+      } : null
+    }
+  ]
+
+  secrets_list = distinct(flatten([
+    for v in var.volumes : [
+      for s in v.secret : [
+        for item in(s.items != null ? s.items : []) : {
+          name        = v.name
+          secret_name = s.secret
+          path        = item.path
         }
       ]
     ]
   ]))
 
-  secrets_alias = [
-    for secret in local.secrets :
-    "${secret.name}:${secret.path}${secret.secret_name}"
-  ]
+  vpc_config = var.vpc_connector_id != null ? {
+    connector          = var.vpc_connector_id
+    egress             = var.vpc_egress_value
+    network_interfaces = null
+    } : (var.vpc_network_interface != null ? {
+      connector          = null
+      egress             = var.vpc_egress_value
+      network_interfaces = var.vpc_network_interface
+  } : null)
 }
 
 module "cloud_run" {
-  source = "../.."
+  source = "../v2"
 
-  service_name           = var.service_name
-  project_id             = var.project_id
-  location               = var.location
-  image                  = var.image
-  service_account_email  = var.cloud_run_sa
-  encryption_key         = var.encryption_key
-  members                = var.members
-  env_vars               = var.env_vars
-  generate_revision_name = var.generate_revision_name
-  traffic_split          = var.traffic_split
-  service_labels         = var.service_labels
-  template_labels        = var.template_labels
-  container_concurrency  = var.container_concurrency
-  timeout_seconds        = var.timeout_seconds
-  volumes                = var.volumes
-  limits                 = var.limits
-  requests               = var.requests
-  ports                  = var.ports
-  argument               = var.argument
-  container_command      = var.container_command
-  volume_mounts          = var.volume_mounts
+  project_id   = var.project_id
+  service_name = var.service_name
+  location     = var.location
+  description  = "Managed by Terraform"
+
+  service_account        = var.cloud_run_sa
+  create_service_account = false
+
+  containers = [local.main_container]
+
+  revision = var.generate_revision_name ? null : "${var.service_name}-rev"
+
+  template_scaling = {
+    min_instance_count = var.min_scale_instances
+    max_instance_count = var.max_scale_instances
+  }
+
+  vpc_access = local.vpc_config
+
+  ingress               = var.ingress
+  execution_environment = var.execution_environment
+
+  volumes        = local.volumes_config
+  encryption_key = var.encryption_key
+
+  service_labels       = var.service_labels
+  template_labels      = var.template_labels
+  service_annotations  = {}
+  template_annotations = {}
+
+  timeout                          = "${var.timeout_seconds}s"
+  max_instance_request_concurrency = var.container_concurrency != null ? tostring(var.container_concurrency) : null
+
+  traffic = local.traffic_config
+
+  members                       = var.members
+  iap_members                   = var.iap_members
+  launch_stage                  = var.launch_stage
+  node_selector                 = var.node_selector
+  gpu_zonal_redundancy_disabled = var.gpu_zonal_redundancy_disabled
+  enable_prometheus_sidecar     = var.enable_prometheus_sidecar
+  cloud_run_deletion_protection = var.cloud_run_deletion_protection
+
   force_override         = var.force_override
   certificate_mode       = var.certificate_mode
   domain_map_labels      = var.domain_map_labels
   domain_map_annotations = var.domain_map_annotations
   verified_domain_name   = var.verified_domain_name
-
-  service_annotations = {
-    "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"
-  }
-
-  template_annotations = merge(
-    local.annotations_for_template,
-    local.conditional_annotations["secret"]
-  )
 
   depends_on = [
     time_sleep.wait_30_seconds
@@ -103,8 +185,34 @@ resource "time_sleep" "wait_30_seconds" {
 }
 
 resource "google_secret_manager_secret_iam_member" "member" {
-  for_each  = { for secret in local.secrets : secret.name => secret }
-  secret_id = "${each.value.path}${each.value.secret_name}"
+  for_each  = { for s in local.secrets_list : "${s.name}-${s.path}" => s }
+  secret_id = each.value.secret_name
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${var.cloud_run_sa}"
+}
+
+resource "google_cloud_run_domain_mapping" "domain_map" {
+  for_each = toset(var.verified_domain_name)
+  provider = google-beta
+  location = var.location
+  name     = each.value
+  project  = var.project_id
+
+  metadata {
+    labels      = var.domain_map_labels
+    annotations = var.domain_map_annotations
+    namespace   = var.project_id
+  }
+
+  spec {
+    route_name       = module.cloud_run.service_name
+    force_override   = var.force_override
+    certificate_mode = var.certificate_mode
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata[0].annotations["run.googleapis.com/operation-id"],
+    ]
+  }
 }
