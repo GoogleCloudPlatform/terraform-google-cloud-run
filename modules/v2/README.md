@@ -51,15 +51,19 @@ Functional examples are included in the
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | binary\_authorization | Settings for the Binary Authorization feature. | <pre>object({<br>    breakglass_justification = optional(bool) # If present, indicates to use Breakglass using this justification. If useDefault is False, then it must be empty. For more information on breakglass, [see](https://cloud.google.com/binary-authorization/docs/using-breakglass)<br>    use_default              = optional(bool) #If True, indicates to use the default project's binary authorization policy. If False, binary authorization will be disabled.<br>  })</pre> | `null` | no |
+| certificate\_mode | The mode of the certificate (NONE or AUTOMATIC). | `string` | `"NONE"` | no |
 | client | Arbitrary identifier for the API client and version identifier | <pre>object({<br>    name    = optional(string, null)<br>    version = optional(string, null)<br>  })</pre> | `{}` | no |
 | cloud\_run\_deletion\_protection | This field prevents Terraform from destroying or recreating the Cloud Run jobs and services | `bool` | `true` | no |
 | containers | Container images for the service | <pre>list(object({<br>    container_name       = optional(string, null)<br>    container_image      = string<br>    working_dir          = optional(string, null)<br>    depends_on_container = optional(list(string), null)<br>    container_args       = optional(list(string), null)<br>    container_command    = optional(list(string), null)<br>    env_vars             = optional(map(string), {})<br>    env_secret_vars = optional(map(object({<br>      secret  = string<br>      version = string<br>    })), {})<br>    volume_mounts = optional(list(object({<br>      name       = string<br>      mount_path = string<br>    })), [])<br>    ports = optional(object({<br>      name           = optional(string, "http1")<br>      container_port = optional(number, 8080)<br>    }), {})<br>    resources = optional(object({<br>      limits = optional(object({<br>        cpu        = optional(string)<br>        memory     = optional(string)<br>        nvidia_gpu = optional(string)<br>      }))<br>      cpu_idle          = optional(bool, true)<br>      startup_cpu_boost = optional(bool, false)<br>    }), {})<br>    startup_probe = optional(object({<br>      failure_threshold     = optional(number, null)<br>      initial_delay_seconds = optional(number, null)<br>      timeout_seconds       = optional(number, null)<br>      period_seconds        = optional(number, null)<br>      http_get = optional(object({<br>        path = optional(string)<br>        port = optional(string)<br>        http_headers = optional(list(object({<br>          name  = string<br>          value = string<br>        })), [])<br>      }), null)<br>      tcp_socket = optional(object({<br>        port = optional(number)<br>      }), null)<br>      grpc = optional(object({<br>        port    = optional(number)<br>        service = optional(string)<br>      }), null)<br>    }), null)<br>    liveness_probe = optional(object({<br>      failure_threshold     = optional(number, null)<br>      initial_delay_seconds = optional(number, null)<br>      timeout_seconds       = optional(number, null)<br>      period_seconds        = optional(number, null)<br>      http_get = optional(object({<br>        path = optional(string)<br>        port = optional(string)<br>        http_headers = optional(list(object({<br>          name  = string<br>          value = string<br>        })), [])<br>      }), null)<br>      tcp_socket = optional(object({<br>        port = optional(number)<br>      }), null)<br>      grpc = optional(object({<br>        port    = optional(number)<br>        service = optional(string)<br>      }), null)<br>    }), null)<br>  }))</pre> | n/a | yes |
 | create\_service\_account | Create a new service account for cloud run service | `bool` | `true` | no |
 | custom\_audiences | One or more custom audiences that you want this service to support. Specify each custom audience as the full URL in a string. [Refer](https://cloud.google.com/run/docs/configuring/custom-audiences) | `list(string)` | `null` | no |
 | description | Cloud Run service description. This field currently has a 512-character limit. | `string` | `null` | no |
+| domain\_map\_annotations | Annotations to the domain map. | `map(string)` | `{}` | no |
+| domain\_map\_labels | A set of key/value label pairs to assign to the Domain mapping. | `map(string)` | `{}` | no |
 | enable\_prometheus\_sidecar | Enable Prometheus sidecar in Cloud Run instance. | `bool` | `false` | no |
 | encryption\_key | A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. This is optional. | `string` | `null` | no |
 | execution\_environment | The sandbox environment to host this Revision. | `string` | `"EXECUTION_ENVIRONMENT_GEN2"` | no |
+| force\_override | Option to force override existing mapping. | `bool` | `false` | no |
 | gpu\_zonal\_redundancy\_disabled | True if GPU zonal redundancy is disabled on this revision. | `bool` | `false` | no |
 | iap\_members | Valid only when launch stage is set to 'BETA'. IAP is enabled automatically when users or service accounts (SAs) are provided. Use allUsers for public access, allAuthenticatedUsers for any Google-authenticated user, or specify individual users/SAs. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member/members-2) | `list(string)` | `[]` | no |
 | ingress | Restricts network access to your Cloud Run service | `string` | `"INGRESS_TRAFFIC_ALL"` | no |
@@ -82,6 +86,7 @@ Functional examples are included in the
 | template\_scaling | Maximum and minimum number of instances for this Revision | <pre>object({<br>    min_instance_count = optional(number)<br>    max_instance_count = optional(number)<br>  })</pre> | `null` | no |
 | timeout | Max allowed time for an instance to respond to a request. A duration in seconds with up to nine fractional digits, ending with 's' | `string` | `null` | no |
 | traffic | Specifies how to distribute traffic over a collection of Revisions belonging to the Service. If traffic is empty or not provided, defaults to 100% traffic to the latest Ready Revision. | <pre>list(object({<br>    type     = optional(string, "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST")<br>    percent  = optional(number, 100)<br>    revision = optional(string, null)<br>    tag      = optional(string, null)<br>  }))</pre> | `[]` | no |
+| verified\_domain\_name | List of custom Domain Name. | `list(string)` | `[]` | no |
 | volumes | Volumes needed for environment variables (when using secret) | <pre>list(object({<br>    name = string<br>    secret = optional(object({<br>      secret       = string<br>      default_mode = optional(string)<br>      items = optional(object({<br>        path    = string<br>        version = optional(string)<br>        mode    = optional(string)<br>      }))<br>    }))<br>    cloud_sql_instance = optional(object({<br>      instances = optional(list(string))<br>    }))<br>    empty_dir = optional(object({<br>      medium     = optional(string)<br>      size_limit = optional(string)<br>    }))<br>    gcs = optional(object({<br>      bucket    = string<br>      read_only = optional(string)<br>    }))<br>    nfs = optional(object({<br>      server    = string<br>      path      = string<br>      read_only = optional(string)<br>    }))<br>  }))</pre> | `[]` | no |
 | vpc\_access | Configure this to enable your service to send traffic to a Virtual Private Cloud. Set egress to ALL\_TRAFFIC or PRIVATE\_RANGES\_ONLY. Choose a connector or network\_interfaces (for direct VPC egress). [More info](https://cloud.google.com/run/docs/configuring/connecting-vpc) | <pre>object({<br>    connector = optional(string)<br>    egress    = optional(string)<br>    network_interfaces = optional(object({<br>      network    = optional(string)<br>      subnetwork = optional(string)<br>      tags       = optional(list(string))<br>    }))<br>  })</pre> | `null` | no |
 
@@ -91,6 +96,8 @@ Functional examples are included in the
 |------|-------------|
 | apphub\_service\_uri | Service URI in CAIS style to be used by Apphub. |
 | creator | Email address of the authenticated creator. |
+| domain\_map\_id | Unique Identifier for the created domain map |
+| domain\_map\_status | Status of Domain mapping |
 | effective\_annotations | All of annotations (key/value pairs) present on the resource in GCP, including the annotations configured through Terraform, other clients and services. |
 | last\_modifier | Email address of the last authenticated modifier. |
 | latest\_created\_revision | Name of the last created revision. See comments in reconciling for additional information on reconciliation process in Cloud Run. |
@@ -98,10 +105,13 @@ Functional examples are included in the
 | location | Location in which the Cloud Run service was created |
 | observed\_generation | The generation of this Service currently serving traffic. |
 | project\_id | Google Cloud project in which the service was created |
+| revision | Deployed revision for the service (Full Resource Name) |
 | service\_account\_id | Service account id and email |
-| service\_id | Unique Identifier for the created service with format projects/{{project}}/locations/{{location}}/services/{{name}} |
+| service\_id | Unique Identifier for the created service |
 | service\_name | Name of the created service |
+| service\_status | Status of the created service |
 | service\_uri | The main URI in which this Service is serving traffic. |
+| service\_url | The URL on which the deployed service is available |
 | traffic\_statuses | Detailed status information for corresponding traffic targets. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
