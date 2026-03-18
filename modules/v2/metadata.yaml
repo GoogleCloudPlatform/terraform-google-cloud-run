@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -643,13 +643,14 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/resourcemanager.projectIamAdmin
+          - roles/compute.viewer
+          - roles/iap.admin
+          - roles/artifactregistry.reader
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
-          - roles/resourcemanager.projectIamAdmin
-          - roles/compute.viewer
-          - roles/iap.admin
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
