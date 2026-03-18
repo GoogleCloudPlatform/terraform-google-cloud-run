@@ -662,6 +662,6 @@ spec:
       - storage-api.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6, < 8"
+        version: ">= 6, < 7"
       - source: hashicorp/google-beta
-        version: ">= 6, < 8"
+        version: ">= 6, < 7"
