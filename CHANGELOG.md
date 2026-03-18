@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.25.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.25.0...v0.25.1) (2026-03-18)
+
+
+### Bug Fixes
+
+* Add artifactregistry.reader iam role for v2 module ([#448](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/448)) ([f3c30fe](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/f3c30feb381ecfb70bf09fa30f95beed280a923e))
+
 ## [0.25.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.24.0...v0.25.0) (2026-02-12)
 
 
