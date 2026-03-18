@@ -107,7 +107,7 @@ locals {
       "roles/resourcemanager.projectIamAdmin",
       "roles/compute.viewer",
       "roles/iap.admin",
-      "roles/artifactregistry.reader",
+      "roles/artifactregistry.reader"
     ],
   }
 
