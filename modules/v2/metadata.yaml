@@ -413,6 +413,18 @@ spec:
             spec:
               outputExpr: connector_ids
               inputPath: connector
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-network
+              version: ">= 16.0.1"
+            spec:
+              outputExpr: network_name
+              inputPath: network_interfaces.network
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-network
+              version: ">= 16.0.1"
+            spec:
+              outputExpr: subnets_names[0]
+              inputPath: network_interfaces.subnetwork
       - name: cloud_run_deletion_protection
         description: This field prevents Terraform from destroying or recreating the Cloud Run jobs and services
         varType: bool
