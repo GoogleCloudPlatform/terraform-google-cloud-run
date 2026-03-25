@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.26.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.25.2...v0.26.0) (2026-03-25)
+
+
+### Features
+
+* Add missing vpc connection for Cloud Run ([#455](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/455)) ([7b7a4c7](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/7b7a4c7adef5ce6315ff1d09337dd832e542fcb2))
+
 ## [0.25.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.25.1...v0.25.2) (2026-03-25)
 
 
