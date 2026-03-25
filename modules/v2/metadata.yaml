@@ -470,8 +470,7 @@ spec:
               source: github.com/terraform-google-modules/terraform-google-cloud-storage//modules/simple_bucket
               version: ">= 8.0"
             spec:
-              outputExpr: name
-              inputPath: gcs.bucket
+              outputExpr: "{\"name\": \"gcs-bucket-vol\", \"gcs\": { \"bucket\": name}}"
           - source:
               source: github.com/GoogleCloudPlatform/terraform-google-cloud-filestore
               version: ">= 0.1.0"
