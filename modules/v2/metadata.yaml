@@ -263,6 +263,12 @@ spec:
               outputExpr: "{\"name\": \"cloudsql\", \"mount_path\": \"/cloudsql\"}"
               inputPath: volume_mounts
           - source:
+              source: github.com/terraform-google-modules/terraform-google-cloud-storage//modules/simple_bucket
+              version: ">= 8.0"
+            spec:
+              outputExpr: "{\"name\": \"gcs-bucket-vol\", \"mount_path\": \"/gcs-bucket-vol\"}"
+              inputPath: volume_mounts
+          - source:
               source: github.com/GoogleCloudPlatform/terraform-google-document-ai
               version: ">= 0.0.1"
             spec:
