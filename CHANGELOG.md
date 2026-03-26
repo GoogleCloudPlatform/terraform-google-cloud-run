@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.26.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.26.0...v0.26.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* update cloud run metadata to add gcs volume mount ([#457](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/457)) ([3faff84](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/3faff8430d6f62f341e304cd29152176db0adba5))
+
 ## [0.26.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.25.2...v0.26.0) (2026-03-25)
 
 
