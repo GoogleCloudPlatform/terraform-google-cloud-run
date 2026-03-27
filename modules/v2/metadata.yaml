@@ -91,8 +91,8 @@ spec:
                 mount_path = string
               })), [])
               ports = optional(object({
-                name           = optional(string, "http1")
-                container_port = optional(number, 8080)
+                name           = optional(string)
+                container_port = optional(number)
               }), {})
               resources = optional(object({
                 limits = optional(object({
@@ -679,6 +679,6 @@ spec:
       - storage-api.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6, < 7"
+        version: ">= 6, < 8"
       - source: hashicorp/google-beta
-        version: ">= 6, < 7"
+        version: ">= 6, < 8"
