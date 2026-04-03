@@ -189,6 +189,12 @@ variable "enable_prometheus_sidecar" {
   default     = false
 }
 
+variable "prometheus_sidecar_image" {
+  type        = string
+  description = "Image associated to the Prometheus sidecar."
+  default     = "us-docker.pkg.dev/cloud-ops-agents-artifacts/cloud-run-gmp-sidecar/cloud-run-gmp-sidecar:1.1.1"
+}
+
 variable "volumes" {
   type = list(object({
     name = string
