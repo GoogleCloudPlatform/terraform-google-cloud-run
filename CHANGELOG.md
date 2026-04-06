@@ -7,6 +7,27 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.26.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.26.0...v0.26.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* update cloud run metadata to add gcs volume mount ([#457](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/457)) ([3faff84](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/3faff8430d6f62f341e304cd29152176db0adba5))
+
+## [0.26.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.25.2...v0.26.0) (2026-03-25)
+
+
+### Features
+
+* Add missing vpc connection for Cloud Run ([#455](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/455)) ([7b7a4c7](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/7b7a4c7adef5ce6315ff1d09337dd832e542fcb2))
+
+## [0.25.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.25.1...v0.25.2) (2026-03-25)
+
+
+### Bug Fixes
+
+* update metadata for gcs connection for volumes ([f67da1c](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/f67da1caed6f5ba99537cf663356e6b5c0144e04))
+
 ## [0.25.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.25.0...v0.25.1) (2026-03-18)
 
 
