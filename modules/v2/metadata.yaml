@@ -439,6 +439,10 @@ spec:
         description: Enable Prometheus sidecar in Cloud Run instance.
         varType: bool
         defaultValue: false
+      - name: prometheus_sidecar_image
+        description: Image associated to the Prometheus sidecar.
+        varType: string
+        defaultValue: us-docker.pkg.dev/cloud-ops-agents-artifacts/cloud-run-gmp-sidecar/cloud-run-gmp-sidecar:1.1.1
       - name: volumes
         description: Volumes needed for environment variables (when using secret)
         varType: |-
@@ -660,14 +664,14 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
           - roles/resourcemanager.projectIamAdmin
           - roles/compute.viewer
           - roles/iap.admin
           - roles/artifactregistry.reader
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
-          - roles/iam.serviceAccountUser
-          - roles/serviceusage.serviceUsageViewer
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
@@ -679,6 +683,6 @@ spec:
       - storage-api.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6, < 7"
+        version: ">= 6, < 8"
       - source: hashicorp/google-beta
-        version: ">= 6, < 7"
+        version: ">= 6, < 8"
