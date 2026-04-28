@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.28.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.27.0...v0.28.0) (2026-04-28)
+
+
+### Features
+
+* Add missing Agent Engine connection for Cloud Run ([#463](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/463)) ([47af05a](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/47af05a4f3bfd202df845971eb7b2ebc325bcd16))
+
 ## [0.27.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.26.1...v0.27.0) (2026-04-22)
 
 
