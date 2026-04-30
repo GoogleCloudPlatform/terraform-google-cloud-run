@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.29.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.28.0...v0.29.0) (2026-04-29)
+
+
+### Features
+
+* Add missing Model Armor Template connection for Cloud Run ([#465](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/465)) ([75015ae](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/75015ae6197f5ce85d64f5d07b983277108322df))
+
 ## [0.28.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.27.0...v0.28.0) (2026-04-28)
 
 

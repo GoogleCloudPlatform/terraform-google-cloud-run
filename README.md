@@ -36,7 +36,7 @@ Basic usage of this module is as follows:
 module "cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google"
   # Locked to 0.20, allows minor updates – check for latest version
-  version = "~> 0.28"
+  version = "~> 0.29"
 
   # Required variables
   service_name           = "<SERVICE NAME>"

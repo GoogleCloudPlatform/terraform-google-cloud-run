@@ -37,10 +37,10 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:service-project-factory/v0.28.0"
+    module_name = "blueprints/terraform/terraform-google-cloud-run:service-project-factory/v0.29.0"
   }
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:service-project-factory/v0.28.0"
+    module_name = "blueprints/terraform/terraform-google-cloud-run:service-project-factory/v0.29.0"
   }
 }
