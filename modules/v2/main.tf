@@ -58,7 +58,7 @@ locals {
   )
   prometheus_sidecar_container = [{
     container_name  = "collector"
-    container_image = "us-docker.pkg.dev/cloud-ops-agents-artifacts/cloud-run-gmp-sidecar/cloud-run-gmp-sidecar:1.1.1"
+    container_image = "us-docker.pkg.dev/cloud-ops-agents-artifacts/cloud-run-gmp-sidecar/cloud-run-gmp-sidecar:latest"
     # Set default values for the sidecar container
     ports                = {}
     working_dir          = null
