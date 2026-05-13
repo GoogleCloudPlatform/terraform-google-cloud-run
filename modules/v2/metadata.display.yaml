@@ -639,7 +639,7 @@ spec:
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
-                egress: PRIVATE_RANGES_ONLY
+                egress: PRIVATE_RANGES_ONLY 
                 network_interfaces:
                   network: default
                   subnetwork: default
