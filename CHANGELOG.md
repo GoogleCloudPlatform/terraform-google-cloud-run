@@ -7,6 +7,18 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.30.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.29.0...v0.30.0) (2026-05-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* update prometheus sidecar image to latest ([#468](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/468))
+
+### Bug Fixes
+
+* Change default value of vpc_access.egress ([#470](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/470)) ([b0ef6c2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/b0ef6c26df27223166265a9e8a3cceb3c93c8786))
+* update prometheus sidecar image to latest ([#468](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/468)) ([6a9de7b](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/6a9de7ba697a25837e86a33bfe7d6f45beb6eda8))
+
 ## [0.29.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.28.0...v0.29.0) (2026-04-29)
 
 

@@ -28,6 +28,6 @@ terraform {
     }
   }
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-cloud-run:job-exec/v0.29.0"
+    module_name = "blueprints/terraform/terraform-google-cloud-run:job-exec/v0.30.0"
   }
 }

@@ -18,7 +18,7 @@ Basic usage of this module is as follows:
 module "cloud_run_core" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/v2"
   # Locked to 0.20, allows minor updates – check for latest version
-  version = "~> 0.29"
+  version = "~> 0.30"
 
   project_id      = var.project_id
   service_name    = "hello-world-gpu"

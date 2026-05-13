@@ -26,7 +26,7 @@ The resources/services/activations/deletions that this module will create/trigge
 module "cloud_serverless_network" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/secure-cloud-serverless-net"
   # Locked to 0.20, allows minor updates – check for latest version
-  version = "~> 0.29"
+  version = "~> 0.30"
 
   connector_name            = <CONNECTOR NAME>
   subnet_name               = <SUBNETWORK NAME>
