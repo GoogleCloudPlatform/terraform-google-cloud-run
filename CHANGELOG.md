@@ -7,6 +7,59 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.29.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.28.0...v0.29.0) (2026-04-29)
+
+
+### Features
+
+* Add missing Model Armor Template connection for Cloud Run ([#465](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/465)) ([75015ae](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/75015ae6197f5ce85d64f5d07b983277108322df))
+
+## [0.28.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.27.0...v0.28.0) (2026-04-28)
+
+
+### Features
+
+* Add missing Agent Engine connection for Cloud Run ([#463](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/463)) ([47af05a](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/47af05a4f3bfd202df845971eb7b2ebc325bcd16))
+
+## [0.27.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.26.1...v0.27.0) (2026-04-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump modules and submodules to google provider v7 ([#460](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/460))
+
+### Bug Fixes
+
+* bump modules and submodules to google provider v7 ([#460](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/460)) ([5bd415b](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/5bd415b08a3e5654eca580fd80fbf5fa9329c4c0))
+
+## [0.26.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.26.0...v0.26.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* update cloud run metadata to add gcs volume mount ([#457](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/457)) ([3faff84](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/3faff8430d6f62f341e304cd29152176db0adba5))
+
+## [0.26.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.25.2...v0.26.0) (2026-03-25)
+
+
+### Features
+
+* Add missing vpc connection for Cloud Run ([#455](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/455)) ([7b7a4c7](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/7b7a4c7adef5ce6315ff1d09337dd832e542fcb2))
+
+## [0.25.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.25.1...v0.25.2) (2026-03-25)
+
+
+### Bug Fixes
+
+* update metadata for gcs connection for volumes ([f67da1c](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/f67da1caed6f5ba99537cf663356e6b5c0144e04))
+
+## [0.25.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.25.0...v0.25.1) (2026-03-18)
+
+
+### Bug Fixes
+
+* Add artifactregistry.reader iam role for v2 module ([#448](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/448)) ([f3c30fe](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/f3c30feb381ecfb70bf09fa30f95beed280a923e))
+
 ## [0.25.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.24.0...v0.25.0) (2026-02-12)
 
 

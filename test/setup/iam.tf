@@ -106,7 +106,8 @@ locals {
       "roles/serviceusage.serviceUsageViewer",
       "roles/resourcemanager.projectIamAdmin",
       "roles/compute.viewer",
-      "roles/iap.admin"
+      "roles/iap.admin",
+      "roles/artifactregistry.reader"
     ],
   }
 
