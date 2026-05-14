@@ -158,11 +158,20 @@ resource "google_cloud_run_v2_service" "main" {
         args        = containers.value.container_args
         working_dir = containers.value.working_dir
         depends_on  = containers.value.depends_on_container
+
         dynamic "ports" {
-          for_each = lookup(containers.value, "ports", {}) != {} ? [containers.value.ports] : []
+          for_each = try(
+            (
+              containers.value.ports != null &&
+              containers.value.ports.container_port != null &&
+              containers.value.ports.container_port > 0 &&
+              containers.value.ports.container_port < 65536
+            ) ? [containers.value.ports] : [],
+            []
+          )
           content {
-            name           = ports.value["name"]
-            container_port = ports.value["container_port"]
+            name           = try(ports.value.name, null)
+            container_port = ports.value.container_port
           }
         }
 
