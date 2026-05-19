@@ -602,10 +602,10 @@ spec:
               title: Egress
               subtext: Traffic VPC egress settings.
               enumValueLabels:
-                - label: ALL_TRAFFIC
-                  value: ALL_TRAFFIC
                 - label: PRIVATE_RANGES_ONLY
                   value: PRIVATE_RANGES_ONLY
+                - label: ALL_TRAFFIC
+                  value: ALL_TRAFFIC
             connector:
               name: connector
               title: Connector
@@ -639,7 +639,7 @@ spec:
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
-                egress: ALL_TRAFFIC
+                egress: PRIVATE_RANGES_ONLY
                 network_interfaces:
                   network: default
                   subnetwork: default

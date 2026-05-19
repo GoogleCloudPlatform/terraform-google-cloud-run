@@ -7,6 +7,43 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.30.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.29.0...v0.30.0) (2026-05-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* update prometheus sidecar image to latest ([#468](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/468))
+
+### Bug Fixes
+
+* Change default value of vpc_access.egress ([#470](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/470)) ([b0ef6c2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/b0ef6c26df27223166265a9e8a3cceb3c93c8786))
+* update prometheus sidecar image to latest ([#468](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/468)) ([6a9de7b](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/6a9de7ba697a25837e86a33bfe7d6f45beb6eda8))
+
+## [0.29.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.28.0...v0.29.0) (2026-04-29)
+
+
+### Features
+
+* Add missing Model Armor Template connection for Cloud Run ([#465](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/465)) ([75015ae](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/75015ae6197f5ce85d64f5d07b983277108322df))
+
+## [0.28.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.27.0...v0.28.0) (2026-04-28)
+
+
+### Features
+
+* Add missing Agent Engine connection for Cloud Run ([#463](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/463)) ([47af05a](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/47af05a4f3bfd202df845971eb7b2ebc325bcd16))
+
+## [0.27.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.26.1...v0.27.0) (2026-04-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump modules and submodules to google provider v7 ([#460](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/460))
+
+### Bug Fixes
+
+* bump modules and submodules to google provider v7 ([#460](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/460)) ([5bd415b](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/5bd415b08a3e5654eca580fd80fbf5fa9329c4c0))
+
 ## [0.26.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.26.0...v0.26.1) (2026-03-26)
 
 
