@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.32.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.31.0...v0.32.0) (2026-05-21)
+
+
+### Features
+
+* Add missing resource connections for Cloud Run Job ([#472](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/472)) ([5312b3e](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/5312b3e9cc8fdfe00ea2401cdd51c936df7e70d1))
+
 ## [0.31.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.30.0...v0.31.0) (2026-05-20)
 
 
