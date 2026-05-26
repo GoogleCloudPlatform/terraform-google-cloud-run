@@ -340,12 +340,13 @@ resource "google_cloud_run_v2_service" "main" {
     }
   } // template
 
-  annotations      = var.service_annotations
-  client           = var.client.name
-  client_version   = var.client.version
-  ingress          = var.ingress
-  launch_stage     = var.launch_stage
-  custom_audiences = var.custom_audiences
+  annotations          = var.service_annotations
+  client               = var.client.name
+  client_version       = var.client.version
+  default_uri_disabled = var.default_uri_disabled
+  ingress              = var.ingress
+  launch_stage         = var.launch_stage
+  custom_audiences     = var.custom_audiences
 
   dynamic "binary_authorization" {
     for_each = var.binary_authorization[*]

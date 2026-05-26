@@ -41,6 +41,10 @@ spec:
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value: false
+        default_uri_disabled:
+          name: default_uri_disabled
+          title: Default URI Disabled
+          level: 1
         containers:
           name: containers
           title: Containers
