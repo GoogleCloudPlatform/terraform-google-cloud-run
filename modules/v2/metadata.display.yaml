@@ -271,6 +271,74 @@ spec:
                       min: 1
                       max: 65535
                       validation: Port number must be between 1 and 65535.
+            readiness_probe:
+              name: readiness_probe
+              title: Readiness Probe
+              properties:
+                failure_threshold:
+                  name: failure_threshold
+                  title: Failure Threshold
+                  subtext: Minimum consecutive failures for the probe to be considered failed after having succeeded. Minimum value is 1.
+                  min: 1
+                  validation: Choose an integer value greater than or equal to 1
+                success_threshold:
+                  name: success_threshold
+                  title: Success Threshold
+                  subtext: Minimum consecutive successes for the probe to be considered successful after having failed. Minimum value is 1.
+                  min: 1
+                  validation: Choose an integer value greater than or equal to 1
+                timeout_seconds:
+                  name: timeout_seconds
+                  title: Timeout Seconds
+                  subtext: Number of seconds after which the probe times out. This value should be less than period seconds.
+                  min: 1
+                  validation: Enter an integer value greater than or equal to 1
+                period_seconds:
+                  name: period_seconds
+                  title: Period Seconds
+                  subtext: Number of seconds to wait between starting a probe attempt.
+                  min: 1
+                  validation: Enter an integer value greater than or equal to 1
+                http_get:
+                  name: http_get
+                  title: Http Get
+                  properties:
+                    path:
+                      name: path
+                      title: Path
+                      subtext: Path to access on HTTP server
+                      regexValidation: "^(/[^/ ]+)*/?$"
+                      validation: Path must be a valid URL path (e.g., /health).
+                    port:
+                      name: port
+                      title: Port
+                      subtext: Port to make connection for the Cloud Run instance. It will default to container port which is 8080
+                    http_headers:
+                      name: http_headers
+                      title: Http Headers
+                      subtext: Custom Headers to set in the request. HTTP allows repeated headers.
+                      properties:
+                        name:
+                          name: name
+                          title: Name
+                          regexValidation: ^[A-Za-z][A-Za-z0-9-]{0,62}$
+                          validation: "Must be a valid HTTP header name: start with a letter, contain only letters [A–Z, a–z], digits [0–9], or hyphens [-], and be at most 63 characters long"
+                        value:
+                          name: value
+                          title: Value
+                          regexValidation: ^.*$
+                          validation: Header value can be any string
+                grpc:
+                  name: grpc
+                  title: GRPC
+                  properties:
+                    port:
+                      name: port
+                      title: Port
+                      subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
+                      min: 1
+                      max: 65535
+                      validation: Port number must be between 1 and 65535.
             ports:
               name: ports
               title: Ports

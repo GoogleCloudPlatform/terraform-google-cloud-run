@@ -39,6 +39,12 @@ func TestV2(t *testing.T) {
 		// Verify the Cloud Run Service deployed is in ready state.
 		readyCondition := utils.GetFirstMatchResult(t, run_cmd.Get("status").Get("conditions").Array(), "type", "Ready")
 		assert.Equal("True", readyCondition.Get("status").String(), fmt.Sprintf("Should be in ready status"))
+
+		container := utils.GetFirstMatchResult(t, run_cmd.Get("spec").Get("template").Get("containers").Array(), "name", "hello-world")
+		readinessProbe := container.Get("readinessProbe")
+		assert.Equal(float64(3), readinessProbe.Get("failureThreshold").Value(), "readiness probe failure threshold should be configured")
+		assert.Equal(float64(2), readinessProbe.Get("successThreshold").Value(), "readiness probe success threshold should be configured")
+		assert.Equal("/", readinessProbe.Get("httpGet").Get("path").String(), "readiness probe path should be configured")
 	})
 	runV2.Test()
 }

@@ -36,6 +36,15 @@ module "cloud_run_v2" {
     {
       container_image = "us-docker.pkg.dev/cloudrun/container/hello"
       container_name  = "hello-world"
+      readiness_probe = {
+        failure_threshold = 3
+        success_threshold = 2
+        timeout_seconds   = 2
+        period_seconds    = 10
+        http_get = {
+          path = "/"
+        }
+      }
     }
   ]
 }

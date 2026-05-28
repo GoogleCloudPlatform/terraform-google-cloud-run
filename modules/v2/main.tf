@@ -75,6 +75,7 @@ locals {
     }
     startup_probe  = []
     liveness_probe = []
+    readiness_probe = []
   }]
 }
 
@@ -252,6 +253,40 @@ resource "google_cloud_run_v2_service" "main" {
 
             dynamic "grpc" {
               for_each = liveness_probe.value.grpc[*]
+              content {
+                port    = grpc.value.port
+                service = grpc.value.service
+              }
+            }
+          }
+        }
+
+        dynamic "readiness_probe" {
+          for_each = containers.value.readiness_probe[*]
+          content {
+            failure_threshold = readiness_probe.value.failure_threshold
+            success_threshold = readiness_probe.value.success_threshold
+            timeout_seconds   = readiness_probe.value.timeout_seconds
+            period_seconds    = readiness_probe.value.period_seconds
+
+            dynamic "http_get" {
+              for_each = readiness_probe.value.http_get[*]
+              content {
+                path = http_get.value.path
+                port = http_get.value.port
+
+                dynamic "http_headers" {
+                  for_each = http_get.value.http_headers[*]
+                  content {
+                    name  = http_headers.value["name"]
+                    value = http_headers.value["value"]
+                  }
+                }
+              }
+            }
+
+            dynamic "grpc" {
+              for_each = readiness_probe.value.grpc[*]
               content {
                 port    = grpc.value.port
                 service = grpc.value.service

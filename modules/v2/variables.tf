@@ -109,6 +109,24 @@ variable "containers" {
         service = optional(string)
       }), null)
     }), null)
+    readiness_probe = optional(object({
+      failure_threshold = optional(number, null)
+      success_threshold = optional(number, null)
+      timeout_seconds   = optional(number, null)
+      period_seconds    = optional(number, null)
+      http_get = optional(object({
+        path = optional(string)
+        port = optional(number)
+        http_headers = optional(list(object({
+          name  = string
+          value = string
+        })), [])
+      }), null)
+      grpc = optional(object({
+        port    = optional(number)
+        service = optional(string)
+      }), null)
+    }), null)
   }))
   description = "Container images for the service"
 }
@@ -356,4 +374,3 @@ variable "execution_environment" {
     error_message = "Allowed values for ingress are \"EXECUTION_ENVIRONMENT_GEN1\", \"EXECUTION_ENVIRONMENT_GEN2\"."
   }
 }
-
