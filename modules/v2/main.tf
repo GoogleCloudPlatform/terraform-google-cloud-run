@@ -194,7 +194,7 @@ resource "google_cloud_run_v2_service" "main" {
                 port = http_get.value.port
 
                 dynamic "http_headers" {
-                  for_each = http_get.value.http_headers
+                  for_each = http_get.value.http_headers[*]
                   content {
                     name  = http_headers.value["name"]
                     value = http_headers.value["value"]
@@ -235,7 +235,7 @@ resource "google_cloud_run_v2_service" "main" {
                 port = http_get.value.port
 
                 dynamic "http_headers" {
-                  for_each = http_get.value.http_headers
+                  for_each = http_get.value.http_headers[*]
                   content {
                     name  = http_headers.value["name"]
                     value = http_headers.value["value"]

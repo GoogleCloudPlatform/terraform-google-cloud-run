@@ -110,10 +110,10 @@ variable "containers" {
       }), null)
     }), null)
     readiness_probe = optional(object({
-      failure_threshold = optional(number, null)
-      success_threshold = optional(number, null)
-      timeout_seconds   = optional(number, null)
-      period_seconds    = optional(number, null)
+      failure_threshold = optional(number)
+      success_threshold = optional(number)
+      timeout_seconds   = optional(number)
+      period_seconds    = optional(number)
       http_get = optional(object({
         path = optional(string)
         port = optional(number)
