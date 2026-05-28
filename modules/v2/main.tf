@@ -73,8 +73,8 @@ locals {
       startup_cpu_boost = false
       limits            = {}
     }
-    startup_probe  = []
-    liveness_probe = []
+    startup_probe   = []
+    liveness_probe  = []
     readiness_probe = []
   }]
 }
