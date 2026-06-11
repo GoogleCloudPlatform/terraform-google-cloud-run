@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.33.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.32.0...v0.33.0) (2026-06-11)
+
+
+### Features
+
+* add connection with dataproc-cluster ([#480](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/480)) ([1622c4a](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/1622c4a66825c60f99c517a6a590cf48fde04071))
+
 ## [0.32.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.31.0...v0.32.0) (2026-05-21)
 
 
