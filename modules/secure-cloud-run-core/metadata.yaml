@@ -287,6 +287,10 @@ spec:
               generate_certificates_for_domains = list(string)
             })
         required: true
+      - name: ssl
+        description: Enables the Post-Quantum Cryptography (PQC) SSL Policy for the Load Balancer (Requires TLS 1.3).
+        varType: bool
+        defaultValue: false
     outputs:
       - name: domain_map_id
         description: Unique Identifier for the created domain map.
@@ -302,17 +306,19 @@ spec:
         description: Status of the created service.
       - name: service_url
         description: The URL on which the deployed service is available.
+      - name: ssl_policy_id
+        description: The ID of the created Post-Quantum SSL Policy, if enabled.
   requirements:
     roles:
       - level: Project
         roles:
-          - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
+          - roles/run.admin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com

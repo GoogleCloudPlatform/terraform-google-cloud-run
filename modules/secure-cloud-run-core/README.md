@@ -65,6 +65,7 @@ module "cloud_run_core" {
 | requests | Resource requests to the container. | `map(string)` | `{}` | no |
 | service\_labels | A set of key/value label pairs to assign to the service. | `map(string)` | `{}` | no |
 | service\_name | The name of the Cloud Run service to create. | `string` | n/a | yes |
+| ssl | Enables the Post-Quantum Cryptography (PQC) SSL Policy for the Load Balancer (Requires TLS 1.3). | `bool` | `false` | no |
 | ssl\_certificates | A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links in the pattern `projects/<PROJECT-ID>/global/sslCertificates/<CERT-NAME>` to be used by Load Balancer. | <pre>object({<br>    ssl_certificates_self_links       = list(string)<br>    generate_certificates_for_domains = list(string)<br>  })</pre> | n/a | yes |
 | template\_labels | A set of key/value label pairs to assign to the container metadata. | `map(string)` | `{}` | no |
 | timeout\_seconds | Timeout for each request. | `number` | `120` | no |
@@ -86,6 +87,7 @@ module "cloud_run_core" {
 | service\_id | Unique Identifier for the created service. |
 | service\_status | Status of the created service. |
 | service\_url | The URL on which the deployed service is available. |
+| ssl\_policy\_id | The ID of the created Post-Quantum SSL Policy, if enabled. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
