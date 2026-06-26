@@ -145,6 +145,7 @@ module "cloud_run_core" {
   max_scale_instances         = var.max_scale_instances
   volumes                     = var.volumes
   ssl_certificates            = var.ssl_certificates
+  ssl_policy                  = var.ssl_policy
 
   depends_on = [
     module.serverless_project_apis,

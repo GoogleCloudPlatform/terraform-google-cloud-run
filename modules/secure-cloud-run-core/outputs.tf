@@ -48,8 +48,3 @@ output "domain_map_status" {
   value       = module.cloud_run.domain_map_status
   description = "Status of Domain mapping."
 }
-
-output "ssl_policy_id" {
-  value       = try(google_compute_ssl_policy.main[0].id, null)
-  description = "The ID of the created Post-Quantum SSL Policy, if enabled."
-}

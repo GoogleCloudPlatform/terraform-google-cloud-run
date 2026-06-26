@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-
-
 resource "google_compute_ssl_policy" "main" {
-  count                     = var.ssl ? 1 : 0
+  count                     = var.ssl_policy ? 1 : 0
   project                   = var.project_id
-  name                      = "$${var.lb_name}-pqc-policy"
+  name                      = "${var.lb_name}-ssl-policy"
   profile                   = "RESTRICTED"
   post_quantum_key_exchange = "ENABLED"
   min_tls_version           = "TLS_1_3"
