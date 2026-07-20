@@ -29,7 +29,7 @@ docker_test_lint:
 		-e ENABLE_BPMETADATA \
 		-e ENABLE_PARALLEL=1 \
         -e DISABLE_TFLINT=1 \
-		-v $(CURDIR):/workspace \
+		-v "$(CURDIR)":/workspace \
 		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
 		/usr/local/bin/test_lint.sh
 
@@ -38,7 +38,7 @@ docker_test_lint:
 docker_generate_docs:
 	docker run --rm -it \
 		-e ENABLE_BPMETADATA=1 \
-		-v $(CURDIR):/workspace \
+		-v "$(CURDIR)":/workspace \
 		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
 		/bin/bash -c 'source /usr/local/bin/task_helper_functions.sh && generate_docs --per-module-requirements'
 

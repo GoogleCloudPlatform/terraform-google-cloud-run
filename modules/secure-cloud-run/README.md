@@ -110,6 +110,7 @@ module "secure_cloud_run" {
 | service\_name | Shared VPC name. | `string` | n/a | yes |
 | shared\_vpc\_name | Shared VPC name which is going to be re-used to create Serverless Connector. | `string` | n/a | yes |
 | ssl\_certificates | A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links in the pattern `projects/<PROJECT-ID>/global/sslCertificates/<CERT-NAME>` to be used by Load Balancer. | <pre>object({<br>    ssl_certificates_self_links       = list(string)<br>    generate_certificates_for_domains = list(string)<br>  })</pre> | n/a | yes |
+| ssl\_policy | Enables the SSL Policy for the Load Balancer (Requires TLS 1.3). | `bool` | `false` | no |
 | subnet\_name | Subnet name to be re-used to create Serverless Connector. | `string` | `null` | no |
 | verified\_domain\_name | List of Custom Domain Name | `list(string)` | `[]` | no |
 | volumes | [Beta] Volumes needed for environment variables (when using secret). | <pre>list(object({<br>    name = string<br>    secret = set(object({<br>      secret_name = string<br>      items       = map(string)<br>    }))<br>  }))</pre> | `[]` | no |

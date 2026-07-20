@@ -287,6 +287,10 @@ spec:
               generate_certificates_for_domains = list(string)
             })
         required: true
+      - name: ssl_policy
+        description: Enables the SSL Policy for the Load Balancer (Requires TLS 1.3).
+        varType: bool
+        defaultValue: false
     outputs:
       - name: domain_map_id
         description: Unique Identifier for the created domain map.
@@ -306,13 +310,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/serviceusage.serviceUsageViewer
+          - roles/cloudkms.admin
+          - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
-          - roles/serviceusage.serviceUsageViewer
-          - roles/cloudkms.admin
-          - roles/resourcemanager.projectIamAdmin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com

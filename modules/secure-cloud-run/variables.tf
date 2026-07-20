@@ -254,3 +254,9 @@ variable "ssl_certificates" {
   }
   description = "A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links in the pattern `projects/<PROJECT-ID>/global/sslCertificates/<CERT-NAME>` to be used by Load Balancer."
 }
+
+variable "ssl_policy" {
+  description = "Enables the SSL Policy for the Load Balancer (Requires TLS 1.3)."
+  type        = bool
+  default     = false
+}
