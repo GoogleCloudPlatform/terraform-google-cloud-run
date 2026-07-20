@@ -276,10 +276,6 @@ spec:
         description: Users/SAs to be given invoker access to the service
         varType: list(string)
         defaultValue: []
-      - name: ssl
-        description: Enables the Post-Quantum Cryptography (PQC) SSL Policy for the Load Balancer (Requires TLS 1.3).
-        varType: bool
-        defaultValue: false
     outputs:
       - name: apphub_service_uri
         description: Service URI in CAIS style to be used by Apphub.
@@ -327,13 +323,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/iam.serviceAccountAdmin
-          - roles/artifactregistry.admin
-          - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
+          - roles/iam.serviceAccountAdmin
+          - roles/artifactregistry.admin
+          - roles/iam.serviceAccountUser
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com

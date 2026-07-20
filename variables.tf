@@ -286,8 +286,3 @@ variable "members" {
   default     = []
 }
 
-variable "ssl" {
-  description = "Enables the Post-Quantum Cryptography (PQC) SSL Policy for the Load Balancer (Requires TLS 1.3)."
-  type        = bool
-  default     = false
-}
