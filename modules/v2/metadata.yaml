@@ -71,6 +71,10 @@ spec:
       - name: description
         description: Cloud Run service description. This field currently has a 512-character limit.
         varType: string
+      - name: default_uri_disabled
+        description: Disables public resolution of the default URI of this service.
+        varType: bool
+        defaultValue: false
       - name: containers
         description: Container images for the service
         varType: |-

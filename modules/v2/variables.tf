@@ -36,6 +36,12 @@ variable "description" {
   default     = null
 }
 
+variable "default_uri_disabled" {
+  description = "Disables public resolution of the default URI of this service."
+  type        = bool
+  default     = false
+}
+
 // Containers
 variable "containers" {
   type = list(object({
@@ -356,4 +362,3 @@ variable "execution_environment" {
     error_message = "Allowed values for ingress are \"EXECUTION_ENVIRONMENT_GEN1\", \"EXECUTION_ENVIRONMENT_GEN2\"."
   }
 }
-
