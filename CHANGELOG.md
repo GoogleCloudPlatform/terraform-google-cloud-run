@@ -7,6 +7,18 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.34.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.33.0...v0.34.0) (2026-09-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* updating secure blueprint to cloud run v2 ([#439](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/439))
+
+### Features
+
+* add connection with Valkey Cluster ([#490](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/490)) ([048661d](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/048661d9c968f0627bc08dacfdc7341efc493524))
+* updating secure blueprint to cloud run v2 ([#439](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/439)) ([604dfb3](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/604dfb39b88ef032c824647f2de39e9a1321b08c))
+
 ## [0.33.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.32.0...v0.33.0) (2026-06-11)
 
 
