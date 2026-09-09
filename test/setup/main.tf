@@ -137,13 +137,14 @@ module "project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 18.0"
 
-  name                    = "ci-cloud-run"
-  random_project_id       = "true"
-  org_id                  = var.org_id
-  folder_id               = var.folder_id
-  billing_account         = var.billing_account
-  default_service_account = "keep"
-  deletion_policy         = "DELETE"
+  name                     = "ci-cloud-run"
+  random_project_id        = "true"
+  random_project_id_length = 4
+  org_id                   = var.org_id
+  folder_id                = var.folder_id
+  billing_account          = var.billing_account
+  default_service_account  = "keep"
+  deletion_policy          = "DELETE"
 
   activate_apis = flatten(values(local.per_module_services))
 }
