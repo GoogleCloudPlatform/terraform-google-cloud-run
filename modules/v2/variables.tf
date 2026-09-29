@@ -36,6 +36,12 @@ variable "description" {
   default     = null
 }
 
+variable "default_uri_disabled" {
+  description = "Disables public resolution of the default URI of this service."
+  type        = bool
+  default     = false
+}
+
 // Containers
 variable "containers" {
   type = list(object({

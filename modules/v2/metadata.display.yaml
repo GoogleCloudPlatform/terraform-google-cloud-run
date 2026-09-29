@@ -303,6 +303,9 @@ spec:
           title: Custom Audiences
           regexValidation: "^https?://(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?.)+[A-Za-z]{2,}(?:/[^s]*)?$"
           validation: Custom audience must be a valid URL starting with 'http://' or 'https://'
+        default_uri_disabled:
+          name: default_uri_disabled
+          title: Default URI Disabled
         description:
           name: description
           title: Description
