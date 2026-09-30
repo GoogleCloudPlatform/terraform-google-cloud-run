@@ -369,6 +369,10 @@ spec:
         description: The launch stage as defined by Google Cloud Platform Launch Stages. Cloud Run supports ALPHA, BETA, and GA. If no value is specified, GA is assumed.
         varType: string
         defaultValue: GA
+      - name: ssl_policy
+        description: Enables the SSL Policy for the Load Balancer (Requires TLS 1.3).
+        varType: bool
+        defaultValue: false
     outputs:
       - name: domain_map_id
         description: Unique Identifier for the created domain map.

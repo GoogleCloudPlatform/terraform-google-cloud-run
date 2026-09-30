@@ -25,6 +25,7 @@ module "lb-http" {
   name                            = var.lb_name
   project                         = var.project_id
   ssl                             = true
+  ssl_policy                      = var.ssl_policy ? google_compute_ssl_policy.main[0].id : null
   managed_ssl_certificate_domains = var.ssl_certificates.generate_certificates_for_domains
   ssl_certificates                = var.ssl_certificates.ssl_certificates_self_links
   https_redirect                  = false
