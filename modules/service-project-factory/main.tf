@@ -34,7 +34,7 @@ module "serverless_project" {
 
 module "service_accounts" {
   source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 4.2"
+  version    = "~> 5.0"
   project_id = module.serverless_project.project_id
   prefix     = "sa"
   names      = var.base_serverless_api == "run.googleapis.com" ? ["cloud-run"] : ["cloud-function"]
