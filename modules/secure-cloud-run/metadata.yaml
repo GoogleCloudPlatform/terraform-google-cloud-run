@@ -323,6 +323,6 @@ spec:
       - storage-api.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6, < 8"
+        version: ">= 7.34, < 8"
       - source: hashicorp/google-beta
         version: ">= 6, < 8"
