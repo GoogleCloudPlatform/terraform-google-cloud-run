@@ -7,6 +7,21 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.34.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.34.1...v0.34.2) (2026-10-05)
+
+
+### Bug Fixes
+
+* populate null defaultValue in v2 blueprint metadata ([#498](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/498)) ([e3cda6a](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/e3cda6a390d3ef5c6687867ee23010ebc91eaf35))
+
+## [0.34.1](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.34.0...v0.34.1) (2026-09-29)
+
+
+### Bug Fixes
+
+* add location back to apphub_service_uri output ([#494](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/494)) ([681000d](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/681000d58cfdff3a747c61bfb2a82d2b0b524a4c))
+* Increase polling attempts for job success check ([#497](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/497)) ([2963ba5](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/2963ba5680b3cee9a40e65f628a5834953732b68))
+
 ## [0.34.0](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.33.0...v0.34.0) (2026-09-07)
 
 

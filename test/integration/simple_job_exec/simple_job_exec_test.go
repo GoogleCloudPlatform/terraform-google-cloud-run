@@ -38,7 +38,7 @@ func TestSimpleJobExec(t *testing.T) {
 			}
 			return false, nil
 		}
-		utils.Poll(t, jobSucceeded, 10, time.Second*10)
+		utils.Poll(t, jobSucceeded, 30, time.Second*10)
 	})
 	example.Test()
 }
