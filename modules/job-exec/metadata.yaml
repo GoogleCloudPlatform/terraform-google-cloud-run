@@ -216,12 +216,15 @@ spec:
       - name: max_retries
         description: Number of retries allowed per Task, before marking this Task failed.
         varType: number
+        defaultValue: null
       - name: parallelism
         description: Specifies the maximum desired number of tasks the execution should run at given time. Must be <= taskCount.
         varType: number
+        defaultValue: null
       - name: task_count
         description: Specifies the desired number of tasks the execution should run.
         varType: number
+        defaultValue: null
       - name: volumes
         description: A list of Volumes to make available to containers.
         varType: |-
@@ -294,6 +297,7 @@ spec:
               cpu    = optional(string)
               memory = optional(string)
             })
+        defaultValue: null
       - name: timeout
         description: Max allowed time duration the Task may be active before the system will actively try to mark it failed and kill associated containers.
         varType: string
