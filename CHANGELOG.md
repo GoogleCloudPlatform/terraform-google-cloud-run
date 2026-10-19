@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.34.3](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.34.2...v0.34.3) (2026-10-19)
+
+
+### Bug Fixes
+
+* populate null defaultValue in cloud-run-job blueprint metadata ([#500](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/500)) ([4ce640a](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/4ce640a2a519fc9a2ca8bd3da9d8cf58574e0987))
+
 ## [0.34.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.34.1...v0.34.2) (2026-10-05)
 
 
