@@ -31,6 +31,9 @@ spec:
         binary_authorization:
           name: binary_authorization
           title: Binary Authorization
+        certificate_mode:
+          name: certificate_mode
+          title: Certificate Mode
         client:
           name: client
           title: Client
@@ -44,6 +47,13 @@ spec:
         containers:
           name: containers
           title: Containers
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value:
+                - container_image: us-docker.pkg.dev/cloudrun/container/hello
+                  container_name: service-container
+                  ports:
+                    container_port: 8080
           properties:
             container_image:
               name: container_image
@@ -55,140 +65,6 @@ spec:
               title: Container Name
               regexValidation: ^[a-z0-9][a-z0-9_.-]{0,62}$
               validation: Container name must start and end with a lowercase alphanumeric character, contain only lowercase alphanumeric characters, hyphens or periods and must be less than 64 characters.
-            working_dir:
-              name: working_dir
-              title: Working Dir
-              regexValidation: "^(/[^/ ]+)*/?$"
-              validation: Must be an absolute path (e.g., /app/src).
-            volume_mounts:
-              name: volume_mounts
-              title: Volume Mounts
-              subtext: Mount In-memory, Network File System, Secret and Cloud Storage bucket volumes to your container
-              properties:
-                name:
-                  name: name
-                  title: Name
-                  regexValidation: ^[a-z0-9][a-z0-9_.-]{0,253}[a-z0-9]$
-                  validation: Volume mount name must only contain alphanumeric characters, hyphens and underscores.
-                mount_path:
-                  name: mount_path
-                  title: Mount Path
-                  regexValidation: "^(/[^/ ]+)*/?$"
-                  validation: Mount path must be an absolute path (e.g., /mnt/data).
-            resources:
-              name: resources
-              title: Resources
-              properties:
-                limits:
-                  name: limits
-                  title: Limits
-                  properties:
-                    cpu:
-                      name: cpu
-                      title: CPU
-                      subtext: Number of vCPUs allocated to each instance of this container
-                      enumValueLabels:
-                      - label: "1"
-                        value: "1"
-                      - label: "2"
-                        value: "2"
-                      - label: "3"
-                        value: "3"
-                      - label: "4"
-                        value: "4"
-                    memory:
-                      name: memory
-                      title: Memory
-                      subtext: Memory to allocate to each instance of this container
-                      regexValidation: ^[0-9]+(Mi|Gi|M|G)$
-                      validation: Must be a valid memory size with unit, such as Mi, Gi, M, or G
-                    nvidia_gpu:
-                      name: nvidia_gpu
-                      title: Nvidia GPU
-                      regexValidation: ^[0-9]+$
-                      validation: Must be a whole number representing the number of GPUs.
-            startup_probe:
-              name: startup_probe
-              title: Startup Probe
-              properties:
-                failure_threshold:
-                  name: failure_threshold
-                  title: Failure Threshold
-                  subtext: Number of times to retry the probe before marking the container as Unready
-                  min: 1
-                  validation: Choose an integer value greater than or equal to 1
-                initial_delay_seconds:
-                  name: initial_delay_seconds
-                  title: Initial Delay Seconds
-                  subtext: Number of seconds after the container has started before performing the first probe. Enter an integer value between 0 and 240
-                  min: 0
-                  max: 240
-                  validation: Enter an integer value between 0 and 240
-                timeout_seconds:
-                  name: timeout_seconds
-                  title: Timeout Seconds
-                  subtext: Number of seconds after which the probe times out. This value shouldn't exceed Period seconds. Enter an integer value between 1 and 240
-                  min: 1
-                  max: 240
-                  validation: Enter an integer value between 1 and 240
-                period_seconds:
-                  name: period_seconds
-                  title: Period Seconds
-                  subtext: Number of seconds to wait between starting a probe attempt. Enter an integer value between 1 and 240
-                  min: 1
-                  max: 240
-                  validation: Enter an integer value between 1 and 240
-                http_get:
-                  name: http_get
-                  title: Http Get
-                  properties:
-                    path:
-                      name: path
-                      title: Path
-                      subtext: "Path to access on the HTTP server. Ex: e.g./reddy"
-                      regexValidation: "^(/[^/ ]+)*/?$"
-                      validation: Path must be a valid URL path (e.g., /health).
-                    port:
-                      name: port
-                      title: Port
-                      subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
-                    http_headers:
-                      name: http_headers
-                      title: Http Headers
-                      subtext: Custom headers to set in the request. HTTP allows repeated headers
-                      properties:
-                        name:
-                          name: name
-                          title: Name
-                          regexValidation: ^[A-Za-z][A-Za-z0-9-]{0,62}$
-                          validation: "Must be a valid HTTP header name: start with a letter, contain only letters [A–Z, a–z], digits [0–9], or hyphens [-], and be at most 63 characters long"
-                        value:
-                          name: value
-                          title: Value
-                          regexValidation: ^.*$
-                          validation: Must be a valid string
-                tcp_socket:
-                  name: tcp_socket
-                  title: TCP Socket
-                  subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
-                  properties:
-                    port:
-                      name: port
-                      title: Port
-                      min: 1
-                      max: 65535
-                      validation: Port number must be between 1 and 65535.
-                grpc:
-                  name: grpc
-                  title: GRPC
-                  properties:
-                    port:
-                      name: port
-                      title: Port
-                      subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
-                      min: 1
-                      max: 65535
-                      validation: Port number must be between 1 and 65535.
             liveness_probe:
               name: liveness_probe
               title: Liveness Probe
@@ -196,44 +72,24 @@ spec:
                 failure_threshold:
                   name: failure_threshold
                   title: Failure Threshold
-                  subtext: Minimum consecutive failures for the probe to be considered failed after having succeeded. Minimum value is 1.
                   min: 1
                   validation: Choose an integer value Choose an integer value greater than or equal to 1
-                initial_delay_seconds:
-                  name: initial_delay_seconds
-                  title: Initial Delay Seconds
-                  subtext: Number of times to retry the probe before marking the container as Unready
-                  min: 0
-                  max: 3600
-                  validation: Enter an integer value between 0 and 3600
-                timeout_seconds:
-                  name: timeout_seconds
-                  title: Timeout Seconds
-                  subtext: Number of times to retry the probe before marking the container as Unready
-                  min: 1
-                  max: 3600
-                  validation: Enter an integer value between 1 and 3600
-                period_seconds:
-                  name: period_seconds
-                  title: Period Seconds
-                  subtext: Number of seconds to wait between starting a probe attempt. Enter an integer value between 1 and 3600
-                  min: 1
-                  max: 3600
-                  validation: Enter an integer value between 1 and 3600
+                  subtext: Minimum consecutive failures for the probe to be considered failed after having succeeded. Minimum value is 1.
+                grpc:
+                  name: grpc
+                  title: GRPC
+                  properties:
+                    port:
+                      name: port
+                      title: Port
+                      min: 1
+                      max: 65535
+                      validation: Port number must be between 1 and 65535.
+                      subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
                 http_get:
                   name: http_get
                   title: Http Get
                   properties:
-                    path:
-                      name: path
-                      title: Path
-                      subtext: Path to access on HTTP server
-                      regexValidation: "^(/[^/ ]+)*/?$"
-                      validation: Path must be a valid URL path (e.g., /health).
-                    port:
-                      name: port
-                      title: Port
-                      subtext: Port to make connection for the Cloud Run instance. It will default to container port which is 8080
                     http_headers:
                       name: http_headers
                       title: Http Headers
@@ -249,6 +105,29 @@ spec:
                           title: Value
                           regexValidation: ^.*$
                           validation: Header value can be any string
+                    path:
+                      name: path
+                      title: Path
+                      regexValidation: ^(/[^/ ]+)*/?$
+                      validation: Path must be a valid URL path (e.g., /health).
+                      subtext: Path to access on HTTP server
+                    port:
+                      name: port
+                      title: Port
+                      subtext: Port to make connection for the Cloud Run instance. It will default to container port which is 8080
+                initial_delay_seconds:
+                  name: initial_delay_seconds
+                  title: Initial Delay Seconds
+                  max: 3600
+                  validation: Enter an integer value between 0 and 3600
+                  subtext: Number of times to retry the probe before marking the container as Unready
+                period_seconds:
+                  name: period_seconds
+                  title: Period Seconds
+                  min: 1
+                  max: 3600
+                  validation: Enter an integer value between 1 and 3600
+                  subtext: Number of seconds to wait between starting a probe attempt. Enter an integer value between 1 and 3600
                 tcp_socket:
                   name: tcp_socket
                   title: TCP Socket
@@ -260,6 +139,71 @@ spec:
                       min: 1
                       max: 65535
                       validation: Port number must be between 1 and 65535.
+                timeout_seconds:
+                  name: timeout_seconds
+                  title: Timeout Seconds
+                  min: 1
+                  max: 3600
+                  validation: Enter an integer value between 1 and 3600
+                  subtext: Number of times to retry the probe before marking the container as Unready
+            ports:
+              name: ports
+              title: Ports
+              properties:
+                container_port:
+                  name: container_port
+                  title: Container Port
+                  min: 1
+                  max: 65535
+                  validation: Choose an integer value between 1 and 65535
+                  subtext: Requests will be sent to the container on this port
+                name:
+                  name: name
+                  title: Name
+                  regexValidation: ^[a-z0-9.-]*$
+                  validation: Name may contain lowercase letters, numbers, hyphens or dots
+            resources:
+              name: resources
+              title: Resources
+              properties:
+                limits:
+                  name: limits
+                  title: Limits
+                  properties:
+                    cpu:
+                      name: cpu
+                      title: CPU
+                      subtext: Number of vCPUs allocated to each instance of this container
+                      enumValueLabels:
+                        - label: "1"
+                          value: "1"
+                        - label: "2"
+                          value: "2"
+                        - label: "3"
+                          value: "3"
+                        - label: "4"
+                          value: "4"
+                    memory:
+                      name: memory
+                      title: Memory
+                      regexValidation: ^[0-9]+(Mi|Gi|M|G)$
+                      validation: Must be a valid memory size with unit, such as Mi, Gi, M, or G
+                      subtext: Memory to allocate to each instance of this container
+                    nvidia_gpu:
+                      name: nvidia_gpu
+                      title: Nvidia GPU
+                      regexValidation: ^[0-9]+$
+                      validation: Must be a whole number representing the number of GPUs.
+            startup_probe:
+              name: startup_probe
+              title: Startup Probe
+              properties:
+                failure_threshold:
+                  name: failure_threshold
+                  title: Failure Threshold
+                  min: 1
+                  validation: Choose an integer value greater than or equal to 1
+                  subtext: Number of times to retry the probe before marking the container as Unready
                 grpc:
                   name: grpc
                   title: GRPC
@@ -267,33 +211,90 @@ spec:
                     port:
                       name: port
                       title: Port
-                      subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
                       min: 1
                       max: 65535
                       validation: Port number must be between 1 and 65535.
-            ports:
-              name: ports
-              title: Ports
+                      subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
+                http_get:
+                  name: http_get
+                  title: Http Get
+                  properties:
+                    http_headers:
+                      name: http_headers
+                      title: Http Headers
+                      subtext: Custom headers to set in the request. HTTP allows repeated headers
+                      properties:
+                        name:
+                          name: name
+                          title: Name
+                          regexValidation: ^[A-Za-z][A-Za-z0-9-]{0,62}$
+                          validation: "Must be a valid HTTP header name: start with a letter, contain only letters [A–Z, a–z], digits [0–9], or hyphens [-], and be at most 63 characters long"
+                        value:
+                          name: value
+                          title: Value
+                          regexValidation: ^.*$
+                          validation: Must be a valid string
+                    path:
+                      name: path
+                      title: Path
+                      regexValidation: ^(/[^/ ]+)*/?$
+                      validation: Path must be a valid URL path (e.g., /health).
+                      subtext: "Path to access on the HTTP server. Ex: e.g./reddy"
+                    port:
+                      name: port
+                      title: Port
+                      subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
+                initial_delay_seconds:
+                  name: initial_delay_seconds
+                  title: Initial Delay Seconds
+                  max: 240
+                  validation: Enter an integer value between 0 and 240
+                  subtext: Number of seconds after the container has started before performing the first probe. Enter an integer value between 0 and 240
+                period_seconds:
+                  name: period_seconds
+                  title: Period Seconds
+                  min: 1
+                  max: 240
+                  validation: Enter an integer value between 1 and 240
+                  subtext: Number of seconds to wait between starting a probe attempt. Enter an integer value between 1 and 240
+                tcp_socket:
+                  name: tcp_socket
+                  title: TCP Socket
+                  subtext: Port to make a connection for the Cloud Run instance. It will default to the container port, whose default value is 8080
+                  properties:
+                    port:
+                      name: port
+                      title: Port
+                      min: 1
+                      max: 65535
+                      validation: Port number must be between 1 and 65535.
+                timeout_seconds:
+                  name: timeout_seconds
+                  title: Timeout Seconds
+                  min: 1
+                  max: 240
+                  validation: Enter an integer value between 1 and 240
+                  subtext: Number of seconds after which the probe times out. This value shouldn't exceed Period seconds. Enter an integer value between 1 and 240
+            volume_mounts:
+              name: volume_mounts
+              title: Volume Mounts
+              subtext: Mount In-memory, Network File System, Secret and Cloud Storage bucket volumes to your container
               properties:
+                mount_path:
+                  name: mount_path
+                  title: Mount Path
+                  regexValidation: ^(/[^/ ]+)*/?$
+                  validation: Mount path must be an absolute path (e.g., /mnt/data).
                 name:
                   name: name
                   title: Name
-                  regexValidation: ^[a-z0-9.-]*$
-                  validation: Name may contain lowercase letters, numbers, hyphens or dots
-                container_port:
-                  name: container_port
-                  title: Container Port
-                  subtext: Requests will be sent to the container on this port
-                  min: 1
-                  max: 65535
-                  validation: Choose an integer value between 1 and 65535
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value:
-                - container_name: service-container
-                  container_image: us-docker.pkg.dev/cloudrun/container/hello
-                  ports:
-                    container_port: 8080
+                  regexValidation: ^[a-z0-9][a-z0-9_.-]{0,253}[a-z0-9]$
+                  validation: Volume mount name must only contain alphanumeric characters, hyphens and underscores.
+            working_dir:
+              name: working_dir
+              title: Working Dir
+              regexValidation: ^(/[^/ ]+)*/?$
+              validation: Must be an absolute path (e.g., /app/src).
         create_service_account:
           name: create_service_account
           title: Create Service Account
@@ -301,14 +302,20 @@ spec:
         custom_audiences:
           name: custom_audiences
           title: Custom Audiences
-          regexValidation: "^https?://(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?.)+[A-Za-z]{2,}(?:/[^s]*)?$"
+          regexValidation: ^https?://(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?.)+[A-Za-z]{2,}(?:/[^s]*)?$
           validation: Custom audience must be a valid URL starting with 'http://' or 'https://'
         description:
           name: description
           title: Description
-          level: 1
           regexValidation: ^[\s\S]{0,512}$
           validation: This field currently has a 512-character limit.
+          level: 1
+        domain_map_annotations:
+          name: domain_map_annotations
+          title: Domain Map Annotations
+        domain_map_labels:
+          name: domain_map_labels
+          title: Domain Map Labels
         enable_prometheus_sidecar:
           name: enable_prometheus_sidecar
           title: Enable Prometheus Sidecar
@@ -319,28 +326,36 @@ spec:
         encryption_key:
           name: encryption_key
           title: Encryption Key
-          level: 1
-          regexValidation: "^projects/[A-Za-z0-9_-]+/locations/[A-Za-z0-9_-]+/keyRings/[A-Za-z0-9_-]+/cryptoKeys/[A-Za-z0-9_-]+$"
+          regexValidation: ^projects/[A-Za-z0-9_-]+/locations/[A-Za-z0-9_-]+/keyRings/[A-Za-z0-9_-]+/cryptoKeys/[A-Za-z0-9_-]+$
           validation: Encryption key must be in the format projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{key}.
+          level: 1
         execution_environment:
           name: execution_environment
           title: Execution Environment
-          level: 1
           enumValueLabels:
             - label: EXECUTION_ENVIRONMENT_GEN2
               value: EXECUTION_ENVIRONMENT_GEN2
             - label: EXECUTION_ENVIRONMENT_GEN1
               value: EXECUTION_ENVIRONMENT_GEN1
+          level: 1
+        force_override:
+          name: force_override
+          title: Force Override
+        gpu_zonal_redundancy_disabled:
+          name: gpu_zonal_redundancy_disabled
+          title: GPU Zonal Redundancy disabled
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value: false
         iap_members:
           name: iap_members
           title: Iap Members
-          level: 1
           regexValidation: ^(?:allUsers|allAuthenticatedUsers)$|^((?:user|group|serviceAccount):(?:[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|(?:domain:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|(?:projectOwner|projectEditor|projectViewer):[a-z][a-z0-9-]{0,28}[a-z0-9])$
           validation: Must be allUsers, allAuthenticatedUsers, or a service account in the format serviceAccount:email@example.com. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member\/members-2).
+          level: 1
         ingress:
           name: ingress
           title: Ingress
-          level: 1
           enumValueLabels:
             - label: INGRESS_TRAFFIC_ALL
               value: INGRESS_TRAFFIC_ALL
@@ -348,6 +363,7 @@ spec:
               value: INGRESS_TRAFFIC_INTERNAL_ONLY
             - label: INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER
               value: INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER
+          level: 1
         launch_stage:
           name: launch_stage
           title: Launch Stage
@@ -372,14 +388,18 @@ spec:
         max_instance_request_concurrency:
           name: max_instance_request_concurrency
           title: Max Instance Request Concurrency
-          level: 1
           regexValidation: ^([1-9][0-9]{0,2}|1000)$
           validation: Max instance request concurrency must be an integer between 1 and 1000.
+          level: 1
         members:
           name: members
           title: Members
           regexValidation: ^(?:allUsers|allAuthenticatedUsers)$|^((?:user|group|serviceAccount):(?:[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|(?:domain:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|(?:projectOwner|projectEditor|projectViewer):[a-z][a-z0-9-]{0,28}[a-z0-9])$
           validation: Must be allUsers, allAuthenticatedUsers, or a service account in the format serviceAccount:email@example.com. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service_iam#member\/members-1).
+          level: 1
+        node_selector:
+          name: node_selector
+          title: Node Selector
           level: 1
         project_id:
           name: project_id
@@ -387,9 +407,9 @@ spec:
         revision:
           name: revision
           title: Revision
-          level: 1
           regexValidation: ^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$
           validation: Revision name must use only lowercase letters, numbers and '-'. Must begin with a letter and cannot end with a '-'
+          level: 1
         service_account:
           name: service_account
           title: Service Account
@@ -398,9 +418,9 @@ spec:
         service_account_project_roles:
           name: service_account_project_roles
           title: Service Account Project Roles
-          level: 1
-          regexValidation: "^(?:[a-z][a-z0-9-]{4,29}/)?roles/[a-zA-Z0-9_.]+$"
+          regexValidation: ^(?:[a-z][a-z0-9-]{4,29}/)?roles/[a-zA-Z0-9_.]+$
           validation: Role must be in the format roles/{role_name}.
+          level: 1
         service_annotations:
           name: service_annotations
           title: Service Annotations
@@ -416,24 +436,24 @@ spec:
           name: service_scaling
           title: Service Scaling
           level: 1
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value:
+                min_instance_count: 0
           properties:
             min_instance_count:
               name: min_instance_count
               title: Min Instance Count
               subtext: The service minimum instances is preferable for most use-cases. Only use this setting if you specifically require a per-revision setting
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value:
-                min_instance_count: 0
         session_affinity:
           name: session_affinity
           title: Session Affinity
-          level: 1
           enumValueLabels:
             - label: "true"
               value: "true"
             - label: "false"
               value: "false"
+          level: 1
         template_annotations:
           name: template_annotations
           title: Template Annotations
@@ -444,19 +464,19 @@ spec:
           name: template_scaling
           title: Template Scaling
           level: 1
-          properties:
-            min_instance_count:
-              name: min_instance_count
-              title: Min Instance Count
-              subtext: The service minimum instances is preferable for most use-cases. Only use this setting if you specifically require a per-revision setting
-            max_instance_count:
-              name: max_instance_count
-              title: Max Instance Count
-              min: 1
           altDefaults:
             - type: ALTERNATE_TYPE_DC
               value:
                 min_instance_count: 0
+          properties:
+            max_instance_count:
+              name: max_instance_count
+              title: Max Instance Count
+              min: 1
+            min_instance_count:
+              name: min_instance_count
+              title: Min Instance Count
+              subtext: The service minimum instances is preferable for most use-cases. Only use this setting if you specifically require a per-revision setting
         timeout:
           name: timeout
           title: Timeout
@@ -466,18 +486,9 @@ spec:
           name: traffic
           title: Traffic
           properties:
-            type:
-              name: type
-              title: Type
-              enumValueLabels:
-                - label: TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST
-                  value: TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST
-                - label: TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION
-                  value: TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION
             percent:
               name: percent
               title: Percent
-              min: 0
               max: 100
               validation: Percent must be an integer between 0 and 100.
             revision:
@@ -490,50 +501,22 @@ spec:
               title: Tag
               regexValidation: ^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$
               validation: Tag must start and end with a lowercase alphanumeric character, and contain only lowercase alphanumeric characters or hyphens.
+            type:
+              name: type
+              title: Type
+              enumValueLabels:
+                - label: TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST
+                  value: TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST
+                - label: TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION
+                  value: TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION
+        verified_domain_name:
+          name: verified_domain_name
+          title: Verified Domain Name
         volumes:
           name: volumes
           title: Volumes
           subtext: After creating a volume, navigate to the Container’s section to mount it to a container
           properties:
-            name:
-              name: name
-              title: Name
-              regexValidation: ^[a-zA-Z0-9_-]*$
-              validation: Volume name must only contain alphanumeric characters, hyphens and underscores
-            secret:
-              name: secret
-              title: Secret
-              properties:
-                secret:
-                  name: secret
-                  title: Secret
-                  regexValidation: ^([a-zA-Z0-9-_]{1,255}|projects\/([a-z][a-z0-9-]{4,28}[a-z0-9]|[0-9]{6,})\/secrets\/[a-zA-Z0-9-_]{1,255})$
-                  validation: Secret name must be either the secret name or the full Secret Manager resource path.
-                default_mode:
-                  name: default_mode
-                  title: Default Mode
-                  regexValidation: ^(0[0-7]{3})$
-                  validation: Must be a value between 0000 and 0777 (octal).
-                items:
-                  name: items
-                  title: Items
-                  properties:
-                    path:
-                      name: path
-                      title: Path
-                      subtext: "Example format (parent secret): \"projects/project-number/secrets/secret-name\""
-                      regexValidation: "^(.{1,2}/)?([A-Za-z0-9_.-]+/)*[A-Za-z0-9_.-]+$"
-                      validation: Path must be a valid relative file path.
-                    version:
-                      name: version
-                      title: Version
-                      regexValidation: ^(latest|[1-9][0-9]*)$
-                      validation: Version must be 'latest' or a version number.
-                    mode:
-                      name: mode
-                      title: Mode
-                      regexValidation: ^(0|0[1-7]{1,3})?$
-                      validation: Must be a value between 01 and 0777 (octal)
             cloud_sql_instance:
               name: cloud_sql_instance
               title: Cloud SQL Instance
@@ -568,22 +551,21 @@ spec:
                       value: "true"
                     - label: "false"
                       value: "false"
+            name:
+              name: name
+              title: Name
+              regexValidation: ^[a-zA-Z0-9_-]*$
+              validation: Volume name must only contain alphanumeric characters, hyphens and underscores
             nfs:
               name: nfs
               title: NFS
               properties:
-                server:
-                  name: server
-                  title: Server
-                  subtext: The IP address or hostname of your NFS server
-                  regexValidation: "^(([a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?.)*[a-zA-Z]{2,}|([0-9]{1,3}.){3}[0-9]{1,3})$"
-                  validation: Must be a valid IP address or hostname.
                 path:
                   name: path
                   title: Path
-                  subtext: The path to the NFS server directory you want to mount
-                  regexValidation: "^(/[^/ ]+)*/?$"
+                  regexValidation: ^(/[^/ ]+)*/?$
                   validation: Path must be an absolute path (e.g., /exports/data).
+                  subtext: The path to the NFS server directory you want to mount
                 read_only:
                   name: read_only
                   title: Read Only
@@ -592,11 +574,64 @@ spec:
                       value: "true"
                     - label: "false"
                       value: "false"
+                server:
+                  name: server
+                  title: Server
+                  regexValidation: ^(([a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?.)*[a-zA-Z]{2,}|([0-9]{1,3}.){3}[0-9]{1,3})$
+                  validation: Must be a valid IP address or hostname.
+                  subtext: The IP address or hostname of your NFS server
+            secret:
+              name: secret
+              title: Secret
+              properties:
+                default_mode:
+                  name: default_mode
+                  title: Default Mode
+                  regexValidation: ^(0[0-7]{3})$
+                  validation: Must be a value between 0000 and 0777 (octal).
+                items:
+                  name: items
+                  title: Items
+                  properties:
+                    mode:
+                      name: mode
+                      title: Mode
+                      regexValidation: ^(0|0[1-7]{1,3})?$
+                      validation: Must be a value between 01 and 0777 (octal)
+                    path:
+                      name: path
+                      title: Path
+                      regexValidation: ^(.{1,2}/)?([A-Za-z0-9_.-]+/)*[A-Za-z0-9_.-]+$
+                      validation: Path must be a valid relative file path.
+                      subtext: "Example format (parent secret): \"projects/project-number/secrets/secret-name\""
+                    version:
+                      name: version
+                      title: Version
+                      regexValidation: ^(latest|[1-9][0-9]*)$
+                      validation: Version must be 'latest' or a version number.
+                secret:
+                  name: secret
+                  title: Secret
+                  regexValidation: ^([a-zA-Z0-9-_]{1,255}|projects\/([a-z][a-z0-9-]{4,28}[a-z0-9]|[0-9]{6,})\/secrets\/[a-zA-Z0-9-_]{1,255})$
+                  validation: Secret name must be either the secret name or the full Secret Manager resource path.
         vpc_access:
           name: vpc_access
           title: Vpc Access
           level: 1
+          altDefaults:
+            - type: ALTERNATE_TYPE_DC
+              value:
+                egress: PRIVATE_RANGES_ONLY
+                network_interfaces:
+                  network: default
+                  subnetwork: default
           properties:
+            connector:
+              name: connector
+              title: Connector
+              regexValidation: ^projects/(?:[a-z][a-z0-9-]*[a-z0-9]|[0-9]+)/locations/([a-z0-9-]+)/connectors/([a-z][a-z0-9-]*[a-z0-9])$
+              validation: Invalid connector name. It must be in the format projects/{project}/locations/{location}/connectors/{connector}
+              subtext: VPC Access connector name.
             egress:
               name: egress
               title: Egress
@@ -606,12 +641,6 @@ spec:
                   value: PRIVATE_RANGES_ONLY
                 - label: ALL_TRAFFIC
                   value: ALL_TRAFFIC
-            connector:
-              name: connector
-              title: Connector
-              subtext: VPC Access connector name.
-              regexValidation: "^projects/(?:[a-z][a-z0-9-]*[a-z0-9]|[0-9]+)/locations/([a-z0-9-]+)/connectors/([a-z][a-z0-9-]*[a-z0-9])$"
-              validation: Invalid connector name. It must be in the format projects/{project}/locations/{location}/connectors/{connector}
             network_interfaces:
               name: network_interfaces
               title: Network Interfaces
@@ -622,37 +651,20 @@ spec:
                 network:
                   name: network
                   title: Network
-                  subtext: The VPC network that the Cloud Run resource will be able to send traffic to.
                   regexValidation: ^(projects\/[a-z0-9\-]+\/global\/networks\/[a-zA-Z0-9\-_]+|[a-zA-Z0-9\-_]+)$
                   validation: Network must be a valid network name or a full resource path.
+                  subtext: The VPC network that the Cloud Run resource will be able to send traffic to.
                 subnetwork:
                   name: subnetwork
                   title: Subnetwork
-                  subtext: The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the subnetwork with the same name with the network will be used.
                   regexValidation: ^(projects\/[a-z0-9\-]+\/regions\/[a-z0-9\-]+\/subnetworks\/[a-zA-Z0-9\-_]+|[a-zA-Z0-9\-_]+)$
                   validation: Subnetwork must be a valid subnetwork name or a full resource path.
+                  subtext: The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the subnetwork with the same name with the network will be used.
                 tags:
                   name: tags
                   title: Tags
-                  regexValidation: "^[a-z][a-z0-9-]*$"
+                  regexValidation: ^[a-z][a-z0-9-]*$
                   validation: Must start with a lowercase letter and contain only lowercase letters, numbers, and hyphens
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value:
-                egress: PRIVATE_RANGES_ONLY
-                network_interfaces:
-                  network: default
-                  subnetwork: default
-        node_selector:
-          name: node_selector
-          title: Node Selector
-          level: 1
-        gpu_zonal_redundancy_disabled:
-          name: gpu_zonal_redundancy_disabled
-          title: GPU Zonal Redundancy disabled
-          altDefaults:
-            - type: ALTERNATE_TYPE_DC
-              value: false
     runtime:
       outputs:
         service_uri:
