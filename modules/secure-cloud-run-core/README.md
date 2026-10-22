@@ -74,6 +74,7 @@ module "cloud_run_core" {
 | service\_labels | Labels to assign to the service. | `map(string)` | `{}` | no |
 | service\_name | The name of the Cloud Run service to create. | `string` | n/a | yes |
 | ssl\_certificates | A object with a list of domains to auto-generate SSL certificates or a list of SSL Certificates self-links. | <pre>object({<br>    ssl_certificates_self_links       = list(string)<br>    generate_certificates_for_domains = list(string)<br>  })</pre> | n/a | yes |
+| ssl\_policy | Enables the SSL Policy for the Load Balancer (Requires TLS 1.3). | `bool` | `false` | no |
 | startup\_probe | Configuration for the startup probe. | <pre>object({<br>    failure_threshold     = optional(number)<br>    initial_delay_seconds = optional(number)<br>    timeout_seconds       = optional(number)<br>    period_seconds        = optional(number)<br>    http_get = optional(object({<br>      path = optional(string)<br>      port = optional(number)<br>      http_headers = optional(list(object({<br>        name  = string<br>        value = string<br>      })))<br>    }))<br>    tcp_socket = optional(object({<br>      port = number<br>    }))<br>    grpc = optional(object({<br>      port    = optional(number)<br>      service = optional(string)<br>    }))<br>  })</pre> | `null` | no |
 | template\_labels | Labels to assign to the container metadata. | `map(string)` | `{}` | no |
 | timeout\_seconds | Timeout for each request in seconds. | `number` | `120` | no |
