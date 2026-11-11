@@ -101,7 +101,8 @@ module "serverless_project" {
 
 
 resource "google_artifact_registry_repository" "repo" {
-  count         = var.base_serverless_api == "run.googleapis.com" ? 1 : 0
+  count = var.base_serverless_api == "run.googleapis.com" ? 1 : 0
+
   project       = module.security_project.project_id
   location      = var.location
   repository_id = var.artifact_registry_repository_name
@@ -115,7 +116,8 @@ resource "google_artifact_registry_repository" "repo" {
 }
 
 resource "google_artifact_registry_repository_iam_member" "member" {
-  for_each   = var.base_serverless_api == "run.googleapis.com" ? module.serverless_project : {}
+  for_each = var.base_serverless_api == "run.googleapis.com" ? module.serverless_project : {}
+
   project    = module.security_project.project_id
   location   = var.location
   repository = google_artifact_registry_repository.repo[0].repository_id

@@ -19,8 +19,9 @@ locals {
 }
 
 module "service_account" {
-  source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 4.2"
+  source  = "terraform-google-modules/service-accounts/google"
+  version = "~> 5.1"
+
   project_id = var.project_id
   prefix     = "sa-cloud-run"
   names      = ["cmek"]
@@ -53,7 +54,7 @@ resource "google_project_service_identity" "serverless_sa" {
 
 module "cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google"
-  version = "~> 0.16"
+  version = "~> 0.34"
 
   service_name          = "ci-cloud-run"
   project_id            = var.project_id

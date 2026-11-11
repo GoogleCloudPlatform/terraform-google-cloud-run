@@ -33,8 +33,9 @@ module "serverless_project" {
 }
 
 module "service_accounts" {
-  source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 4.2"
+  source  = "terraform-google-modules/service-accounts/google"
+  version = "~> 5.1"
+
   project_id = module.serverless_project.project_id
   prefix     = "sa"
   names      = var.base_serverless_api == "run.googleapis.com" ? ["cloud-run"] : ["cloud-function"]
@@ -46,9 +47,10 @@ module "service_accounts" {
 
 resource "google_project_iam_member" "cloud_run_sa_roles" {
   for_each = toset(var.service_account_project_roles)
-  project  = module.serverless_project.project_id
-  role     = each.value
-  member   = module.service_accounts.iam_email
+
+  project = module.serverless_project.project_id
+  role    = each.value
+  member  = module.service_accounts.iam_email
 }
 
 resource "google_project_service_identity" "serverless_sa" {
@@ -83,7 +85,8 @@ data "google_storage_project_service_account" "gcs_account" {
 }
 
 resource "google_project_iam_member" "gcs_pubsub_publishing" {
-  count   = var.base_serverless_api == "run.googleapis.com" ? 0 : 1
+  count = var.base_serverless_api == "run.googleapis.com" ? 0 : 1
+
   project = module.serverless_project.project_id
   role    = "roles/pubsub.publisher"
   member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"

@@ -39,14 +39,16 @@ resource "random_string" "random_access_level_suffix" {
 *******************************************/
 
 resource "google_access_context_manager_access_policy" "access_policy" {
-  count  = var.create_access_context_manager_access_policy ? 1 : 0
+  count = var.create_access_context_manager_access_policy ? 1 : 0
+
   parent = "organizations/${var.org_id}"
   title  = "default policy"
 }
 
 module "access_level_members" {
-  source      = "terraform-google-modules/vpc-service-controls/google//modules/access_level"
-  version     = "~> 8.0"
+  source  = "terraform-google-modules/vpc-service-controls/google//modules/access_level"
+  version = "~> 8.0"
+
   description = "${local.prefix} Access Level"
   policy      = local.access_context_manager_policy_id
   name        = local.access_level_name
@@ -54,8 +56,9 @@ module "access_level_members" {
 }
 
 module "regular_service_perimeter" {
-  source                  = "terraform-google-modules/vpc-service-controls/google//modules/regular_service_perimeter"
-  version                 = "~> 8.0"
+  source  = "terraform-google-modules/vpc-service-controls/google//modules/regular_service_perimeter"
+  version = "~> 8.0"
+
   policy                  = local.access_context_manager_policy_id
   perimeter_name          = local.perimeter_name
   description             = "Serverless VPC Service Controls perimeter"
@@ -190,7 +193,8 @@ module "regular_service_perimeter" {
 }
 
 resource "google_access_context_manager_service_perimeter_resource" "service_perimeter_serverless_resource" {
-  for_each       = module.serverless_project
+  for_each = module.serverless_project
+
   perimeter_name = "accessPolicies/${local.access_context_manager_policy_id}/servicePerimeters/${module.regular_service_perimeter.perimeter_name}"
   resource       = "projects/${each.value.project_number}"
   depends_on = [
@@ -213,7 +217,8 @@ resource "google_access_context_manager_service_perimeter_resource" "service_per
 }
 
 resource "google_access_context_manager_service_perimeter_resource" "service_perimeter_network_resource" {
-  count          = var.use_shared_vpc ? 1 : 0
+  count = var.use_shared_vpc ? 1 : 0
+
   perimeter_name = "accessPolicies/${local.access_context_manager_policy_id}/servicePerimeters/${module.regular_service_perimeter.perimeter_name}"
   resource       = "projects/${module.network_project[0].project_number}"
   depends_on = [
