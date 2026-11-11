@@ -72,13 +72,22 @@ spec:
               folder_id = optional(string, "")
             })
         defaultValue: {}
+      - name: vpc_name
+        description: The name of the network.
+        varType: string
+        required: true
+      - name: subnet_ip
+        description: The CDIR IP range of the subnetwork.
+        varType: string
+        required: true
       - name: network_project_config
-        description: Configuration for the network project. If 'create' is false, 'project_id' must be provided.
+        description: "Configuration for the network project. If 'use_shared_vpc' is true: 'project_name' is required when 'create_project' is true, and 'project_id' is required when 'create_project' is false. If 'use_shared_vpc' is false, neither is required."
         varType: |-
           object({
-              create       = optional(bool, true)
-              project_name = optional(string, "")
-              project_id   = optional(string, "")
+              use_shared_vpc = optional(bool, false)
+              create_project = optional(bool, true)
+              project_name   = optional(string, "")
+              project_id     = optional(string, "")
             })
         defaultValue: {}
       - name: security_project_config
@@ -134,10 +143,6 @@ spec:
         description: Flag to enable or disable the creation of VPC Service Controls resources.
         varType: bool
         defaultValue: true
-      - name: use_shared_vpc
-        description: Defines if the network created will be a single or shared vpc.
-        varType: bool
-        defaultValue: false
       - name: access_level_members
         description: The list of additional members who will be in the access level.
         varType: list(string)
@@ -176,14 +181,6 @@ spec:
         defaultValue: []
       - name: region
         description: The region in which the subnetwork will be created.
-        varType: string
-        required: true
-      - name: vpc_name
-        description: The name of the network.
-        varType: string
-        required: true
-      - name: subnet_ip
-        description: The CDIR IP range of the subnetwork.
         varType: string
         required: true
       - name: private_service_connect_ip
@@ -311,13 +308,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/iam.serviceAccountUser
+          - roles/serviceusage.serviceUsageViewer
           - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
-          - roles/iam.serviceAccountUser
-          - roles/serviceusage.serviceUsageViewer
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com

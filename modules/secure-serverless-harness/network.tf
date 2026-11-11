@@ -18,12 +18,12 @@ locals {
   network_name = startswith(var.vpc_name, "vpc-") ? var.vpc_name : "vpc-${var.vpc_name}"
 
   # If using Shared VPC, map all serverless projects to their effective IDs
-  services_projects = var.use_shared_vpc ? local.effective_serverless_project_ids : {}
+  services_projects = var.network_project_config.use_shared_vpc ? local.effective_serverless_project_ids : {}
 
   # Determine where the network(s) should be deployed:
   # - If Shared VPC: Deploy ONE network inside the Network Project.
   # - If NOT Shared VPC: Deploy a network inside EACH Serverless Project.
-  network_projects = var.use_shared_vpc ? { "shared_network" = local.effective_network_project_id } : local.effective_serverless_project_ids
+  network_projects = var.network_project_config.use_shared_vpc ? { "shared_network" = local.effective_network_project_id } : local.effective_serverless_project_ids
 }
 
 module "network" {
@@ -33,7 +33,7 @@ module "network" {
 
   project_id                             = each.value
   network_name                           = local.network_name
-  shared_vpc_host                        = var.use_shared_vpc
+  shared_vpc_host                        = var.network_project_config.use_shared_vpc
   delete_default_internet_gateway_routes = "true"
 
   subnets = [

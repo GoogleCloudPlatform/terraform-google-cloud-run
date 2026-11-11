@@ -17,7 +17,7 @@
 locals {
 
   effective_serverless_folder_id    = var.serverless_folder_config.create ? google_folder.fld_serverless[0].name : var.serverless_folder_config.folder_id
-  effective_network_project_id      = (var.network_project_config.create && var.use_shared_vpc) ? module.network_project[0].project_id : var.network_project_config.project_id
+  effective_network_project_id      = (var.network_project_config.create_project && var.network_project_config.use_shared_vpc) ? module.network_project[0].project_id : var.network_project_config.project_id
   effective_security_project_id     = var.security_project_config.create ? module.security_project[0].project_id : var.security_project_config.project_id
   effective_security_project_number = var.security_project_config.create ? module.security_project[0].project_number : data.google_project.existing_security_project[0].number
   effective_serverless_project_ids = {
@@ -65,7 +65,7 @@ resource "google_folder" "fld_serverless" {
 module "network_project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 18.0"
-  count   = var.network_project_config.create && var.use_shared_vpc ? 1 : 0
+  count   = var.network_project_config.use_shared_vpc && var.network_project_config.create_project ? 1 : 0
 
   random_project_id = "true"
   activate_apis     = local.network_apis
@@ -82,7 +82,7 @@ module "network_project" {
 
 # Fetch the network project number if we are not creating it, but we are using Shared VPC
 data "google_project" "existing_network_project" {
-  count      = !var.network_project_config.create && var.use_shared_vpc ? 1 : 0
+  count      = !var.network_project_config.create_project && var.network_project_config.use_shared_vpc ? 1 : 0
   project_id = var.network_project_config.project_id
 }
 

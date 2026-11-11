@@ -30,9 +30,19 @@ module "secure_harness" {
   source  = "GoogleCloudPlatform/cloud-run/google//modules/secure-serverless-harness"
   version = "~> 0.34"
 
-  billing_account                             = var.billing_account
-  security_project_name                       = "prj-kms-secure-cloud-run"
-  serverless_project_names                    = ["prj-secure-cloud-run"]
+  billing_account = var.billing_account
+  security_project_config = {
+    create       = true
+    project_name = "prj-kms-secure-cloud-run"
+  }
+
+  serverless_projects_config = {
+    "cloud_run" = {
+      create       = true
+      project_name = "prj-secure-cloud-run"
+    }
+  }
+
   org_id                                      = var.org_id
   parent_folder_id                            = var.parent_folder_id
   serverless_folder_suffix                    = random_id.random_folder_suffix.hex

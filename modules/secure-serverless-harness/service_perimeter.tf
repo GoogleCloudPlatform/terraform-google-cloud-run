@@ -18,7 +18,7 @@ locals {
   prefix = "secure_cloud_run"
 
   # We calculate the network project number to use in the perimeter resource
-  effective_network_project_number = (var.network_project_config.create && var.use_shared_vpc) ? module.network_project[0].project_number : (var.use_shared_vpc ? data.google_project.existing_network_project[0].number : "")
+  effective_network_project_number = (var.network_project_config.create_project && var.network_project_config.use_shared_vpc) ? module.network_project[0].project_number : (var.network_project_config.use_shared_vpc ? data.google_project.existing_network_project[0].number : "")
 
   # Safely generate names only if we are creating VPC SC
   access_level_name = var.create_vpc_service_controls ? "alp_${local.prefix}members${random_string.random_access_level_suffix[0].result}" : ""
@@ -233,7 +233,7 @@ resource "google_access_context_manager_service_perimeter_resource" "service_per
 }
 
 resource "google_access_context_manager_service_perimeter_resource" "service_perimeter_network_resource" {
-  count = (var.create_vpc_service_controls && var.use_shared_vpc) ? 1 : 0
+  count = (var.create_vpc_service_controls && var.network_project_config.use_shared_vpc) ? 1 : 0
 
   perimeter_name = "accessPolicies/${local.access_context_manager_policy_id}/servicePerimeters/${module.regular_service_perimeter[0].perimeter_name}"
   resource       = "projects/${local.effective_network_project_number}"

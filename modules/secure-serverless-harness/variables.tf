@@ -43,18 +43,29 @@ variable "serverless_folder_config" {
   }
 }
 
+variable "vpc_name" {
+  description = "The name of the network."
+  type        = string
+}
+
+variable "subnet_ip" {
+  description = "The CDIR IP range of the subnetwork."
+  type        = string
+}
+
 variable "network_project_config" {
-  description = "Configuration for the network project. If 'create' is false, 'project_id' must be provided."
+  description = "Configuration for the network project. If 'use_shared_vpc' is true: 'project_name' is required when 'create_project' is true, and 'project_id' is required when 'create_project' is false. If 'use_shared_vpc' is false, neither is required."
   type = object({
-    create       = optional(bool, true)
-    project_name = optional(string, "")
-    project_id   = optional(string, "")
+    use_shared_vpc = optional(bool, false)
+    create_project = optional(bool, true)
+    project_name   = optional(string, "")
+    project_id     = optional(string, "")
   })
   default = {}
 
   validation {
-    condition     = var.network_project_config.create ? var.network_project_config.project_name != "" : var.network_project_config.project_id != ""
-    error_message = "Network project: If 'create' is true, 'project_name' is required. If 'create' is false, 'project_id' is required."
+    condition     = !var.network_project_config.use_shared_vpc || (var.network_project_config.create_project ? var.network_project_config.project_name != "" : var.network_project_config.project_id != "")
+    error_message = "Network project: If 'use_shared_vpc' is true and 'create_project' is true, 'project_name' is required. If 'use_shared_vpc' is true and 'create_project' is false, 'project_id' is required."
   }
 }
 
@@ -141,12 +152,6 @@ variable "create_vpc_service_controls" {
   default     = true
 }
 
-variable "use_shared_vpc" {
-  description = "Defines if the network created will be a single or shared vpc."
-  type        = bool
-  default     = false
-}
-
 variable "access_level_members" {
   description = "The list of additional members who will be in the access level."
   type        = list(string)
@@ -172,16 +177,6 @@ variable "ingress_policies" {
 
 variable "region" {
   description = "The region in which the subnetwork will be created."
-  type        = string
-}
-
-variable "vpc_name" {
-  description = "The name of the network."
-  type        = string
-}
-
-variable "subnet_ip" {
-  description = "The CDIR IP range of the subnetwork."
   type        = string
 }
 

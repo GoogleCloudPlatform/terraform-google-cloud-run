@@ -72,7 +72,7 @@ module "secure_cloud_run_harness" {
 | key\_rotation\_period | Period of key rotation in seconds. Default value is equivalent to 30 days. | `string` | `"2592000s"` | no |
 | keyring\_name | Keyring name. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
-| network\_project\_config | Configuration for the network project. If 'create' is false, 'project\_id' must be provided. | <pre>object({<br>    create       = optional(bool, true)<br>    project_name = optional(string, "")<br>    project_id   = optional(string, "")<br>  })</pre> | `{}` | no |
+| network\_project\_config | Configuration for the network project. If 'use\_shared\_vpc' is true: 'project\_name' is required when 'create\_project' is true, and 'project\_id' is required when 'create\_project' is false. If 'use\_shared\_vpc' is false, neither is required. | <pre>object({<br>    use_shared_vpc = optional(bool, false)<br>    create_project = optional(bool, true)<br>    project_name   = optional(string, "")<br>    project_id     = optional(string, "")<br>  })</pre> | `{}` | no |
 | network\_project\_extra\_apis | The extra APIs to be enabled during network project creation. | `list(string)` | `[]` | no |
 | org\_id | The organization ID. | `string` | n/a | yes |
 | owners | List of comma-separated owners for each key declared in set\_owners\_for. | `list(string)` | `[]` | no |
@@ -91,7 +91,6 @@ module "secure_cloud_run_harness" {
 | subnet\_ip | The CDIR IP range of the subnetwork. | `string` | n/a | yes |
 | time\_to\_wait\_service\_identity\_propagation | The time to wait for service identity propagation. | `string` | `"180s"` | no |
 | time\_to\_wait\_vpc\_sc\_propagation | The time to wait VPC-SC propagation when applying and destroying. | `string` | `"180s"` | no |
-| use\_shared\_vpc | Defines if the network created will be a single or shared vpc. | `bool` | `false` | no |
 | vpc\_name | The name of the network. | `string` | n/a | yes |
 
 ## Outputs
