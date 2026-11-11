@@ -35,6 +35,18 @@ variable "network_project_id" {
   default     = ""
 }
 
+variable "create_project" {
+  description = "Controls whether the underlying project should be created."
+  type        = bool
+  default     = true
+}
+
+variable "project_id" {
+  description = "The ID of the existing project, if create_project is false."
+  type        = string
+  default     = ""
+}
+
 variable "project_name" {
   description = "The name to give the Cloud Serverless project."
   type        = string

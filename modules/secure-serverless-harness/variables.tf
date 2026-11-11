@@ -29,9 +29,63 @@ variable "base_serverless_api" {
   }
 }
 
-variable "security_project_name" {
-  description = "The name to give the security project."
-  type        = string
+variable "serverless_folder_config" {
+  description = "Configuration for the serverless folder. If 'create' is false, 'folder_id' must be provided."
+  type = object({
+    create    = optional(bool, true)
+    folder_id = optional(string, "")
+  })
+  default = {}
+
+  validation {
+    condition     = var.serverless_folder_config.create || var.serverless_folder_config.folder_id != ""
+    error_message = "For the Serverless Folder: If 'create' is false, an existing 'folder_id' MUST be provided."
+  }
+}
+
+variable "network_project_config" {
+  description = "Configuration for the network project. If 'create' is false, 'project_id' must be provided."
+  type = object({
+    create       = optional(bool, true)
+    project_name = optional(string, "")
+    project_id   = optional(string, "")
+  })
+  default = {}
+
+  validation {
+    condition     = var.network_project_config.create ? var.network_project_config.project_name != "" : var.network_project_config.project_id != ""
+    error_message = "Network project: If 'create' is true, 'project_name' is required. If 'create' is false, 'project_id' is required."
+  }
+}
+
+variable "security_project_config" {
+  description = "Configuration for the security project. If 'create' is false, 'project_id' must be provided."
+  type = object({
+    create       = optional(bool, true)
+    project_name = optional(string, "")
+    project_id   = optional(string, "")
+  })
+  default = {}
+
+  validation {
+    condition     = var.security_project_config.create ? var.security_project_config.project_name != "" : var.security_project_config.project_id != ""
+    error_message = "Security project: If 'create' is true, 'project_name' is required. If 'create' is false, 'project_id' is required."
+  }
+}
+
+variable "serverless_projects_config" {
+  description = "Map of configurations for the serverless projects. Keys are project names. If 'create' is false, 'project_id' must be provided."
+  type = map(object({
+    create       = optional(bool, true)
+    project_name = optional(string, "")
+    project_id   = optional(string, "")
+  }))
+  default = {}
+
+  validation {
+    condition     = alltrue([for k, v in var.serverless_projects_config : v.create ? v.project_name != "" : v.project_id != ""])
+    error_message = "Serverless projects: If 'create' is true, 'project_name' is required. If 'create' is false, 'project_id' is required."
+  }
 }
 
 variable "security_project_extra_apis" {
@@ -40,21 +94,10 @@ variable "security_project_extra_apis" {
   default     = []
 }
 
-variable "network_project_name" {
-  description = "The name to give the shared vpc project."
-  type        = string
-  default     = ""
-}
-
 variable "network_project_extra_apis" {
   description = "The extra APIs to be enabled during network project creation."
   type        = list(string)
   default     = []
-}
-
-variable "serverless_project_names" {
-  description = "The name to give the Cloud Serverless project."
-  type        = list(string)
 }
 
 variable "serverless_project_extra_apis" {
@@ -90,6 +133,12 @@ variable "create_access_context_manager_access_policy" {
   description = "Defines if Access Context Manager will be created by Terraform."
   type        = bool
   default     = false
+}
+
+variable "create_vpc_service_controls" {
+  description = "Flag to enable or disable the creation of VPC Service Controls resources."
+  type        = bool
+  default     = true
 }
 
 variable "use_shared_vpc" {

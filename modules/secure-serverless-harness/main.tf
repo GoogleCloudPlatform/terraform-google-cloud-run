@@ -15,6 +15,17 @@
  */
 
 locals {
+
+  effective_serverless_folder_id    = var.serverless_folder_config.create ? google_folder.fld_serverless[0].name : var.serverless_folder_config.folder_id
+  effective_network_project_id      = (var.network_project_config.create && var.use_shared_vpc) ? module.network_project[0].project_id : var.network_project_config.project_id
+  effective_security_project_id     = var.security_project_config.create ? module.security_project[0].project_id : var.security_project_config.project_id
+  effective_security_project_number = var.security_project_config.create ? module.security_project[0].project_number : data.google_project.existing_security_project[0].number
+  effective_serverless_project_ids = {
+    for k, v in var.serverless_projects_config :
+    k => v.create ? module.serverless_project[k].project_id : v.project_id
+  }
+
+
   serverless_apis = [
     "vpcaccess.googleapis.com",
     "compute.googleapis.com",
@@ -44,6 +55,8 @@ locals {
 }
 
 resource "google_folder" "fld_serverless" {
+  count = var.serverless_folder_config.create ? 1 : 0
+
   display_name        = var.serverless_folder_suffix == "" ? "fldr-serverless" : "fldr-serverless-${var.serverless_folder_suffix}"
   parent              = var.parent_folder_id == "" ? "organizations/${var.org_id}" : "folders/${var.parent_folder_id}"
   deletion_protection = var.folder_deletion_protection
@@ -52,14 +65,14 @@ resource "google_folder" "fld_serverless" {
 module "network_project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 18.0"
-  count   = var.use_shared_vpc ? 1 : 0
+  count   = var.network_project_config.create && var.use_shared_vpc ? 1 : 0
 
   random_project_id = "true"
   activate_apis     = local.network_apis
-  name              = var.network_project_name
+  name              = var.network_project_config.project_name
   org_id            = var.org_id
   billing_account   = var.billing_account
-  folder_id         = google_folder.fld_serverless.name
+  folder_id         = local.effective_serverless_folder_id
 
   disable_services_on_destroy = var.disable_services_on_destroy
   deletion_policy             = var.project_deletion_policy
@@ -67,31 +80,42 @@ module "network_project" {
   enable_shared_vpc_host_project = true
 }
 
+# Fetch the network project number if we are not creating it, but we are using Shared VPC
+data "google_project" "existing_network_project" {
+  count      = !var.network_project_config.create && var.use_shared_vpc ? 1 : 0
+  project_id = var.network_project_config.project_id
+}
+
 module "security_project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 18.0"
+  count   = var.security_project_config.create ? 1 : 0
 
   random_project_id = "true"
   activate_apis     = local.kms_apis
-  name              = var.security_project_name
+  name              = var.security_project_config.project_name
   org_id            = var.org_id
   billing_account   = var.billing_account
-  folder_id         = google_folder.fld_serverless.name
+  folder_id         = local.effective_serverless_folder_id
 
   disable_services_on_destroy = var.disable_services_on_destroy
   deletion_policy             = var.project_deletion_policy
 }
 
-module "serverless_project" {
-  source = "../service-project-factory"
+data "google_project" "existing_security_project" {
+  count      = var.security_project_config.create ? 0 : 1
+  project_id = var.security_project_config.project_id
+}
 
-  for_each = toset(var.serverless_project_names)
+module "serverless_project" {
+  source   = "../service-project-factory"
+  for_each = { for k, v in var.serverless_projects_config : k => v if v.create }
 
   billing_account               = var.billing_account
   base_serverless_api           = var.base_serverless_api
   org_id                        = var.org_id
   activate_apis                 = concat(local.serverless_apis, try(var.serverless_project_extra_apis[each.value], []))
-  folder_name                   = google_folder.fld_serverless.name
+  folder_name                   = local.effective_serverless_folder_id
   project_name                  = each.value
   service_account_project_roles = try(var.service_account_project_roles[each.value], [])
   project_deletion_policy       = var.project_deletion_policy
@@ -103,7 +127,7 @@ module "serverless_project" {
 resource "google_artifact_registry_repository" "repo" {
   count = var.base_serverless_api == "run.googleapis.com" ? 1 : 0
 
-  project       = module.security_project.project_id
+  project       = local.effective_security_project_id
   location      = var.location
   repository_id = var.artifact_registry_repository_name
   description   = var.artifact_registry_repository_description
@@ -118,7 +142,7 @@ resource "google_artifact_registry_repository" "repo" {
 resource "google_artifact_registry_repository_iam_member" "member" {
   for_each = var.base_serverless_api == "run.googleapis.com" ? module.serverless_project : {}
 
-  project    = module.security_project.project_id
+  project    = local.effective_security_project_id
   location   = var.location
   repository = google_artifact_registry_repository.repo[0].repository_id
   role       = "roles/artifactregistry.reader"
@@ -133,7 +157,7 @@ module "artifact_registry_kms" {
   source  = "terraform-google-modules/kms/google"
   version = "~> 4.0"
 
-  project_id           = module.security_project.project_id
+  project_id           = local.effective_security_project_id
   location             = var.location
   keyring              = var.keyring_name
   keys                 = [var.key_name]
@@ -156,7 +180,7 @@ module "artifact_registry_kms" {
 resource "google_project_service_identity" "artifact_sa" {
   provider = google-beta
 
-  project = module.security_project.project_id
+  project = local.effective_security_project_id
   service = "artifactregistry.googleapis.com"
 
   depends_on = [

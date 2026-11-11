@@ -64,26 +64,49 @@ spec:
         description: This variable will enable Cloud Function or Cloud Run specific resources. Cloud Run API will be used for the terraform-google-cloud-run repository while Cloud Function API will be used in the terraform-google-cloud-functions repository. It supports only run.googleapis.com or cloudfunctions.googleapis.com
         varType: string
         required: true
-      - name: security_project_name
-        description: The name to give the security project.
-        varType: string
-        required: true
+      - name: serverless_folder_config
+        description: Configuration for the serverless folder. If 'create' is false, 'folder_id' must be provided.
+        varType: |-
+          object({
+              create    = optional(bool, true)
+              folder_id = optional(string, "")
+            })
+        defaultValue: {}
+      - name: network_project_config
+        description: Configuration for the network project. If 'create' is false, 'project_id' must be provided.
+        varType: |-
+          object({
+              create       = optional(bool, true)
+              project_name = optional(string, "")
+              project_id   = optional(string, "")
+            })
+        defaultValue: {}
+      - name: security_project_config
+        description: Configuration for the security project. If 'create' is false, 'project_id' must be provided.
+        varType: |-
+          object({
+              create       = optional(bool, true)
+              project_name = optional(string, "")
+              project_id   = optional(string, "")
+            })
+        defaultValue: {}
+      - name: serverless_projects_config
+        description: Map of configurations for the serverless projects. Keys are project names. If 'create' is false, 'project_id' must be provided.
+        varType: |-
+          map(object({
+              create       = optional(bool, true)
+              project_name = optional(string, "")
+              project_id   = optional(string, "")
+            }))
+        defaultValue: {}
       - name: security_project_extra_apis
         description: The extra APIs to be enabled during security project creation.
         varType: list(string)
         defaultValue: []
-      - name: network_project_name
-        description: The name to give the shared vpc project.
-        varType: string
-        defaultValue: ""
       - name: network_project_extra_apis
         description: The extra APIs to be enabled during network project creation.
         varType: list(string)
         defaultValue: []
-      - name: serverless_project_names
-        description: The name to give the Cloud Serverless project.
-        varType: list(string)
-        required: true
       - name: serverless_project_extra_apis
         description: The extra APIs to be enabled during serverless projects creation.
         varType: map(list(string))
@@ -107,6 +130,10 @@ spec:
         description: Defines if Access Context Manager will be created by Terraform.
         varType: bool
         defaultValue: false
+      - name: create_vpc_service_controls
+        description: Flag to enable or disable the creation of VPC Service Controls resources.
+        varType: bool
+        defaultValue: true
       - name: use_shared_vpc
         description: Defines if the network created will be a single or shared vpc.
         varType: bool
@@ -246,6 +273,8 @@ spec:
     outputs:
       - name: access_context_manager_policy_id
         description: Access Context Manager ID.
+      - name: access_level_members
+        description: A comprehensive list of Service Account emails (prefixed with 'serviceAccount:') required to be added to the VPC Service Controls Access Level.
       - name: artifact_registry_key
         description: Artifact Registry KMS Key.
       - name: artifact_registry_repository_id
@@ -282,13 +311,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/cloudkms.admin
           - roles/resourcemanager.projectIamAdmin
           - roles/run.admin
           - roles/iam.serviceAccountAdmin
           - roles/artifactregistry.admin
           - roles/iam.serviceAccountUser
           - roles/serviceusage.serviceUsageViewer
-          - roles/cloudkms.admin
     services:
       - accesscontextmanager.googleapis.com
       - cloudbilling.googleapis.com

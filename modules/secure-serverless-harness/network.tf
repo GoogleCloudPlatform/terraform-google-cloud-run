@@ -17,8 +17,13 @@
 locals {
   network_name = startswith(var.vpc_name, "vpc-") ? var.vpc_name : "vpc-${var.vpc_name}"
 
-  services_projects = var.use_shared_vpc ? { for key, project in module.serverless_project : key => project.project_id } : {}
-  network_projects  = var.use_shared_vpc ? { for key, project in module.network_project : key => try(project.project_id, null) } : { for key, project in module.serverless_project : key => try(project.project_id, null) }
+  # If using Shared VPC, map all serverless projects to their effective IDs
+  services_projects = var.use_shared_vpc ? local.effective_serverless_project_ids : {}
+
+  # Determine where the network(s) should be deployed:
+  # - If Shared VPC: Deploy ONE network inside the Network Project.
+  # - If NOT Shared VPC: Deploy a network inside EACH Serverless Project.
+  network_projects = var.use_shared_vpc ? { "shared_network" = local.effective_network_project_id } : local.effective_serverless_project_ids
 }
 
 module "network" {
@@ -87,11 +92,11 @@ module "network" {
 resource "google_compute_shared_vpc_service_project" "shared_vpc_attachment" {
   for_each = local.services_projects
 
-  host_project    = module.network[0].project_id
+  host_project    = local.effective_network_project_id
   service_project = each.value
+
   depends_on = [
-    module.serverless_project,
-    local.network_projects,
+    module.network,
     time_sleep.wait_vpc_sc_propagation
   ]
 }
