@@ -58,6 +58,7 @@ module "secure_cloud_run_harness" {
 | base\_serverless\_api | This variable will enable Cloud Function or Cloud Run specific resources. Cloud Run API will be used for the terraform-google-cloud-run repository while Cloud Function API will be used in the terraform-google-cloud-functions repository. It supports only run.googleapis.com or cloudfunctions.googleapis.com | `string` | n/a | yes |
 | billing\_account | The ID of the billing account to associate this project with. | `string` | n/a | yes |
 | create\_access\_context\_manager\_access\_policy | Defines if Access Context Manager will be created by Terraform. | `bool` | `false` | no |
+| create\_vpc\_service\_controls | Flag to enable or disable the creation of VPC Service Controls resources. | `bool` | `true` | no |
 | decrypters | List of comma-separated owners for each key declared in set\_decrypters\_for. | `list(string)` | `[]` | no |
 | disable\_services\_on\_destroy | Whether project services will be disabled when the resources are destroyed | `bool` | `false` | no |
 | dns\_enable\_inbound\_forwarding | Toggle inbound query forwarding for VPC DNS. | `bool` | `true` | no |
@@ -71,8 +72,8 @@ module "secure_cloud_run_harness" {
 | key\_rotation\_period | Period of key rotation in seconds. Default value is equivalent to 30 days. | `string` | `"2592000s"` | no |
 | keyring\_name | Keyring name. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
+| network\_project\_config | Configuration for the network project. If 'use\_shared\_vpc' is true: 'project\_name' is required when 'create\_project' is true, and 'project\_id' is required when 'create\_project' is false. If 'use\_shared\_vpc' is false, neither is required. | <pre>object({<br>    use_shared_vpc = optional(bool, false)<br>    create_project = optional(bool, true)<br>    project_name   = optional(string, "")<br>    project_id     = optional(string, "")<br>  })</pre> | `{}` | no |
 | network\_project\_extra\_apis | The extra APIs to be enabled during network project creation. | `list(string)` | `[]` | no |
-| network\_project\_name | The name to give the shared vpc project. | `string` | `""` | no |
 | org\_id | The organization ID. | `string` | n/a | yes |
 | owners | List of comma-separated owners for each key declared in set\_owners\_for. | `list(string)` | `[]` | no |
 | parent\_folder\_id | The ID of a folder to host the infrastructure created in this module. | `string` | `""` | no |
@@ -80,16 +81,16 @@ module "secure_cloud_run_harness" {
 | private\_service\_connect\_ip | The internal IP to be used for the private service connect. | `string` | n/a | yes |
 | project\_deletion\_policy | The deletion policy for the project created. | `string` | `"PREVENT"` | no |
 | region | The region in which the subnetwork will be created. | `string` | n/a | yes |
+| security\_project\_config | Configuration for the security project. If 'create' is false, 'project\_id' must be provided. | <pre>object({<br>    create       = optional(bool, true)<br>    project_name = optional(string, "")<br>    project_id   = optional(string, "")<br>  })</pre> | `{}` | no |
 | security\_project\_extra\_apis | The extra APIs to be enabled during security project creation. | `list(string)` | `[]` | no |
-| security\_project\_name | The name to give the security project. | `string` | n/a | yes |
+| serverless\_folder\_config | Configuration for the serverless folder. If 'create' is false, 'folder\_id' must be provided. | <pre>object({<br>    create    = optional(bool, true)<br>    folder_id = optional(string, "")<br>  })</pre> | `{}` | no |
 | serverless\_folder\_suffix | The suffix to be concat in the Serverless folder name fldr-serverless-<SUFFIX>. | `string` | `""` | no |
 | serverless\_project\_extra\_apis | The extra APIs to be enabled during serverless projects creation. | `map(list(string))` | `{}` | no |
-| serverless\_project\_names | The name to give the Cloud Serverless project. | `list(string)` | n/a | yes |
+| serverless\_projects\_config | Map of configurations for the serverless projects. Keys are project names. If 'create' is false, 'project\_id' must be provided. | <pre>map(object({<br>    create       = optional(bool, true)<br>    project_name = optional(string, "")<br>    project_id   = optional(string, "")<br>  }))</pre> | `{}` | no |
 | service\_account\_project\_roles | Common roles to apply to the Cloud Serverless service account in the serverless project. | `map(list(string))` | `{}` | no |
 | subnet\_ip | The CDIR IP range of the subnetwork. | `string` | n/a | yes |
 | time\_to\_wait\_service\_identity\_propagation | The time to wait for service identity propagation. | `string` | `"180s"` | no |
 | time\_to\_wait\_vpc\_sc\_propagation | The time to wait VPC-SC propagation when applying and destroying. | `string` | `"180s"` | no |
-| use\_shared\_vpc | Defines if the network created will be a single or shared vpc. | `bool` | `false` | no |
 | vpc\_name | The name of the network. | `string` | n/a | yes |
 
 ## Outputs
@@ -97,6 +98,7 @@ module "secure_cloud_run_harness" {
 | Name | Description |
 |------|-------------|
 | access\_context\_manager\_policy\_id | Access Context Manager ID. |
+| access\_level\_members | A comprehensive list of Service Account emails (prefixed with 'serviceAccount:') required to be added to the VPC Service Controls Access Level. |
 | artifact\_registry\_key | Artifact Registry KMS Key. |
 | artifact\_registry\_repository\_id | The Artifact Registry Repository full identifier where the images should be stored. |
 | artifact\_registry\_repository\_name | The Artifact Registry Repository last part of the repository name where the images should be stored. |

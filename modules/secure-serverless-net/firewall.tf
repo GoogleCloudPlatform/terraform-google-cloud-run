@@ -20,10 +20,9 @@ locals {
 }
 
 module "firewall_rules" {
-  count = var.connector_on_host_project ? 0 : 1
-
   source  = "terraform-google-modules/network/google//modules/firewall-rules"
   version = "~> 18.0"
+  count   = var.connector_on_host_project ? 0 : 1
 
   project_id   = var.vpc_project_id
   network_name = var.shared_vpc_name

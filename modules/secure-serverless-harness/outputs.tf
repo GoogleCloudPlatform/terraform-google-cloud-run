@@ -15,7 +15,7 @@
  */
 
 output "serverless_folder_id" {
-  value       = google_folder.fld_serverless.name
+  value       = local.effective_serverless_folder_id
   description = "The folder created to allocate Serverless infra."
 
   depends_on = [
@@ -51,7 +51,7 @@ output "serverless_project_numbers" {
 }
 
 output "security_project_id" {
-  value       = module.security_project.project_id
+  value       = local.effective_security_project_id
   description = "Project ID of the project created for KMS and Artifact Register."
 
   depends_on = [
@@ -60,7 +60,7 @@ output "security_project_id" {
 }
 
 output "security_project_number" {
-  value       = module.security_project.project_number
+  value       = local.effective_security_project_number
   description = "Project number of the project created for KMS and Artifact Register."
 
   depends_on = [
@@ -132,7 +132,7 @@ output "access_context_manager_policy_id" {
 }
 
 output "restricted_service_perimeter_name" {
-  value       = module.regular_service_perimeter.perimeter_name
+  value       = var.create_vpc_service_controls ? module.regular_service_perimeter[0].perimeter_name : ""
   description = "Service Perimeter name."
 
   depends_on = [
@@ -141,7 +141,7 @@ output "restricted_service_perimeter_name" {
 }
 
 output "restricted_access_level_name" {
-  value       = module.access_level_members.name
+  value       = var.create_vpc_service_controls ? module.access_level_members[0].name : ""
   description = "Access level name."
 
   depends_on = [
@@ -150,7 +150,7 @@ output "restricted_access_level_name" {
 }
 
 output "restricted_access_level_name_id" {
-  value       = module.access_level_members.name_id
+  value       = var.create_vpc_service_controls ? module.access_level_members[0].name_id : ""
   description = "Access level name id."
 
   depends_on = [
@@ -165,4 +165,9 @@ output "artifact_registry_key" {
   depends_on = [
     time_sleep.wait_vpc_sc_propagation
   ]
+}
+
+output "access_level_members" {
+  value       = local.access_level_members
+  description = "A comprehensive list of Service Account emails (prefixed with 'serviceAccount:') required to be added to the VPC Service Controls Access Level."
 }
