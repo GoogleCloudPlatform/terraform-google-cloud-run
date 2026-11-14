@@ -114,10 +114,10 @@ module "serverless_project" {
   billing_account               = var.billing_account
   base_serverless_api           = var.base_serverless_api
   org_id                        = var.org_id
-  activate_apis                 = concat(local.serverless_apis, try(var.serverless_project_extra_apis[each.value], []))
+  activate_apis                 = concat(local.serverless_apis, try(var.serverless_project_extra_apis[each.value.project_name], []))
   folder_name                   = local.effective_serverless_folder_id
-  project_name                  = each.value
-  service_account_project_roles = try(var.service_account_project_roles[each.value], [])
+  project_name                  = each.value.project_name
+  service_account_project_roles = try(var.service_account_project_roles[each.value.project_name], [])
   project_deletion_policy       = var.project_deletion_policy
 
   disable_services_on_destroy = var.disable_services_on_destroy
