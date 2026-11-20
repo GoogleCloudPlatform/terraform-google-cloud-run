@@ -16,6 +16,19 @@
 
 locals {
   subnet_name = var.create_subnet ? "${var.subnet_name}${local.suffix}" : var.subnet_name
+
+  # IP range of the subnet used by the VPC connector. Used as the source of the
+  # firewall rule that allows connector traffic into the VPC, instead of a network
+  # tag that any instance admin on the network could self-assign.
+  connector_subnet_cidr = var.create_subnet ? var.ip_cidr_range : one(data.google_compute_subnetwork.connector_subnet[*].ip_cidr_range)
+}
+
+data "google_compute_subnetwork" "connector_subnet" {
+  count = !var.create_subnet && !var.connector_on_host_project ? 1 : 0
+
+  name    = var.subnet_name
+  project = var.vpc_project_id
+  region  = var.location
 }
 
 resource "google_compute_subnetwork" "vpc_subnetwork" {
