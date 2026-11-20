@@ -57,6 +57,8 @@ module "cloud_run_network" {
   create_subnet             = var.create_subnet
   resource_names_suffix     = var.resource_names_suffix
 
+  grant_network_user_on_host_project = var.grant_network_user_on_host_project
+
   serverless_service_identity_email = google_project_service_identity.serverless_sa.email
 
   depends_on = [

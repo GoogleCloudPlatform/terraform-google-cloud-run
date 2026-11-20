@@ -17,7 +17,7 @@ The resources/services/activations/deletions that this module will create/trigge
   * Advantages of creating connectors in the [VPC Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#host-project)
   * Advantages of creating connectors in the [Serverless Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#service-projects)
 * Grant the necessary roles for Cloud Run or Cloud Functions 2nd Gen be able to use VPC Connector on your Shared VPC when creating VPC Connector in host project.
-  * Grant Network User role to Cloud Services service account.
+  * Grant Network User role on the connector subnet (or on the whole host project when `grant_network_user_on_host_project` is true) to the Cloud Services and Serverless VPC Access service agents.
   * Grant VPC Access User to Cloud Run or Cloud Functions 2nd Gen Service Identity when deploying VPC Access.
 
 ## Usage
@@ -50,6 +50,7 @@ module "cloud_serverless_network" {
 | create\_subnet | The subnet will be created with the subnet\_name variable if true. When false, it will use the subnet\_name for the subnet. | `bool` | `true` | no |
 | enable\_load\_balancer\_fw | Create the firewall rule for Cloud Run to enable the VPC Connector to access the Load Balancer instance using TCP port 80. Default is true. If using Cloud Function set to false. | `bool` | `true` | no |
 | flow\_sampling | Sampling rate of VPC flow logs. The value must be in [0,1]. Where 1.0 means all logs, 0.5 mean half of the logs and 0.0 means no logs are reported. | `number` | `1` | no |
+| grant\_network\_user\_on\_host\_project | When true (and connector\_on\_host\_project is false), grants roles/compute.networkUser to the serverless project service agents on the whole Shared VPC host project (legacy behavior). When false (default), the role is granted only on the connector subnet. | `bool` | `false` | no |
 | ip\_cidr\_range | The range of internal addresses that are owned by the subnetwork and which is going to be used by VPC Connector. For example, 10.0.0.0/28 or 192.168.0.0/28. Ranges must be unique and non-overlapping within a network. Only IPv4 is supported. | `string` | n/a | yes |
 | location | The location where resources are going to be deployed. | `string` | n/a | yes |
 | resource\_names\_suffix | A suffix to concat in the end of the resources names. | `string` | `null` | no |
