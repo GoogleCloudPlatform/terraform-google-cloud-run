@@ -152,6 +152,10 @@ spec:
         description: The subnet will be created with the subnet_name variable if true. When false, it will use the subnet_name for the subnet.
         varType: bool
         defaultValue: true
+      - name: grant_network_user_on_host_project
+        description: When true, grants roles/compute.networkUser to the serverless project service agents on the whole Shared VPC host project (legacy behavior). When false (default), the role is granted only on the connector subnet.
+        varType: bool
+        defaultValue: false
       - name: policy_for
         description: "Policy Root: set one of the following values to determine where the policy is applied. Possible values: [\"project\", \"folder\", \"organization\"]."
         varType: string

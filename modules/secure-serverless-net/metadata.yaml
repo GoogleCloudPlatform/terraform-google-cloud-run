@@ -107,6 +107,10 @@ spec:
         description: Create the firewall rule for Cloud Run to enable the VPC Connector to access the Load Balancer instance using TCP port 80. Default is true. If using Cloud Function set to false.
         varType: bool
         defaultValue: true
+      - name: grant_network_user_on_host_project
+        description: When true (and connector_on_host_project is false), grants roles/compute.networkUser to the serverless project service agents on the whole Shared VPC host project (legacy behavior). When false (default), the role is granted only on the connector subnet.
+        varType: bool
+        defaultValue: false
     outputs:
       - name: cloud_services_sa
         description: Google APIs service agent.

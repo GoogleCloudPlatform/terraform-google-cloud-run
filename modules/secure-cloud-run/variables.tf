@@ -151,6 +151,13 @@ variable "create_subnet" {
   default     = true
 }
 
+variable "grant_network_user_on_host_project" {
+  description = "When true, grants roles/compute.networkUser to the serverless project service agents on the whole Shared VPC host project (legacy behavior). When false (default), the role is granted only on the connector subnet."
+  type        = bool
+  default     = false
+  nullable    = false
+}
+
 variable "policy_for" {
   description = "Policy Root: set one of the following values to determine where the policy is applied. Possible values: [\"project\", \"folder\", \"organization\"]."
   type        = string

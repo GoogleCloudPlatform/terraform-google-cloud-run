@@ -83,3 +83,10 @@ variable "enable_load_balancer_fw" {
   type        = bool
   default     = true
 }
+
+variable "grant_network_user_on_host_project" {
+  description = "When true (and connector_on_host_project is false), grants roles/compute.networkUser to the serverless project service agents on the whole Shared VPC host project (legacy behavior). When false (default), the role is granted only on the connector subnet."
+  type        = bool
+  default     = false
+  nullable    = false
+}
