@@ -145,6 +145,10 @@ func TestSecureCloudRun(t *testing.T) {
 				assert.Equal(orgPolicy.allowedValues, opOrgPolicies[0].Get("listPolicy.allowedValues").String(), fmt.Sprintf("Constraint %s should have policy %s", orgPolicy.constraint, orgPolicy.allowedValues))
 			}
 		}
+		// The connector requests rule must use the connector subnet range as its
+		// source, not the vpc-connector network tag.
+		connectorSubnetRange := gcloud.Runf(t, "compute networks subnets describe %s --region=us-central1 --project=%s --impersonate-service-account=%s", expectedSubnet, vpcProjectId, serviceaccount).Get("ipCidrRange").String()
+
 		// Firewall Rules
 		for _, firewall_rules := range []struct {
 			name       string
@@ -208,8 +212,8 @@ func TestSecureCloudRun(t *testing.T) {
 			{
 				name:       fmt.Sprintf("fw-vpc-connector-requests-%s", resourcesSuffix),
 				direction:  "INGRESS",
-				ranges:     []string{},
-				sourceTags: []string{"vpc-connector"},
+				ranges:     []string{connectorSubnetRange},
+				sourceTags: []string{},
 				targetTags: []string{},
 				allow: []Protocols{Protocols{
 					Protocol: "icmp",
