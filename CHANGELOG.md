@@ -7,6 +7,14 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.34.3](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.34.2...v0.34.3) (2026-11-24)
+
+
+### Bug Fixes
+
+* **job-exec:** only read google_client_config when exec is enabled ([#508](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/508)) ([4af0fec](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/4af0fec6b0115f23a7b87fb79e891331112be24a))
+* populate null defaultValue in cloud-run-job blueprint metadata ([#500](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/issues/500)) ([4ce640a](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/commit/4ce640a2a519fc9a2ca8bd3da9d8cf58574e0987))
+
 ## [0.34.2](https://github.com/GoogleCloudPlatform/terraform-google-cloud-run/compare/v0.34.1...v0.34.2) (2026-10-05)
 
 
