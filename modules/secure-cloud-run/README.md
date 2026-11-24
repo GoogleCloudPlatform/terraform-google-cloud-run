@@ -19,7 +19,7 @@ The resources/services/activations/deletions that this module will create/trigge
     * Advantages of creating connectors in the [VPC Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#host-project)
     * Advantages of creating connectors in the [Serverless Project](https://cloud.google.com/run/docs/configuring/connecting-shared-vpc#service-projects)
   * Grant the necessary roles for Cloud Run be able to use VPC Connector on your Shared VPC when creating VPC Connector in host project.
-    * Grant Network User role to Cloud Services service account.
+    * Grant Network User role on the connector subnet (or on the whole host project when `grant_network_user_on_host_project` is true) to the Cloud Services and Serverless VPC Access service agents.
     * Grant VPC Access User to Cloud Run Service Identity when deploying VPC Access.
 
 * secure-cloud-run-security module will apply:
@@ -93,6 +93,7 @@ module "secure_cloud_run" {
 | folder\_id | The folder ID to apply the policy to. | `string` | `""` | no |
 | gpu\_zonal\_redundancy\_disabled | True if GPU zonal redundancy is disabled on this revision. | `bool` | `false` | no |
 | grant\_artifact\_register\_reader | When true it will grant permission to read an image from your artifact registry. When true, you must provide `artifact_registry_repository_project_id`, `artifact_registry_repository_location` and `artifact_registry_repository_name`. | `bool` | `false` | no |
+| grant\_network\_user\_on\_host\_project | When true, grants roles/compute.networkUser to the serverless project service agents on the whole Shared VPC host project (legacy behavior). When false (default), the role is granted only on the connector subnet. | `bool` | `false` | no |
 | groups | Groups which will have roles assigned.<br>  The Serverless Administrators email group which the following roles will be added: Cloud Run Admin, Compute Network Viewer and Compute Network User.<br>  The Serverless Security Administrators email group which the following roles will be added: Cloud Run Viewer, Cloud KMS Viewer and Artifact Registry Reader.<br>  The Cloud Run Developer email group which the following roles will be added: Cloud Run Developer, Artifact Registry Writer and Cloud KMS CryptoKey Encrypter.<br>  The Cloud Run User email group which the following roles will be added: Cloud Run Invoker. | <pre>object({<br>    group_serverless_administrator          = optional(string, null)<br>    group_serverless_security_administrator = optional(string, null)<br>    group_cloud_run_developer               = optional(string, null)<br>    group_cloud_run_user                    = optional(string, null)<br>  })</pre> | `{}` | no |
 | iap\_members | Valid only when launch stage is set to 'BETA'. IAP is enabled automatically when users or service accounts (SAs) are provided. Use allUsers for public access, allAuthenticatedUsers for any Google-authenticated user, or specify individual users/SAs. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_cloud_run_service_iam#member/members-2) | `list(string)` | `[]` | no |
 | image | Image url to be deployed on Cloud Run. | `string` | n/a | yes |

@@ -25,8 +25,40 @@ resource "google_project_service_identity" "vpcaccess_identity_sa" {
   service = "vpcaccess.googleapis.com"
 }
 
+# By default, roles/compute.networkUser is granted only on the connector subnet
+# in the host project, following Shared VPC least-privilege guidance. The legacy
+# project-level grant can be restored with grant_network_user_on_host_project = true.
+locals {
+  grant_subnet_network_user  = !var.connector_on_host_project && !var.grant_network_user_on_host_project
+  grant_project_network_user = !var.connector_on_host_project && var.grant_network_user_on_host_project
+}
+
+resource "google_compute_subnetwork_iam_member" "gca_sa_vpcaccess_subnet" {
+  count = local.grant_subnet_network_user ? 1 : 0
+
+  project    = var.vpc_project_id
+  region     = var.location
+  subnetwork = local.subnet_name
+  role       = "roles/compute.networkUser"
+  member     = "serviceAccount:${google_project_service_identity.vpcaccess_identity_sa.email}"
+
+  depends_on = [google_compute_subnetwork.vpc_subnetwork]
+}
+
+resource "google_compute_subnetwork_iam_member" "cloud_services_subnet" {
+  count = local.grant_subnet_network_user ? 1 : 0
+
+  project    = var.vpc_project_id
+  region     = var.location
+  subnetwork = local.subnet_name
+  role       = "roles/compute.networkUser"
+  member     = "serviceAccount:${data.google_project.serverless_project_id.number}@cloudservices.gserviceaccount.com"
+
+  depends_on = [google_compute_subnetwork.vpc_subnetwork]
+}
+
 resource "google_project_iam_member" "gca_sa_vpcaccess" {
-  count = var.connector_on_host_project ? 0 : 1
+  count = local.grant_project_network_user ? 1 : 0
 
   project = var.vpc_project_id
   role    = "roles/compute.networkUser"
@@ -34,7 +66,7 @@ resource "google_project_iam_member" "gca_sa_vpcaccess" {
 }
 
 resource "google_project_iam_member" "cloud_services" {
-  count = var.connector_on_host_project ? 0 : 1
+  count = local.grant_project_network_user ? 1 : 0
 
   project = var.vpc_project_id
   role    = "roles/compute.networkUser"

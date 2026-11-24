@@ -50,6 +50,8 @@ resource "google_vpc_access_connector" "serverless_connector" {
   }
 
   depends_on = [
+    google_compute_subnetwork_iam_member.gca_sa_vpcaccess_subnet,
+    google_compute_subnetwork_iam_member.cloud_services_subnet,
     google_project_iam_member.gca_sa_vpcaccess,
     google_project_iam_member.cloud_services,
     google_project_iam_member.run_identity_services,
