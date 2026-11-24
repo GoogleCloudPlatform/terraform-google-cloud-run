@@ -399,8 +399,8 @@ func TestSecureCloudRunStandalone(t *testing.T) {
 				{
 					name:       "fw-vpc-connector-requests",
 					direction:  "INGRESS",
-					ranges:     []string{},
-					sourceTags: []string{"vpc-connector"},
+					ranges:     []string{subNetRange},
+					sourceTags: []string{},
 					targetTags: []string{},
 					allow: []Protocols{Protocols{
 						Protocol: "icmp",

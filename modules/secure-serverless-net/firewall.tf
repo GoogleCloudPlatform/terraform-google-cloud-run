@@ -106,8 +106,8 @@ module "firewall_rules" {
       description             = null
       priority                = null
       direction               = "INGRESS"
-      ranges                  = []
-      source_tags             = local.tags
+      ranges                  = [local.connector_subnet_cidr]
+      source_tags             = null
       source_service_accounts = null
       target_tags             = null
       target_service_accounts = null
