@@ -145,6 +145,7 @@ module "cloud_run_core" {
   max_scale_instances           = var.max_scale_instances
   volumes                       = var.volumes
   ssl_certificates              = var.ssl_certificates
+  ssl_policy                    = var.ssl_policy
   vpc_network_interface         = var.vpc_network_interface
   iap_members                   = var.iap_members
   launch_stage                  = var.launch_stage

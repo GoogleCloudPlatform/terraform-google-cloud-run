@@ -432,3 +432,9 @@ variable "launch_stage" {
     error_message = "Allowed values for launch_stage are \"UNIMPLEMENTED\", \"PRELAUNCH\", or \"EARLY_ACCESS\", or \"DEPRECATED\", or \"ALPHA\", or \"BETA\", or \"GA\"."
   }
 }
+
+variable "ssl_policy" {
+  description = "Enables the SSL Policy for the Load Balancer (Requires TLS 1.3)."
+  type        = bool
+  default     = false
+}

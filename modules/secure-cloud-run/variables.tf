@@ -326,3 +326,8 @@ variable "ports" {
   }
 }
 
+variable "ssl_policy" {
+  description = "Enables the SSL Policy for the Load Balancer (Requires TLS 1.3)."
+  type        = bool
+  default     = false
+}
