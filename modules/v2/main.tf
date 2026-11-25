@@ -79,7 +79,8 @@ locals {
 }
 
 resource "google_service_account" "sa" {
-  count        = local.create_service_account ? 1 : 0
+  count = local.create_service_account ? 1 : 0
+
   project      = var.project_id
   account_id   = "${local.service_account_prefix}-sa"
   display_name = "Service account for ${var.service_name} in ${var.location}"
@@ -376,6 +377,7 @@ resource "google_cloud_run_v2_service" "main" {
 
 resource "google_cloud_run_v2_service_iam_member" "authorize" {
   for_each = toset(var.members)
+
   location = google_cloud_run_v2_service.main.location
   project  = google_cloud_run_v2_service.main.project
   name     = google_cloud_run_v2_service.main.name
@@ -384,7 +386,8 @@ resource "google_cloud_run_v2_service_iam_member" "authorize" {
 }
 
 resource "google_iap_web_cloud_run_service_iam_member" "iap_access" {
-  for_each               = toset(var.iap_members)
+  for_each = toset(var.iap_members)
+
   project                = google_cloud_run_v2_service.main.project
   location               = google_cloud_run_v2_service.main.location
   cloud_run_service_name = google_cloud_run_v2_service.main.name
@@ -393,14 +396,16 @@ resource "google_iap_web_cloud_run_service_iam_member" "iap_access" {
 }
 
 resource "google_project_service_identity" "iap_p4sa" {
-  count    = length(var.iap_members) > 0 ? 1 : 0
   provider = google-beta
-  project  = var.project_id
-  service  = "iap.googleapis.com"
+  count    = length(var.iap_members) > 0 ? 1 : 0
+
+  project = var.project_id
+  service = "iap.googleapis.com"
 }
 
 resource "google_cloud_run_v2_service_iam_member" "authorize_iap_p4sa" {
-  count    = length(var.iap_members) > 0 ? 1 : 0
+  count = length(var.iap_members) > 0 ? 1 : 0
+
   location = google_cloud_run_v2_service.main.location
   project  = google_cloud_run_v2_service.main.project
   name     = google_cloud_run_v2_service.main.name
@@ -409,8 +414,9 @@ resource "google_cloud_run_v2_service_iam_member" "authorize_iap_p4sa" {
 }
 
 resource "google_cloud_run_domain_mapping" "domain_map" {
-  for_each = toset(var.verified_domain_name)
   provider = google-beta
+  for_each = toset(var.verified_domain_name)
+
   location = google_cloud_run_v2_service.main.location
   name     = each.value
   project  = google_cloud_run_v2_service.main.project

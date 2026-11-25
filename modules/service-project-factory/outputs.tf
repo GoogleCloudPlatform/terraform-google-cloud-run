@@ -15,12 +15,12 @@
  */
 
 output "project_id" {
-  value       = module.serverless_project.project_id
+  value       = local.effective_project_id
   description = "Project ID of the project created to deploy Cloud Serverless."
 }
 
 output "project_number" {
-  value       = module.serverless_project.project_number
+  value       = local.effective_project_number
   description = "Project number of the project created to deploy Cloud Serverless."
 }
 
@@ -40,7 +40,7 @@ output "services_identities" {
     "cloudbuild"    = google_project_service_identity.cloudbuild_sa.email,
     "gcs"           = data.google_storage_project_service_account.gcs_account.email_address,
     "serverless"    = google_project_service_identity.serverless_sa.email,
-    "cloudservices" = "${module.serverless_project.project_number}@cloudservices.gserviceaccount.com"
+    "cloudservices" = "${local.effective_project_number}@cloudservices.gserviceaccount.com"
   }
   description = "Services Identities for the serverless project."
 }

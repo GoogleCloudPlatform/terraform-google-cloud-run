@@ -172,8 +172,9 @@ module "cloud_run" {
 
 resource "google_project_service_identity" "serverless_sa" {
   provider = google-beta
-  project  = var.project_id
-  service  = "run.googleapis.com"
+
+  project = var.project_id
+  service = "run.googleapis.com"
 }
 
 resource "time_sleep" "wait_30_seconds" {
@@ -185,15 +186,17 @@ resource "time_sleep" "wait_30_seconds" {
 }
 
 resource "google_secret_manager_secret_iam_member" "member" {
-  for_each  = { for s in local.secrets_list : "${s.name}-${s.path}" => s }
+  for_each = { for s in local.secrets_list : "${s.name}-${s.path}" => s }
+
   secret_id = each.value.secret_name
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${var.cloud_run_sa}"
 }
 
 resource "google_cloud_run_domain_mapping" "domain_map" {
-  for_each = toset(var.verified_domain_name)
   provider = google-beta
+  for_each = toset(var.verified_domain_name)
+
   location = var.location
   name     = each.value
   project  = var.project_id

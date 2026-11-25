@@ -15,8 +15,9 @@
  */
 
 module "service_account" {
-  source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 4.2"
+  source  = "terraform-google-modules/service-accounts/google"
+  version = "~> 5.1"
+
   project_id = var.project_id
   prefix     = "sa-cloud-run"
   names      = ["vpc-connector"]
@@ -24,7 +25,7 @@ module "service_account" {
 
 module "cloud_run" {
   source  = "GoogleCloudPlatform/cloud-run/google"
-  version = "~> 0.16"
+  version = "~> 0.34"
 
   service_name          = "ci-cloud-run-sc"
   project_id            = var.project_id

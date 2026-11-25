@@ -14,9 +14,22 @@
  * limitations under the License.
  */
 
+locals {
+  effective_project_id     = var.create_project ? module.serverless_project[0].project_id : var.project_id
+  effective_project_number = var.create_project ? module.serverless_project[0].project_number : data.google_project.existing_project[0].number
+
+}
+
+data "google_project" "existing_project" {
+  count = var.create_project ? 0 : 1
+
+  project_id = var.project_id
+}
+
 module "serverless_project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 18.0"
+  count   = var.create_project ? 1 : 0
 
   random_project_id           = "true"
   activate_apis               = var.activate_apis
@@ -33,9 +46,10 @@ module "serverless_project" {
 }
 
 module "service_accounts" {
-  source     = "terraform-google-modules/service-accounts/google"
-  version    = "~> 4.2"
-  project_id = module.serverless_project.project_id
+  source  = "terraform-google-modules/service-accounts/google"
+  version = "~> 5.1"
+
+  project_id = local.effective_project_id
   prefix     = "sa"
   names      = var.base_serverless_api == "run.googleapis.com" ? ["cloud-run"] : ["cloud-function"]
 
@@ -46,15 +60,16 @@ module "service_accounts" {
 
 resource "google_project_iam_member" "cloud_run_sa_roles" {
   for_each = toset(var.service_account_project_roles)
-  project  = module.serverless_project.project_id
-  role     = each.value
-  member   = module.service_accounts.iam_email
+
+  project = local.effective_project_id
+  role    = each.value
+  member  = module.service_accounts.iam_email
 }
 
 resource "google_project_service_identity" "serverless_sa" {
   provider = google-beta
 
-  project = module.serverless_project.project_id
+  project = local.effective_project_id
   service = var.base_serverless_api
 }
 
@@ -67,24 +82,25 @@ resource "google_service_account_iam_member" "identity_service_account_user" {
 resource "google_project_service_identity" "cloudbuild_sa" {
   provider = google-beta
 
-  project = module.serverless_project.project_id
+  project = local.effective_project_id
   service = "cloudbuild.googleapis.com"
 }
 
 resource "google_project_service_identity" "eventarc_sa" {
   provider = google-beta
 
-  project = module.serverless_project.project_id
+  project = local.effective_project_id
   service = "eventarc.googleapis.com"
 }
 
 data "google_storage_project_service_account" "gcs_account" {
-  project = module.serverless_project.project_id
+  project = local.effective_project_id
 }
 
 resource "google_project_iam_member" "gcs_pubsub_publishing" {
-  count   = var.base_serverless_api == "run.googleapis.com" ? 0 : 1
-  project = module.serverless_project.project_id
+  count = var.base_serverless_api == "run.googleapis.com" ? 0 : 1
+
+  project = local.effective_project_id
   role    = "roles/pubsub.publisher"
   member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
 }
@@ -95,7 +111,7 @@ resource "time_sleep" "wait_1m" {
 }
 
 resource "google_project_iam_member" "eventarc_service_agent" {
-  project    = module.serverless_project.project_id
+  project    = local.effective_project_id
   role       = "roles/eventarc.serviceAgent"
   member     = "serviceAccount:${google_project_service_identity.eventarc_sa.email}"
   depends_on = [time_sleep.wait_1m]
