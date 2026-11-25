@@ -159,7 +159,11 @@ resource "google_cloud_run_v2_job" "job" {
   }
 }
 
-data "google_client_config" "default" {}
+# Only read the caller credentials when the job is actually executed so that the
+# access token is not persisted to state for consumers that do not set exec = true.
+data "google_client_config" "default" {
+  count = var.exec ? 1 : 0
+}
 
 resource "terracurl_request" "exec" {
   count = var.exec ? 1 : 0
@@ -168,7 +172,7 @@ resource "terracurl_request" "exec" {
   url    = "https://run.googleapis.com/v2/${google_cloud_run_v2_job.job.id}:run"
   method = "POST"
   headers = {
-    Authorization = "Bearer ${data.google_client_config.default.access_token}"
+    Authorization = "Bearer ${data.google_client_config.default[0].access_token}"
     Content-Type  = "application/json",
   }
   response_codes = [200]
@@ -179,7 +183,7 @@ resource "terracurl_request" "exec" {
   destroy_method         = "GET"
   destroy_response_codes = [200]
   destroy_headers = {
-    Authorization = "Bearer ${data.google_client_config.default.access_token}"
+    Authorization = "Bearer ${data.google_client_config.default[0].access_token}"
     Content-Type  = "application/json",
   }
 }
